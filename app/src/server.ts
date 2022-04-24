@@ -71,6 +71,9 @@ app.get('/login', (req: Request, res: Response) => {
 // uriの始まりがauthのときに認証を行う
 app.use('/auth', authCheckMiddle)
 
+/**
+ * ログイン処理を行う関数
+*/
 app.post('/auth/check', (req: Request, res: Response) => {
   if (req.body.id && req.body.pw) {
     const id = req.body.id
