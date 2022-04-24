@@ -10,6 +10,8 @@ services:
       - ./app/views:/views/
       - ./app/public:/public/
     env_file: ./node.env
+    depends_on:
+      - mysql
 
   mysql:
     container_name: mysql_host

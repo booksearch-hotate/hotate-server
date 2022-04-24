@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS books (
   author_id int NOT NULL,
   ndc int NULL,
   publisher_id int NOT NULL,
-  year int NOT NULL,
-  book_content text NOT NULL,
+  year int NULL,
+  book_content text NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (author_id) REFERENCES authors(id),
   FOREIGN KEY (publisher_id) REFERENCES publishers(id)

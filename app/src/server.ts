@@ -8,6 +8,7 @@ import CssPathMake from './modules/CssPathMake';
 import JsPathMake from './modules/JsPathMake';
 import OriginMake from './modules/OriginMake';
 import AuthModule from './modules/AuthModule';
+import MysqlModule from './modules/MysqlModule';
 
 const app: Application = express();
 
