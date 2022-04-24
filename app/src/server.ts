@@ -25,4 +25,5 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // listen
+// eslint-disable-next-line no-console
 app.listen(PORT, () => { console.log(`Server started on port ${PORT}`); });
