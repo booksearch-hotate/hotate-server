@@ -9,6 +9,7 @@ services:
     volumes:
       - ./app/views:/views/
       - ./app/public:/public/
+    env_file: ./node.env
 
   mysql:
     container_name: mysql_host
