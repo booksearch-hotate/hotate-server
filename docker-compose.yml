@@ -4,7 +4,12 @@ services:
   app:
     build:
       context: app
-    command: "npm run serve"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./app/views:/views/
+      - ./app/public:/public/
+
   mysql:
     container_name: mysql_host
     image: mysql:latest
@@ -17,6 +22,7 @@ services:
       - ./db/init:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
