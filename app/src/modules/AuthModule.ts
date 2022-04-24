@@ -43,7 +43,7 @@ export default class AuthModule {
   // トークンの有効性をチェック
   public verifyToken (token: string): boolean {
     try {
-      const decoded = jwt.verify(token, this.jwtSecret) as any
+      const decoded = jwt.verify(token, this.jwtSecret) as { id: string, pw: string }
       if (decoded.id === this.id && decoded.pw === this.password) {
         return true
       }
