@@ -1,4 +1,4 @@
-import { Sequelize, Model, DataTypes, Association } from 'sequelize';
+import { Sequelize, Model, DataTypes } from 'sequelize';
 import Publisher from './publisher';
 import Author from './author';
 

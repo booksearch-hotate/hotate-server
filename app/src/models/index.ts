@@ -1,4 +1,4 @@
-import { Sequelize, Model } from "sequelize";
+import { Sequelize } from "sequelize";
 import Book from "./book";
 import Author from "./author";
 import Publisher from "./publisher";
