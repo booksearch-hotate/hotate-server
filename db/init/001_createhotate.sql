@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS hotate;
+
+use hotate;
+CREATE TABLE IF NOT EXISTS books (
+  id int(10) NOT NULL,
+  name VARCHAR(16) NOT NULL,
+  age int(10) NOT NULL,
+  profile VARCHAR(64) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
