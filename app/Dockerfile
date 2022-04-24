@@ -2,4 +2,6 @@ FROM node:12-slim
 
 COPY . .
 
-RUN npm i --production
+RUN npm install --production && npm run build
+
+CMD ["node", "dist/server.js"]
