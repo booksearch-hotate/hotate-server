@@ -20,8 +20,6 @@
         "no-console": 1,
         "no-duplicate-case": 2,
         "no-extra-parens": 1,
-        "no-extra-semi": 2,
-        "no-unexpected-multiline": 1,
         "complexity": 1,
         "consistent-return": 2,
         "eqeqeq": 2,
@@ -32,6 +30,12 @@
         "comma-spacing": 2,
         "no-trailing-spaces": 2,
         "space-before-function-paren": 2,
-        "spaced-comment": 2
+        "spaced-comment": 2,
+        "semi": ["error", "never", {"beforeStatementContinuationChars": "never"}],
+        "semi-spacing": ["error", {"after": true, "before": false}],
+        "semi-style": ["error", "first"],
+        "no-extra-semi": "error",
+        "no-unexpected-multiline": "error",
+        "no-unreachable": "error"
     }
 }

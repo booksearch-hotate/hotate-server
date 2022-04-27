@@ -4,3 +4,4 @@ node.env
 db/data
 
 app/dist
+app/log
