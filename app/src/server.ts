@@ -5,7 +5,10 @@ import session from 'express-session'
 import * as rootRouter from './routers/rootRouter'
 import * as adminRouter from './routers/adminRouter'
 
+import Logger from './modules/logger'
+
 const app: Application = express()
+const logger = new Logger('system')
 
 const PORT = 8080
 
@@ -36,5 +39,4 @@ app.use('/', rootRouter.default)
 app.use('/admin', adminRouter.default)
 
 // listen
-// eslint-disable-next-line no-console
-app.listen(PORT, () => { console.log(`Server started on port ${PORT}`) })
+app.listen(PORT, () => { logger.info(`Server is running on ${PORT}`) })
