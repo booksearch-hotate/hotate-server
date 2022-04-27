@@ -1,7 +1,7 @@
-import { Sequelize } from "sequelize";
-import Book from "./book";
-import Author from "./author";
-import Publisher from "./publisher";
+import { Sequelize } from "sequelize"
+import Book from "./book"
+import Author from "./author"
+import Publisher from "./publisher"
 
 const sequelize = new Sequelize('hotate', 'root', 'root', {
   host: 'mysql',
@@ -15,8 +15,8 @@ const db = {
 }
 
 // テーブル同士の関係を作成
-db.Book.associate();
-db.Author.associate();
-db.Publisher.associate();
+db.Book.associate()
+db.Author.associate()
+db.Publisher.associate()
 
-export default db;
+export default db

@@ -9,6 +9,7 @@ services:
     volumes:
       - ./app/views:/views/
       - ./app/public:/public/
+      - ./app/log/:/log/
     env_file: ./node.env
     depends_on:
       - mysql

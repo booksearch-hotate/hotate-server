@@ -1,10 +1,10 @@
-import { Sequelize, Model, DataTypes } from 'sequelize';
-import { HasManyCreateAssociationMixin } from 'sequelize';
-import Book from './book';
+import { Sequelize, Model, DataTypes } from 'sequelize'
+import { HasManyCreateAssociationMixin } from 'sequelize'
+import Book from './book'
 
 export default class Author extends Model {
-  public id!: number;
-  public name!: string;
+  public id!: number
+  public name!: string
 
   public createBook!: HasManyCreateAssociationMixin<Book>
 
@@ -23,7 +23,7 @@ export default class Author extends Model {
       sequelize,
       tableName: 'authors',
       timestamps: false
-    });
+    })
     return this
   }
 
@@ -31,6 +31,6 @@ export default class Author extends Model {
     this.hasMany(Book, {
       sourceKey: 'id',
       foreignKey: 'author_id'
-    });
+    })
   }
 }

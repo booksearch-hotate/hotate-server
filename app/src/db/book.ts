@@ -1,10 +1,10 @@
-import { Sequelize, Model, DataTypes } from 'sequelize';
-import Publisher from './publisher';
-import Author from './author';
+import { Sequelize, Model, DataTypes } from 'sequelize'
+import Publisher from './publisher'
+import Author from './author'
 
 export default class Book extends Model {
-  public id!: number;
-  public name!: string;
+  public id!: number
+  public name!: string
 
   public static initialize (sequelize: Sequelize) {
     this.init({
@@ -49,7 +49,7 @@ export default class Book extends Model {
       sequelize,
       tableName: 'publishers',
       timestamps: false
-    });
+    })
     return this
   }
 
