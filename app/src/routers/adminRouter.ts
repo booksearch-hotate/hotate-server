@@ -3,9 +3,9 @@ import multer from "multer"
 
 import { IPage } from "../interfaces/IPage"
 
-import CssPathMake from "../modules/CssPathMake"
-import OriginMake from "../modules/OriginMake"
-import AuthModule from "../modules/AuthModule"
+import CssPathMake from "../modules/cssPath"
+import OriginMake from "../modules/origin"
+import AuthModule from "../modules/admin"
 import CsvData from "../modules/csvData"
 import Logger from "../modules/logger"
 
