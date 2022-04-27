@@ -33,7 +33,7 @@ app.use(session({
 }))
 
 app.use('/', rootRouter.default)
-app.use('/auth', adminRouter.default)
+app.use('/admin', adminRouter.default)
 
 // listen
 // eslint-disable-next-line no-console

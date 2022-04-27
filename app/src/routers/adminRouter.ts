@@ -5,7 +5,7 @@ import { IPage } from "../interfaces/IPage"
 
 import CssPathMake from "../modules/CssPathMake"
 import OriginMake from "../modules/OriginMake"
-import AuthModule from '../modules/AuthModule'
+import AuthModule from "../modules/AuthModule"
 import CsvData from "../modules/csvData"
 import Logger from "../modules/logger"
 
@@ -44,7 +44,7 @@ router.post('/check', (req: Request, res: Response) => {
     const isLogin = auth.loginFlow(id, pw)
     if (isLogin) {
       if (!req.session.token) req.session.token = auth.getToken() // トークンの格納
-      res.redirect('/auth/home')
+      res.redirect('/admin/home')
       logger.info('ログインに成功しました。')
     } else {
       res.redirect('/login')
@@ -62,7 +62,7 @@ router.get('/home', (req: Request, res: Response) => {
     path: req.url,
     cssData: new CssPathMake(['auth/home'], OriginMake(req)).make()
   }
-  res.render('pages/auth/home', { pageData })
+  res.render('pages/admin/home', { pageData })
 })
 
 router.get('/csv/choice', (req: Request, res: Response) => {
@@ -71,7 +71,7 @@ router.get('/csv/choice', (req: Request, res: Response) => {
     path: req.url,
     cssData: new CssPathMake(['auth/csv/choice'], OriginMake(req)).make()
   }
-  res.render('pages/auth/csv/choice', { pageData })
+  res.render('pages/admin/csv/choice', { pageData })
 })
 
 router.post('/csv/sendFile', upload.single('csv'), (req, res: Response) => {
@@ -82,7 +82,7 @@ router.post('/csv/sendFile', upload.single('csv'), (req, res: Response) => {
   } catch (err) {
     logger.error('CSVファイルの受信に失敗しました。')
   }
-  res.redirect('/auth/csv/choice')
+  res.redirect('/admin/csv/choice')
 })
 
 export default router
