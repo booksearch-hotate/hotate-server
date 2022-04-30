@@ -90,6 +90,10 @@ router.post('/csv/sendFile', upload.single('csv'), (req, res: Response) => {
   const file = req.file
   try {
     csvData.setCsvData(file)
+    if (file) {
+      logger.debug(file.filename)
+      csvData.deleteCsvData('./uploads/csv', file.filename)
+    }
     logger.info('CSVファイルを受信しました。')
   } catch (err) {
     logger.error('CSVファイルの受信に失敗しました。')
@@ -101,7 +105,7 @@ router.post('/csv/formHader', async (req: Request, res: Response) => {
   await csvData.deleteBookInfo()
   await csvData.addDB(req.body)
   logger.info('データを登録しました。')
-  csvData.deleteCsvData('./uploads/csv/')
+  csvData.deleteCsvData('./uploads/csv', '')
   res.redirect('/admin/home')
 })
 
