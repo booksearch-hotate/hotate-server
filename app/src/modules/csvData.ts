@@ -31,6 +31,13 @@ export default class CsvData {
     })
   }
 
+  async deleteBookInfo () {
+    await db.Book.destroy({ where: {} })
+    await db.Author.destroy({ where: {} })
+    await db.Publisher.destroy({ where: {} })
+    logger.info('csvDataをDBから削除しました。')
+  }
+
   getCsvHeaderData () {
     if (!this.csvData) throw new Error('undefined csvData') // csvDataが存在しない場合はエラー
     // csvDataのキーを返す
@@ -39,26 +46,22 @@ export default class CsvData {
 
   async addDB (body: Request["body"]) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.csvData.forEach(async (data: any) => {
+    for (const data of this.csvData) {
 
       const authorKey = body.authorName // 著者名が格納されているキー
       const authorId = await this.controllAuthor(data[authorKey]) // 著者名が格納されていない場合新規にレコードを作成
 
       const publisherKey = body.publisherName // 出版社名が格納されているキー
       const publisherId = await this.controllPublisher(data[publisherKey]) // 出版社名が格納されていない場合新規にレコードを作成
-      try {
-        db.Book.create({
-          isbn: Number(data[body.isbn] as string),
-          book_name: data[body.bookName],
-          author_id: authorId,
-          publisher_id: publisherId,
-          year: data[body.year],
-          book_content: data[body.bookContent],
-        })
-      } catch (err) {
-        logger.error(err as string)
-      }
-    })
+      await db.Book.create({
+        isbn: Number(data[body.isbn] as string),
+        book_name: data[body.bookName],
+        author_id: authorId,
+        publisher_id: publisherId,
+        year: data[body.year],
+        book_content: data[body.bookContent],
+      })
+    }
     logger.info('csvDataをDBに追加しました。')
   }
 
