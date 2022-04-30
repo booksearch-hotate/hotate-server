@@ -5,7 +5,8 @@ import Publisher from "./publisher"
 
 const sequelize = new Sequelize('hotate', 'root', 'root', {
   host: 'mysql',
-  dialect: 'mysql'
+  dialect: 'mysql',
+  logging: false
 })
 
 const db = {

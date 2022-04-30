@@ -5,6 +5,8 @@ import { Request } from 'express'
 import Logger from './logger'
 import db from './../db/index'
 
+import { IRequiredKeys, IOptionalKeys } from '../interfaces/IDbColumn'
+
 const logger = new Logger('csvData')
 
 export default class CsvData {
@@ -49,21 +51,33 @@ export default class CsvData {
 
       const publisherKey = body.publisherName // 出版社名が格納されているキー
       const publisherId = await this.controllPublisher(data[publisherKey]) // 出版社名が格納されていない場合新規にレコードを作成
-      const insertObj = {
-        book_name: data[body.bookName] as string, // 本名が格納されているキー
-        author_id: authorId, // 著者idが格納されているキー
-        publisher_id: publisherId, // 出版社idが格納されているキー
-        isbn: null,
-        year: null,
-        book_content: null,
-        ndc: null,
-        book_sub_name: null
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const insertObj: any = {}
+
+      /* 必須となる項目 */
+      const requiredKeys: IRequiredKeys = {
+        book_name: data[body.bookName],
+        author_id: authorId,
+        publisher_id: publisherId,
       }
-      if (body.isbn !== 'none') insertObj.isbn = Number(data[body.isbn]) as any // ISBNが格納されているキー
-      if (body.year !== 'none') insertObj.year = data[body.year] // 年が格納されているキー
-      if (body.bookContent !== 'none') insertObj.book_content = data[body.bookContent] // 本文が格納されているキー
-      if (body.ndc !== 'none') insertObj.ndc = data[body.ndc] // NDCが格納されているキー
-      if (body.bookSubName !== 'none') insertObj.book_sub_name = data[body.bookSubName] // 本名が格納されているキー
+
+      /* 任意となる項目 */
+      const optionalKeys: IOptionalKeys = {
+        isbn: data[body.isbn],
+        book_sub_name: data[body.bookSubName],
+        ndc: data[body.ndc],
+        book_content: data[body.bookContent]
+      }
+
+      const attributes = db.Book.getAttributes()
+      for (const key of Object.keys(attributes)) {
+        insertObj[key] = null
+        if (key in requiredKeys) insertObj[key] = requiredKeys[key as keyof typeof requiredKeys]
+        if (key in optionalKeys && optionalKeys[key as keyof typeof optionalKeys] !== 'none') insertObj[key] = optionalKeys[key as keyof typeof optionalKeys]
+      }
+
+      logger.debug(insertObj)
 
       await db.Book.create(insertObj)
     }
