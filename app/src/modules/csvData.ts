@@ -11,15 +11,13 @@ export default class CsvData {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private csvData: any
 
-  setCsvData (file: Express.Multer.File | undefined) {
+  async setCsvData (file: Express.Multer.File | undefined) {
     if (!file) throw new Error('undefined file') // ファイルが存在しない場合はエラー
 
-    fs.readFile(file.path, 'utf-8', (err, data) => {
+    fs.readFile(file.path, 'utf-8', async (err, data) => {
       if (err) throw err
       // csvtojsonを使ってjsonに変換
-      csv().fromString(data).then(json => {
-        this.csvData = json
-      })
+      this.csvData = await csv().fromString(data)
     })
   }
 
@@ -51,14 +49,23 @@ export default class CsvData {
 
       const publisherKey = body.publisherName // 出版社名が格納されているキー
       const publisherId = await this.controllPublisher(data[publisherKey]) // 出版社名が格納されていない場合新規にレコードを作成
-      await db.Book.create({
-        isbn: Number(data[body.isbn] as string),
-        book_name: data[body.bookName],
-        author_id: authorId,
-        publisher_id: publisherId,
-        year: data[body.year],
-        book_content: data[body.bookContent],
-      })
+      const insertObj = {
+        book_name: data[body.bookName] as string, // 本名が格納されているキー
+        author_id: authorId, // 著者idが格納されているキー
+        publisher_id: publisherId, // 出版社idが格納されているキー
+        isbn: null,
+        year: null,
+        book_content: null,
+        ndc: null,
+        book_sub_name: null
+      }
+      if (body.isbn !== 'none') insertObj.isbn = Number(data[body.isbn]) as any // ISBNが格納されているキー
+      if (body.year !== 'none') insertObj.year = data[body.year] // 年が格納されているキー
+      if (body.bookContent !== 'none') insertObj.book_content = data[body.bookContent] // 本文が格納されているキー
+      if (body.ndc !== 'none') insertObj.ndc = data[body.ndc] // NDCが格納されているキー
+      if (body.bookSubName !== 'none') insertObj.book_sub_name = data[body.bookSubName] // 本名が格納されているキー
+
+      await db.Book.create(insertObj)
     }
     logger.info('csvDataをDBに追加しました。')
   }

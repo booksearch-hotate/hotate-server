@@ -86,10 +86,10 @@ router.get('/csv/headerChoice', (req: Request, res: Response) => {
   res.render('pages/admin/csv/headerChoice', { pageData })
 })
 
-router.post('/csv/sendFile', upload.single('csv'), (req, res: Response) => {
+router.post('/csv/sendFile', upload.single('csv'), async (req, res: Response) => {
   const file = req.file
   try {
-    csvData.setCsvData(file)
+    await csvData.setCsvData(file)
     if (file) {
       logger.debug(file.filename)
       csvData.deleteCsvData('./uploads/csv', file.filename)
