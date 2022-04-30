@@ -1,4 +1,7 @@
 import * as jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+
+dotenv.config() // envファイルの読み込み
 
 export default class AuthModule {
   private id: string // ユーザーID
