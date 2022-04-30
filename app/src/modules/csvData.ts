@@ -1,11 +1,14 @@
 import fs from 'fs'
 import csv from 'csvtojson'
+import { Request } from 'express'
+
 import Logger from './logger'
 import db from './../db/index'
 
 const logger = new Logger('csvData')
 
 export default class CsvData {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private csvData: any
 
   setCsvData (file: Express.Multer.File | undefined) {
@@ -26,16 +29,15 @@ export default class CsvData {
     return Object.keys(this.csvData[0])
   }
 
-  async addDB (body: any) {
-    for (let i = 0; i < this.csvData.length; i++) {
-      const data = this.csvData[i] // データを取得
+  async addDB (body: Request["body"]) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.csvData.forEach(async (data: any) => {
 
       const authorKey = body.authorName // 著者名が格納されているキー
       const authorId = await this.controllAuthor(data[authorKey]) // 著者名が格納されていない場合新規にレコードを作成
 
       const publisherKey = body.publisherName // 出版社名が格納されているキー
       const publisherId = await this.controllPublisher(data[publisherKey]) // 出版社名が格納されていない場合新規にレコードを作成
-      logger.debug(`${data[body.isbn]} => ${Number(data[body.isbn] as string)}`)
       try {
         db.Book.create({
           isbn: Number(data[body.isbn] as string),
@@ -48,7 +50,7 @@ export default class CsvData {
       } catch (err) {
         logger.error(err as string)
       }
-    }
+    })
     logger.info('csvDataをDBに追加しました。')
   }
 
