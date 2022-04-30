@@ -26,9 +26,7 @@ export default class CsvData {
   deleteCsvData (folderPath: string, noTargetFileName: string) {
     // folderPathにあるファイルを削除
     const files = fs.readdirSync(folderPath)
-    files.forEach(file => {
-      if (file !== noTargetFileName) fs.unlinkSync(`${folderPath}/${file}`)
-    })
+    files.forEach(file => { if (file !== noTargetFileName) fs.unlinkSync(`${folderPath}/${file}`) })
   }
 
   async deleteBookInfo () {
