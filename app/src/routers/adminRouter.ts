@@ -22,13 +22,36 @@ let pageData: IPage
  * トークンが有効でない場合はログイン画面にリダイレクトする。
  */
  const authCheckMiddle = (req: Request, res: Response, next: NextFunction) => {
-  if (auth.verifyToken(req.session.token as string)) {
+  if (auth.verifyToken(req.session.token as string) || req.body.id && req.body.pw) {
     next()
   } else {
     logger.info('トークンが無効です。ログインページへリダイレクトします。')
     res.redirect('/login')
   }
 }
+
+/**
+ * ログイン処理を行う関数
+*/
+router.post('/check', (req: Request, res: Response) => {
+  logger.debug('check')
+  if (req.body.id && req.body.pw) {
+    const id = req.body.id
+    const pw = req.body.pw
+    const isLogin = auth.loginFlow(id, pw)
+    if (isLogin) {
+      if (!req.session.token) req.session.token = auth.getToken() // トークンの格納
+      res.redirect('/admin/home')
+      logger.info('ログインに成功しました。')
+    } else {
+      res.redirect('/login')
+      logger.warn('ログインに失敗しました。')
+    }
+  } else {
+    res.redirect('/login')
+    logger.warn('直接ログインしようとしました。')
+  }
+})
 
 // uriの始まりがauthのときに認証を行う
 router.use('/', authCheckMiddle)
