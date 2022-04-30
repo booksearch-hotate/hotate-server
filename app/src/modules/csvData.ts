@@ -67,6 +67,7 @@ export default class CsvData {
         isbn: data[body.isbn],
         book_sub_name: data[body.bookSubName],
         ndc: data[body.ndc],
+        year: data[body.year],
         book_content: data[body.bookContent]
       }
 
