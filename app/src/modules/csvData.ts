@@ -27,20 +27,6 @@ export default class CsvData {
   }
 
   async addDB (body: any) {
-    try {
-      await db.Book.create({
-        isbn: 10,
-        book_name: 'test',
-        author_id: 0,
-        publisher_id: 0,
-        year: 2020,
-        book_content: 'this is test.',
-      }).then(book => {
-        logger.info(`${book.book_name}を作成しました。`)
-      })
-    } catch (err) {
-      logger.error(err as string)
-    }
     for (let i = 0; i < this.csvData.length; i++) {
       const data = this.csvData[i] // データを取得
 
