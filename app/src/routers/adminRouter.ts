@@ -102,7 +102,7 @@ router.post('/csv/formHader', async (req: Request, res: Response) => {
   await csvData.addDB(req.body)
   logger.info('データを登録しました。')
   csvData.deleteCsvData('./uploads/csv/')
-  res.redirect('/admin/csv/choice')
+  res.redirect('/admin/home')
 })
 
 export default router
