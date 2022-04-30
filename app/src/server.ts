@@ -1,6 +1,7 @@
 import express, {Application } from 'express'
 import bodyParser from 'body-parser'
 import session from 'express-session'
+import dotenv from 'dotenv'
 
 import * as rootRouter from './routers/rootRouter'
 import * as adminRouter from './routers/adminRouter'
@@ -9,6 +10,8 @@ import Logger from './modules/logger'
 
 const app: Application = express()
 const logger = new Logger('system')
+
+dotenv.config() // envファイルの読み込み
 
 const PORT = 8080
 
