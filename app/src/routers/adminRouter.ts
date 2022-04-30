@@ -88,6 +88,7 @@ router.get('/csv/headerChoice', (req: Request, res: Response) => {
 
 router.post('/csv/sendFile', upload.single('csv'), (req, res: Response) => {
   const file = req.file
+  csvData.deleteCsvData('./uploads/csv/')
   try {
     csvData.setCsvData(file)
     logger.info('CSVファイルを受信しました。')

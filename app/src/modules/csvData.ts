@@ -23,6 +23,14 @@ export default class CsvData {
     })
   }
 
+  deleteCsvData (folderPath: string) {
+    // folderPathにあるファイルを削除
+    const files = fs.readdirSync(folderPath)
+    files.forEach(file => {
+      fs.unlinkSync(`${folderPath}/${file}`)
+    })
+  }
+
   getCsvHeaderData () {
     if (!this.csvData) throw new Error('undefined csvData') // csvDataが存在しない場合はエラー
     // csvDataのキーを返す
