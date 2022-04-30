@@ -74,6 +74,18 @@ router.get('/csv/choice', (req: Request, res: Response) => {
   res.render('pages/admin/csv/choice', { pageData })
 })
 
+router.get('/csv/headerChoice', (req: Request, res: Response) => {
+  pageData = {
+    headTitle: 'ヘッダー選択',
+    path: req.url,
+    cssData: new CssPathMake(['auth/csv/choice'], OriginMake(req)).make(),
+    anyData: {
+      csvHeader: csvData.getCsvHeaderData()
+    }
+  }
+  res.render('pages/admin/csv/headerChoice', { pageData })
+})
+
 router.post('/csv/sendFile', upload.single('csv'), (req, res: Response) => {
   const file = req.file
   try {
@@ -82,6 +94,12 @@ router.post('/csv/sendFile', upload.single('csv'), (req, res: Response) => {
   } catch (err) {
     logger.error('CSVファイルの受信に失敗しました。')
   }
+  res.redirect('/admin/csv/headerChoice')
+})
+
+router.post('/csv/formHader', async (req: Request, res: Response) => {
+  await csvData.addDB(req.body)
+  logger.info('データを登録しました。')
   res.redirect('/admin/csv/choice')
 })
 

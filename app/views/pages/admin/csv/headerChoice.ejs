@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+  </head>
+  <body>
+    <h1>ヘッダーを選択</h1>
+    <p>データを追加するのに必要なヘッダーを選択してください</p>
+    <form action="/admin/csv/formHader" method="post">
+      <section>
+        <p>ISBN</p>
+        <select class="form-select" name="isbn">
+          <%- include('./../../../components/admin/csv/headerList.ejs') %>
+        </select>
+      </section>
+      <section>
+        <p>本の名称※</p>
+        <select class="form-select" name="bookName">
+          <%- include('./../../../components/admin/csv/headerList.ejs') %>
+        </select>
+      </section>
+      <section>
+        <p>副題</p>
+        <select class="form-select" name="bookSubName">
+          <%- include('./../../../components/admin/csv/headerList.ejs') %>
+        </select>
+      </section>
+      <section>
+        <p>著者名※</p>
+        <select class="form-select" name="authorName">
+          <%- include('./../../../components/admin/csv/headerList.ejs') %>
+        </select>
+      </section>
+      <section>
+        <p>日本十進分類法</p>
+        <select class="form-select" name="ndc">
+          <%- include('./../../../components/admin/csv/headerList.ejs') %>
+        </select>
+      </section>
+      <section>
+        <p>出版社名※</p>
+        <select class="form-select" name="publisherName">
+          <%- include('./../../../components/admin/csv/headerList.ejs') %>
+        </select>
+      </section>
+      <section>
+        <p>出版年</p>
+        <select class="form-select" name="year">
+          <%- include('./../../../components/admin/csv/headerList.ejs') %>
+        </select>
+      </section>
+      <section>
+        <p>内容</p>
+        <select class="form-select" name="bookContent">
+          <%- include('./../../../components/admin/csv/headerList.ejs') %>
+        </select>
+      </section>
+      <button type="submit">送信</button>
+    </form>
+  </body>
+</html>
