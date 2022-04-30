@@ -102,7 +102,7 @@ router.post('/csv/sendFile', upload.single('csv'), async (req, res: Response) =>
 })
 
 router.post('/csv/formHader', async (req: Request, res: Response) => {
-  await csvData.deleteBookInfo()
+  await csvData.deleteDBRelateInBook()
   await csvData.addDB(req.body)
   logger.info('データを登録しました。')
   csvData.deleteCsvData('./uploads/csv', '')

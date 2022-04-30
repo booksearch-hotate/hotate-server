@@ -29,7 +29,7 @@ export default class CsvData {
     files.forEach(file => { if (file !== noTargetFileName) fs.unlinkSync(`${folderPath}/${file}`) })
   }
 
-  async deleteBookInfo () {
+  async deleteDBRelateInBook () {
     await db.Book.destroy({ where: {} })
     await db.Author.destroy({ where: {} })
     await db.Publisher.destroy({ where: {} })
@@ -43,14 +43,14 @@ export default class CsvData {
   }
 
   async addDB (body: Request["body"]) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const insertObjList = []
     for (const data of this.csvData) {
 
       const authorKey = body.authorName // 著者名が格納されているキー
-      const authorId = await this.controllAuthor(data[authorKey]) // 著者名が格納されていない場合新規にレコードを作成
+      const authorId = await this.getAuthorId(data[authorKey]) // 著者名が格納されていない場合新規にレコードを作成
 
       const publisherKey = body.publisherName // 出版社名が格納されているキー
-      const publisherId = await this.controllPublisher(data[publisherKey]) // 出版社名が格納されていない場合新規にレコードを作成
+      const publisherId = await this.getPublisherId(data[publisherKey]) // 出版社名が格納されていない場合新規にレコードを作成
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const insertObj: any = {}
@@ -75,13 +75,17 @@ export default class CsvData {
       for (const key of Object.keys(attributes)) {
         insertObj[key] = null
         if (key in requiredKeys) insertObj[key] = requiredKeys[key as keyof typeof requiredKeys]
-        if (key in optionalKeys && optionalKeys[key as keyof typeof optionalKeys] !== 'none') insertObj[key] = optionalKeys[key as keyof typeof optionalKeys]
+        if (key in optionalKeys && optionalKeys[key as keyof typeof optionalKeys] !== 'none') {
+          const value = optionalKeys[key as keyof typeof optionalKeys]
+          if (key === 'isbn' || attributes[key].type === 'INTGER') insertObj[key] = Number(value)
+          else insertObj[key] = value
+        }
       }
 
       logger.debug(insertObj)
-
-      await db.Book.create(insertObj)
+      insertObjList.push(insertObj)
     }
+    await db.Book.bulkCreate(insertObjList)
     logger.info('csvDataをDBに追加しました。')
   }
 
@@ -89,33 +93,38 @@ export default class CsvData {
    * 著者名が格納されていない場合新規にレコードを作成
    * @param authorName 著者名
    */
-  private async controllAuthor (authorName: string) {
-    const author = await db.Author.findOne({ where: { name: authorName } })
+  private async getAuthorId (authorName: string) {
+    const model = db.Author
+    let author
+    author = await model.findOne({ where: { name: authorName } })
     if (!author) {
-      await db.Author.create({ name: authorName })
-      logger.info(`${authorName}を作成しました。`)
+      await model.create({ name: authorName })
+      author = await model.findOne({ where: { name: authorName } })
     }
 
+    if (author !== null) logger.debug(author.name)
+    else logger.debug('NUll')
+
     // idを取得
-    const authorId = await db.Author.findOne({ where: { name: authorName } })
-    if (authorId === null) throw new Error('authorId not found')
-    return authorId.id
+    if (author === null) throw new Error('author not found')
+    return author.id
   }
 
   /**
    * 出版社名が格納されていない場合新規にレコードを作成
    * @param publisherName 出版社名
    */
-   private async controllPublisher (publisherName: string) {
-    const author = await db.Publisher.findOne({ where: { name: publisherName } })
-    if (!author) {
-      await db.Publisher.create({ name: publisherName })
-      logger.info(`${publisherName}を作成しました。`)
+   private async getPublisherId (publisherName: string) {
+    const model = db.Publisher
+    let publisher
+    publisher = await model.findOne({ where: { name: publisherName } })
+    if (!publisher) {
+      await model.create({ name: publisherName })
+      publisher = await model.findOne({ where: { name: publisherName } })
     }
 
     // idを取得
-    const publisherId = await db.Publisher.findOne({ where: { name: publisherName } })
-    if (publisherId === null) throw new Error('publisherId not found')
-    return publisherId.id
+    if (publisher === null) throw new Error('author not found')
+    return publisher.id
   }
 }
