@@ -22,7 +22,10 @@ export default class CsvData {
   }
 
   async setCsvData (file: Express.Multer.File | undefined) {
-    if (!file) throw new Error('undefined file') // ファイルが存在しない場合はエラー
+    // ファイルの拡張子を取得
+    if (!file || path.extname(file.originalname) !== '.csv') {
+      throw new Error('undefined file') // ファイルが存在しない場合はエラー
+    }
 
     fs.readFile(file.path, 'utf-8', async (err, data) => {
       if (err) throw err
