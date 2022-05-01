@@ -18,9 +18,3 @@
 ### DB(ディレクトリ名 : db)
 
 - [mysql](https://www.mysql.com/jp/) -> DBMS
-
-## ドキュメント
-
-詳しい構造等については以下のドキュメントをご覧ください。
-
-- [MySqlの構成について](DOC/mysql-const.md)
