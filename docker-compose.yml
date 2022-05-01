@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  app:
+  app: # アプリ
     build:
       context: app
     ports:
@@ -12,8 +12,10 @@ services:
       - ./app/log/:/log/
     depends_on:
       - mysql
+    networks:
+      - esnet
 
-  mysql:
+  mysql: # DBMS
     container_name: mysql_host
     image: mysql:latest
     environment:
@@ -25,6 +27,53 @@ services:
       - ./db/init:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
+    networks:
+      - esnet
+
+  es01:
+    build:
+      context: elasticsearch
+    container_name: es01
+    environment:
+      node.name: es01
+      discovery.seed_hosts: es02
+      cluster.initial_master_nodes: es01,es02
+      cluster.name: docker-cluster
+      bootstrap.memory_lock: 'true'
+      ES_JAVA_OPTS: '-Xms512m -Xmx512m'
+      http.cors.allow-origin: '*'
+      http.cors.enabled: 'true'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata01:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - esnet
+  es02:
+    build:
+      context: elasticsearch
+    container_name: es02
+    environment:
+      node.name: es02
+      discovery.seed_hosts: es01
+      cluster.initial_master_nodes: es01,es02
+      cluster.name: docker-cluster
+      bootstrap.memory_lock: 'true'
+      ES_JAVA_OPTS: '-Xms512m -Xmx512m'
+      http.cors.allow-origin: '*'
+      http.cors.enabled: 'true'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata02:/usr/share/elasticsearch/data
+    networks:
+      - esnet
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -37,3 +86,12 @@ services:
       - 8081:80
     depends_on:
       - mysql
+  
+volumes:
+  esdata01:
+    driver: local
+  esdata02:
+    driver: local
+
+networks:
+  esnet:
