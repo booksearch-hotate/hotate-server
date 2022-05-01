@@ -38,7 +38,7 @@ export default class ElasticSearch {
     return result
   }
 
-  public async create (doc: (IEsAuthor | IEsBook | IEsPublisher)[]): Promise<any> {
+  public async create (doc: (IEsAuthor | IEsBook | IEsPublisher)[]): Promise<void> {
     for (const item of doc) {
       await axios.post(`${this.uri}/_doc/`, item, {
         headers: {
@@ -48,7 +48,7 @@ export default class ElasticSearch {
     }
   }
 
-  public async initIndex (): Promise<any> {
+  public async initIndex (): Promise<void>{
     let isNone = false
     try {
       await axios.get(`${this.uri}`)
