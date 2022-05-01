@@ -47,4 +47,16 @@ export default class ElasticSearch {
       })
     }
   }
+
+  public async initIndex (): Promise<any> {
+    let isNone = false
+    try {
+      await axios.get(`${this.uri}`)
+    } catch (e) {
+      isNone = true
+      logger.info(`${this.index}は存在しません。`)
+    }
+    if (!isNone) await axios.delete(`${this.uri}`)
+    await axios.put(`${this.uri}`)
+  }
 }
