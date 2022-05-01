@@ -50,7 +50,6 @@ export default class CsvData {
   }
 
   async addDB (body: Request["body"]) {
-    const insertObjList = []
     for (const data of this.csvData) {
 
       const authorKey = body.authorName // 著者名が格納されているキー

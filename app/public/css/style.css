@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Text+Me+One&family=Zen+Maru+Gothic:wght@300&display=swap');
+
+body {
+  font-family: 'Text Me One', 'Zen Maru Gothic', sans-serif;
+}
+
+.navbar-box {
+  display: flex;
+  justify-content: space-between;
+  background: #ddd;
+}
+
+.navbar-title h1 {
+  margin: 0;
+  font-size: 3rem;
+}
+
+.navbar-title h1 a {
+  text-decoration: none;
+  color: #000;
+}
+
+.navbar-links p {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.navbar-links p a {
+  text-decoration: none;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}

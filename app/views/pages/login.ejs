@@ -4,11 +4,20 @@
     <%- include('./../components/head') %>
   </head>
   <body>
-    <h1>Login</h1>
-    <form method="POST" action="admin/check">
-      <input type="text" name="id" placeholder="username">
-      <input type="password" name="pw" placeholder="password">
-      <button type="submit">Login</button>
+    <%- include('./../components/navbar') %>
+    <h1 class="text-center">ログイン</h1>
+    <form method="POST" action="admin/check" class="px-4">
+      <div class="mb-3">
+        <label for="input_id" class="form-label">ユーザ名</label>
+        <input type="text" class="form-control" id="input_id" name="id" placeholder="ユーザ名" required>
+      </div>
+      <div class="mb-3">
+        <label for="input_pw" class="form-label">パスワード</label>
+        <input type="password" class="form-control" id="input_pw" name="pw" placeholder="パスワード" required>
+      </div>
+      <div class="mb-3 text-center">
+        <button type="submit" class="btn btn-primary">ログイン</button>
+      </div>
     </form>
   </body>
 </html>

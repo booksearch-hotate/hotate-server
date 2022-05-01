@@ -4,6 +4,7 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
+    <%- include('./../../../components/navbar') %>
     <form action="/admin/csv/sendFile" method="post" enctype="multipart/form-data">
       <input type="file" name="csv" />
       <input type="submit" value="送信" />
