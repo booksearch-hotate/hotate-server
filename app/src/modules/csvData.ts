@@ -53,7 +53,30 @@ export default class CsvData {
     return Object.keys(this.csvData[0])
   }
 
+  private checkData (body: Request["body"]) {
+    for (const data of this.csvData) {
+      // body.bookNameの項目は必須
+      if (!data[body.bookName]) throw new Error('bookName not found')
+      // body.authorNameの項目は必須
+      if (!data[body.authorName]) throw new Error('authorName not found')
+      // body.publisherNameの項目は必須
+      if (!data[body.publisherName]) throw new Error('publisherName not found')
+      // body.isbnの項目は、10桁以上でなければならない
+      if (data[body.isbn] && data[body.isbn].length < 10) throw new Error('isbn not found')
+      // body.ndcの項目は、3桁以上でなければならない
+      if (data[body.ndc] && data[body.ndc].length < 3) throw new Error('ndc not found')
+      // body.yearの項目は、4桁でなければならない
+      if (data[body.year] && data[body.year].length !== 4) throw new Error('year not found')
+    }
+  }
+
   async addDB (body: Request["body"]) {
+    try {
+      this.checkData(body)
+    } catch (err) {
+      logger.error(`csvDataに必要な項目がありません。 : ${err}`)
+      return
+    }
     for (const data of this.csvData) {
 
       const authorKey = body.authorName // 著者名が格納されているキー
