@@ -1,6 +1,7 @@
 import fs from 'fs'
 import csv from 'csvtojson'
 import { Request } from 'express'
+import path from 'path'
 
 import Logger from './logger'
 import db from './../db/index'
@@ -108,10 +109,13 @@ export default class CsvData {
     }
     logger.info('csvDataをDBに追加しました。')
     const esBooks = new ElasticSearch('books')
+    await esBooks.initIndex()
     await esBooks.create(this.addEsList.books)
     const esAuthors = new ElasticSearch('authors')
+    await esAuthors.initIndex()
     await esAuthors.create(this.addEsList.authors)
     const esPublishers = new ElasticSearch('publishers')
+    await esPublishers.initIndex()
     await esPublishers.create(this.addEsList.publishers)
     logger.info('csvDataをElasticSearchに追加しました。')
   }
