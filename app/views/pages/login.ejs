@@ -18,6 +18,11 @@
       <div class="mb-3 text-center">
         <button type="submit" class="btn btn-primary">ログイン</button>
       </div>
+      <% if (pageData.anyData.loginStatus == 'miss') { %>
+      <div class="mb-3 text-center">
+        <p class="text-danger">ユーザ名かパスワードが間違っています</p>
+      </div>
+      <% } %>
     </form>
   </body>
 </html>

@@ -9,6 +9,7 @@ export default class AuthModule {
   private token: string // トークン
   private isLogin: boolean // ログイン状態
   private readonly jwtSecret = 'secret' // JWTシークレット
+  public loginStatus = 'logout' // ログイン状態
 
   constructor () {
     this.id = process.env.ADMIN_ID as string
@@ -26,8 +27,10 @@ export default class AuthModule {
     if (this.canLogin(id, pw)) { // ログインできれば
       this.token = this.makeToken() // トークンの発行
       this.isLogin = true
+      this.loginStatus = 'login'
       return true
     }
+    this.loginStatus = 'miss'
     return false
   }
 
