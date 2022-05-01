@@ -18,9 +18,9 @@ export interface IRequiredKeys {
 
 /* 任意となる項目 */
 export interface IOptionalKeys {
-  isbn?: string | IAttributeObj,
-  book_sub_name?: string | IAttributeObj,
-  ndc?: number | IAttributeObj,
-  year?: number | IAttributeObj,
-  book_content?: string | IAttributeObj
+  isbn?: string | IAttributeObj | null,
+  book_sub_name?: string | IAttributeObj | null,
+  ndc?: number | IAttributeObj | null,
+  year?: number | IAttributeObj | null,
+  book_content?: string | IAttributeObj | null
 }

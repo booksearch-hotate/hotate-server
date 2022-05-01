@@ -4,7 +4,9 @@ import { Request } from 'express'
 
 import Logger from './logger'
 import db from './../db/index'
+import ElasticSearch from "../modules/elasticSearch"
 
+import { IEsPublisher, IEsBook, IEsAuthor } from '../interfaces/IElasticSearchDocument'
 import { IRequiredKeys, IOptionalKeys } from '../interfaces/IDbColumn'
 
 const logger = new Logger('csvData')
@@ -12,6 +14,11 @@ const logger = new Logger('csvData')
 export default class CsvData {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private csvData: any
+  private addEsList = {
+    authors: [] as IEsAuthor[],
+    publishers: [] as IEsPublisher[],
+    books: [] as IEsBook[]
+  }
 
   async setCsvData (file: Express.Multer.File | undefined) {
     if (!file) throw new Error('undefined file') // ファイルが存在しない場合はエラー
@@ -79,14 +86,35 @@ export default class CsvData {
           const value = optionalKeys[key as keyof typeof optionalKeys]
           if (key === 'isbn' || attributes[key].type === 'INTGER') insertObj[key] = Number(value)
           else insertObj[key] = value
+          if (isNaN(insertObj['isbn'])) insertObj['isbn'] = null
         }
       }
 
       logger.debug(insertObj)
-      insertObjList.push(insertObj)
+      await db.Book.create(insertObj)
+      // idが最大のものを取得
+      const book = await db.Book.findOne({
+        where: {},
+        order: [['id', 'DESC']],
+        attributes: ['id']
+      })
+      if (book === null) throw new Error('book not found')
+      const id = book.id
+      const esBook: IEsBook = {
+        book_name: insertObj.book_name,
+        book_content: insertObj.book_content,
+        db_id: id
+      }
+      this.addEsList.books.push(esBook)
     }
-    await db.Book.bulkCreate(insertObjList)
     logger.info('csvDataをDBに追加しました。')
+    const esBooks = new ElasticSearch('books')
+    await esBooks.create(this.addEsList.books)
+    const esAuthors = new ElasticSearch('authors')
+    await esAuthors.create(this.addEsList.authors)
+    const esPublishers = new ElasticSearch('publishers')
+    await esPublishers.create(this.addEsList.publishers)
+    logger.info('csvDataをElasticSearchに追加しました。')
   }
 
   /**
@@ -107,6 +135,11 @@ export default class CsvData {
 
     // idを取得
     if (author === null) throw new Error('author not found')
+    const esAuthor: IEsAuthor = {
+      name: author.name,
+      db_id: author.id
+    }
+    this.addEsList.authors.push(esAuthor)
     return author.id
   }
 
@@ -125,6 +158,11 @@ export default class CsvData {
 
     // idを取得
     if (publisher === null) throw new Error('author not found')
+    const esPublisher: IEsPublisher = {
+      name: publisher.name,
+      db_id: publisher.id
+    }
+    this.addEsList.publishers.push(esPublisher)
     return publisher.id
   }
 }
