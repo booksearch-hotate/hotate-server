@@ -6,8 +6,11 @@
   <body>
     <%- include('./../../../components/navbar') %>
     <form action="/admin/csv/sendFile" method="post" enctype="multipart/form-data">
-      <input type="file" name="csv" />
-      <input type="submit" value="送信" />
+      <div class="mb-3">
+        <label for="formFile" class="form-label">CSVファイル</label>
+        <input class="form-control" type="file" id="formFile" name="csv" accept=".csv">
+      </div>
+      <button type="submit" class="btn btn-primary">送信</button>
     </form>
   </body>
 </html>
