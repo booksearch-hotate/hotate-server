@@ -28,7 +28,7 @@ router.get('/', (req: Request, res: Response) => {
 })
 
 router.get('/login', (req: Request, res: Response) => {
-  if (auth.isAlreadyLogin(req.session.token as string)) return res.redirect('/admin/home')
+  if (auth.isAlreadyLogin(req.session.token)) return res.redirect('/admin/home')
   pageData = {
     headTitle: 'ログイン | HOTATE',
     path: req.url,
@@ -43,7 +43,7 @@ router.get('/login', (req: Request, res: Response) => {
  * トークンが有効でない場合はログイン画面にリダイレクトする。
  */
  const authCheckMiddle = (req: Request, res: Response, next: NextFunction) => {
-  if (auth.verifyToken(req.session.token as string) || req.body.id && req.body.pw) {
+  if (auth.verifyToken(req.session.token) || req.body.id && req.body.pw) {
     next()
   } else {
     logger.info('トークンが無効です。ログインページへリダイレクトします。')

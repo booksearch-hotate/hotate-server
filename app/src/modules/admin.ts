@@ -47,8 +47,9 @@ export default class AuthModule {
   }
 
   // トークンの有効性をチェック
-  public verifyToken (token: string): boolean {
+  public verifyToken (token: string | undefined): boolean {
     try {
+      if (token === undefined) return false
       const decoded = jwt.verify(token, this.jwtSecret) as { id: string, pw: string }
       if (decoded.id === this.id && decoded.pw === this.password) {
         return true
@@ -64,7 +65,7 @@ export default class AuthModule {
     this.isLogin = false
   }
 
-  public isAlreadyLogin (token: string) {
-    return this.isLogin && this.verifyToken(token)
+  public isAlreadyLogin (token: string | undefined) {
+    return token !== undefined && this.isLogin && this.verifyToken(token)
   }
 }
