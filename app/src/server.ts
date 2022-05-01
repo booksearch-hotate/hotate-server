@@ -3,10 +3,11 @@ import bodyParser from 'body-parser'
 import session from 'express-session'
 import dotenv from 'dotenv'
 
-import * as rootRouter from './routers/rootRouter'
-import * as adminRouter from './routers/adminRouter'
+import router from './routers/router'
 
 import Logger from './modules/logger'
+
+import { isLocal } from './modules/cmdLine'
 
 const app: Application = express()
 const logger = new Logger('system')
@@ -38,8 +39,10 @@ app.use(session({
   }
 }))
 
-app.use('/', rootRouter.default)
-app.use('/admin', adminRouter.default)
+app.use('/', router)
 
 // listen
-app.listen(PORT, () => { logger.info(`Server is running on ${PORT}`) })
+app.listen(PORT, () => {
+  logger.info(`Server is running on ${PORT}`)
+  if (isLocal()) logger.info('現在ローカルで実行しています')
+})

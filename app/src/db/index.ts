@@ -3,8 +3,10 @@ import Book from "./book"
 import Author from "./author"
 import Publisher from "./publisher"
 
+import { isLocal } from "../modules/cmdLine"
+
 const sequelize = new Sequelize('hotate', 'root', 'root', {
-  host: 'mysql',
+  host: isLocal() ? 'localhost' : 'mysql',
   dialect: 'mysql',
   logging: false
 })

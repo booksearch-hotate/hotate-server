@@ -4,6 +4,8 @@ import Logger from './logger'
 
 import { IEsPublisher, IEsBook, IEsAuthor } from '../interfaces/IElasticSearchDocument'
 
+import { isLocal } from "../modules/cmdLine"
+
 const logger = new Logger('elasticSearch')
 
 export default class ElasticSearch {
@@ -12,7 +14,7 @@ export default class ElasticSearch {
   private uri: string
 
   constructor (index: string) {
-    this.host = 'es01:9200'
+    this.host = isLocal() ? 'localhost:9200' : 'es01:9200'
     this.index = index
     this.uri = `http://${this.host}/${this.index}`
   }
