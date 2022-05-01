@@ -32,7 +32,8 @@ router.get('/login', (req: Request, res: Response) => {
   pageData = {
     headTitle: 'ログイン | HOTATE',
     path: req.url,
-    cssData: new CssPathMake(['login'], OriginMake(req)).make()
+    cssData: new CssPathMake(['login'], OriginMake(req)).make(),
+    anyData: { loginStatus: auth.loginStatus }
   }
   return res.render('pages/login', { pageData })
 })
