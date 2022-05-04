@@ -86,6 +86,8 @@ services:
       - 8081:80
     depends_on:
       - mysql
+    networks:
+      - esnet
   
 volumes:
   esdata01:
