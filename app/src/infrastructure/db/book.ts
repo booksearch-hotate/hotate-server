@@ -3,7 +3,7 @@ import { Sequelize, Model, DataTypes, ModelAttributes } from 'sequelize'
 import Publisher from './publisher'
 import Author from './author'
 
-import { IRequiredKeys, IOptionalKeys } from '../interfaces/IDbColumn'
+import { IRequiredKeys, IOptionalKeys } from '../../interfaces/IDbColumn'
 
 const initColumn: IRequiredKeys & IOptionalKeys = {
   id: {
