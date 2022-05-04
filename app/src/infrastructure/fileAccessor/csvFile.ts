@@ -7,6 +7,7 @@ import ICsvFile from "./ICsvFile"
 export default class CsvFile implements ICsvFile {
   private file!: Express.Multer.File
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async getFileContent (): Promise<any> {
     const data = await csv().fromFile(this.file.path, { encoding: 'utf-8' })
     return data
