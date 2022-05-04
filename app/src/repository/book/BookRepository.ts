@@ -3,6 +3,9 @@ import Author from "../../infrastructure/db/author"
 import Publisher from "../../infrastructure/db/publisher"
 import IBookRepository from "./IBookRepository"
 import BookModel from "../../domain/model/bookModel"
+import Elasticsearch from "../../infrastructure/elasticsearch"
+
+import { IEsBook } from "../../interfaces/IElasticSearchDocument"
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -13,8 +16,11 @@ interface sequelize {
 
 export default class BookRepository implements IBookRepository {
   private readonly db: sequelize
-  public constructor (db: sequelize) {
+  private readonly elasticsearch: Elasticsearch
+
+  public constructor (db: sequelize, elasticsearch: Elasticsearch) {
     this.db = db
+    this.elasticsearch = elasticsearch
   }
   public async getMaximumId (): Promise<number> {
     const book = await this.db.Book.findOne({
@@ -36,9 +42,16 @@ export default class BookRepository implements IBookRepository {
       author_id: book.Author.Id,
       publisher_id: book.Publisher.Id
     })
+    const doc: IEsBook = {
+      db_id: book.Id,
+      book_name: book.Name,
+      book_content: book.Content,
+    }
+    await this.elasticsearch.create(doc)
   }
 
   public async deleteAll (): Promise<void> {
     await this.db.Book.destroy({ where: {} })
+    await this.elasticsearch.initIndex()
   }
 }

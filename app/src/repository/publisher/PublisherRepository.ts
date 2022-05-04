@@ -5,6 +5,10 @@ import Publisher from "../../infrastructure/db/publisher"
 import IPublisherRepository from "./IPublisherRepository"
 import PublisherModel from "../../domain/model/publisherModel"
 
+import Elasticsearch from "../../infrastructure/elasticsearch"
+
+import { IEsPublisher } from "../../interfaces/IElasticSearchDocument"
+
 /* Sequelizeを想定 */
 interface sequelize {
   Book: typeof Book,
@@ -14,8 +18,11 @@ interface sequelize {
 
 export default class PublisherRepository implements IPublisherRepository {
   private readonly db: sequelize
-  public constructor (db: sequelize) {
+  private readonly elasticsearch: Elasticsearch
+
+  public constructor (db: sequelize, elasticsearch: Elasticsearch) {
     this.db = db
+    this.elasticsearch = elasticsearch
   }
 
   public async getMaximumId (): Promise<number> {
@@ -31,6 +38,11 @@ export default class PublisherRepository implements IPublisherRepository {
       id: publisher.Id,
       name: publisher.Name
     })
+    const doc: IEsPublisher = {
+      db_id: publisher.Id,
+      name: publisher.Name
+    }
+    await this.elasticsearch.create(doc)
   }
 
   public async findByName (name: string): Promise<PublisherModel | null> {
@@ -42,5 +54,6 @@ export default class PublisherRepository implements IPublisherRepository {
   }
   public async deleteAll (): Promise<void> {
     await this.db.Publisher.destroy({ where: {} })
+    await this.elasticsearch.initIndex()
   }
 }

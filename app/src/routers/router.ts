@@ -18,16 +18,17 @@ import PublisherRepository from "../repository/publisher/PublisherRepository"
 
 import CsvFile from "../infrastructure/fileAccessor/csvFile"
 
-import db from "../db"
+import db from "../infrastructure/db"
+import Elasticsearch from "../infrastructure/elasticsearch"
 
 const router = Router() // ルーティング
 const upload = multer({ dest: './uploads/csv/' }) // multerの設定
 const auth = new AuthModule() // adominのインスタンス化
 const logger = new Logger('router') // loggerのインスタンス化
 const csvFile = new CsvFile()
-const bookApplicationService = new BookApplicationService(new BookRepository(db))
-const authorApplicationService = new AuthorApplicationService(new AuthorRepository(db))
-const publisherApplicationService = new PublisherApplicationService(new PublisherRepository(db))
+const bookApplicationService = new BookApplicationService(new BookRepository(db, new Elasticsearch('books')))
+const authorApplicationService = new AuthorApplicationService(new AuthorRepository(db, new Elasticsearch('authors')))
+const publisherApplicationService = new PublisherApplicationService(new PublisherRepository(db, new Elasticsearch('publishers')))
 
 let pageData: IPage
 
