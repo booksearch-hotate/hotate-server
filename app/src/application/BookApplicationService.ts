@@ -1,12 +1,12 @@
-import IBookRepository from "../repository/book/IBookRepository"
+import IBookApplicationRepository from "./repository/IBookApplicationRepository"
 import BookModel from "../domain/model/bookModel"
 import AuthorModel from "../domain/model/authorModel"
 import PublisherModel from "../domain/model/publisherModel"
 
 export default class BookApplicationService {
-  private readonly bookRepository: IBookRepository
+  private readonly bookRepository: IBookApplicationRepository
 
-  public constructor (bookRepository: IBookRepository) {
+  public constructor (bookRepository: IBookApplicationRepository) {
     this.bookRepository = bookRepository
   }
 

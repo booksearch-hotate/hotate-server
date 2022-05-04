@@ -12,9 +12,9 @@ import BookApplicationService from "../application/BookApplicationService"
 import AuthorApplicationService from "../application/AuthorApplicationService"
 import PublisherApplicationService from "../application/PublisherApplicationService"
 
-import BookRepository from "../repository/book/BookRepository"
-import AuthorRepository from "../repository/author/AuthorRepository"
-import PublisherRepository from "../repository/publisher/PublisherRepository"
+import BookRepository from "../interface/repository/BookRepository"
+import AuthorRepository from "../interface/repository/AuthorRepository"
+import PublisherRepository from "../interface/repository/PublisherRepository"
 
 import CsvFile from "../infrastructure/fileAccessor/csvFile"
 

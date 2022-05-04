@@ -1,8 +1,8 @@
 import Book from "../../infrastructure/db/book" // ここのBookはドメインオブジェクトではない！
 import Author from "../../infrastructure/db/author"
 import Publisher from "../../infrastructure/db/publisher"
-
-import IPublisherRepository from "./IPublisherRepository"
+import IPublisherApplicationRepository from "../../application/repository/IPublisherApplicationRepository"
+import IPublisherDomainRepository from "../../domain/service/repository/IPublisherDomainRepository"
 import PublisherModel from "../../domain/model/publisherModel"
 
 import Elasticsearch from "../../infrastructure/elasticsearch"
@@ -16,7 +16,7 @@ interface sequelize {
   Publisher: typeof Publisher
 }
 
-export default class PublisherRepository implements IPublisherRepository {
+export default class PublisherRepository implements IPublisherApplicationRepository, IPublisherDomainRepository {
   private readonly db: sequelize
   private readonly elasticsearch: Elasticsearch
 

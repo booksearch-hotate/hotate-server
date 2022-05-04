@@ -1,12 +1,12 @@
-import IAuthorRepository from "../repository/author/IAuthorRepository"
+import IAuthorApplicationRepository from "./repository/IAuthorApplicationRepository"
 import AuthorModel from "../domain/model/authorModel"
 import AuthorService from "../domain/service/authorService"
 
 export default class AuthorApplicationService {
-  private readonly authorRepository: IAuthorRepository
+  private readonly authorRepository: IAuthorApplicationRepository
   private readonly authorService: AuthorService
 
-  public constructor (authorRepository: IAuthorRepository) {
+  public constructor (authorRepository: IAuthorApplicationRepository) {
     this.authorRepository = authorRepository
     this.authorService = new AuthorService(authorRepository)
   }
