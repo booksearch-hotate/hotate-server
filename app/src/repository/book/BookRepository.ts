@@ -1,6 +1,6 @@
-import Book from "../../db/book" // ここのBookはドメインオブジェクトではない！
-import Author from "../../db/author"
-import Publisher from "../../db/publisher"
+import Book from "../../infrastructure/db/book" // ここのBookはドメインオブジェクトではない！
+import Author from "../../infrastructure/db/author"
+import Publisher from "../../infrastructure/db/publisher"
 import IBookRepository from "./IBookRepository"
 import BookModel from "../../domain/model/bookModel"
 
