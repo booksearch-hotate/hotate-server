@@ -6,14 +6,28 @@ import { IPage } from "../interfaces/IPage"
 import CssPathMake from "../modules/cssPath"
 import OriginMake from "../modules/origin"
 import AuthModule from "../modules/admin"
-import CsvData from "../modules/csvData"
 import Logger from "../modules/logger"
+
+import BookApplicationService from "../application/BookApplicationService"
+import AuthorApplicationService from "../application/AuthorApplicationService"
+import PublisherApplicationService from "../application/PublisherApplicationService"
+
+import BookRepository from "../repository/book/BookRepository"
+import AuthorRepository from "../repository/author/AuthorRepository"
+import PublisherRepository from "../repository/publisher/PublisherRepository"
+
+import CsvFile from "../infrastructure/fileAccessor/csvFile"
+
+import db from "../db"
 
 const router = Router() // ルーティング
 const upload = multer({ dest: './uploads/csv/' }) // multerの設定
 const auth = new AuthModule() // adominのインスタンス化
-const csvData = new CsvData() // csvのインスタンス化
 const logger = new Logger('router') // loggerのインスタンス化
+const csvFile = new CsvFile()
+const bookApplicationService = new BookApplicationService(new BookRepository(db))
+const authorApplicationService = new AuthorApplicationService(new AuthorRepository(db))
+const publisherApplicationService = new PublisherApplicationService(new PublisherRepository(db))
 
 let pageData: IPage
 
@@ -95,13 +109,13 @@ router.get('/admin/csv/choice', (req: Request, res: Response) => {
   res.render('pages/admin/csv/choice', { pageData })
 })
 
-router.get('/admin/csv/headerChoice', (req: Request, res: Response) => {
+router.get('/admin/csv/headerChoice', async (req: Request, res: Response) => {
   pageData = {
     headTitle: 'ヘッダー選択',
     path: req.url,
     cssData: new CssPathMake(['auth/csv/choice'], OriginMake(req)).make(),
     anyData: {
-      csvHeader: csvData.getCsvHeaderData()
+      csvHeader: await csvFile.getHeaderNames()
     }
   }
   res.render('pages/admin/csv/headerChoice', { pageData })
@@ -110,11 +124,7 @@ router.get('/admin/csv/headerChoice', (req: Request, res: Response) => {
 router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Response) => {
   const file = req.file
   try {
-    await csvData.setCsvData(file)
-    if (file) {
-      logger.debug(file.filename)
-      csvData.deleteCsvData('./uploads/csv', file.filename)
-    }
+    csvFile.File = file
     logger.info('CSVファイルを受信しました。')
   } catch (err) {
     logger.error('CSVファイルの受信に失敗しました。')
@@ -123,10 +133,29 @@ router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Respon
 })
 
 router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
-  await csvData.deleteDBRelateInBook()
-  await csvData.addDB(req.body)
-  logger.info('データを登録しました。')
-  csvData.deleteCsvData('./uploads/csv', '')
+  const csv = await csvFile.getFileContent()
+  await bookApplicationService.deleteBooks()
+  await publisherApplicationService.deletePublishers()
+  await authorApplicationService.deleteAuthors()
+  for (const row of csv) {
+    const authorName = row[req.body.authorName]
+    const publisherName = row[req.body.publisherName]
+    const authorId = await authorApplicationService.createAuthor(authorName)
+    const publisherId = await publisherApplicationService.createPublisher(publisherName)
+    await bookApplicationService.createBook(
+      row[req.body.bookName],
+      row[req.body.bookSubName],
+      row[req.body.bookContent],
+      row[req.body.isbn],
+      row[req.body.ndc],
+      row[req.body.year],
+      authorId,
+      authorName,
+      publisherId,
+      publisherName
+    )
+  }
+  csvFile.deleteFiles()
   res.redirect('/admin/home')
 })
 
