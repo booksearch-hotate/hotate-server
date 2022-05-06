@@ -5,32 +5,38 @@ import { IPage } from "../interfaces/IPage"
 
 import CssPathMake from "../modules/cssPath"
 import OriginMake from "../modules/origin"
-import AuthModule from "../modules/admin"
 import Logger from "../modules/logger"
 
 import BookApplicationService from "../application/BookApplicationService"
 import AuthorApplicationService from "../application/AuthorApplicationService"
 import PublisherApplicationService from "../application/PublisherApplicationService"
+import AdminApplicationService from "../application/AdminApplicationService"
 
 import BookRepository from "../interface/repository/BookRepository"
 import AuthorRepository from "../interface/repository/AuthorRepository"
 import PublisherRepository from "../interface/repository/PublisherRepository"
+import AdminRepository from "../interface/repository/AdminRepository"
 
 import CsvFile from "../infrastructure/fileAccessor/csvFile"
+import AdminSession from "../infrastructure/session"
+
+import AdminData from "../application/dto/AdminData"
 
 import db from "../infrastructure/db"
 import Elasticsearch from "../infrastructure/elasticsearch"
 
 const router = Router() // ルーティング
 const upload = multer({ dest: './uploads/csv/' }) // multerの設定
-const auth = new AuthModule() // adominのインスタンス化
 const logger = new Logger('router') // loggerのインスタンス化
 const csvFile = new CsvFile()
 const bookApplicationService = new BookApplicationService(new BookRepository(db, new Elasticsearch('books')))
 const authorApplicationService = new AuthorApplicationService(new AuthorRepository(db, new Elasticsearch('authors')))
 const publisherApplicationService = new PublisherApplicationService(new PublisherRepository(db, new Elasticsearch('publishers')))
+const adminApplicationService = new AdminApplicationService(new AdminRepository())
 
 let pageData: IPage
+
+const admin = new AdminSession()
 
 /* ルーティング */
 router.get('/', (req: Request, res: Response) => {
@@ -43,12 +49,12 @@ router.get('/', (req: Request, res: Response) => {
 })
 
 router.get('/login', (req: Request, res: Response) => {
-  if (auth.isAlreadyLogin(req.session.token)) return res.redirect('/admin/home')
+  if (admin.verify(req.session.token)) return res.redirect('/admin/home')
   pageData = {
     headTitle: 'ログイン | HOTATE',
     path: req.url,
     cssData: new CssPathMake(['login'], OriginMake(req)).make(),
-    anyData: { loginStatus: auth.loginStatus }
+    anyData: { loginStatus: admin.LoginStatus }
   }
   return res.render('pages/login', { pageData })
 })
@@ -58,10 +64,11 @@ router.get('/login', (req: Request, res: Response) => {
  * トークンが有効でない場合はログイン画面にリダイレクトする。
  */
  const authCheckMiddle = (req: Request, res: Response, next: NextFunction) => {
-  if (auth.verifyToken(req.session.token) || req.body.id && req.body.pw) {
+  if (admin.verify(req.session.token)) {
     next()
   } else {
     logger.info('トークンが無効です。ログインページへリダイレクトします。')
+    admin.LoginStatus = 'miss'
     res.redirect('/login')
   }
 }
@@ -74,16 +81,21 @@ router.post('/check', (req: Request, res: Response) => {
   if (req.body.id && req.body.pw) {
     const id = req.body.id
     const pw = req.body.pw
-    const isLogin = auth.loginFlow(id, pw)
-    if (isLogin) {
-      if (!req.session.token) req.session.token = auth.getToken() // トークンの格納
-      res.redirect('/admin/home')
+    const adminData = new AdminData(id, pw)
+    const isValid = adminApplicationService.isValid(adminData)
+    if (isValid) {
       logger.info('ログインに成功しました。')
+      admin.create(adminData)
+      admin.LoginStatus = 'login'
+      if (!req.session.token) req.session.token = admin.Token
+      res.redirect('/admin/home')
     } else {
-      res.redirect('/login')
       logger.warn('ログインに失敗しました。')
+      admin.LoginStatus = 'miss'
+      res.redirect('/login')
     }
   } else {
+    admin.LoginStatus = 'miss'
     res.redirect('/login')
     logger.warn('直接ログインしようとしました。')
   }
