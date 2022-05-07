@@ -159,10 +159,12 @@ router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Respon
 })
 
 router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
-  const csv = await csvFile.getFileContent()
+  const csv = await csvFile.getFileContent() // csvファイルの内容を取得
+  /* 初期化 */
   await bookApplicationService.deleteBooks()
   await publisherApplicationService.deletePublishers()
   await authorApplicationService.deleteAuthors()
+
   for (const row of csv) {
     const authorName = row[req.body.authorName]
     const publisherName = row[req.body.publisherName]
