@@ -31,7 +31,7 @@ export default class BookRepository implements IBookApplicationRepository {
       id: book.Id,
       book_name: book.Name,
       book_sub_name: book.SubName,
-      content: book.Content,
+      book_content: book.Content,
       isbn: book.Isbn,
       ndc: book.Ndc,
       year: book.Year,
