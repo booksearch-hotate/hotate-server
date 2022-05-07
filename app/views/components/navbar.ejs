@@ -5,5 +5,22 @@
   <div class="navbar-links">
     <p><a href="/">ホーム</a></p>
     <p><a href="/login">管理画面</a></p>
+    <p class="search-button-text" id="search-button-text">検索</p>
+  </div>
+</div>
+
+<!-- 検索時に表示 -->
+<div class="search-box" id="search-box">
+  <div class="close-button" id="close-button"><%- include('./../icons/x') %></div>
+  <div class="text-center search-title-box">
+    <h1 class="search-title">Search</h1>
+    <%-include('./../icons/binocular')  %>
+  </div>
+  <div class="search-form-box">
+    <form action="/search" method="get">
+      <div class="form-group search-input-box">
+        <input type="text" class="search-input" id="search-input" name="search" placeholder="本を検索" required>
+      </div>
+    </form>
   </div>
 </div>
