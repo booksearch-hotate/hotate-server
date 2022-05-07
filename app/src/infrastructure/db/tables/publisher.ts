@@ -3,7 +3,7 @@ import { HasManyCreateAssociationMixin } from 'sequelize'
 import Book from './book'
 
 export default class Publisher extends Model {
-  public id!: number
+  public id!: string
   public name!: string
 
   public createBook!: HasManyCreateAssociationMixin<Book>
@@ -11,7 +11,7 @@ export default class Publisher extends Model {
   public static initialize (sequelize: Sequelize) {
     this.init({
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true,
         autoIncrement: true,
       },

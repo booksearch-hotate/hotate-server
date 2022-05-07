@@ -11,12 +11,14 @@
       <section>
         <p>ISBN</p>
         <select class="form-select" name="isbn">
-          <%- include('./../../../components/admin/csv/headerList.ejs', { required: false }) %>
+          <!-- <%- include('./../../../components/admin/csv/headerList.ejs', { required: false }) %> -->
+          <option value="ISBN">テスト</option>
         </select>
       </section>
       <section>
         <p>本の名称※</p>
         <select class="form-select" name="bookName">
+          <option value="書名">てstうお</option>
           <%- include('./../../../components/admin/csv/headerList.ejs', { required: true }) %>
         </select>
       </section>
@@ -29,30 +31,35 @@
       <section>
         <p>著者名※</p>
         <select class="form-select" name="authorName">
+          <option value="著者名">てstうお</option>
           <%- include('./../../../components/admin/csv/headerList.ejs', { required: true }) %>
         </select>
       </section>
       <section>
         <p>日本十進分類法</p>
         <select class="form-select" name="ndc">
+          <option value="分類記号">てstうお</option>
           <%- include('./../../../components/admin/csv/headerList.ejs', { required: false }) %>
         </select>
       </section>
       <section>
         <p>出版社名※</p>
         <select class="form-select" name="publisherName">
+          <option value="出版社">てstうお</option>
           <%- include('./../../../components/admin/csv/headerList.ejs', { required: true }) %>
         </select>
       </section>
       <section>
         <p>出版年</p>
         <select class="form-select" name="year">
+          <option value="版年">てstうお</option>
           <%- include('./../../../components/admin/csv/headerList.ejs',{ required: false }) %>
         </select>
       </section>
       <section>
         <p>内容</p>
         <select class="form-select" name="bookContent">
+          <option value="内容紹介">てstうお</option>
           <%- include('./../../../components/admin/csv/headerList.ejs',{ required: false }) %>
         </select>
       </section>

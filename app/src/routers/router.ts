@@ -1,21 +1,55 @@
 import { Request, Response, Router, NextFunction } from "express"
 import multer from "multer"
 
-import { IPage } from "../interfaces/IPage"
-
 import CssPathMake from "../modules/cssPath"
 import OriginMake from "../modules/origin"
-import AuthModule from "../modules/admin"
-import CsvData from "../modules/csvData"
-import Logger from "../modules/logger"
+import Logger from "../infrastructure/Logger/logger"
+
+import BookApplicationService from "../application/BookApplicationService"
+import AuthorApplicationService from "../application/AuthorApplicationService"
+import PublisherApplicationService from "../application/PublisherApplicationService"
+import AdminApplicationService from "../application/AdminApplicationService"
+
+import BookRepository from "../interface/repository/BookRepository"
+import AuthorRepository from "../interface/repository/AuthorRepository"
+import PublisherRepository from "../interface/repository/PublisherRepository"
+import AdminRepository from "../interface/repository/AdminRepository"
+
+import CsvFile from "../infrastructure/fileAccessor/csvFile"
+import AdminSession from "../infrastructure/session"
+
+import AdminData from "../application/dto/AdminData"
+
+import db from "../infrastructure/db"
+import Elasticsearch from "../infrastructure/elasticsearch"
 
 const router = Router() // ルーティング
 const upload = multer({ dest: './uploads/csv/' }) // multerの設定
-const auth = new AuthModule() // adominのインスタンス化
-const csvData = new CsvData() // csvのインスタンス化
 const logger = new Logger('router') // loggerのインスタンス化
+const csvFile = new CsvFile()
+const bookApplicationService = new BookApplicationService(new BookRepository(db, new Elasticsearch('books')))
+const authorApplicationService = new AuthorApplicationService(new AuthorRepository(db, new Elasticsearch('authors')))
+const publisherApplicationService = new PublisherApplicationService(new PublisherRepository(db, new Elasticsearch('publishers')))
+const adminApplicationService = new AdminApplicationService(new AdminRepository(db))
+
+interface IPage {
+  /** ページのタイトル */
+  headTitle: string;
+  path: string;
+  pathName?: string;
+  /** cssのファイル名 */
+  cssData?: string[];
+  /** オリジン */
+  origin?: string;
+  /** jsのファイル名 */
+  jsData?: string[];
+  /** その他のデータ */
+  anyData?: unknown;
+}
 
 let pageData: IPage
+
+const admin = new AdminSession()
 
 /* ルーティング */
 router.get('/', (req: Request, res: Response) => {
@@ -28,12 +62,12 @@ router.get('/', (req: Request, res: Response) => {
 })
 
 router.get('/login', (req: Request, res: Response) => {
-  if (auth.isAlreadyLogin(req.session.token)) return res.redirect('/admin/home')
+  if (admin.verify(req.session.token)) return res.redirect('/admin/home')
   pageData = {
     headTitle: 'ログイン | HOTATE',
     path: req.url,
     cssData: new CssPathMake(['login'], OriginMake(req)).make(),
-    anyData: { loginStatus: auth.loginStatus }
+    anyData: { loginStatus: admin.LoginStatus }
   }
   return res.render('pages/login', { pageData })
 })
@@ -43,10 +77,11 @@ router.get('/login', (req: Request, res: Response) => {
  * トークンが有効でない場合はログイン画面にリダイレクトする。
  */
  const authCheckMiddle = (req: Request, res: Response, next: NextFunction) => {
-  if (auth.verifyToken(req.session.token) || req.body.id && req.body.pw) {
+  if (admin.verify(req.session.token)) {
     next()
   } else {
     logger.info('トークンが無効です。ログインページへリダイレクトします。')
+    admin.LoginStatus = 'miss'
     res.redirect('/login')
   }
 }
@@ -54,21 +89,26 @@ router.get('/login', (req: Request, res: Response) => {
 /**
  * ログイン処理を行う関数
 */
-router.post('/check', (req: Request, res: Response) => {
+router.post('/check', async (req: Request, res: Response) => {
   logger.debug('check')
   if (req.body.id && req.body.pw) {
     const id = req.body.id
     const pw = req.body.pw
-    const isLogin = auth.loginFlow(id, pw)
-    if (isLogin) {
-      if (!req.session.token) req.session.token = auth.getToken() // トークンの格納
-      res.redirect('/admin/home')
+    const adminData = new AdminData(id, pw)
+    const isValid = await adminApplicationService.isValid(adminData)
+    if (isValid) {
       logger.info('ログインに成功しました。')
+      admin.create(adminData)
+      admin.LoginStatus = 'login'
+      if (!req.session.token) req.session.token = admin.Token
+      res.redirect('/admin/home')
     } else {
-      res.redirect('/login')
       logger.warn('ログインに失敗しました。')
+      admin.LoginStatus = 'miss'
+      res.redirect('/login')
     }
   } else {
+    admin.LoginStatus = 'miss'
     res.redirect('/login')
     logger.warn('直接ログインしようとしました。')
   }
@@ -95,13 +135,13 @@ router.get('/admin/csv/choice', (req: Request, res: Response) => {
   res.render('pages/admin/csv/choice', { pageData })
 })
 
-router.get('/admin/csv/headerChoice', (req: Request, res: Response) => {
+router.get('/admin/csv/headerChoice', async (req: Request, res: Response) => {
   pageData = {
     headTitle: 'ヘッダー選択',
     path: req.url,
     cssData: new CssPathMake(['auth/csv/choice'], OriginMake(req)).make(),
     anyData: {
-      csvHeader: csvData.getCsvHeaderData()
+      csvHeader: await csvFile.getHeaderNames()
     }
   }
   res.render('pages/admin/csv/headerChoice', { pageData })
@@ -110,11 +150,7 @@ router.get('/admin/csv/headerChoice', (req: Request, res: Response) => {
 router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Response) => {
   const file = req.file
   try {
-    await csvData.setCsvData(file)
-    if (file) {
-      logger.debug(file.filename)
-      csvData.deleteCsvData('./uploads/csv', file.filename)
-    }
+    csvFile.File = file
     logger.info('CSVファイルを受信しました。')
   } catch (err) {
     logger.error('CSVファイルの受信に失敗しました。')
@@ -123,10 +159,31 @@ router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Respon
 })
 
 router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
-  await csvData.deleteDBRelateInBook()
-  await csvData.addDB(req.body)
-  logger.info('データを登録しました。')
-  csvData.deleteCsvData('./uploads/csv', '')
+  const csv = await csvFile.getFileContent() // csvファイルの内容を取得
+  /* 初期化 */
+  await bookApplicationService.deleteBooks()
+  await publisherApplicationService.deletePublishers()
+  await authorApplicationService.deleteAuthors()
+
+  for (const row of csv) {
+    const authorName = row[req.body.authorName]
+    const publisherName = row[req.body.publisherName]
+    const authorId = await authorApplicationService.createAuthor(authorName)
+    const publisherId = await publisherApplicationService.createPublisher(publisherName)
+    await bookApplicationService.createBook(
+      row[req.body.bookName],
+      row[req.body.bookSubName],
+      row[req.body.bookContent],
+      row[req.body.isbn],
+      row[req.body.ndc],
+      row[req.body.year],
+      authorId,
+      authorName,
+      publisherId,
+      publisherName
+    )
+  }
+  csvFile.deleteFiles()
   res.redirect('/admin/home')
 })
 
