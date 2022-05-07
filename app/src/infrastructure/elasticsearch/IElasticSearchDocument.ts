@@ -4,7 +4,7 @@
 export interface IEsBook {
   db_id?: string,
   book_name?: string,
-  book_content?: string,
+  book_content?: string | null,
 }
 
 export interface IEsPublisher {

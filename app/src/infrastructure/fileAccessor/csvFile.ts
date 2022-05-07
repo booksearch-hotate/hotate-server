@@ -10,6 +10,12 @@ export default class CsvFile implements ICsvFile {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async getFileContent (): Promise<any> {
     const data = await csv().fromFile(this.file.path, { encoding: 'utf-8' })
+    // dataの中にundefinedがある場合はnullに変換する
+    data.forEach((row: any) => {
+      Object.keys(row).forEach((key: string) => {
+        if (row[key] === undefined || row[key] === '') row[key] = null
+      })
+    })
     return data
   }
 
