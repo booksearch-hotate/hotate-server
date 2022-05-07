@@ -90,27 +90,33 @@ router.get('/login', (req: Request, res: Response) => {
  * ログイン処理を行う関数
 */
 router.post('/check', async (req: Request, res: Response) => {
-  logger.debug('check')
-  if (req.body.id && req.body.pw) {
-    const id = req.body.id
-    const pw = req.body.pw
-    const adminData = new AdminData(id, pw)
-    const isValid = await adminApplicationService.isValid(adminData)
-    if (isValid) {
-      logger.info('ログインに成功しました。')
-      admin.create(adminData)
-      admin.LoginStatus = 'login'
-      if (!req.session.token) req.session.token = admin.Token
-      res.redirect('/admin/home')
+  try {
+    logger.debug('check')
+    if (req.body.id && req.body.pw) {
+      const id = req.body.id
+      const pw = req.body.pw
+      const adminData = new AdminData(id, pw)
+      const isValid = await adminApplicationService.isValid(adminData)
+      if (isValid) {
+        logger.info('ログインに成功しました。')
+        admin.create(adminData)
+        admin.LoginStatus = 'login'
+        if (!req.session.token) req.session.token = admin.Token
+        res.redirect('/admin/home')
+      } else {
+        logger.warn('ログインに失敗しました。')
+        admin.LoginStatus = 'miss'
+        res.redirect('/login')
+      }
     } else {
-      logger.warn('ログインに失敗しました。')
       admin.LoginStatus = 'miss'
       res.redirect('/login')
+      logger.warn('直接ログインしようとしました。')
     }
-  } else {
-    admin.LoginStatus = 'miss'
+  } catch (e) {
+    logger.error(e as string)
+    admin.LoginStatus = 'error'
     res.redirect('/login')
-    logger.warn('直接ログインしようとしました。')
   }
 })
 
