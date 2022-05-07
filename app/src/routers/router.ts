@@ -171,26 +171,32 @@ router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
   await publisherApplicationService.deletePublishers()
   await authorApplicationService.deleteAuthors()
 
-  for (const row of csv) {
-    const authorName = row[req.body.authorName]
-    const publisherName = row[req.body.publisherName]
-    const authorId = await authorApplicationService.createAuthor(authorName)
-    const publisherId = await publisherApplicationService.createPublisher(publisherName)
-    await bookApplicationService.createBook(
-      row[req.body.bookName],
-      row[req.body.bookSubName],
-      row[req.body.bookContent],
-      row[req.body.isbn],
-      row[req.body.ndc],
-      row[req.body.year],
-      authorId,
-      authorName,
-      publisherId,
-      publisherName
-    )
+  try {
+    for (const row of csv) {
+      const authorName = row[req.body.authorName]
+      const publisherName = row[req.body.publisherName]
+      const authorId = await authorApplicationService.createAuthor(authorName)
+      const publisherId = await publisherApplicationService.createPublisher(publisherName)
+      await bookApplicationService.createBook(
+        row[req.body.bookName],
+        row[req.body.bookSubName],
+        row[req.body.bookContent],
+        row[req.body.isbn],
+        row[req.body.ndc],
+        row[req.body.year],
+        authorId,
+        authorName,
+        publisherId,
+        publisherName
+      )
+    }
+  } catch (e) {
+    logger.error(e as string)
+    return res.redirect('/admin/csv/choice')
+  } finally {
+    csvFile.deleteFiles()
   }
-  csvFile.deleteFiles()
-  res.redirect('/admin/home')
+  return res.redirect('/admin/home')
 })
 
 export default router
