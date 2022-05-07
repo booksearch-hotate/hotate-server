@@ -1,50 +1,55 @@
+/* package */
 import { Request, Response, Router, NextFunction } from "express"
 import multer from "multer"
 
+/* module */
 import CssPathMake from "../modules/cssPath"
+import JsPathMake from "../modules/jsPath"
 import OriginMake from "../modules/origin"
-import Logger from "../infrastructure/Logger/logger"
 
+/* application searvice */
 import BookApplicationService from "../application/BookApplicationService"
 import AuthorApplicationService from "../application/AuthorApplicationService"
 import PublisherApplicationService from "../application/PublisherApplicationService"
 import AdminApplicationService from "../application/AdminApplicationService"
 
+/* repository */
 import BookRepository from "../interface/repository/BookRepository"
 import AuthorRepository from "../interface/repository/AuthorRepository"
 import PublisherRepository from "../interface/repository/PublisherRepository"
 import AdminRepository from "../interface/repository/AdminRepository"
 
+/* infrastructure */
 import CsvFile from "../infrastructure/fileAccessor/csvFile"
 import AdminSession from "../infrastructure/session"
-
-import AdminData from "../application/dto/AdminData"
-
+import Logger from "../infrastructure/Logger/logger"
 import db from "../infrastructure/db"
 import Elasticsearch from "../infrastructure/elasticsearch"
+
+/* DTO */
+import AdminData from "../application/dto/AdminData"
+import BookData from "../application/dto/BookData"
 
 const router = Router() // ルーティング
 const upload = multer({ dest: './uploads/csv/' }) // multerの設定
 const logger = new Logger('router') // loggerのインスタンス化
 const csvFile = new CsvFile()
+
+/* アプリケーションサービスの初期化 */
 const bookApplicationService = new BookApplicationService(new BookRepository(db, new Elasticsearch('books')))
 const authorApplicationService = new AuthorApplicationService(new AuthorRepository(db, new Elasticsearch('authors')))
 const publisherApplicationService = new PublisherApplicationService(new PublisherRepository(db, new Elasticsearch('publishers')))
 const adminApplicationService = new AdminApplicationService(new AdminRepository(db))
 
+/* ejsにデータを渡す際に使用するオブジェクト */
 interface IPage {
-  /** ページのタイトル */
-  headTitle: string;
+  headTitle: string; // ページのタイトル
   path: string;
   pathName?: string;
-  /** cssのファイル名 */
-  cssData?: string[];
-  /** オリジン */
+  cssData?: string[]; // cssのファイル名
   origin?: string;
-  /** jsのファイル名 */
-  jsData?: string[];
-  /** その他のデータ */
-  anyData?: unknown;
+  jsData?: string[]; // jsのファイル名
+  anyData?: unknown; // その他のデータ
 }
 
 let pageData: IPage
@@ -56,9 +61,18 @@ router.get('/', (req: Request, res: Response) => {
   pageData = {
     headTitle: 'ホーム | HOTATE',
     path: req.url,
-    cssData: new CssPathMake(['index'], OriginMake(req)).make()
+    cssData: new CssPathMake(['index'], OriginMake(req)).make(),
   }
   res.render('pages/index', { pageData })
+})
+
+router.get('/search', async (req: Request, res: Response) => {
+  const searchWord = req.query.search as string
+  const resDatas = await bookApplicationService.searchBooks(searchWord)
+  for (const data of resDatas) {
+    console.log(`${data.BookName} ${data.AuthorName} ${data.PublisherName}`)
+  }
+  res.redirect('/')
 })
 
 router.get('/login', (req: Request, res: Response) => {

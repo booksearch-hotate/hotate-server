@@ -3,6 +3,7 @@ import BookModel from "../domain/model/bookModel"
 import AuthorModel from "../domain/model/authorModel"
 import PublisherModel from "../domain/model/publisherModel"
 import BookService from "../domain/service/bookService"
+import BookData from "./dto/BookData"
 
 export default class BookApplicationService {
   private readonly bookRepository: IBookApplicationRepository
@@ -16,10 +17,10 @@ export default class BookApplicationService {
   public async createBook (
     bookName: string,
     subName: string | null,
-    content: string | undefined,
-    isbn: string | undefined,
-    ndc: number | undefined,
-    year: number | undefined,
+    content: string | null,
+    isbn: string | null,
+    ndc: number | null,
+    year: number | null,
     authorId: string,
     authorName: string,
     publisherId: string,
@@ -43,5 +44,14 @@ export default class BookApplicationService {
 
   public async deleteBooks (): Promise<void> {
     await this.bookRepository.deleteAll()
+  }
+
+  public async searchBooks (query: string): Promise<BookData[]> {
+    const books = await this.bookRepository.search(query) // 検索から得られたbookModelの配列
+    /* DTOに変換 */
+    let bookDatas: BookData[] = []
+    for (const book of books) bookDatas.push(new BookData(book))
+  
+    return bookDatas
   }
 }

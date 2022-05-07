@@ -51,13 +51,13 @@ const initColumn: IRequiredKeys & IOptionalKeys = {
 }
 
 export default class Book extends Model {
-  public id!: number
+  public id!: string
   public isbn!: string
   public book_name!: string
   public book_sub_name!: string
-  public author_id!: number
+  public author_id!: string
   public ndc!: number
-  public publisher_id!: number
+  public publisher_id!: string
   public year!: number
   public book_content!: string
 
