@@ -26,3 +26,8 @@
 ### DB(ディレクトリ名 : db)
 
 - [mysql](https://www.mysql.com/jp/) -> DBMS
+
+## 開発者へ向けてのTODO
+
+- envファイルの作成
+- 管理者のIDとパスワードをDBへ登録
