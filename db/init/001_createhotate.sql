@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS publishers (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS books (
-  id int NOT NULL AUTO_INCREMENT,
+  id varchar(255) NOT NULL,
   isbn varchar(30) NULL DEFAULT NULL,
   book_name varchar(255) NOT NULL,
   book_sub_name varchar(255) NULL DEFAULT NULL,

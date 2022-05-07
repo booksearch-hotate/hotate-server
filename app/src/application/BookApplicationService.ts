@@ -2,12 +2,15 @@ import IBookApplicationRepository from "./repository/IBookApplicationRepository"
 import BookModel from "../domain/model/bookModel"
 import AuthorModel from "../domain/model/authorModel"
 import PublisherModel from "../domain/model/publisherModel"
+import BookService from "../domain/service/bookService"
 
 export default class BookApplicationService {
   private readonly bookRepository: IBookApplicationRepository
+  private readonly bookService: BookService
 
   public constructor (bookRepository: IBookApplicationRepository) {
     this.bookRepository = bookRepository
+    this.bookService = new BookService()
   }
 
   public async createBook (
@@ -25,7 +28,7 @@ export default class BookApplicationService {
     const author = new AuthorModel(authorId, authorName)
     const publisher = new PublisherModel(publisherId, publisherName)
     const book = new BookModel(
-      await this.bookRepository.getMaximumId() + 1,
+      this.bookService.createUUID(),
       bookName,
       subName,
       content,

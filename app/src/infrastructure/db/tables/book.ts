@@ -7,7 +7,7 @@ import { IRequiredKeys, IOptionalKeys } from '../IDbColumn'
 
 const initColumn: IRequiredKeys & IOptionalKeys = {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     primaryKey: true,
     autoIncrement: true
   },

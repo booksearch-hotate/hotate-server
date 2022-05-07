@@ -2,7 +2,7 @@ import AuthorModel from "./authorModel"
 import PublisherModel from "./publisherModel"
 
 export default class BookModel {
-  private id: number
+  private id: string
   private name!: string
   private subName!: string | null
   private content!: string | undefined
@@ -13,7 +13,7 @@ export default class BookModel {
   private publisher!: PublisherModel
 
   public constructor (
-    id: number,
+    id: string,
     name: string,
     subName: string | null,
     content: string | undefined,
@@ -37,7 +37,7 @@ export default class BookModel {
     this.publisher = publisher
   }
 
-  get Id (): number { return this.id }
+  get Id (): string { return this.id }
 
   get Name (): string { return this.name }
   set Name (name: string) {
