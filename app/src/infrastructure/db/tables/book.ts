@@ -3,11 +3,11 @@ import { Sequelize, Model, DataTypes, ModelAttributes } from 'sequelize'
 import Publisher from './publisher'
 import Author from './author'
 
-import { IRequiredKeys, IOptionalKeys } from '../interfaces/IDbColumn'
+import { IRequiredKeys, IOptionalKeys } from '../IDbColumn'
 
 const initColumn: IRequiredKeys & IOptionalKeys = {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     primaryKey: true,
     autoIncrement: true
   },
@@ -26,7 +26,7 @@ const initColumn: IRequiredKeys & IOptionalKeys = {
     defaultValue: null,
   },
   author_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   ndc: {
@@ -35,7 +35,7 @@ const initColumn: IRequiredKeys & IOptionalKeys = {
     defaultValue: null,
   },
   publisher_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   year: {
