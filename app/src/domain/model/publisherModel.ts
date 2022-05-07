@@ -13,7 +13,7 @@ export default class PublisherModel {
 
   get Name (): string { return this.name }
   set Name (name: string) {
-    if (name === null) throw new Error('nameがnullです')
+    if (name === '') throw new Error('The name property of the publishers is an empty string.')
     this.name = name
   }
 }

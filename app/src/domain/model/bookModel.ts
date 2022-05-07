@@ -41,7 +41,7 @@ export default class BookModel {
 
   get Name (): string { return this.name }
   set Name (name: string) {
-    if (name === null) throw new Error('nameがnullです')
+    if (name === '') throw new Error('The name property of books is empty.')
     this.name = name
   }
 

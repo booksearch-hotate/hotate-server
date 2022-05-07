@@ -21,3 +21,9 @@
 これはcsvファイル側の問題です。文字コードがutf8とかそれっぽいの以外の時に発生します。
 
 解決策はcsvファイルをutf8にすることです。[Excel CSV形式ファイルにおける今どきUTF-8文字コード問題の傾向と対策](https://atmarkit.itmedia.co.jp/ait/articles/2112/20/news026.html)の「文字コードをUTF-8にして保存する」>「Excel 2016以降の場合」を参考にするなどしてutf8に変換してください。
+
+## 4. csvファイルを追加しようとしたらログ上に「Error: The name property of books(authors又はpublishers) is empty.」と出た
+
+これはcsvファイルのデータの欠損が問題です。`The name property of books is empty.`と出てる場合は本の題名が、`The name property of authors is empty.`とでてる場合は著者名が、`The name property of publishers is empty.`と出てる場合は出版社名が欠落しています。
+
+欠落したデータを修復するか、そのデータを削除するかして対処してください。
