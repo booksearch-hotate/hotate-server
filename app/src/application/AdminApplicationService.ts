@@ -12,9 +12,9 @@ export default class AdminApplicationService {
     this.adminService = new AdminService()
   }
 
-  public isValid (adminData: AdminData): boolean {
+  public async isValid (adminData: AdminData): Promise<boolean> {
     const target = new AdminModel(adminData.Id, adminData.Pw)
-    const admin = this.adminRepository.getAdmin()
+    const admin = await this.adminRepository.getAdmin()
     return this.adminService.isValid(target, admin)
   }
 }

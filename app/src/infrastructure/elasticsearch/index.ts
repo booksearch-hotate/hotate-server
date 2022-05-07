@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-import { isLocal } from '../../modules/cmdLine'
-import Logger from '../../modules/logger'
+import { isLocal } from '../cli/cmdLine'
+import Logger from '../Logger/logger'
 
-import { IEsPublisher, IEsBook, IEsAuthor } from '../../interfaces/IElasticSearchDocument'
+import { IEsPublisher, IEsBook, IEsAuthor } from './IElasticSearchDocument'
 
 const logger = new Logger('elasticSearch')
 

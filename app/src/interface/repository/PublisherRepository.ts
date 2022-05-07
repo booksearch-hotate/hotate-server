@@ -1,18 +1,14 @@
-import Book from "../../infrastructure/db/book" // ここのBookはドメインオブジェクトではない！
-import Author from "../../infrastructure/db/author"
-import Publisher from "../../infrastructure/db/publisher"
+import Publisher from "../../infrastructure/db/tables/publisher"
 import IPublisherApplicationRepository from "../../application/repository/IPublisherApplicationRepository"
 import IPublisherDomainRepository from "../../domain/service/repository/IPublisherDomainRepository"
 import PublisherModel from "../../domain/model/publisherModel"
 
 import Elasticsearch from "../../infrastructure/elasticsearch"
 
-import { IEsPublisher } from "../../interfaces/IElasticSearchDocument"
+import { IEsPublisher } from "../../infrastructure/elasticsearch/IElasticSearchDocument"
 
 /* Sequelizeを想定 */
 interface sequelize {
-  Book: typeof Book,
-  Author: typeof Author,
   Publisher: typeof Publisher
 }
 

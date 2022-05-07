@@ -1,11 +1,9 @@
 import { Request, Response, Router, NextFunction } from "express"
 import multer from "multer"
 
-import { IPage } from "../interfaces/IPage"
-
 import CssPathMake from "../modules/cssPath"
 import OriginMake from "../modules/origin"
-import Logger from "../modules/logger"
+import Logger from "../infrastructure/Logger/logger"
 
 import BookApplicationService from "../application/BookApplicationService"
 import AuthorApplicationService from "../application/AuthorApplicationService"
@@ -32,7 +30,22 @@ const csvFile = new CsvFile()
 const bookApplicationService = new BookApplicationService(new BookRepository(db, new Elasticsearch('books')))
 const authorApplicationService = new AuthorApplicationService(new AuthorRepository(db, new Elasticsearch('authors')))
 const publisherApplicationService = new PublisherApplicationService(new PublisherRepository(db, new Elasticsearch('publishers')))
-const adminApplicationService = new AdminApplicationService(new AdminRepository())
+const adminApplicationService = new AdminApplicationService(new AdminRepository(db))
+
+interface IPage {
+  /** ページのタイトル */
+  headTitle: string;
+  path: string;
+  pathName?: string;
+  /** cssのファイル名 */
+  cssData?: string[];
+  /** オリジン */
+  origin?: string;
+  /** jsのファイル名 */
+  jsData?: string[];
+  /** その他のデータ */
+  anyData?: unknown;
+}
 
 let pageData: IPage
 
@@ -76,13 +89,13 @@ router.get('/login', (req: Request, res: Response) => {
 /**
  * ログイン処理を行う関数
 */
-router.post('/check', (req: Request, res: Response) => {
+router.post('/check', async (req: Request, res: Response) => {
   logger.debug('check')
   if (req.body.id && req.body.pw) {
     const id = req.body.id
     const pw = req.body.pw
     const adminData = new AdminData(id, pw)
-    const isValid = adminApplicationService.isValid(adminData)
+    const isValid = await adminApplicationService.isValid(adminData)
     if (isValid) {
       logger.info('ログインに成功しました。')
       admin.create(adminData)

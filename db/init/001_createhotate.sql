@@ -28,3 +28,9 @@ CREATE TABLE IF NOT EXISTS books (
   FOREIGN KEY (author_id) REFERENCES authors(id),
   FOREIGN KEY (publisher_id) REFERENCES publishers(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS admin (
+  id varchar(255) NOT NULL,
+  pw varchar(255) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

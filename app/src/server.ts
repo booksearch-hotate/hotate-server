@@ -5,9 +5,9 @@ import dotenv from 'dotenv'
 
 import router from './routers/router'
 
-import Logger from './modules/logger'
+import Logger from './infrastructure/Logger/logger'
 
-import { isLocal } from './modules/cmdLine'
+import { isLocal } from './infrastructure/cli/cmdLine'
 
 const app: Application = express()
 const logger = new Logger('system')
