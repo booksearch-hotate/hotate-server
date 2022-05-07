@@ -20,14 +20,6 @@ export default class AuthorRepository implements IAuthorApplicationRepository, I
     this.elasticsearch = elasticsearch
   }
 
-  public async getMaximumId (): Promise<number> {
-    const author = await this.db.Author.findOne({
-      order: [['id', 'DESC']]
-    })
-    if (author) return author.id
-    return 0 // 初期値
-  }
-
   public async save (author: AuthorModel): Promise<void> {
     await this.db.Author.create({
       id: author.Id,

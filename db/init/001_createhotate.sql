@@ -3,13 +3,13 @@ CREATE DATABASE IF NOT EXISTS hotate;
 use hotate;
 
 CREATE TABLE IF NOT EXISTS authors (
-  id int NOT NULL AUTO_INCREMENT,
+  id varchar(255) NOT NULL,
   name varchar(255) NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS publishers (
-  id int NOT NULL AUTO_INCREMENT,
+  id varchar(255) NOT NULL,
   name varchar(255) NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -19,9 +19,9 @@ CREATE TABLE IF NOT EXISTS books (
   isbn varchar(30) NULL DEFAULT NULL,
   book_name varchar(255) NOT NULL,
   book_sub_name varchar(255) NULL DEFAULT NULL,
-  author_id int NOT NULL,
+  author_id varchar(255) NOT NULL,
   ndc int NULL DEFAULT NULL,
-  publisher_id int NOT NULL,
+  publisher_id varchar(255) NOT NULL,
   year int NULL DEFAULT NULL,
   book_content text NULL DEFAULT NULL,
   PRIMARY KEY (id),

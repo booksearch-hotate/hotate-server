@@ -8,11 +8,11 @@ export interface IEsBook {
 }
 
 export interface IEsPublisher {
-  db_id?: number,
+  db_id?: string,
   name?: string,
 }
 
 export interface IEsAuthor {
-  db_id?: number,
+  db_id?: string,
   name?: string,
 }

@@ -20,9 +20,9 @@ export default class BookApplicationService {
     isbn: string | undefined,
     ndc: number | undefined,
     year: number | undefined,
-    authorId: number,
+    authorId: string,
     authorName: string,
-    publisherId: number,
+    publisherId: string,
     publisherName: string
   ): Promise<void> {
     const author = new AuthorModel(authorId, authorName)

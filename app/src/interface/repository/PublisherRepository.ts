@@ -21,14 +21,6 @@ export default class PublisherRepository implements IPublisherApplicationReposit
     this.elasticsearch = elasticsearch
   }
 
-  public async getMaximumId (): Promise<number> {
-    const publisher = await this.db.Publisher.findOne({
-      order: [['id', 'DESC']]
-    })
-    if (publisher) return publisher.id
-    return 0 // 初期値
-  }
-
   public async save (publisher: PublisherModel): Promise<void> {
     await this.db.Publisher.create({
       id: publisher.Id,

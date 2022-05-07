@@ -26,7 +26,7 @@ const initColumn: IRequiredKeys & IOptionalKeys = {
     defaultValue: null,
   },
   author_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   ndc: {
@@ -35,7 +35,7 @@ const initColumn: IRequiredKeys & IOptionalKeys = {
     defaultValue: null,
   },
   publisher_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   year: {

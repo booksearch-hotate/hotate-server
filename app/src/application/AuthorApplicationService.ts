@@ -11,8 +11,8 @@ export default class AuthorApplicationService {
     this.authorService = new AuthorService(authorRepository)
   }
 
-  public async createAuthor (name: string): Promise<number> {
-    const author = new AuthorModel(await this.authorRepository.getMaximumId() + 1, name)
+  public async createAuthor (name: string): Promise<string> {
+    const author = new AuthorModel(this.authorService.createUUID(), name)
     let id
     if (await this.authorService.isExist(author)) {
       const found = await this.authorRepository.findByName(author.Name)

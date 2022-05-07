@@ -11,8 +11,8 @@ export default class PublisherApplicationService {
     this.publisherService = new PublisherService(publisherRepository)
   }
 
-  public async createPublisher (name: string): Promise<number> {
-    const publisher = new PublisherModel(await this.publisherRepository.getMaximumId() + 1, name)
+  public async createPublisher (name: string): Promise<string> {
+    const publisher = new PublisherModel(this.publisherService.createUUID(), name)
     let id
     if (await this.publisherService.isExist(publisher)) {
       const found = await this.publisherRepository.findByName(publisher.Name)
