@@ -6,6 +6,13 @@
   <body>
     <%- include('./../components/navbar') %>
     <main>
+      <h1 class="text-center mt-3">検索結果</h1>
+      <% if (pageData.anyData.searchRes.length === 0) { %>
+        <div class="text-center">
+          <h3 class="text-danger">検索結果が見つかりませんでした</h3>
+          <img src="img/ghost.png" alt="ghost" class="img-fluid">
+        </div>
+      <% } %>
       <div class="container">
         <div class="row row-cols-3">
           <% for (data of pageData.anyData.searchRes) { %>
