@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../components/head') %>
+  </head>
+  <body>
+    <%- include('./../components/navbar') %>
+    <main>
+      <div class="container">
+        <div class="row row-cols-3">
+          <% for (data of pageData.anyData.searchRes) { %>
+            <div class="col my-3">
+              <div class="card" style="width: 100%; height: 100%;">
+                <div class="card-body">
+                  <h5 class="card-title"><%= data.BookName %></h5>
+                  <h6 class="card-subtitle mb-2 text-muted"><%= data.AuthorName %> ・ <%= data.publisherName%></h6>
+                </div>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </main>
+    <%- include('./../components/inputJs') %>
+  </body>
+</html>

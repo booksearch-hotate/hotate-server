@@ -69,10 +69,13 @@ router.get('/', (req: Request, res: Response) => {
 router.get('/search', async (req: Request, res: Response) => {
   const searchWord = req.query.search as string
   const resDatas = await bookApplicationService.searchBooks(searchWord)
-  for (const data of resDatas) {
-    console.log(`${data.BookName} ${data.AuthorName} ${data.PublisherName}`)
+  pageData = {
+    headTitle: '検索結果 | HOTATE',
+    path: req.url,
+    cssData: new CssPathMake(['search'], OriginMake(req)).make(),
+    anyData: { searchRes: resDatas }
   }
-  res.redirect('/')
+  res.render('pages/search', { pageData })
 })
 
 router.get('/login', (req: Request, res: Response) => {
