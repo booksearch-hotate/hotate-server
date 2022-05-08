@@ -68,7 +68,7 @@ router.get('/', (req: Request, res: Response) => {
 
 router.get('/search', async (req: Request, res: Response) => {
   const searchWord = req.query.search as string
-  const resDatas = await bookApplicationService.searchBooks(searchWord)
+  const resDatas = searchWord === '' ? [] : await bookApplicationService.searchBooks(searchWord)
   pageData = {
     headTitle: '検索結果 | HOTATE',
     path: req.url,
