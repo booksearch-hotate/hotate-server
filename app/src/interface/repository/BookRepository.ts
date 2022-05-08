@@ -6,6 +6,7 @@ import BookModel from "../../domain/model/bookModel"
 import AuthorModel from "../../domain/model/authorModel"
 import PublisherModel from "../../domain/model/publisherModel"
 import Elasticsearch from "../../infrastructure/elasticsearch"
+import { getImgLink } from "../../infrastructure/api/openbd"
 
 import { IEsBook } from "../../infrastructure/elasticsearch/IElasticSearchDocument"
 
@@ -83,5 +84,10 @@ export default class BookRepository implements IBookApplicationRepository {
       bookModels.push(bookModel)
     }
     return bookModels
+  }
+
+  public async getImgLink(bookModel: BookModel): Promise<string> {
+    if (!bookModel.Isbn) return '' // isbnがない場合
+    return await getImgLink(bookModel.Isbn)
   }
 }

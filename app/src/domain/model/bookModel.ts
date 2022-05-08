@@ -55,7 +55,18 @@ export default class BookModel {
   set Isbn (isbn: string | null) {
     if (isbn === '') isbn = null
     if (isbn !== null && isbn.length < 10) throw new Error('ISBNの桁数が足りません' + isbn + ' ' + typeof isbn)
-    this.isbn = isbn
+    // もしもisbnが13桁でハイフンがない場合はハイフンを追加する
+    if (isbn !== null && isbn.length === 13 && isbn.indexOf('-') === -1) {
+      const firstNum = isbn.substring(0, 3)
+      const contryCode = isbn.substring(3, 4)
+      const publisherNum = isbn.substring(4, 8)
+      const bookNum = isbn.substring(8, 12)
+      const checkDigit = isbn.substring(12, 13)
+      this.isbn = `${firstNum}-${contryCode}-${publisherNum}-${bookNum}-${checkDigit}`
+      console.log(this.isbn)
+    } else {
+      this.isbn = isbn
+    }
   }
 
   get Ndc (): number | null { return this.ndc }
