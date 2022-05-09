@@ -5,24 +5,21 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tsc"
+    "dev-build": "tsc --noEmit && rm -rf ./dist && node build.js dev",
+    "pro-build": "node build.js pro"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/csvtojson": "^2.0.0",
-    "@types/express": "^4.17.13",
-    "@types/express-session": "^1.17.4",
-    "@types/jsonwebtoken": "^8.5.8",
-    "@types/multer": "^1.4.7",
-    "@types/uuid": "^8.3.4",
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
     "csvtojson": "^2.0.10",
     "dotenv": "^16.0.0",
     "ejs": "^3.1.7",
+    "esbuild": "^0.14.38",
     "express": "^4.17.3",
     "express-session": "^1.17.2",
+    "glob": "^8.0.1",
     "jsonwebtoken": "^8.5.1",
     "log4js": "^6.4.6",
     "multer": "^1.4.4",
@@ -32,8 +29,13 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.20.0",
-    "@typescript-eslint/parser": "^5.20.0",
-    "eslint": "^8.14.0"
+    "@types/express": "^4.17.13",
+    "@types/express-session": "^1.17.4",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/multer": "^1.4.7",
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
+    "eslint": "^8.15.0"
   }
 }
