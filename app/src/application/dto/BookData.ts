@@ -6,6 +6,7 @@ export default class BookData {
   private authorName: string | null
   private publisherName: string | null
   private bookContent!: string
+  private imgLink: string | null
 
   public constructor (book: BookModel) {
     this.id = book.Id
@@ -13,6 +14,7 @@ export default class BookData {
     this.authorName = book.Author.Name
     this.publisherName = book.Publisher.Name
     this.BookContent = book.Content === null ? '' : book.Content
+    this.imgLink = null
   }
 
   get Id (): string { return this.id }
@@ -25,4 +27,7 @@ export default class BookData {
     else this.bookContent = content
   }
   get BookContent (): string { return this.bookContent }
+
+  set ImgLink (link: string | null) { this.imgLink = link }
+  get ImgLink (): string | null { return this.imgLink }
 }

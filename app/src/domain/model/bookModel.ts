@@ -63,7 +63,6 @@ export default class BookModel {
       const bookNum = isbn.substring(8, 12)
       const checkDigit = isbn.substring(12, 13)
       this.isbn = `${firstNum}-${contryCode}-${publisherNum}-${bookNum}-${checkDigit}`
-      console.log(this.isbn)
     } else {
       this.isbn = isbn
     }

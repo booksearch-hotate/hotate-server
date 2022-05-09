@@ -4,7 +4,6 @@ import multer from "multer"
 
 /* module */
 import CssPathMake from "../modules/cssPath"
-import JsPathMake from "../modules/jsPath"
 import OriginMake from "../modules/origin"
 
 /* application searvice */
@@ -28,7 +27,6 @@ import Elasticsearch from "../infrastructure/elasticsearch"
 
 /* DTO */
 import AdminData from "../application/dto/AdminData"
-import BookData from "../application/dto/BookData"
 
 const router = Router() // ルーティング
 const upload = multer({ dest: './uploads/csv/' }) // multerの設定
