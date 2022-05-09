@@ -33,7 +33,7 @@ export default class PublisherRepository implements IPublisherApplicationReposit
     await this.elasticsearch.create(doc)
   }
 
-  public async findByName (name: string): Promise<PublisherModel | null> {
+  public async findByName (name: string | null): Promise<PublisherModel | null> {
     const publisher = await this.db.Publisher.findOne({
       where: { name }
     })

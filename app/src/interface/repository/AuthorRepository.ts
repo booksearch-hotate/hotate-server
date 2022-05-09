@@ -32,7 +32,7 @@ export default class AuthorRepository implements IAuthorApplicationRepository, I
     await this.elasticsearch.create(doc)
   }
 
-  public async findByName (name: string): Promise<AuthorModel | null> {
+  public async findByName (name: string | null): Promise<AuthorModel | null> {
     const author = await this.db.Author.findOne({
       where: { name }
     })
