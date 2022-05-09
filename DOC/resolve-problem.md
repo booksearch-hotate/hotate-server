@@ -26,4 +26,8 @@
 
 これはcsvファイルのデータの欠損が問題です。`The name property of books is empty.`と出てる場合は本の題名が、`The name property of authors is empty.`とでてる場合は著者名が、`The name property of publishers is empty.`と出てる場合は出版社名が欠落しています。
 
+### 追記(2022/05/09)
+
+著者名並びに出版社名が無記入である場合があるとのことなので、名前がなしでも動作するようにしました。しかし現段階ではまだ正確な動作ができているか未検証です。
+
 欠落したデータを修復するか、そのデータを削除するかして対処してください。
