@@ -5,6 +5,8 @@ import PublisherModel from "../domain/model/publisherModel"
 import BookService from "../domain/service/bookService"
 import BookData from "./dto/BookData"
 
+import { getImgLink } from "../infrastructure/api/openbd"
+
 export default class BookApplicationService {
   private readonly bookRepository: IBookApplicationRepository
   private readonly bookService: BookService
@@ -49,9 +51,13 @@ export default class BookApplicationService {
   public async searchBooks (query: string): Promise<BookData[]> {
     const books = await this.bookRepository.search(query) // 検索から得られたbookModelの配列
     /* DTOに変換 */
-    let bookDatas: BookData[] = []
-    for (const book of books) bookDatas.push(new BookData(book))
-  
+    const bookDatas: BookData[] = []
+    for (const book of books) {
+      const bookData = new BookData(book)
+      bookData.ImgLink = await getImgLink(book.Isbn) // 画像のURLを取得
+      bookDatas.push(bookData)
+    }
+
     return bookDatas
   }
 }

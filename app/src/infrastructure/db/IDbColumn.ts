@@ -22,5 +22,6 @@ export interface IOptionalKeys {
   book_sub_name?: string | IAttributeObj | null,
   ndc?: number | IAttributeObj | null,
   year?: number | IAttributeObj | null,
-  book_content?: string | IAttributeObj | null
+  book_content?: string | IAttributeObj | null,
+  img_name?: string | IAttributeObj | null,
 }
