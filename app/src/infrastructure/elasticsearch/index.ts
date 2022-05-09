@@ -13,7 +13,7 @@ export default class ElasticSearch {
   private uri: string
 
   constructor (index: string) {
-    this.host = isLocal() ? 'localhost:9200' : 'es01:9200'
+    this.host = isLocal() ? 'localhost:9200' : 'es:9200'
     this.index = index
     this.uri = `http://${this.host}/${this.index}`
   }
