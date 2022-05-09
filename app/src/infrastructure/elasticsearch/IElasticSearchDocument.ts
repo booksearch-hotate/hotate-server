@@ -9,10 +9,10 @@ export interface IEsBook {
 
 export interface IEsPublisher {
   db_id?: string,
-  name?: string,
+  name?: string | null,
 }
 
 export interface IEsAuthor {
   db_id?: string,
-  name?: string,
+  name?: string | null,
 }

@@ -17,7 +17,8 @@ export default class Author extends Model {
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
       },
     }, {
       sequelize,

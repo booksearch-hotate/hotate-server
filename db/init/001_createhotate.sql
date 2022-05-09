@@ -4,13 +4,13 @@ use hotate;
 
 CREATE TABLE IF NOT EXISTS authors (
   id varchar(255) NOT NULL,
-  name varchar(255) NOT NULL,
+  name varchar(255) NULL DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS publishers (
   id varchar(255) NOT NULL,
-  name varchar(255) NOT NULL,
+  name varchar(255) NULL DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

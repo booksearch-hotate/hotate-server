@@ -1,8 +1,8 @@
 export default class AuthorModel {
   private id: string
-  private name!: string
+  private name!: string | null
 
-  public constructor (id: string, name: string) {
+  public constructor (id: string, name: string | null) {
     if (id === null) throw new Error('idがnullです')
 
     this.id = id
@@ -11,9 +11,8 @@ export default class AuthorModel {
 
   get Id (): string { return this.id }
 
-  get Name (): string { return this.name }
-  set Name (name: string) {
-    if (name === '') throw new Error('The name property of the authors is an empty string.')
+  get Name (): string | null { return this.name }
+  set Name (name: string | null) {
     this.name = name
   }
 }
