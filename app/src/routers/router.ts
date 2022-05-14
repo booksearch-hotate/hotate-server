@@ -214,6 +214,7 @@ router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
     await authorApplicationService.deleteAuthors()
 
     const csvLengh = csv.length
+    const sendDataNum = 5 // wsを飛ばす基準
     for (let i = 0; i < csvLengh; i++) {
       const row = csv[i]
 
@@ -236,7 +237,7 @@ router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
         publisherName
       )
 
-      if (i % 5 === 0) { // データが5件ごとにwsを飛ばす
+      if (!(i % sendDataNum)) { // データが5件ごとにwsを飛ばす
         broadcast({
           type: 'progress',
           percent: i / csvLengh

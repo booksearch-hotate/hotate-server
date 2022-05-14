@@ -35,6 +35,8 @@ app.use(session({
   saveUninitialized: true,
   rolling: true,
   cookie: {
+    // ここに関してはマジでマジックナンバーでも伝わるやろ
+    // eslint-disable-next-line no-magic-numbers
     maxAge: 60 * 60 * 1000 // 1時間
   }
 }))

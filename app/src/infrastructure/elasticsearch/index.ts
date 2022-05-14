@@ -52,6 +52,7 @@ export default class ElasticSearch {
       }
     })
     const hits = res.data.hits.hits
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ids = hits.map((hit: any) => hit._source.db_id)
     return ids
   }

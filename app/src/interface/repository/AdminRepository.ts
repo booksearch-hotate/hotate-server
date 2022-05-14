@@ -26,6 +26,7 @@ export default class AdminRepository implements IAdminApplicationRepository {
       if (!admin) throw new Error("admin not found")
       /* sequelize.queryは[result, metadata]をレスポンスし、resultはフィールド数分ある配列なので[0][0]と指定 */
       // https://sequelize.org/docs/v6/core-concepts/raw-queries/
+      // eslint-disable-next-line no-magic-numbers
       const res = admin[0][0] as { id: string, pw: string }
       return new AdminModel(res.id, res.pw)
     } catch (e) {
