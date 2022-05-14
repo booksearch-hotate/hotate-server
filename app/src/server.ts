@@ -2,6 +2,7 @@ import express, {Application } from 'express'
 import bodyParser from 'body-parser'
 import session from 'express-session'
 import dotenv from 'dotenv'
+import WebSocket from 'ws'
 
 import router from './routers/router'
 
@@ -46,3 +47,14 @@ app.listen(PORT, () => {
   logger.info(`Server is running on ${PORT}`)
   if (isLocal()) logger.info('現在ローカルで実行しています')
 })
+
+const wss = new WebSocket.Server({ port: 5051 })
+
+// 10秒毎に定期的に通知する
+setInterval(() => {
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send('ping')
+    }
+  })
+}, 10000)
