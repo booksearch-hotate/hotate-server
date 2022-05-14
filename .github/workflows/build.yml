@@ -2,12 +2,12 @@ name: build
 on:
   push:
      branches: [ main ]
-  jobs:
-    build:
-      runs-on: ubuntu-latest
-      timeout-mintes: 30
-      steps:
-        - name: checkout
-          uses: actions/checkout@v2
-        - name: compose up app
-          run: docker-compoes up -d app
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-mintes: 30
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: compose up app
+        run: docker-compoes up -d app
