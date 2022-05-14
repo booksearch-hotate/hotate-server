@@ -1,6 +1,6 @@
 import Admin from "../../infrastructure/db/tables/admin"
 import dotenv from 'dotenv'
-import Logger from "../../infrastructure/Logger/logger"
+import Logger from "../../infrastructure/logger/logger"
 
 import IAdminApplicationRepository from "../../application/repository/IAdminApplicationRepository"
 import AdminModel from "../../domain/model/adminModel"

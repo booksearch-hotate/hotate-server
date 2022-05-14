@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 
 import router from './routers/router'
 
-import Logger from './infrastructure/Logger/logger'
+import Logger from './infrastructure/logger/logger'
 
 import { isLocal } from './infrastructure/cli/cmdLine'
 

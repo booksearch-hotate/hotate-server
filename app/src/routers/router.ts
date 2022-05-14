@@ -23,7 +23,7 @@ import AdminRepository from "../interface/repository/AdminRepository"
 /* infrastructure */
 import CsvFile from "../infrastructure/fileAccessor/csvFile"
 import AdminSession from "../infrastructure/session"
-import Logger from "../infrastructure/Logger/logger"
+import Logger from "../infrastructure/logger/logger"
 import db from "../infrastructure/db"
 import Elasticsearch from "../infrastructure/elasticsearch"
 
