@@ -15,6 +15,7 @@
     "plugins": [
         "@typescript-eslint"
     ],
+    "ignorePatterns": ["public/js/*.js"],
     "rules": {
         "no-cond-assign": 2,
         "no-console": 1,

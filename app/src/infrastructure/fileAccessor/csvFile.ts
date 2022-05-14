@@ -21,7 +21,19 @@ export default class CsvFile implements ICsvFile {
   }
 
   public deleteFiles (): void {
-    fs.unlinkSync(this.file.path)
+    const folder = path.dirname(this.file.path)
+    fs.readdir(folder, (err, files) => {
+      if (err) return
+      files.forEach((file) => {
+        fs.unlink(path.join(folder, file), (err) => {
+          if (err) return
+        })
+      })
+    })
+  }
+
+  public isExistFile (): boolean {
+    return fs.existsSync(this.file.path)
   }
 
   public async getHeaderNames (): Promise<string[]> {
@@ -32,5 +44,8 @@ export default class CsvFile implements ICsvFile {
   set File (file: Express.Multer.File | undefined) {
     if (!file || path.extname(file.originalname) !== '.csv') throw new Error('undefined file')
     this.file = file
+  }
+  get File (): Express.Multer.File {
+    return this.file
   }
 }
