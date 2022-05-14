@@ -1,20 +1,16 @@
-const ws = '' // websocket connection
+const link = 'ws://localhost:5051/download/csv'
 
-const openWS = link => {
-  const ws = new WebSocket(link)
-  ws.onopen = () => {
-    console.log('connected')
-  }
-  ws.onmessage = (event) => {
-    console.log(event.data)
-  }
-  ws.onclose = () => {
-    console.log('disconnected')
-  }
+const ws = new WebSocket(link)
+
+ws.onopen = () => {
+  console.log('connected')
 }
 
-const closeWS = () => {
-  ws.close()
+ws.onmessage = (event) => {
+  const data = JSON.parse(event.data)
+  console.log(data)
 }
 
-openWS('ws://localhost:5051')
+ws.onclose = () => {
+  console.log('disconnected')
+}
