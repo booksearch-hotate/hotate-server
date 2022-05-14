@@ -54,12 +54,25 @@ let pageData: IPage
 
 const admin = new AdminSession()
 
+/**
+ * originを取得
+ */
+const inputOriginData = (req: Request, res: Response, next: NextFunction) => {
+  pageData = {
+    headTitle: '',
+    path: '',
+    origin: OriginMake(req),
+  }
+  next()
+}
+
+router.use('/', inputOriginData)
+
 /* ルーティング */
 router.get('/', (req: Request, res: Response) => {
   pageData = {
     headTitle: 'ホーム | HOTATE',
     path: req.url,
-    cssData: new CssPathMake(['index'], OriginMake(req)).make(),
   }
   res.render('pages/index', { pageData })
 })
@@ -70,7 +83,6 @@ router.get('/search', async (req: Request, res: Response) => {
   pageData = {
     headTitle: '検索結果 | HOTATE',
     path: req.url,
-    cssData: new CssPathMake(['search'], OriginMake(req)).make(),
     anyData: { searchRes: resDatas }
   }
   res.render('pages/search', { pageData })
@@ -81,7 +93,6 @@ router.get('/login', (req: Request, res: Response) => {
   pageData = {
     headTitle: 'ログイン | HOTATE',
     path: req.url,
-    cssData: new CssPathMake(['login'], OriginMake(req)).make(),
     anyData: { loginStatus: admin.LoginStatus }
   }
   return res.render('pages/login', { pageData })
@@ -142,7 +153,6 @@ router.get('/admin/home', (req: Request, res: Response) => {
   pageData = {
     headTitle: '管理画面',
     path: req.url,
-    cssData: new CssPathMake(['auth/home'], OriginMake(req)).make()
   }
   res.render('pages/admin/home', { pageData })
 })
@@ -151,7 +161,6 @@ router.get('/admin/csv/choice', (req: Request, res: Response) => {
   pageData = {
     headTitle: 'CSVファイル選択',
     path: req.url,
-    cssData: new CssPathMake(['auth/csv/choice'], OriginMake(req)).make()
   }
   res.render('pages/admin/csv/choice', { pageData })
 })
@@ -160,7 +169,6 @@ router.get('/admin/csv/headerChoice', async (req: Request, res: Response) => {
   pageData = {
     headTitle: 'ヘッダー選択',
     path: req.url,
-    cssData: new CssPathMake(['auth/csv/choice'], OriginMake(req)).make(),
     anyData: {
       csvHeader: await csvFile.getHeaderNames()
     }
