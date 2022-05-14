@@ -17,8 +17,9 @@ export default class CsvFile implements ICsvFile {
         if (row[key] === undefined || row[key] === '') row[key] = null
       })
     })
+    const maxLen = 5000 // csvファイルの最大行数
     if (data.length === 0) throw new Error('csv file is empty')
-    if (data.length > 5000) throw new Error('csv file is too large')
+    if (data.length > maxLen) throw new Error(`csv file is too large. max lengh is ${maxLen} but now is ${data.length}`)
     return data
   }
 
