@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import { isLocal } from '../cli/cmdLine'
-import Logger from '../Logger/logger'
+import Logger from '../logger/logger'
 
 import { IEsPublisher, IEsBook, IEsAuthor } from './IElasticSearchDocument'
 
@@ -46,7 +46,7 @@ export default class ElasticSearch {
       data: {
         query: {
           bool: {
-            should: [{ match: { book_name: searchWords } },{ match: { book_content: searchWords } }]
+            should: [{ match: { book_name: searchWords } }, { match: { book_content: searchWords } }]
           }
         }
       }
