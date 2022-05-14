@@ -166,14 +166,19 @@ router.get('/admin/csv/choice', (req: Request, res: Response) => {
 })
 
 router.get('/admin/csv/headerChoice', async (req: Request, res: Response) => {
-  pageData = {
-    headTitle: 'ヘッダー選択',
-    path: req.url,
-    anyData: {
-      csvHeader: await csvFile.getHeaderNames()
+  try {
+    pageData = {
+      headTitle: 'ヘッダー選択',
+      path: req.url,
+      anyData: {
+        csvHeader: await csvFile.getHeaderNames()
+      }
     }
+    res.render('pages/admin/csv/headerChoice', { pageData })
+  } catch (e) {
+    logger.error(e as string)
+    res.redirect('/admin/csv/choice')
   }
-  res.render('pages/admin/csv/headerChoice', { pageData })
 })
 
 router.get('/admin/csv/loading', (req: Request, res: Response) => {
@@ -197,15 +202,16 @@ router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Respon
 })
 
 router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
-  const csv = await csvFile.getFileContent() // csvファイルの内容を取得
-  if (csvFile.File !== undefined) res.redirect(`/admin/csv/loading`)
-
-  /* 初期化 */
-  await bookApplicationService.deleteBooks()
-  await publisherApplicationService.deletePublishers()
-  await authorApplicationService.deleteAuthors()
-
   try {
+
+    const csv = await csvFile.getFileContent() // csvファイルの内容を取得
+    if (csvFile.File !== undefined) res.redirect(`/admin/csv/loading`)
+
+    /* 初期化 */
+    await bookApplicationService.deleteBooks()
+    await publisherApplicationService.deletePublishers()
+    await authorApplicationService.deleteAuthors()
+
     const csvLengh = csv.length
     for (let i = 0; i < csvLengh; i++) {
       const row = csv[i]
