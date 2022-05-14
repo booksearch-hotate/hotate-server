@@ -12,6 +12,7 @@ services:
       - ./app/log/:/log/
     depends_on:
       - mysql
+      - es
     networks:
       - esnet
 
