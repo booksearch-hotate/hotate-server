@@ -39,8 +39,6 @@
         "no-unexpected-multiline": "error",
         "no-unreachable": "error",
         "use-isnan": "error",
-        "class-methods-use-this": "error",
-        "no-magic-numbers": 1,
         "camelcase": 1,
         "new-parens": 1,
         "newline-before-return": 1,

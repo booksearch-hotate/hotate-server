@@ -1,5 +1,5 @@
-import AuthorModel from "./authorModel"
-import PublisherModel from "./publisherModel"
+import AuthorModel from './authorModel'
+import PublisherModel from './publisherModel'
 
 export default class BookModel {
   private id: string
@@ -54,7 +54,7 @@ export default class BookModel {
   get Isbn (): string | null { return this.isbn }
   set Isbn (isbn: string | null) {
     if (isbn === '') isbn = null
-    if (isbn !== null && isbn.length < 10) throw new Error('ISBNの桁数が足りません' + isbn + ' ' + typeof isbn)
+    if (isbn !== null && isbn.length < 10) throw new Error(`ISBNの桁数が足りません${isbn} ${typeof isbn}`)
     // もしもisbnが13桁でハイフンがない場合はハイフンを追加する
     if (isbn !== null && isbn.length === 13 && isbn.indexOf('-') === -1) {
       const firstNum = isbn.substring(0, 3)

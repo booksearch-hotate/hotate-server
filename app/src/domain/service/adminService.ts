@@ -1,4 +1,4 @@
-import AdminModel from "../model/adminModel"
+import AdminModel from '../model/adminModel'
 
 export default class AdminService {
   public isValid (to: AdminModel, from: AdminModel): boolean {

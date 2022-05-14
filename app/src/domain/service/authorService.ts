@@ -1,5 +1,5 @@
-import AuthorModel from "../model/authorModel"
-import IAuthorDomainRepository from "./repository/IAuthorDomainRepository"
+import AuthorModel from '../model/authorModel'
+import IAuthorDomainRepository from './repository/IAuthorDomainRepository'
 
 import {v4 as uuidv4} from 'uuid'
 
@@ -17,6 +17,7 @@ export default class AuthorService {
    */
   public async isExist (author: AuthorModel): Promise<boolean> {
     const found = await this.authorRepository.findByName(author.Name)
+
     return found !== null
   }
 
