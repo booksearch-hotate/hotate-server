@@ -8,6 +8,10 @@
 
 [主要な問題とその解決方法](./DOC/resolve-problem.md)
 
+## 詳しい更新履歴
+
+[CHANGELOG](./CHANGELOG.md)
+
 ## 使用している技術
 
 ### 共通
