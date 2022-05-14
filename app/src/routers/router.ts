@@ -93,6 +93,7 @@ router.get('/login', (req: Request, res: Response) => {
     path: req.url,
     anyData: { loginStatus: admin.LoginStatus }
   }
+
   return res.render('pages/login', { pageData })
 })
 
@@ -186,6 +187,7 @@ router.get('/admin/csv/loading', (req: Request, res: Response) => {
     headTitle: '読み込み中',
     path: req.url,
   }
+
   return res.render('pages/admin/csv/loading', { pageData })
 })
 

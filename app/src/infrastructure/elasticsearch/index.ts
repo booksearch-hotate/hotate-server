@@ -46,7 +46,7 @@ export default class ElasticSearch {
       data: {
         query: {
           bool: {
-            should: [{ match: { book_name: searchWords } }, { match: { book_content: searchWords } }]
+            should: [{ match: { "book_name": searchWords } }, { match: { "book_content": searchWords } }]
           }
         }
       }
@@ -54,6 +54,7 @@ export default class ElasticSearch {
     const hits = res.data.hits.hits
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ids = hits.map((hit: any) => hit._source.db_id)
+
     return ids
   }
 }
