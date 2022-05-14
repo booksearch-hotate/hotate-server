@@ -3,7 +3,6 @@ import { Request, Response, Router, NextFunction } from "express"
 import multer from "multer"
 
 /* module */
-import CssPathMake from "../modules/cssPath"
 import OriginMake from "../modules/origin"
 
 /* application searvice */
@@ -44,9 +43,7 @@ interface IPage {
   headTitle: string; // ページのタイトル
   path: string;
   pathName?: string;
-  cssData?: string[]; // cssのファイル名
   origin?: string;
-  jsData?: string[]; // jsのファイル名
   anyData?: unknown; // その他のデータ
 }
 
