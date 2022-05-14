@@ -1,11 +1,11 @@
-import IBookApplicationRepository from "./repository/IBookApplicationRepository"
-import BookModel from "../domain/model/bookModel"
-import AuthorModel from "../domain/model/authorModel"
-import PublisherModel from "../domain/model/publisherModel"
-import BookService from "../domain/service/bookService"
-import BookData from "./dto/BookData"
+import IBookApplicationRepository from './repository/IBookApplicationRepository'
+import BookModel from '../domain/model/bookModel'
+import AuthorModel from '../domain/model/authorModel'
+import PublisherModel from '../domain/model/publisherModel'
+import BookService from '../domain/service/bookService'
+import BookData from './dto/BookData'
 
-import { getImgLink } from "../infrastructure/api/openbd"
+import { getImgLink } from '../infrastructure/api/openbd'
 
 export default class BookApplicationService {
   private readonly bookRepository: IBookApplicationRepository

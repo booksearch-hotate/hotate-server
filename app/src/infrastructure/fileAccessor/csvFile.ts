@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import csv from 'csvtojson'
 
-import ICsvFile from "./ICsvFile"
+import ICsvFile from './ICsvFile'
 
 export default class CsvFile implements ICsvFile {
   private file!: Express.Multer.File
