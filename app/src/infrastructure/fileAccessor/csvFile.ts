@@ -17,6 +17,8 @@ export default class CsvFile implements ICsvFile {
         if (row[key] === undefined || row[key] === '') row[key] = null
       })
     })
+    if (data.length === 0) throw new Error('csv file is empty')
+    if (data.length > 5000) throw new Error('csv file is too large')
     return data
   }
 
