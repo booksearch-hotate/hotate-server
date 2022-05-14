@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-build": "tsc --noEmit && rm -rf ./dist && node build.js dev",
-    "pro-build": "node build.js pro"
+    "pro-build": "node build.js pro",
+    "dev-run": "node --enable-source-maps dist/server.js local"
   },
   "author": "",
   "license": "ISC",
