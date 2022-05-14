@@ -28,6 +28,7 @@ export default class AdminRepository implements IAdminApplicationRepository {
       // https://sequelize.org/docs/v6/core-concepts/raw-queries/
       // eslint-disable-next-line no-magic-numbers
       const res = admin[0][0] as { id: string, pw: string }
+
       return new AdminModel(res.id, res.pw)
     } catch (e) {
       throw new Error("Could not obtain the administrator's id or pw.\n Error: " + e as string)
