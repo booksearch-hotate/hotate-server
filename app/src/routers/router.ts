@@ -1,6 +1,9 @@
 /* package */
 import { Request, Response, Router, NextFunction } from "express"
 import multer from "multer"
+import { broadcast } from "../websocket/server"
+
+import IDownloadCsv from "../websocket/IDownloadCsv"
 
 /* module */
 import OriginMake from "../modules/origin"
@@ -173,6 +176,15 @@ router.get('/admin/csv/headerChoice', async (req: Request, res: Response) => {
   res.render('pages/admin/csv/headerChoice', { pageData })
 })
 
+router.get('/admin/csv/loading', (req: Request, res: Response) => {
+  if (!csvFile.isExistFile()) return res.redirect('/admin/home')
+  pageData = {
+    headTitle: '読み込み中',
+    path: req.url,
+  }
+  return res.render('pages/admin/csv/loading', { pageData })
+})
+
 router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Response) => {
   const file = req.file
   try {
@@ -186,13 +198,17 @@ router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Respon
 
 router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
   const csv = await csvFile.getFileContent() // csvファイルの内容を取得
+  if (csvFile.File !== undefined) res.redirect(`/admin/csv/loading`)
+
   /* 初期化 */
   await bookApplicationService.deleteBooks()
   await publisherApplicationService.deletePublishers()
   await authorApplicationService.deleteAuthors()
 
   try {
-    for (const row of csv) {
+    const csvLengh = csv.length
+    for (let i = 0; i < csvLengh; i++) {
+      const row = csv[i]
       const authorName = row[req.body.authorName]
       const publisherName = row[req.body.publisherName]
       const authorId = await authorApplicationService.createAuthor(authorName)
@@ -209,14 +225,29 @@ router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
         publisherId,
         publisherName
       )
+      if (i % 5 === 0) {
+        const data:IDownloadCsv = {
+          type: 'progress',
+          percent: i / csvLengh
+        }
+        broadcast(data)
+      }
     }
+    const data:IDownloadCsv = {
+      type: 'complete',
+      percent: 1
+    }
+    broadcast(data)
   } catch (e) {
     logger.error(e as string)
-    return res.redirect('/admin/csv/choice')
+    const data:IDownloadCsv = {
+      type: 'error',
+      percent: -1
+    }
+    broadcast(data)
   } finally {
     csvFile.deleteFiles()
   }
-  return res.redirect('/admin/home')
 })
 
 export default router
