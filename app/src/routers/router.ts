@@ -1,32 +1,32 @@
 /* package */
-import { Request, Response, Router, NextFunction } from "express"
-import multer from "multer"
-import { broadcast } from "../websocket/server"
+import { Request, Response, Router, NextFunction } from 'express'
+import multer from 'multer'
+import { broadcast } from '../websocket/server'
 
 /* module */
-import OriginMake from "../modules/origin"
+import OriginMake from '../modules/origin'
 
 /* application searvice */
-import BookApplicationService from "../application/BookApplicationService"
-import AuthorApplicationService from "../application/AuthorApplicationService"
-import PublisherApplicationService from "../application/PublisherApplicationService"
-import AdminApplicationService from "../application/AdminApplicationService"
+import BookApplicationService from '../application/BookApplicationService'
+import AuthorApplicationService from '../application/AuthorApplicationService'
+import PublisherApplicationService from '../application/PublisherApplicationService'
+import AdminApplicationService from '../application/AdminApplicationService'
 
 /* repository */
-import BookRepository from "../interface/repository/BookRepository"
-import AuthorRepository from "../interface/repository/AuthorRepository"
-import PublisherRepository from "../interface/repository/PublisherRepository"
-import AdminRepository from "../interface/repository/AdminRepository"
+import BookRepository from '../interface/repository/BookRepository'
+import AuthorRepository from '../interface/repository/AuthorRepository'
+import PublisherRepository from '../interface/repository/PublisherRepository'
+import AdminRepository from '../interface/repository/AdminRepository'
 
 /* infrastructure */
-import CsvFile from "../infrastructure/fileAccessor/csvFile"
-import AdminSession from "../infrastructure/session"
-import Logger from "../infrastructure/logger/logger"
-import db from "../infrastructure/db"
-import Elasticsearch from "../infrastructure/elasticsearch"
+import CsvFile from '../infrastructure/fileAccessor/csvFile'
+import AdminSession from '../infrastructure/session'
+import Logger from '../infrastructure/logger/logger'
+import db from '../infrastructure/db'
+import Elasticsearch from '../infrastructure/elasticsearch'
 
 /* DTO */
-import AdminData from "../application/dto/AdminData"
+import AdminData from '../application/dto/AdminData'
 
 const router = Router() // ルーティング
 const upload = multer({ dest: './uploads/csv/' }) // multerの設定
@@ -208,7 +208,7 @@ router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
   try {
 
     const csv = await csvFile.getFileContent() // csvファイルの内容を取得
-    if (csvFile.File !== undefined) res.redirect(`/admin/csv/loading`)
+    if (csvFile.File !== undefined) res.redirect('/admin/csv/loading')
 
     /* 初期化 */
     await bookApplicationService.deleteBooks()

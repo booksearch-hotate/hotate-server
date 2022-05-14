@@ -46,7 +46,7 @@ export default class ElasticSearch {
       data: {
         query: {
           bool: {
-            should: [{ match: { "book_name": searchWords } }, { match: { "book_content": searchWords } }]
+            should: [{ match: { 'book_name': searchWords } }, { match: { 'book_content': searchWords } }]
           }
         }
       }
