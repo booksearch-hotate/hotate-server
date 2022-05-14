@@ -18,7 +18,7 @@ export default class CsvFile implements ICsvFile {
       })
     })
     const maxLen = 5000 // csvファイルの最大行数
-    if (!(data.length)) throw new Error('csv file is empty')
+    if (!data.length) throw new Error('csv file is empty')
     if (data.length > maxLen) throw new Error(`csv file is too large. max lengh is ${maxLen} but now is ${data.length}`)
     return data
   }
@@ -41,6 +41,7 @@ export default class CsvFile implements ICsvFile {
 
   public async getHeaderNames (): Promise<string[]> {
     const csvData = await this.getFileContent()
+    // eslint-disable-next-line no-magic-numbers
     return Object.keys(csvData[0])
   }
 
