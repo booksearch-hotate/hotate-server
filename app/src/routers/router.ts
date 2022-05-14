@@ -1,9 +1,11 @@
 /* package */
 import { Request, Response, Router, NextFunction } from "express"
 import multer from "multer"
+import { broadcast } from "../websocket/server"
+
+import IDownloadCsv from "../websocket/IDownloadCsv"
 
 /* module */
-import CssPathMake from "../modules/cssPath"
 import OriginMake from "../modules/origin"
 
 /* application searvice */
@@ -44,9 +46,7 @@ interface IPage {
   headTitle: string; // ページのタイトル
   path: string;
   pathName?: string;
-  cssData?: string[]; // cssのファイル名
   origin?: string;
-  jsData?: string[]; // jsのファイル名
   anyData?: unknown; // その他のデータ
 }
 
@@ -54,12 +54,25 @@ let pageData: IPage
 
 const admin = new AdminSession()
 
+/**
+ * originを取得
+ */
+const inputOriginData = (req: Request, res: Response, next: NextFunction) => {
+  pageData = {
+    headTitle: '',
+    path: '',
+    origin: OriginMake(req),
+  }
+  next()
+}
+
+router.use('/', inputOriginData)
+
 /* ルーティング */
 router.get('/', (req: Request, res: Response) => {
   pageData = {
     headTitle: 'ホーム | HOTATE',
     path: req.url,
-    cssData: new CssPathMake(['index'], OriginMake(req)).make(),
   }
   res.render('pages/index', { pageData })
 })
@@ -70,7 +83,6 @@ router.get('/search', async (req: Request, res: Response) => {
   pageData = {
     headTitle: '検索結果 | HOTATE',
     path: req.url,
-    cssData: new CssPathMake(['search'], OriginMake(req)).make(),
     anyData: { searchRes: resDatas }
   }
   res.render('pages/search', { pageData })
@@ -81,7 +93,6 @@ router.get('/login', (req: Request, res: Response) => {
   pageData = {
     headTitle: 'ログイン | HOTATE',
     path: req.url,
-    cssData: new CssPathMake(['login'], OriginMake(req)).make(),
     anyData: { loginStatus: admin.LoginStatus }
   }
   return res.render('pages/login', { pageData })
@@ -142,7 +153,6 @@ router.get('/admin/home', (req: Request, res: Response) => {
   pageData = {
     headTitle: '管理画面',
     path: req.url,
-    cssData: new CssPathMake(['auth/home'], OriginMake(req)).make()
   }
   res.render('pages/admin/home', { pageData })
 })
@@ -151,7 +161,6 @@ router.get('/admin/csv/choice', (req: Request, res: Response) => {
   pageData = {
     headTitle: 'CSVファイル選択',
     path: req.url,
-    cssData: new CssPathMake(['auth/csv/choice'], OriginMake(req)).make()
   }
   res.render('pages/admin/csv/choice', { pageData })
 })
@@ -160,12 +169,20 @@ router.get('/admin/csv/headerChoice', async (req: Request, res: Response) => {
   pageData = {
     headTitle: 'ヘッダー選択',
     path: req.url,
-    cssData: new CssPathMake(['auth/csv/choice'], OriginMake(req)).make(),
     anyData: {
       csvHeader: await csvFile.getHeaderNames()
     }
   }
   res.render('pages/admin/csv/headerChoice', { pageData })
+})
+
+router.get('/admin/csv/loading', (req: Request, res: Response) => {
+  if (!csvFile.isExistFile()) return res.redirect('/admin/home')
+  pageData = {
+    headTitle: '読み込み中',
+    path: req.url,
+  }
+  return res.render('pages/admin/csv/loading', { pageData })
 })
 
 router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Response) => {
@@ -181,13 +198,17 @@ router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Respon
 
 router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
   const csv = await csvFile.getFileContent() // csvファイルの内容を取得
+  if (csvFile.File !== undefined) res.redirect(`/admin/csv/loading`)
+
   /* 初期化 */
   await bookApplicationService.deleteBooks()
   await publisherApplicationService.deletePublishers()
   await authorApplicationService.deleteAuthors()
 
   try {
-    for (const row of csv) {
+    const csvLengh = csv.length
+    for (let i = 0; i < csvLengh; i++) {
+      const row = csv[i]
       const authorName = row[req.body.authorName]
       const publisherName = row[req.body.publisherName]
       const authorId = await authorApplicationService.createAuthor(authorName)
@@ -204,14 +225,29 @@ router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
         publisherId,
         publisherName
       )
+      if (i % 5 === 0) {
+        const data:IDownloadCsv = {
+          type: 'progress',
+          percent: i / csvLengh
+        }
+        broadcast(data)
+      }
     }
+    const data:IDownloadCsv = {
+      type: 'complete',
+      percent: 1
+    }
+    broadcast(data)
   } catch (e) {
     logger.error(e as string)
-    return res.redirect('/admin/csv/choice')
+    const data:IDownloadCsv = {
+      type: 'error',
+      percent: -1
+    }
+    broadcast(data)
   } finally {
     csvFile.deleteFiles()
   }
-  return res.redirect('/admin/home')
 })
 
 export default router
