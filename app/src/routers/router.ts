@@ -210,6 +210,14 @@ router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
     const csv = await csvFile.getFileContent() // csvファイルの内容を取得
     if (csvFile.File !== undefined) res.redirect('/admin/csv/loading')
 
+    broadcast({
+      progress: 'init',
+      data: {
+        current: -1,
+        total: -1
+      }
+    })
+
     /* 初期化 */
     await bookApplicationService.deleteBooks()
     await publisherApplicationService.deletePublishers()

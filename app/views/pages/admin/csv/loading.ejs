@@ -5,20 +5,15 @@
     <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/loading.css" />
   </head>
   <body>
-    <header class="text-center">
-      <h2>CSVの読み込み中...</h2>
+    <header class="text-center my-3">
+      <h2 id="header-text">CSVの読み込み中...</h2>
     </header>
-    <div class="progress" style="height: 16px;">
+    <div class="progress my-3" style="height: 18px;">
       <div class="progress-bar" role="progressbar" style="width: 0%;" id="progress-bar" aria-valuemin="0" aria-valuemax="100">
         <p id="progress-value" class="m-0">0</p>
       </div>
     </div>
-    <div class="complete-box text-center" id="complete-box">
-      <h2>完了しました！</h2>
-      <a href="/admin/home">管理者ホーム画面へ</a>
-    </div>
-    <div class="error-box text-center" id="error-box">
-      <h2 class="text-danger">エラーが発生しました！</h2>
+    <div class="complete-box text-center" id="link-box">
       <a href="/admin/home">管理者ホーム画面へ</a>
     </div>
     <script src="<%= pageData.origin %>/js/csvDownload.js"></script>
