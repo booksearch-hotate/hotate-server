@@ -1,7 +1,7 @@
 /* package */
 import { Request, Response, Router, NextFunction } from 'express'
 import multer from 'multer'
-import { broadcast } from '../websocket/server'
+import { broadcast } from '../handler/websocket'
 
 /* module */
 import OriginMake from '../modules/origin'
@@ -216,7 +216,7 @@ router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
     await authorApplicationService.deleteAuthors()
 
     const csvLengh = csv.length
-    const sendDataNum = 5 // wsを飛ばす基準
+
     for (let i = 0; i < csvLengh; i++) {
       const row = csv[i]
 
@@ -239,25 +239,32 @@ router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
         publisherName
       )
 
-      if (!(i % sendDataNum)) { // データが5件ごとにwsを飛ばす
-        broadcast({
-          type: 'progress',
-          percent: i / csvLengh
-        })
-      }
+      broadcast({
+        progress: 'progress',
+        data: {
+          current: i,
+          total: csvLengh
+        }
+      })
     }
 
     // 完了したことをwsで飛ばす
     broadcast({
-      type: 'complete',
-      percent: 1
+      progress: 'complete',
+      data: {
+        current: csvLengh,
+        total: csvLengh
+      }
     })
   } catch (e) {
     logger.error(e as string)
 
     broadcast({
-      type: 'error',
-      percent: -1
+      progress: 'error',
+      data: {
+        current: 0,
+        total: 0
+      }
     })
   } finally {
     csvFile.deleteFiles() // csvファイルを削除
