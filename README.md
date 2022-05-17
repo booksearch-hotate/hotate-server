@@ -8,7 +8,7 @@
 
 ---
 
-[![logo]](./DOC/img/hotate.JPG)
+[![logo]](DOC/img/hotate.JPG)
 </div>
 
 ## 使い方
