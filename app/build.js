@@ -1,12 +1,19 @@
 const { build } = require('esbuild')
 const glob = require('glob')
 const entryPoints = glob.sync('./src/**/*.ts')
+const fs = require('fs')
 
 const cmdList = process.argv.slice(2) // コマンドリスト
 
 const isProd = cmdList.includes('pro')
 
 console.log(`This build is ${isProd ? 'production' : 'development'} mode.`)
+
+/* distフォルダ内のファイルを全削除 */
+glob.sync('dist/**/*').forEach((file) => {
+  // フォルダでない場合
+  if (!fs.lstatSync(file).isDirectory()) fs.unlinkSync(file)
+})
 
 build({
   define: { 'process.env.NODE_ENV': process.env.NODE_ENV },
