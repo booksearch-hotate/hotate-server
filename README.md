@@ -6,9 +6,7 @@
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/booksearch-hotate/hotate-server/main)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/booksearch-hotate/hotate-server?include_prereleases)
 
----
-
-![logo](DOC/img/hotate.JPG)
+<img src="DOC/img/hotate.JPG" alt="logo" width="300px" />
 </div>
 
 ## 使い方
