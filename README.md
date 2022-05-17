@@ -1,9 +1,15 @@
-# HOTATE
+<div align="center">
+<h1>HOTATE</h1>
 
 [![build](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml)
 ![GitHub repo size](https://img.shields.io/github/repo-size/booksearch-hotate/hotate-server)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/booksearch-hotate/hotate-server/main)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/booksearch-hotate/hotate-server?include_prereleases)
+
+---
+
+[![logo]](./DOC/img/hotate.JPG)
+</div>
 
 ## 使い方
 
