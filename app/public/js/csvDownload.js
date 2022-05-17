@@ -8,11 +8,11 @@ ws.onopen = () => {
 
 ws.onmessage = (event) => {
   const data = JSON.parse(event.data)
+  const progress = data.progress // 現在の進捗状況(string)
 
-  // 小数第二位を四捨五入する
-  const percent = Math.round(data.percent * 100)
+  const percent = Math.round(data.data.current / data.data.total * 100)
 
-  if (data.type !== 'error') {
+  if (progress !== 'error') {
     const progressBar = document.getElementById('progress-bar')
     const progressBarText = document.getElementById('progress-value')
   
@@ -20,10 +20,10 @@ ws.onmessage = (event) => {
     progressBarText.innerText = percent + '%'
   }
 
-  if (data.type === 'complete') {
+  if (progress === 'complete') {
     const completeBox = document.getElementById('complete-box')
     completeBox.style.display = 'block'
-  } else if (data.type === 'error') {
+  } else if (progress === 'error') {
     const errorBox = document.getElementById('error-box')
     errorBox.style.display = 'block'
   }
