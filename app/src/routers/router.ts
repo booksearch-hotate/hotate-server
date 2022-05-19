@@ -239,6 +239,8 @@ router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
 
     const csvLengh = csv.length;
 
+    console.time('csv');
+
     for (let i = 0; i < csvLengh; i++) {
       const row = csv[i];
 
@@ -270,6 +272,8 @@ router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
         },
       });
     }
+
+    console.timeEnd('csv');
 
     // 完了したことをwsで飛ばす
     broadcast({
