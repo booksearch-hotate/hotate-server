@@ -13,32 +13,42 @@ export default class ElasticSearch {
   private host: string;
   private index: string;
   private uri: string;
-  private bulkApiFileName: string; // bulk apiを格納するjsonファイル
+  private bulkApiPath: string;
 
   constructor(index: string) {
     this.host = isLocal() ? 'localhost:9200' : 'es:9200';
     this.index = index;
     this.uri = `http://${this.host}/${this.index}`;
-    this.bulkApiFileName = `${this.index}_bulkapi.json`;
+
+    const bulkApiFileName = `${this.index}_bulkapi.json`;
+    this.bulkApiPath = `${appRoot.path}/uploads/json/${bulkApiFileName}`;
+
     this.createBulkApiFile();
   }
 
   private createBulkApiFile() {
     // bulkApiFileNameのjsonファイルをuploads/json/に作成する
-    const filePath = `${appRoot.path}/uploads/json/${this.bulkApiFileName}`;
-    const mock = {
-      test: 'hello!',
-    };
-    fs.writeFileSync(filePath, JSON.stringify(mock));
-    logger.debug(`${this.bulkApiFileName}を作成しました。`);
+    fs.writeFileSync(this.bulkApiPath, '');
   }
 
   public async create(doc: IEsPublisher | IEsBook | IEsAuthor): Promise<void> {
-    await axios.post(`${this.uri}/_doc/`, doc, {
+    const index = {index: {}};
+    const body = JSON.stringify(doc);
+    const bulkApi = `${JSON.stringify(index)}\n${body}\n`;
+    fs.appendFileSync(this.bulkApiPath, bulkApi);
+  }
+
+  public async executeBulkApi(): Promise<void> {
+    await axios.post(`${this.uri}/_bulk`, fs.readFileSync(this.bulkApiPath), {
       headers: {
         'Content-Type': 'application/json',
       },
     });
+    this.removeBulkApiFile();
+  }
+
+  private removeBulkApiFile() {
+    fs.unlinkSync(this.bulkApiPath);
   }
 
   public async initIndex(): Promise<void> {

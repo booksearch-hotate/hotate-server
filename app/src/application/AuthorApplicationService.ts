@@ -28,4 +28,8 @@ export default class AuthorApplicationService {
   public async deleteAuthors(): Promise<void> {
     await this.authorRepository.deleteAll();
   }
+
+  public async executeBulkApi(): Promise<void> {
+    await this.authorRepository.executeBulkApi();
+  }
 }

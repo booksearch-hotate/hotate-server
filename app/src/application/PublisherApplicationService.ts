@@ -28,4 +28,8 @@ export default class PublisherApplicationService {
   public async deletePublishers(): Promise<void> {
     await this.publisherRepository.deleteAll();
   }
+
+  public async executeBulkApi(): Promise<void> {
+    await this.publisherRepository.executeBulkApi();
+  }
 }

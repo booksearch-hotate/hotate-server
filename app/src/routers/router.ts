@@ -239,8 +239,6 @@ router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
 
     const csvLengh = csv.length;
 
-    console.time('csv');
-
     for (let i = 0; i < csvLengh; i++) {
       const row = csv[i];
 
@@ -273,7 +271,10 @@ router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
       });
     }
 
-    console.timeEnd('csv');
+    /* bulk apiの実行 */
+    await authorApplicationService.executeBulkApi();
+    await publisherApplicationService.executeBulkApi();
+    await bookApplicationService.executeBulkApi();
 
     // 完了したことをwsで飛ばす
     broadcast({
