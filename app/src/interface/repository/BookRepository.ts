@@ -84,4 +84,8 @@ export default class BookRepository implements IBookApplicationRepository {
     }
     return bookModels;
   }
+
+  public async executeBulkApi(): Promise<void> {
+    await this.elasticsearch.executeBulkApi();
+  }
 }

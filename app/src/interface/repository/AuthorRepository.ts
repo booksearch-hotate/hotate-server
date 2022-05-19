@@ -44,4 +44,8 @@ export default class AuthorRepository implements IAuthorApplicationRepository, I
     await this.db.Author.destroy({where: {}});
     await this.elasticsearch.initIndex();
   }
+
+  public async executeBulkApi(): Promise<void> {
+    await this.elasticsearch.executeBulkApi();
+  }
 }

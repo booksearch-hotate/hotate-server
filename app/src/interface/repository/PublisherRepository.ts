@@ -44,4 +44,7 @@ export default class PublisherRepository implements IPublisherApplicationReposit
     await this.db.Publisher.destroy({where: {}});
     await this.elasticsearch.initIndex();
   }
+  public async executeBulkApi(): Promise<void> {
+    await this.elasticsearch.executeBulkApi();
+  }
 }

@@ -62,4 +62,8 @@ export default class BookApplicationService {
 
     return bookDatas;
   }
+
+  public async executeBulkApi(): Promise<void> {
+    await this.bookRepository.executeBulkApi();
+  }
 }
