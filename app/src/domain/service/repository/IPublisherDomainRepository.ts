@@ -1,5 +1,5 @@
-import PublisherModel from '../../model/publisherModel'
+import PublisherModel from '../../model/publisherModel';
 
-export default interface IPublisherDomainRepository {
+export interface IPublisherDomainRepository {
   findByName (name: string | null): Promise<PublisherModel | null>
-}
+};

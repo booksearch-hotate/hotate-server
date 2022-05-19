@@ -1,17 +1,17 @@
-import WebSocket from 'ws'
+import WebSocket from 'ws';
 
-import { IBroadcastData } from './IBoadcastData'
+import {IBroadcastData} from './IBoadcastData';
 
-let wss: WebSocket.Server
+let wss: WebSocket.Server;
 
-export function startWSServer (port: number) {
-  wss = new WebSocket.Server({ port })
+export function startWSServer(port: number) {
+  wss = new WebSocket.Server({port});
 }
 
-export function broadcast (data: IBroadcastData) {
+export function broadcast(data: IBroadcastData) {
   wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(data))
+      client.send(JSON.stringify(data));
     }
-  })
+  });
 }
