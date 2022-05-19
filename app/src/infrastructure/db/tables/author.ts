@@ -1,14 +1,14 @@
-import { Sequelize, Model, DataTypes } from 'sequelize'
-import { HasManyCreateAssociationMixin } from 'sequelize'
-import Book from './book'
+import {Sequelize, Model, DataTypes} from 'sequelize';
+import {HasManyCreateAssociationMixin} from 'sequelize';
+import Book from './book';
 
 export default class Author extends Model {
-  public id!: string
-  public name!: string
+  public id!: string;
+  public name!: string;
 
-  public createBook!: HasManyCreateAssociationMixin<Book>
+  public createBook!: HasManyCreateAssociationMixin<Book>;
 
-  public static initialize (sequelize: Sequelize) {
+  public static initialize(sequelize: Sequelize) {
     this.init({
       id: {
         type: DataTypes.STRING,
@@ -23,15 +23,15 @@ export default class Author extends Model {
     }, {
       sequelize,
       tableName: 'authors',
-      timestamps: false
-    })
-    return this
+      timestamps: false,
+    });
+    return this;
   }
 
-  public static associate () {
+  public static associate() {
     this.hasMany(Book, {
       sourceKey: 'id',
-      foreignKey: 'author_id'
-    })
+      foreignKey: 'author_id',
+    });
   }
 }

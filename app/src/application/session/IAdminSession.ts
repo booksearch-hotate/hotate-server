@@ -1,6 +1,6 @@
-import AdminData from "../dto/AdminData"
+import AdminData from '../dto/AdminData';
 
-export default interface IAdminSession {
+export interface IAdminSession {
   create (adminData: AdminData): string
   verify (token: string): boolean
   get Token (): string
