@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-build": "tsc --noEmit && node build.js dev",
     "pro-build": "node build.js pro",
-    "dev-run": "node --enable-source-maps dist/server.js local"
+    "dev-run": "node --enable-source-maps dist/server.js local",
+    "eslint-fix": "eslint --fix --ext .ts src/*"
   },
   "author": "",
   "license": "ISC",
@@ -38,8 +39,9 @@
     "@types/multer": "^1.4.7",
     "@types/uuid": "^8.3.4",
     "@types/ws": "^8.5.3",
-    "@typescript-eslint/eslint-plugin": "^5.22.0",
-    "@typescript-eslint/parser": "^5.22.0",
-    "eslint": "^8.15.0"
+    "@typescript-eslint/eslint-plugin": "^5.25.0",
+    "@typescript-eslint/parser": "^5.25.0",
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0"
   }
 }
