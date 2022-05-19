@@ -1,4 +1,6 @@
 import axios from 'axios';
+import fs from 'fs';
+import * as appRoot from 'app-root-path';
 
 import {isLocal} from '../cli/cmdLine';
 import Logger from '../logger/logger';
@@ -11,11 +13,24 @@ export default class ElasticSearch {
   private host: string;
   private index: string;
   private uri: string;
+  private bulkApiFileName: string; // bulk apiを格納するjsonファイル
 
   constructor(index: string) {
     this.host = isLocal() ? 'localhost:9200' : 'es:9200';
     this.index = index;
     this.uri = `http://${this.host}/${this.index}`;
+    this.bulkApiFileName = `${this.index}_bulkapi.json`;
+    this.createBulkApiFile();
+  }
+
+  private createBulkApiFile() {
+    // bulkApiFileNameのjsonファイルをuploads/json/に作成する
+    const filePath = `${appRoot.path}/uploads/json/${this.bulkApiFileName}`;
+    const mock = {
+      test: 'hello!',
+    };
+    fs.writeFileSync(filePath, JSON.stringify(mock));
+    logger.debug(`${this.bulkApiFileName}を作成しました。`);
   }
 
   public async create(doc: IEsPublisher | IEsBook | IEsAuthor): Promise<void> {
