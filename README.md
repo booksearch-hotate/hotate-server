@@ -53,3 +53,22 @@
 
 - envファイルの作成
 - 管理者のIDとパスワードをDBへ登録
+- Elasticsearh初回生成時に以下のAPIを叩く
+```bash
+$ curl  -H "Content-Type: application/json" -XPUT localhost:9200/_template/template_1 -d '
+{
+    "template" : "*",
+    "settings" : {
+        "number_of_shards" : 1, "number_of_replicas" : 0
+    }
+}'
+{"acknowledged":true}
+```
+  - 既に生成した場合は以下のコマンドで既存のindexを変更する
+
+```bash
+$ curl -H "Content-Type: application/json" -XPUT localhost:9200/*/_settings -d '{"number_of_replicas":0}'
+{"acknowledged":true}
+```
+
+  - [参照元](https://zenn.dev/yakumo/articles/55d2c075c7394afdb24b2fbeaf92f9e7)
