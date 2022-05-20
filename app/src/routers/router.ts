@@ -1,43 +1,54 @@
 /* package */
-import { Request, Response, Router, NextFunction } from 'express'
-import multer from 'multer'
-import { broadcast } from '../websocket/server'
+import {Request, Response, Router, NextFunction} from 'express';
+import multer from 'multer';
+import {broadcast} from '../handler/websocket';
 
 /* module */
-import OriginMake from '../modules/origin'
+import originMake from '../modules/origin';
 
 /* application searvice */
-import BookApplicationService from '../application/BookApplicationService'
-import AuthorApplicationService from '../application/AuthorApplicationService'
-import PublisherApplicationService from '../application/PublisherApplicationService'
-import AdminApplicationService from '../application/AdminApplicationService'
+import BookApplicationService from '../application/BookApplicationService';
+import AuthorApplicationService from '../application/AuthorApplicationService';
+import PublisherApplicationService
+  from '../application/PublisherApplicationService';
+import AdminApplicationService from '../application/AdminApplicationService';
 
 /* repository */
-import BookRepository from '../interface/repository/BookRepository'
-import AuthorRepository from '../interface/repository/AuthorRepository'
-import PublisherRepository from '../interface/repository/PublisherRepository'
-import AdminRepository from '../interface/repository/AdminRepository'
+import BookRepository from '../interface/repository/BookRepository';
+import AuthorRepository from '../interface/repository/AuthorRepository';
+import PublisherRepository from '../interface/repository/PublisherRepository';
+import AdminRepository from '../interface/repository/AdminRepository';
 
 /* infrastructure */
-import CsvFile from '../infrastructure/fileAccessor/csvFile'
-import AdminSession from '../infrastructure/session'
-import Logger from '../infrastructure/logger/logger'
-import db from '../infrastructure/db'
-import Elasticsearch from '../infrastructure/elasticsearch'
+import CsvFile from '../infrastructure/fileAccessor/csvFile';
+import AdminSession from '../infrastructure/session';
+import Logger from '../infrastructure/logger/logger';
+import db from '../infrastructure/db';
+import Elasticsearch from '../infrastructure/elasticsearch';
 
 /* DTO */
-import AdminData from '../application/dto/AdminData'
+import AdminData from '../application/dto/AdminData';
+import BookData from '../application/dto/BookData';
 
-const router = Router() // ルーティング
-const upload = multer({ dest: './uploads/csv/' }) // multerの設定
-const logger = new Logger('router') // loggerのインスタンス化
-const csvFile = new CsvFile()
+// eslint-disable-next-line new-cap
+const router = Router(); // ルーティング
+const upload = multer({dest: './uploads/csv/'}); // multerの設定
+const logger = new Logger('router'); // loggerのインスタンス化
+const csvFile = new CsvFile();
 
 /* アプリケーションサービスの初期化 */
-const bookApplicationService = new BookApplicationService(new BookRepository(db, new Elasticsearch('books')))
-const authorApplicationService = new AuthorApplicationService(new AuthorRepository(db, new Elasticsearch('authors')))
-const publisherApplicationService = new PublisherApplicationService(new PublisherRepository(db, new Elasticsearch('publishers')))
-const adminApplicationService = new AdminApplicationService(new AdminRepository(db))
+const bookApplicationService = new BookApplicationService(
+    new BookRepository(db, new Elasticsearch('books')),
+);
+const authorApplicationService = new AuthorApplicationService(
+    new AuthorRepository(db, new Elasticsearch('authors')),
+);
+const publisherApplicationService = new PublisherApplicationService(
+    new PublisherRepository(db, new Elasticsearch('publishers')),
+);
+const adminApplicationService = new AdminApplicationService(
+    new AdminRepository(db),
+);
 
 /* ejsにデータを渡す際に使用するオブジェクト */
 interface IPage {
@@ -48,9 +59,9 @@ interface IPage {
   anyData?: unknown; // その他のデータ
 }
 
-let pageData: IPage
+let pageData: IPage;
 
-const admin = new AdminSession()
+const admin = new AdminSession();
 
 /**
  * originを取得
@@ -59,110 +70,113 @@ const inputOriginData = (req: Request, res: Response, next: NextFunction) => {
   pageData = {
     headTitle: '',
     path: '',
-    origin: OriginMake(req),
-  }
-  next()
-}
+    origin: originMake(req),
+  };
+  next();
+};
 
-router.use('/', inputOriginData)
+router.use('/', inputOriginData);
 
 /* ルーティング */
 router.get('/', (req: Request, res: Response) => {
   pageData = {
     headTitle: 'ホーム | HOTATE',
     path: req.url,
-  }
-  res.render('pages/index', { pageData })
-})
+  };
+  res.render('pages/index', {pageData});
+});
 
 router.get('/search', async (req: Request, res: Response) => {
-  const searchWord = req.query.search as string
-  const resDatas = searchWord === '' ? [] : await bookApplicationService.searchBooks(searchWord)
+  const searchWord = req.query.search as string;
+  let resDatas: BookData[] = [];
+  if (searchWord !== '') {
+    resDatas = await bookApplicationService.searchBooks(searchWord);
+  }
   pageData = {
     headTitle: '検索結果 | HOTATE',
     path: req.url,
-    anyData: { searchRes: resDatas }
-  }
-  res.render('pages/search', { pageData })
-})
+    anyData: {searchRes: resDatas},
+  };
+  res.render('pages/search', {pageData});
+});
 
 router.get('/login', (req: Request, res: Response) => {
-  if (admin.verify(req.session.token)) return res.redirect('/admin/home')
+  if (admin.verify(req.session.token)) return res.redirect('/admin/home');
   pageData = {
     headTitle: 'ログイン | HOTATE',
     path: req.url,
-    anyData: { loginStatus: admin.LoginStatus }
-  }
+    anyData: {loginStatus: admin.LoginStatus},
+  };
 
-  return res.render('pages/login', { pageData })
-})
+  return res.render('pages/login', {pageData});
+});
 
 /**
  * トークンの有効性を確認する関数。
  * トークンが有効でない場合はログイン画面にリダイレクトする。
  */
- const authCheckMiddle = (req: Request, res: Response, next: NextFunction) => {
+const authCheckMiddle = (req: Request, res: Response, next: NextFunction) => {
   if (admin.verify(req.session.token)) {
-    next()
+    next();
   } else {
-    logger.info('トークンが無効です。ログインページへリダイレクトします。')
-    admin.LoginStatus = 'miss'
-    res.redirect('/login')
+    logger.info('トークンが無効です。ログインページへリダイレクトします。');
+    admin.LoginStatus = 'miss';
+    res.redirect('/login');
   }
-}
+};
 
 /**
  * ログイン処理を行う関数
 */
 router.post('/check', async (req: Request, res: Response) => {
   try {
-    logger.debug('check')
+    logger.debug('check');
     if (req.body.id && req.body.pw) {
-      const id = req.body.id
-      const pw = req.body.pw
-      const adminData = new AdminData(id, pw)
-      const isValid = await adminApplicationService.isValid(adminData)
+      const id = req.body.id;
+      const pw = req.body.pw;
+      const adminData = new AdminData(id, pw);
+      const isValid = await adminApplicationService.isValid(adminData);
       if (isValid) {
-        logger.info('ログインに成功しました。')
-        admin.create(adminData)
-        admin.LoginStatus = 'login'
-        if (!req.session.token) req.session.token = admin.Token
-        res.redirect('/admin/home')
+        logger.info('ログインに成功しました。');
+        admin.create(adminData);
+        admin.LoginStatus = 'login';
+        if (!req.session.token) req.session.token = admin.Token;
+        res.redirect('/admin/home');
       } else {
-        logger.warn('ログインに失敗しました。')
-        admin.LoginStatus = 'miss'
-        res.redirect('/login')
+        logger.warn('ログインに失敗しました。');
+        admin.LoginStatus = 'miss';
+        res.redirect('/login');
       }
     } else {
-      admin.LoginStatus = 'miss'
-      res.redirect('/login')
-      logger.warn('直接ログインしようとしました。')
+      admin.LoginStatus = 'miss';
+      res.redirect('/login');
+      logger.warn('直接ログインしようとしました。');
     }
   } catch (e) {
-    logger.error(e as string)
-    admin.LoginStatus = 'error'
-    res.redirect('/login')
+    logger.error(e as string);
+    admin.LoginStatus = 'error';
+    res.redirect('/login');
   }
-})
+});
 
 // uriの始まりがauthのときに認証を行う
-router.use('/admin', authCheckMiddle)
+router.use('/admin', authCheckMiddle);
 
 router.get('/admin/home', (req: Request, res: Response) => {
   pageData = {
     headTitle: '管理画面',
     path: req.url,
-  }
-  res.render('pages/admin/home', { pageData })
-})
+  };
+  res.render('pages/admin/home', {pageData});
+});
 
 router.get('/admin/csv/choice', (req: Request, res: Response) => {
   pageData = {
     headTitle: 'CSVファイル選択',
     path: req.url,
-  }
-  res.render('pages/admin/csv/choice', { pageData })
-})
+  };
+  res.render('pages/admin/csv/choice', {pageData});
+});
 
 router.get('/admin/csv/headerChoice', async (req: Request, res: Response) => {
   try {
@@ -170,98 +184,119 @@ router.get('/admin/csv/headerChoice', async (req: Request, res: Response) => {
       headTitle: 'ヘッダー選択',
       path: req.url,
       anyData: {
-        csvHeader: await csvFile.getHeaderNames()
-      }
-    }
-    res.render('pages/admin/csv/headerChoice', { pageData })
+        csvHeader: await csvFile.getHeaderNames(),
+      },
+    };
+    res.render('pages/admin/csv/headerChoice', {pageData});
   } catch (e) {
-    logger.error(e as string)
-    res.redirect('/admin/csv/choice')
+    logger.error(e as string);
+    res.redirect('/admin/csv/choice');
   }
-})
+});
 
 router.get('/admin/csv/loading', (req: Request, res: Response) => {
-  if (!csvFile.isExistFile()) return res.redirect('/admin/home')
+  if (!csvFile.isExistFile()) return res.redirect('/admin/home');
 
   pageData = {
     headTitle: '読み込み中',
     path: req.url,
-  }
+  };
 
-  return res.render('pages/admin/csv/loading', { pageData })
-})
+  return res.render('pages/admin/csv/loading', {pageData});
+});
+
 
 router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Response) => {
-  const file = req.file
+  const file = req.file;
 
   try {
-    csvFile.File = file
-    logger.info('CSVファイルを受信しました。')
+    csvFile.File = file;
+    logger.info('CSVファイルを受信しました。');
   } catch (err) {
-    logger.error('CSVファイルの受信に失敗しました。')
+    logger.error('CSVファイルの受信に失敗しました。');
   }
 
-  res.redirect('/admin/csv/headerChoice')
-})
+  res.redirect('/admin/csv/headerChoice');
+});
 
 router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
   try {
+    const csv = await csvFile.getFileContent(); // csvファイルの内容を取得
+    if (csvFile.File !== undefined) res.redirect('/admin/csv/loading');
 
-    const csv = await csvFile.getFileContent() // csvファイルの内容を取得
-    if (csvFile.File !== undefined) res.redirect('/admin/csv/loading')
+    broadcast({
+      progress: 'init',
+      data: {
+        current: -1,
+        total: -1,
+      },
+    });
 
     /* 初期化 */
-    await bookApplicationService.deleteBooks()
-    await publisherApplicationService.deletePublishers()
-    await authorApplicationService.deleteAuthors()
+    await bookApplicationService.deleteBooks();
+    await publisherApplicationService.deletePublishers();
+    await authorApplicationService.deleteAuthors();
 
-    const csvLengh = csv.length
-    const sendDataNum = 5 // wsを飛ばす基準
+    const csvLengh = csv.length;
+
     for (let i = 0; i < csvLengh; i++) {
-      const row = csv[i]
+      const row = csv[i];
 
-      const authorName = row[req.body.authorName]
-      const publisherName = row[req.body.publisherName]
+      const authorName = row[req.body.authorName];
+      const publisherName = row[req.body.publisherName];
 
-      const authorId = await authorApplicationService.createAuthor(authorName)
-      const publisherId = await publisherApplicationService.createPublisher(publisherName)
+      const authorId = await authorApplicationService.createAuthor(authorName);
+
+      const publisherId = await publisherApplicationService.createPublisher(publisherName);
 
       await bookApplicationService.createBook(
-        row[req.body.bookName],
-        row[req.body.bookSubName],
-        row[req.body.bookContent],
-        row[req.body.isbn],
-        row[req.body.ndc],
-        row[req.body.year],
-        authorId,
-        authorName,
-        publisherId,
-        publisherName
-      )
+          row[req.body.bookName],
+          row[req.body.bookSubName],
+          row[req.body.bookContent],
+          row[req.body.isbn],
+          row[req.body.ndc],
+          row[req.body.year],
+          authorId,
+          authorName,
+          publisherId,
+          publisherName,
+      );
 
-      if (!(i % sendDataNum)) { // データが5件ごとにwsを飛ばす
-        broadcast({
-          type: 'progress',
-          percent: i / csvLengh
-        })
-      }
+      broadcast({
+        progress: 'progress',
+        data: {
+          current: i,
+          total: csvLengh,
+        },
+      });
     }
+
+    /* bulk apiの実行 */
+    await authorApplicationService.executeBulkApi();
+    await publisherApplicationService.executeBulkApi();
+    await bookApplicationService.executeBulkApi();
 
     // 完了したことをwsで飛ばす
     broadcast({
-      type: 'complete',
-      percent: 1
-    })
+      progress: 'complete',
+      data: {
+        current: csvLengh,
+        total: csvLengh,
+      },
+    });
   } catch (e) {
-    logger.error(e as string)
+    logger.error(e as string);
 
     broadcast({
-      type: 'error',
-      percent: -1
-    })
+      progress: 'error',
+      data: {
+        current: 0,
+        total: 0,
+      },
+    });
   } finally {
-    csvFile.deleteFiles() // csvファイルを削除
+    csvFile.deleteFiles(); // csvファイルを削除
   }
-})
+});
 
-export default router
+export default router;

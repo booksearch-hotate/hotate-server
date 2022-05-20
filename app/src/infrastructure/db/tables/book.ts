@@ -1,15 +1,15 @@
-import { Sequelize, Model, DataTypes, ModelAttributes } from 'sequelize'
+import {Sequelize, Model, DataTypes, ModelAttributes} from 'sequelize';
 
-import Publisher from './publisher'
-import Author from './author'
+import Publisher from './publisher';
+import Author from './author';
 
-import { IRequiredKeys, IOptionalKeys } from '../IDbColumn'
+import {IRequiredKeys, IOptionalKeys} from '../IDbColumn';
 
 const initColumn: IRequiredKeys & IOptionalKeys = {
   id: {
     type: DataTypes.STRING,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
   isbn: {
     type: DataTypes.STRING,
@@ -47,31 +47,31 @@ const initColumn: IRequiredKeys & IOptionalKeys = {
     type: DataTypes.STRING,
     allowNull: true,
     defaultValue: null,
-  }
-}
+  },
+};
 
 export default class Book extends Model {
-  public id!: string
-  public isbn!: string
-  public book_name!: string
-  public book_sub_name!: string
-  public author_id!: string
-  public ndc!: number
-  public publisher_id!: string
-  public year!: number
-  public book_content!: string
+  public id!: string;
+  public isbn!: string;
+  public book_name!: string;
+  public book_sub_name!: string;
+  public author_id!: string;
+  public ndc!: number;
+  public publisher_id!: string;
+  public year!: number;
+  public book_content!: string;
 
-  public static initialize (sequelize: Sequelize) {
+  public static initialize(sequelize: Sequelize) {
     this.init(initColumn as unknown as ModelAttributes, {
       sequelize,
       tableName: 'books',
-      timestamps: false
-    })
-    return this
+      timestamps: false,
+    });
+    return this;
   }
 
-  public static associate () {
-    this.belongsTo(Publisher, { foreignKey: 'publisher_id', constraints: false })
-    this.belongsTo(Author, { foreignKey: 'author_id', constraints: false })
+  public static associate() {
+    this.belongsTo(Publisher, {foreignKey: 'publisher_id', constraints: false});
+    this.belongsTo(Author, {foreignKey: 'author_id', constraints: false});
   }
 }

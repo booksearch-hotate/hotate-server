@@ -5,13 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-build": "tsc --noEmit && rm -rf ./dist && node build.js dev",
+    "dev-build": "tsc --noEmit && node build.js dev",
     "pro-build": "node build.js pro",
-    "dev-run": "node --enable-source-maps dist/server.js local"
+    "dev-run": "node --enable-source-maps dist/server.js local",
+    "eslint-fix": "eslint --fix --ext .ts src/*"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "app-root-path": "^3.0.0",
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
     "csvtojson": "^2.0.10",
@@ -20,6 +22,7 @@
     "esbuild": "^0.14.38",
     "express": "^4.17.3",
     "express-session": "^1.17.2",
+    "fs-extra": "^10.1.0",
     "glob": "^8.0.1",
     "jsonwebtoken": "^8.5.1",
     "log4js": "^6.4.6",
@@ -31,14 +34,16 @@
     "ws": "^8.6.0"
   },
   "devDependencies": {
+    "@types/app-root-path": "^1.2.4",
     "@types/express": "^4.17.13",
     "@types/express-session": "^1.17.4",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/multer": "^1.4.7",
     "@types/uuid": "^8.3.4",
     "@types/ws": "^8.5.3",
-    "@typescript-eslint/eslint-plugin": "^5.22.0",
-    "@typescript-eslint/parser": "^5.22.0",
-    "eslint": "^8.15.0"
+    "@typescript-eslint/eslint-plugin": "^5.25.0",
+    "@typescript-eslint/parser": "^5.25.0",
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0"
   }
 }

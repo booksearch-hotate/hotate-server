@@ -1,9 +1,16 @@
-# HOTATE
+<div align="center">
+<h1>HOTATE</h1>
 
 [![build](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml)
 ![GitHub repo size](https://img.shields.io/github/repo-size/booksearch-hotate/hotate-server)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/booksearch-hotate/hotate-server/main)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/booksearch-hotate/hotate-server?include_prereleases)
+
+![GitHub issues](https://img.shields.io/github/issues/booksearch-hotate/hotate-server)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/booksearch-hotate/hotate-server)
+
+<img src="DOC/img/hotate.JPG" alt="logo" width="300px" />
+</div>
 
 ## 使い方
 
@@ -46,3 +53,22 @@
 
 - envファイルの作成
 - 管理者のIDとパスワードをDBへ登録
+- Elasticsearh初回生成時に以下のAPIを叩く
+```bash
+$ curl  -H "Content-Type: application/json" -XPUT localhost:9200/_template/template_1 -d '
+{
+    "template" : "*",
+    "settings" : {
+        "number_of_shards" : 1, "number_of_replicas" : 0
+    }
+}'
+{"acknowledged":true}
+```
+  - 既に生成した場合は以下のコマンドで既存のindexを変更する
+
+```bash
+$ curl -H "Content-Type: application/json" -XPUT localhost:9200/*/_settings -d '{"number_of_replicas":0}'
+{"acknowledged":true}
+```
+
+  - [参照元](https://zenn.dev/yakumo/articles/55d2c075c7394afdb24b2fbeaf92f9e7)

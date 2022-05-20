@@ -2,30 +2,44 @@ const link = 'ws://localhost:5051/'
 
 const ws = new WebSocket(link)
 
+const headerText = document.getElementById('header-text')
+
+const linkBox = document.getElementById('link-box')
+
 ws.onopen = () => {
   console.log('connected')
+  headerText.innerText = '情報を取得中...'
 }
 
 ws.onmessage = (event) => {
   const data = JSON.parse(event.data)
+  const progress = data.progress // 現在の進捗状況(string)
 
-  // 小数第二位を四捨五入する
-  const percent = Math.round(data.percent * 100)
+  console.log(data)
 
-  if (data.type !== 'error') {
+  if (progress === 'init') {
+    headerText.innerText = 'データを初期化中...'
+    console.log('init')
+  }
+
+  const percent = Math.round(data.data.current / data.data.total * 100)
+
+  if (progress !== 'error') {
     const progressBar = document.getElementById('progress-bar')
     const progressBarText = document.getElementById('progress-value')
   
     progressBar.style.width = percent + '%'
     progressBarText.innerText = percent + '%'
+
+    headerText.innerText = `データを取得中... ${data.data.current} / ${data.data.total}`
   }
 
-  if (data.type === 'complete') {
-    const completeBox = document.getElementById('complete-box')
-    completeBox.style.display = 'block'
-  } else if (data.type === 'error') {
-    const errorBox = document.getElementById('error-box')
-    errorBox.style.display = 'block'
+  if (progress === 'complete') {
+    linkBox.style.display = 'block'
+    headerText.innerText = 'データの取得が完了しました'
+  } else if (progress === 'error') {
+    linkBox.style.display = 'block'
+    headerText.innerText = 'データの取得に失敗しました'
   }
 }
 

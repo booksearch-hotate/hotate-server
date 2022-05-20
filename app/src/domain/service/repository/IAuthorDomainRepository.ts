@@ -1,5 +1,5 @@
-import AuthorModel from '../../model/authorModel'
+import AuthorModel from '../../model/authorModel';
 
-export default interface IAuthorDomainRepository {
+export interface IAuthorDomainRepository {
   findByName (name: string | null): Promise<AuthorModel | null>
-}
+};

@@ -4,8 +4,7 @@
         "node": true
     },
     "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
+        "google"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -15,37 +14,13 @@
     "plugins": [
         "@typescript-eslint"
     ],
-    "ignorePatterns": ["public/js/*.js", "build.js"],
+    "ignorePatterns":[
+        "build.js",
+        "public/js/*"
+    ],
     "rules": {
-        "no-cond-assign": 2,
-        "no-console": 1,
-        "no-duplicate-case": 2,
-        "no-extra-parens": 1,
-        "complexity": 1,
-        "consistent-return": 2,
-        "eqeqeq": 2,
-        "no-alert": 1,
-        "no-else-return": 1,
-        "eol-last": 2,
-        "block-spacing": 2,
-        "comma-spacing": 2,
-        "no-trailing-spaces": 2,
-        "space-before-function-paren": 2,
-        "spaced-comment": 2,
-        "semi": ["error", "never", {"beforeStatementContinuationChars": "never"}],
-        "semi-spacing": ["error", {"after": true, "before": false}],
-        "semi-style": ["error", "first"],
-        "no-extra-semi": "error",
-        "no-unexpected-multiline": "error",
-        "no-unreachable": "error",
-        "use-isnan": "error",
-        "camelcase": 1,
-        "new-parens": 1,
-        "newline-before-return": 1,
-        "prefer-template": 1,
-        "prefer-const": 1,
-        "no-var": 2,
-        "arrow-spacing": 1,
-        "quotes": ["error", "single", { "avoidEscape": true }]
+        "valid-jsdoc": "off",
+        "require-jsdoc": "off",
+        "max-len": "off"
     }
 }
