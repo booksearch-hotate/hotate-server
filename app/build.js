@@ -1,12 +1,16 @@
 const { build } = require('esbuild')
 const glob = require('glob')
 const entryPoints = glob.sync('./src/**/*.ts')
+const fs = require('fs-extra')
 
 const cmdList = process.argv.slice(2) // コマンドリスト
 
 const isProd = cmdList.includes('pro')
 
 console.log(`This build is ${isProd ? 'production' : 'development'} mode.`)
+
+/* distフォルダ自体を削除 */
+fs.remove('./dist')
 
 build({
   define: { 'process.env.NODE_ENV': process.env.NODE_ENV },

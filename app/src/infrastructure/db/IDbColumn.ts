@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize'
+import {DataTypes} from 'sequelize';
 
 export interface IAttributeObj {
   type: DataTypes.DataType,

@@ -1,11 +1,11 @@
-import Publisher from "../../infrastructure/db/tables/publisher"
-import IPublisherApplicationRepository from "../../application/repository/IPublisherApplicationRepository"
-import IPublisherDomainRepository from "../../domain/service/repository/IPublisherDomainRepository"
-import PublisherModel from "../../domain/model/publisherModel"
+import Publisher from '../../infrastructure/db/tables/publisher';
+import {IPublisherApplicationRepository} from '../../application/repository/IPublisherApplicationRepository';
+import {IPublisherDomainRepository} from '../../domain/service/repository/IPublisherDomainRepository';
+import PublisherModel from '../../domain/model/publisherModel';
 
-import Elasticsearch from "../../infrastructure/elasticsearch"
+import Elasticsearch from '../../infrastructure/elasticsearch';
 
-import { IEsPublisher } from "../../infrastructure/elasticsearch/IElasticSearchDocument"
+import {IEsPublisher} from '../../infrastructure/elasticsearch/IElasticSearchDocument';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -13,35 +13,38 @@ interface sequelize {
 }
 
 export default class PublisherRepository implements IPublisherApplicationRepository, IPublisherDomainRepository {
-  private readonly db: sequelize
-  private readonly elasticsearch: Elasticsearch
+  private readonly db: sequelize;
+  private readonly elasticsearch: Elasticsearch;
 
-  public constructor (db: sequelize, elasticsearch: Elasticsearch) {
-    this.db = db
-    this.elasticsearch = elasticsearch
+  public constructor(db: sequelize, elasticsearch: Elasticsearch) {
+    this.db = db;
+    this.elasticsearch = elasticsearch;
   }
 
-  public async save (publisher: PublisherModel): Promise<void> {
+  public async save(publisher: PublisherModel): Promise<void> {
     await this.db.Publisher.create({
       id: publisher.Id,
-      name: publisher.Name
-    })
+      name: publisher.Name,
+    });
     const doc: IEsPublisher = {
       db_id: publisher.Id,
-      name: publisher.Name
-    }
-    await this.elasticsearch.create(doc)
+      name: publisher.Name,
+    };
+    await this.elasticsearch.create(doc);
   }
 
-  public async findByName (name: string | null): Promise<PublisherModel | null> {
+  public async findByName(name: string | null): Promise<PublisherModel | null> {
     const publisher = await this.db.Publisher.findOne({
-      where: { name }
-    })
-    if (publisher) return new PublisherModel(publisher.id, publisher.name)
-    return null
+      where: {name},
+    });
+    if (publisher) return new PublisherModel(publisher.id, publisher.name);
+    return null;
   }
-  public async deleteAll (): Promise<void> {
-    await this.db.Publisher.destroy({ where: {} })
-    await this.elasticsearch.initIndex()
+  public async deleteAll(): Promise<void> {
+    await this.db.Publisher.destroy({where: {}});
+    await this.elasticsearch.initIndex();
+  }
+  public async executeBulkApi(): Promise<void> {
+    await this.elasticsearch.executeBulkApi();
   }
 }
