@@ -35,6 +35,11 @@ body {
   gap: 1em;
 }
 
+.navbar-title .logo {
+  height: 2.5rem;
+  margin: .5rem;
+}
+
 /* 検索関係 */
 .search-button-text {
   cursor: pointer;
