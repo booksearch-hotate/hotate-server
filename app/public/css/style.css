@@ -2,12 +2,13 @@
 
 body {
   font-family: 'Text Me One', 'Zen Maru Gothic', sans-serif;
+  background-color: #f4e4d481;
 }
 
 .navbar-box {
   display: flex;
   justify-content: space-between;
-  background: #ddd;
+  background: #f0ceac;
 }
 
 .navbar-title h1 {
