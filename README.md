@@ -9,7 +9,7 @@
 ![GitHub issues](https://img.shields.io/github/issues/booksearch-hotate/hotate-server)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/booksearch-hotate/hotate-server)
 
-<img src="DOC/img/hotate.JPG" alt="logo" width="300px" />
+<img src="DOC/img/hotate_a.png" alt="logo" width="300px" />
 </div>
 
 ## 使い方
