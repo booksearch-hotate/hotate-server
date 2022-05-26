@@ -9,6 +9,9 @@
 ![GitHub issues](https://img.shields.io/github/issues/booksearch-hotate/hotate-server)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/booksearch-hotate/hotate-server)
 
+![LGTM Grade](https://img.shields.io/lgtm/grade/javascript/github/booksearch-hotate/hotate-server)
+![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/booksearch-hotate/hotate-server)
+
 <img src="DOC/img/hotate_a.png" alt="logo" width="300px" />
 </div>
 
