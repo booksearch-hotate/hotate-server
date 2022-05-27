@@ -1,12 +1,3 @@
----
-name: バージョンのアップデート
-about: このプロジェクトのバージョンアップに関するプルリクエスト
-title: "[Update]"
-labels: update
-assignees: ''
-
----
-
 ## 変更箇所
 
 - なるべく具体的に
