@@ -21,7 +21,7 @@ app.use(express.static('public')); // 静的ファイルの設定
 /* リクエスト回数に制限を追加 */
 const limiter = expressRateLimit({
   windowMs: 15 * 60 * 1000, // 15分間に
-  max: 5, // 100回まで
+  max: 100, // 100回まで
 });
 
 // セッションに用いるデータの型を定義
