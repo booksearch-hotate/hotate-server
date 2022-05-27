@@ -1,3 +1,5 @@
+import {Op} from 'sequelize';
+
 import Book from '../../infrastructure/db/tables/book'; // ここのBookはドメインオブジェクトではない！
 import Author from '../../infrastructure/db/tables/author';
 import Publisher from '../../infrastructure/db/tables/publisher';
@@ -112,6 +114,43 @@ export default class BookRepository implements IBookApplicationRepository {
         publisherModel,
     );
     return bookModel;
+  }
+
+  /**
+   * LIKE検索を用いてmysqlで検索を行う
+   * @param words 検索対象
+   */
+  public async searchUsingLike(words: string): Promise<BookModel[]> {
+    // book_nameのLIKE検索
+    const books = await this.db.Book.findAll({where: {book_name: {[Op.like]: `%${words}%`}}});
+    const bookModels: BookModel[] = [];
+
+    for (const fetchBook of books) {
+      const authorId = fetchBook.author_id;
+      const publisherId = fetchBook.publisher_id;
+
+      const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
+      const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+
+      if (!(author && publisher)) throw new Error('author or publisher not found');
+
+      const authorModel = new AuthorModel(author.id, author.name);
+      const publisherModel = new PublisherModel(publisher.id, publisher.name);
+
+      const bookModel = new BookModel(
+          fetchBook.id,
+          fetchBook.book_name,
+          fetchBook.book_sub_name,
+          fetchBook.book_content,
+          fetchBook.isbn,
+          fetchBook.ndc,
+          fetchBook.year,
+          authorModel,
+          publisherModel,
+      );
+      bookModels.push(bookModel);
+    }
+    return bookModels;
   }
 
   public async executeBulkApi(): Promise<void> {

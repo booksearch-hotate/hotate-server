@@ -49,9 +49,9 @@ export default class BookApplicationService {
     await this.bookRepository.deleteAll();
   }
 
-  public async searchBooks(query: string): Promise<BookData[]> {
+  public async searchBooks(query: string, isStrict: boolean): Promise<BookData[]> {
     // 検索から得られたbookModelの配列
-    const books = await this.bookRepository.search(query);
+    const books = isStrict ? await this.bookRepository.searchUsingLike(query) : await this.bookRepository.search(query);
     /* DTOに変換 */
     const bookDatas: BookData[] = [];
     for (const book of books) {
