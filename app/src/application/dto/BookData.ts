@@ -7,6 +7,7 @@ export default class BookData {
   private publisherName: string | null;
   private bookContent!: string;
   private imgLink: string | null;
+  private isbn: string | null;
 
   public constructor(book: BookModel) {
     this.id = book.Id;
@@ -15,6 +16,7 @@ export default class BookData {
     this.publisherName = book.Publisher.Name;
     this.BookContent = book.Content === null ? '' : book.Content;
     this.imgLink = null;
+    this.isbn = book.Isbn;
   }
 
   get Id(): string {
@@ -34,6 +36,12 @@ export default class BookData {
   }
   get BookContent(): string {
     return this.bookContent;
+  }
+  set Isbn(isbn: string | null) {
+    this.isbn = isbn;
+  }
+  get Isbn(): string | null {
+    return this.isbn;
   }
 
   set ImgLink(link: string | null) {

@@ -59,7 +59,6 @@ export default class BookApplicationService {
       if (book.Content !== null && book.Content.length > sliceStrLengh) book.Content = book.Content.substring(0, sliceStrLengh) + '...';
 
       const bookData = new BookData(book);
-      bookData.ImgLink = await getImgLink(book.Isbn); // 画像のURLを取得
       bookDatas.push(bookData);
     }
 
@@ -71,6 +70,10 @@ export default class BookApplicationService {
     const bookData = new BookData(book);
     bookData.ImgLink = await getImgLink(book.Isbn); // 画像のURLを取得
     return bookData;
+  }
+
+  public async getImgLink(isbn: string) {
+    return await getImgLink(isbn);
   }
 
   public async executeBulkApi(): Promise<void> {
