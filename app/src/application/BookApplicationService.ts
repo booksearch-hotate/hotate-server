@@ -49,18 +49,31 @@ export default class BookApplicationService {
     await this.bookRepository.deleteAll();
   }
 
-  public async searchBooks(query: string): Promise<BookData[]> {
+  public async searchBooks(query: string, isStrict: boolean): Promise<BookData[]> {
     // 検索から得られたbookModelの配列
-    const books = await this.bookRepository.search(query);
+    const books = isStrict ? await this.bookRepository.searchUsingLike(query) : await this.bookRepository.search(query);
     /* DTOに変換 */
     const bookDatas: BookData[] = [];
     for (const book of books) {
+      const sliceStrLengh = 50;
+      if (book.Content !== null && book.Content.length > sliceStrLengh) book.Content = book.Content.substring(0, sliceStrLengh) + '...';
+
       const bookData = new BookData(book);
-      bookData.ImgLink = await getImgLink(book.Isbn); // 画像のURLを取得
       bookDatas.push(bookData);
     }
 
     return bookDatas;
+  }
+
+  public async searchBookById(id: string): Promise<BookData> {
+    const book = await this.bookRepository.searchById(id);
+    const bookData = new BookData(book);
+    bookData.ImgLink = await getImgLink(book.Isbn); // 画像のURLを取得
+    return bookData;
+  }
+
+  public async getImgLink(isbn: string) {
+    return await getImgLink(isbn);
   }
 
   public async executeBulkApi(): Promise<void> {

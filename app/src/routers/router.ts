@@ -13,19 +13,23 @@ import AuthorApplicationService from '../application/AuthorApplicationService';
 import PublisherApplicationService
   from '../application/PublisherApplicationService';
 import AdminApplicationService from '../application/AdminApplicationService';
+import SearchHistoryApplicationService from '../application/SearchHistoryApplicationService';
 
 /* repository */
 import BookRepository from '../interface/repository/BookRepository';
 import AuthorRepository from '../interface/repository/AuthorRepository';
 import PublisherRepository from '../interface/repository/PublisherRepository';
 import AdminRepository from '../interface/repository/AdminRepository';
+import SearchHistoryRepository from '../interface/repository/SearchHistoryRepository';
 
 /* infrastructure */
 import CsvFile from '../infrastructure/fileAccessor/csvFile';
 import AdminSession from '../infrastructure/session';
 import Logger from '../infrastructure/logger/logger';
 import db from '../infrastructure/db';
-import Elasticsearch from '../infrastructure/elasticsearch';
+import EsCsv from '../infrastructure/elasticsearch/esCsv';
+import EsSearchBook from '../infrastructure/elasticsearch/esSearchBook';
+import EsSearchHistory from '../infrastructure/elasticsearch/esSearchHistory';
 
 /* DTO */
 import AdminData from '../application/dto/AdminData';
@@ -39,16 +43,19 @@ const csvFile = new CsvFile();
 
 /* アプリケーションサービスの初期化 */
 const bookApplicationService = new BookApplicationService(
-    new BookRepository(db, new Elasticsearch('books')),
+    new BookRepository(db, new EsSearchBook('books')),
 );
 const authorApplicationService = new AuthorApplicationService(
-    new AuthorRepository(db, new Elasticsearch('authors')),
+    new AuthorRepository(db, new EsCsv('authors')),
 );
 const publisherApplicationService = new PublisherApplicationService(
-    new PublisherRepository(db, new Elasticsearch('publishers')),
+    new PublisherRepository(db, new EsCsv('publishers')),
 );
 const adminApplicationService = new AdminApplicationService(
     new AdminRepository(db),
+);
+const searchHistoryApplicationService = new SearchHistoryApplicationService(
+    new SearchHistoryRepository(new EsSearchHistory('search_history')),
 );
 
 /* ejsにデータを渡す際に使用するオブジェクト */
@@ -75,7 +82,6 @@ const inputOriginData = (req: Request, res: Response, next: NextFunction) => {
     origin: originMake(req),
     csrfToken: '',
   };
-  console.log(pageData.csrfToken);
   next();
 };
 
@@ -92,14 +98,27 @@ router.get('/', (req: Request, res: Response) => {
 
 router.get('/search', async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
+  const isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
   let resDatas: BookData[] = [];
+  let searchHisDatas: string[] = [];
   if (searchWord !== '') {
-    resDatas = await bookApplicationService.searchBooks(searchWord);
+    resDatas = await bookApplicationService.searchBooks(searchWord, isStrict);
+    searchHisDatas = await searchHistoryApplicationService.search(searchWord);
   }
   pageData.headTitle = '検索結果 | HOTATE';
-  pageData.anyData = {searchRes: resDatas};
+  pageData.anyData = {searchRes: resDatas, searchHis: searchHisDatas};
+  await searchHistoryApplicationService.add(searchWord);
 
   res.render('pages/search', {pageData});
+});
+
+router.get('/item/:bookId', async (req: Request, res: Response) => {
+  const id = req.params.bookId; // 本のID
+  const bookData = await bookApplicationService.searchBookById(id);
+  pageData.headTitle = `${bookData.BookName} | HOTATE`;
+  pageData.anyData = {bookData};
+
+  res.render('pages/item', {pageData});
 });
 
 router.get('/login', csrfProtection, (req: Request, res: Response) => {
@@ -286,6 +305,13 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
   } finally {
     csvFile.deleteFiles(); // csvファイルを削除
   }
+});
+
+router.post('/api/:isbn/imgLink', async (req: Request, res: Response) => {
+  const isbn = req.params.isbn;
+  let imgLink = await bookApplicationService.getImgLink(isbn);
+  if (imgLink === null) imgLink = '';
+  res.json({imgLink});
 });
 
 export default router;

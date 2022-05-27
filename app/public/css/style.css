@@ -116,3 +116,20 @@ body {
   visibility: visible;
   opacity: 1;
 }
+
+.search-history-tag-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: center;
+  gap: 1rem;
+}
+
+.search-history-tag {
+  font-size: 1rem;
+  color: #2f3230;
+  text-decoration: none;
+  background: rgb(226, 247, 236);
+  border-radius: 10px;
+  border: 1px #3a3f3c solid;
+}

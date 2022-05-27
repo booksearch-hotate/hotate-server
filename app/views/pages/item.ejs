@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/item.css" />
+  </head>
+  <body>
+    <%- include('./../components/navbar') %>
+    <% data = pageData.anyData.bookData %>
+    <main>
+      <div class="book-content text-center my-3">
+        <h3 class="mt-3"><%= data.BookName %></h3>
+        <h4 class="mt-3"><%= data.AuthorName %> ・ <%= data.publisherName%></h4>
+        <img src="<%= data.ImgLink %>" class="img-fluid rounded-start">
+        <p class="mt-3"><%= data.BookContent %></p>
+      </div>
+    </main>
+    <%- include('./../components/inputJs') %>
+  </body>
+</html>
