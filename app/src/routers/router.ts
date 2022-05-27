@@ -100,12 +100,15 @@ router.get('/search', async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
   const isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
   let resDatas: BookData[] = [];
+  let searchHisDatas: string[] = [];
   if (searchWord !== '') {
-    searchHistoryApplicationService.add(searchWord);
     resDatas = await bookApplicationService.searchBooks(searchWord, isStrict);
+    searchHisDatas = await searchHistoryApplicationService.search(searchWord);
+    console.log(searchHisDatas);
   }
   pageData.headTitle = '検索結果 | HOTATE';
-  pageData.anyData = {searchRes: resDatas};
+  pageData.anyData = {searchRes: resDatas, searchHis: searchHisDatas};
+  await searchHistoryApplicationService.add(searchWord);
 
   res.render('pages/search', {pageData});
 });

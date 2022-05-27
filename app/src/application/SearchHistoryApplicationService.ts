@@ -8,7 +8,11 @@ export default class AdminApplicationService {
     this.searchHistoryApplicationRepository = searchHistoryApplicationRepository;
   }
 
-  public add(words: string) {
-    this.searchHistoryApplicationRepository.add(new SearchHistoryModel(words));
+  public async add(words: string) {
+    await this.searchHistoryApplicationRepository.add(new SearchHistoryModel(words));
+  }
+
+  public async search(words: string): Promise<string[]> {
+    return await this.searchHistoryApplicationRepository.search(words);
   }
 }
