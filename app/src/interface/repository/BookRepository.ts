@@ -7,7 +7,7 @@ import {IBookApplicationRepository} from '../../application/repository/IBookAppl
 import BookModel from '../../domain/model/bookModel';
 import AuthorModel from '../../domain/model/authorModel';
 import PublisherModel from '../../domain/model/publisherModel';
-import Elasticsearch from '../../infrastructure/elasticsearch';
+import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
 
 import {IEsBook} from '../../infrastructure/elasticsearch/IElasticSearchDocument';
 
@@ -20,11 +20,11 @@ interface sequelize {
 
 export default class BookRepository implements IBookApplicationRepository {
   private readonly db: sequelize;
-  private readonly elasticsearch: Elasticsearch;
+  private readonly esSearchBook: EsSearchBook;
 
-  public constructor(db: sequelize, elasticsearch: Elasticsearch) {
+  public constructor(db: sequelize, EsSearchBook: EsSearchBook) {
     this.db = db;
-    this.elasticsearch = elasticsearch;
+    this.esSearchBook = EsSearchBook;
   }
 
   public async save(book: BookModel): Promise<void> {
@@ -44,16 +44,16 @@ export default class BookRepository implements IBookApplicationRepository {
       book_name: book.Name,
       book_content: book.Content,
     };
-    await this.elasticsearch.create(doc);
+    await this.esSearchBook.create(doc);
   }
 
   public async deleteAll(): Promise<void> {
     await this.db.Book.destroy({where: {}});
-    await this.elasticsearch.initIndex();
+    await this.esSearchBook.initIndex();
   }
 
   public async search(query: string): Promise<BookModel[]> {
-    const bookIds = await this.elasticsearch.searchBooks(query); // 検索にヒットしたidの配列
+    const bookIds = await this.esSearchBook.searchBooks(query); // 検索にヒットしたidの配列
     // bookIdsからbooksを取得する
     const books = await this.db.Book.findAll({where: {id: bookIds}});
 
@@ -154,6 +154,6 @@ export default class BookRepository implements IBookApplicationRepository {
   }
 
   public async executeBulkApi(): Promise<void> {
-    await this.elasticsearch.executeBulkApi();
+    await this.esSearchBook.executeBulkApi();
   }
 }

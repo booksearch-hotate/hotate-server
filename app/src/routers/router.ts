@@ -25,7 +25,8 @@ import CsvFile from '../infrastructure/fileAccessor/csvFile';
 import AdminSession from '../infrastructure/session';
 import Logger from '../infrastructure/logger/logger';
 import db from '../infrastructure/db';
-import Elasticsearch from '../infrastructure/elasticsearch';
+import EsCsv from '../infrastructure/elasticsearch/esCsv';
+import EsSearchBook from '../infrastructure/elasticsearch/esSearchBook';
 
 /* DTO */
 import AdminData from '../application/dto/AdminData';
@@ -39,13 +40,13 @@ const csvFile = new CsvFile();
 
 /* アプリケーションサービスの初期化 */
 const bookApplicationService = new BookApplicationService(
-    new BookRepository(db, new Elasticsearch('books')),
+    new BookRepository(db, new EsSearchBook('books')),
 );
 const authorApplicationService = new AuthorApplicationService(
-    new AuthorRepository(db, new Elasticsearch('authors')),
+    new AuthorRepository(db, new EsCsv('authors')),
 );
 const publisherApplicationService = new PublisherApplicationService(
-    new PublisherRepository(db, new Elasticsearch('publishers')),
+    new PublisherRepository(db, new EsCsv('publishers')),
 );
 const adminApplicationService = new AdminApplicationService(
     new AdminRepository(db),
