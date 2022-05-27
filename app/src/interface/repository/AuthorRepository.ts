@@ -2,7 +2,7 @@ import Author from '../../infrastructure/db/tables/author';
 import {IAuthorApplicationRepository} from '../../application/repository/IAuthorApplicationRepository';
 import {IAuthorDomainRepository} from '../../domain/service/repository/IAuthorDomainRepository';
 import AuthorModel from '../../domain/model/authorModel';
-import Elasticsearch from '../../infrastructure/elasticsearch';
+import EsCsv from '../../infrastructure/elasticsearch/esCsv';
 
 import {IEsAuthor} from '../../infrastructure/elasticsearch/IElasticSearchDocument';
 
@@ -13,11 +13,11 @@ interface sequelize {
 
 export default class AuthorRepository implements IAuthorApplicationRepository, IAuthorDomainRepository {
   private readonly db: sequelize;
-  private readonly elasticsearch: Elasticsearch;
+  private readonly esCsv: EsCsv;
 
-  public constructor(db: sequelize, elasticsearch: Elasticsearch) {
+  public constructor(db: sequelize, esCsv: EsCsv) {
     this.db = db;
-    this.elasticsearch = elasticsearch;
+    this.esCsv = esCsv;
   }
 
   public async save(author: AuthorModel): Promise<void> {
@@ -29,7 +29,7 @@ export default class AuthorRepository implements IAuthorApplicationRepository, I
       db_id: author.Id,
       name: author.Name,
     };
-    await this.elasticsearch.create(doc);
+    await this.esCsv.create(doc);
   }
 
   public async findByName(name: string | null): Promise<AuthorModel | null> {
@@ -42,10 +42,10 @@ export default class AuthorRepository implements IAuthorApplicationRepository, I
 
   public async deleteAll(): Promise<void> {
     await this.db.Author.destroy({where: {}});
-    await this.elasticsearch.initIndex();
+    await this.esCsv.initIndex();
   }
 
   public async executeBulkApi(): Promise<void> {
-    await this.elasticsearch.executeBulkApi();
+    await this.esCsv.executeBulkApi();
   }
 }

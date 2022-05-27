@@ -1,24 +1,16 @@
+import ElasticSearch from './elasticsearch';
+import * as appRoot from 'app-root-path';
 import axios from 'axios';
 import fs from 'fs';
-import * as appRoot from 'app-root-path';
-
-import {isLocal} from '../cli/cmdLine';
-import Logger from '../logger/logger';
 
 import {IEsPublisher, IEsBook, IEsAuthor} from './IElasticSearchDocument';
 
-const logger = new Logger('elasticSearch');
 
-export default class ElasticSearch {
-  private host: string;
-  private index: string;
-  private uri: string;
+export default class EsCsv extends ElasticSearch {
   private bulkApiPath: string;
 
   constructor(index: string) {
-    this.host = isLocal() ? 'localhost:9200' : 'es:9200';
-    this.index = index;
-    this.uri = `http://${this.host}/${this.index}`;
+    super(index);
 
     const bulkApiFileName = `${this.index}_bulkapi.json`;
     this.bulkApiPath = `${appRoot.path}/uploads/json/${bulkApiFileName}`;
@@ -49,18 +41,6 @@ export default class ElasticSearch {
 
   private removeBulkApiFile() {
     fs.unlinkSync(this.bulkApiPath);
-  }
-
-  public async initIndex(): Promise<void> {
-    let isNone = false;
-    try {
-      await axios.get(`${this.uri}`);
-    } catch (e) {
-      isNone = true;
-      logger.info(`${this.index}は存在しません。`);
-    }
-    if (!isNone) await axios.delete(`${this.uri}`);
-    await axios.put(`${this.uri}`);
   }
 
   public async searchBooks(searchWords: string): Promise<string[]> {
