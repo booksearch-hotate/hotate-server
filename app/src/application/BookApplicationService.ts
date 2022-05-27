@@ -55,6 +55,9 @@ export default class BookApplicationService {
     /* DTOに変換 */
     const bookDatas: BookData[] = [];
     for (const book of books) {
+      const sliceStrLengh = 50;
+      if (book.Content !== null && book.Content.length > sliceStrLengh) book.Content = book.Content.substring(0, sliceStrLengh) + '...';
+
       const bookData = new BookData(book);
       bookData.ImgLink = await getImgLink(book.Isbn); // 画像のURLを取得
       bookDatas.push(bookData);

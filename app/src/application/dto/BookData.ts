@@ -30,9 +30,7 @@ export default class BookData {
     return this.publisherName;
   }
   set BookContent(content: string) {
-    const sliceStrLengh = 50;
-    if (content.length > sliceStrLengh) this.bookContent = content.substring(0, sliceStrLengh) + '...';
-    else this.bookContent = content;
+    this.bookContent = content;
   }
   get BookContent(): string {
     return this.bookContent;
