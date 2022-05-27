@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/search.css" />
+  </head>
+  <body>
+    <%- include('./../components/navbar') %>
+    <% data = pageData.anyData.bookData %>
+    <main>
+      <h1 class="text-center mt-3"><%= data.BookName %></h1>
+      <h4 class="text-center mt-3"><%= data.AuthorName %> ・ <%= data.publisherName%></h4>
+      <img src="<%= data.ImgLink %>" class="img-fluid rounded-start" alt="book">
+    </main>
+    <%- include('./../components/inputJs') %>
+  </body>
+</html>
