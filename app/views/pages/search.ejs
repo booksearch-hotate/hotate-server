@@ -14,7 +14,7 @@
         </div>
       <% } %>
       <% if (pageData.anyData.searchHis.length !== 0) { %>
-        <h4>他の人はこんな検索をしていました...</h4>
+        <h4>他の人はこんな検索をしていました</h4>
         <div class="search-history-tag-box px-2">
         <% pageData.anyData.searchHis.forEach(data => { %>
           <a href="/search?search=<%= data %>" class="search-history-tag px-3 py-1">
