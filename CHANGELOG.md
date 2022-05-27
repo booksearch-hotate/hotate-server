@@ -43,3 +43,11 @@ hotateのnode上での変更等があった場合にこちらのファイルに�
 - bulk apiを用いたcsvファイルからのインプット時間を短縮(50%程度)
 - ダウンロード画面を詳細に変更
 
+## [0.0.4](https://github.com/booksearch-hotate/hotate-server/pull/21) - 2022-05-26
+### Changed
+- ロゴを背景透過仕様に変更
+- パッケージのバージョンを更新
+- デザインの微調整
+
+### Added
+- CodeQLの追加(github actions)
