@@ -30,7 +30,7 @@
               <div class="card" style="width: 100%; height: 100%;">
                 <div class="row g-0">
                   <div class="col-md-4">
-                    <img src="<%= data.ImgLink %>" class="img-fluid rounded-start">
+                    <img src="<%= data.ImgLink %>" class="img-fluid rounded-start" data-isbn="<%= data.Isbn %>">
                   </div>
                   <div class="col-md-8">
                     <div class="card-body">
@@ -50,5 +50,6 @@
       </div>
     </main>
     <%- include('./../components/inputJs') %>
+    <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
   </body>
 </html>
