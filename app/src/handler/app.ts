@@ -1,4 +1,5 @@
 import express, {Application} from 'express';
+import expressRateLimit from 'express-rate-limit';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import dotenv from 'dotenv';
@@ -16,6 +17,12 @@ dotenv.config(); // envファイルの読み込み
 
 app.set('view engine', 'ejs'); // テンプレートエンジンの設定
 app.use(express.static('public')); // 静的ファイルの設定
+
+/* リクエスト回数に制限を追加 */
+const limiter = expressRateLimit({
+  windowMs: 15 * 60 * 1000, // 15分間に
+  max: 5, // 100回まで
+});
 
 // セッションに用いるデータの型を定義
 declare module 'express-session' {
@@ -38,6 +45,8 @@ app.use(session({
     maxAge: 60 * 60 * 1000, // 1時間
   },
 }));
+
+app.use(limiter);
 
 app.use('/', router);
 
