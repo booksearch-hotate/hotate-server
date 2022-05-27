@@ -53,3 +53,11 @@ hotateのnode上での変更等があった場合にこちらのファイルに�
 
 ### Added
 - CodeQLの追加(github actions)
+
+## [0.0.4b](https://github.com/booksearch-hotate/hotate-server/pull/23) - 2022-05-27
+## Added
+- CSRF対策の追加
+- リクエスト回数の制限を追加
+
+### Resolved
+- [コード解析によるアラートの修正](https://github.com/booksearch-hotate/hotate-server/issues/22)の解決
