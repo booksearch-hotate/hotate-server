@@ -102,6 +102,15 @@ router.get('/search', async (req: Request, res: Response) => {
   res.render('pages/search', {pageData});
 });
 
+router.get('/item/:bookId', async (req: Request, res: Response) => {
+  const id = req.params.bookId; // 本のID
+  const bookData = await bookApplicationService.searchBookById(id);
+  pageData.headTitle = `${bookData.BookName} | HOTATE`;
+  pageData.anyData = {bookData};
+
+  res.render('pages/item', {pageData});
+});
+
 router.get('/login', csrfProtection, (req: Request, res: Response) => {
   if (admin.verify(req.session.token)) return res.redirect('/admin/home');
   pageData.headTitle = 'ログイン | HOTATE';

@@ -63,6 +63,13 @@ export default class BookApplicationService {
     return bookDatas;
   }
 
+  public async searchBookById(id: string): Promise<BookData> {
+    const book = await this.bookRepository.searchById(id);
+    const bookData = new BookData(book);
+    bookData.ImgLink = await getImgLink(book.Isbn); // 画像のURLを取得
+    return bookData;
+  }
+
   public async executeBulkApi(): Promise<void> {
     await this.bookRepository.executeBulkApi();
   }
