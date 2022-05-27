@@ -8,6 +8,7 @@
     <h1>ヘッダーを選択</h1>
     <p>データを追加するのに必要なヘッダーを選択してください</p>
     <form action="/admin/csv/formHader" method="post">
+      <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
       <section>
         <p>ISBN</p>
         <select class="form-select" name="isbn">
