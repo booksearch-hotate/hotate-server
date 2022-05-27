@@ -5,4 +5,5 @@ export interface IBookApplicationRepository {
   deleteAll (): Promise<void>
   search (query: string): Promise<BookModel[]>
   executeBulkApi (): Promise<void>
+  searchById (id: string): Promise<BookModel>
 }

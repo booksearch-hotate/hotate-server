@@ -85,6 +85,35 @@ export default class BookRepository implements IBookApplicationRepository {
     return bookModels;
   }
 
+  public async searchById(id: string): Promise<BookModel> {
+    const book = await this.db.Book.findOne({where: {id: id}});
+    if (!book) throw new Error('book not found');
+
+    const authorId = book.author_id;
+    const publisherId = book.publisher_id;
+
+    const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
+    const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+
+    if (!(author && publisher)) throw new Error('author or publisher not found');
+
+    const authorModel = new AuthorModel(author.id, author.name);
+    const publisherModel = new PublisherModel(publisher.id, publisher.name);
+
+    const bookModel = new BookModel(
+        book.id,
+        book.book_name,
+        book.book_sub_name,
+        book.book_content,
+        book.isbn,
+        book.ndc,
+        book.year,
+        authorModel,
+        publisherModel,
+    );
+    return bookModel;
+  }
+
   public async executeBulkApi(): Promise<void> {
     await this.elasticsearch.executeBulkApi();
   }
