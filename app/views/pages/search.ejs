@@ -15,11 +15,13 @@
       <% } %>
       <% if (pageData.anyData.searchHis.length !== 0) { %>
         <h4>他の人はこんな検索をしていました...</h4>
+        <div class="search-history-tag-box px-2">
         <% pageData.anyData.searchHis.forEach(data => { %>
-          <a href="/search?search=<%= data %>" class="text-dark">
+          <a href="/search?search=<%= data %>" class="search-history-tag px-3 py-1">
             <%= data %>
           </a>
         <% }) %>
+        </div>
       <% } %>
       <div class="container">
         <div class="row row-cols-3">
