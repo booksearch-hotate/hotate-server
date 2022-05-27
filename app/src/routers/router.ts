@@ -104,7 +104,6 @@ router.get('/search', async (req: Request, res: Response) => {
   if (searchWord !== '') {
     resDatas = await bookApplicationService.searchBooks(searchWord, isStrict);
     searchHisDatas = await searchHistoryApplicationService.search(searchWord);
-    console.log(searchHisDatas);
   }
   pageData.headTitle = '検索結果 | HOTATE';
   pageData.anyData = {searchRes: resDatas, searchHis: searchHisDatas};
