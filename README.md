@@ -1,6 +1,8 @@
 <div align="center">
 <h1>HOTATE</h1>
 
+<img src="DOC/img/hotate_a.png" alt="logo" width="300px" />
+
 [![build](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml)
 ![GitHub repo size](https://img.shields.io/github/repo-size/booksearch-hotate/hotate-server)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/booksearch-hotate/hotate-server/main)
@@ -12,7 +14,6 @@
 ![LGTM Grade](https://img.shields.io/lgtm/grade/javascript/github/booksearch-hotate/hotate-server)
 ![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/booksearch-hotate/hotate-server)
 
-<img src="DOC/img/hotate_a.png" alt="logo" width="300px" />
 </div>
 
 ## 使い方
