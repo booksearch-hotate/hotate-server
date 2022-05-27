@@ -75,7 +75,6 @@ const inputOriginData = (req: Request, res: Response, next: NextFunction) => {
     origin: originMake(req),
     csrfToken: '',
   };
-  console.log(pageData.csrfToken);
   next();
 };
 
