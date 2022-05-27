@@ -307,4 +307,11 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
   }
 });
 
+router.post('/api/:isbn/imgLink', async (req: Request, res: Response) => {
+  const isbn = req.params.isbn;
+  let imgLink = await bookApplicationService.getImgLink(isbn);
+  if (imgLink === null) imgLink = '';
+  res.json({imgLink});
+});
+
 export default router;
