@@ -2,6 +2,7 @@
 import {Request, Response, Router, NextFunction} from 'express';
 import multer from 'multer';
 import {broadcast} from '../handler/websocket';
+import csurf from 'csurf';
 
 /* module */
 import originMake from '../modules/origin';
@@ -56,6 +57,7 @@ interface IPage {
   path: string;
   pathName?: string;
   origin?: string;
+  csrfToken: string;
   anyData?: unknown; // その他のデータ
 }
 
@@ -69,20 +71,22 @@ const admin = new AdminSession();
 const inputOriginData = (req: Request, res: Response, next: NextFunction) => {
   pageData = {
     headTitle: '',
-    path: '',
+    path: req.url,
     origin: originMake(req),
+    csrfToken: '',
   };
+  console.log(pageData.csrfToken);
   next();
 };
 
-router.use('/', inputOriginData);
+const csrfProtection = csurf({cookie: false});
+
+router.use(inputOriginData);
 
 /* ルーティング */
 router.get('/', (req: Request, res: Response) => {
-  pageData = {
-    headTitle: 'ホーム | HOTATE',
-    path: req.url,
-  };
+  pageData.headTitle = 'ホーム | HOTATE';
+
   res.render('pages/index', {pageData});
 });
 
@@ -92,21 +96,17 @@ router.get('/search', async (req: Request, res: Response) => {
   if (searchWord !== '') {
     resDatas = await bookApplicationService.searchBooks(searchWord);
   }
-  pageData = {
-    headTitle: '検索結果 | HOTATE',
-    path: req.url,
-    anyData: {searchRes: resDatas},
-  };
+  pageData.headTitle = '検索結果 | HOTATE';
+  pageData.anyData = {searchRes: resDatas};
+
   res.render('pages/search', {pageData});
 });
 
-router.get('/login', (req: Request, res: Response) => {
+router.get('/login', csrfProtection, (req: Request, res: Response) => {
   if (admin.verify(req.session.token)) return res.redirect('/admin/home');
-  pageData = {
-    headTitle: 'ログイン | HOTATE',
-    path: req.url,
-    anyData: {loginStatus: admin.LoginStatus},
-  };
+  pageData.headTitle = 'ログイン | HOTATE';
+  pageData.anyData = {loginStatus: admin.LoginStatus};
+  pageData.csrfToken = req.csrfToken();
 
   return res.render('pages/login', {pageData});
 });
@@ -128,7 +128,7 @@ const authCheckMiddle = (req: Request, res: Response, next: NextFunction) => {
 /**
  * ログイン処理を行う関数
 */
-router.post('/check', async (req: Request, res: Response) => {
+router.post('/check', csrfProtection, async (req: Request, res: Response) => {
   try {
     logger.debug('check');
     if (req.body.id && req.body.pw) {
@@ -163,30 +163,22 @@ router.post('/check', async (req: Request, res: Response) => {
 router.use('/admin', authCheckMiddle);
 
 router.get('/admin/home', (req: Request, res: Response) => {
-  pageData = {
-    headTitle: '管理画面',
-    path: req.url,
-  };
+  pageData.headTitle = '管理画面';
   res.render('pages/admin/home', {pageData});
 });
 
 router.get('/admin/csv/choice', (req: Request, res: Response) => {
-  pageData = {
-    headTitle: 'CSVファイル選択',
-    path: req.url,
-  };
+  pageData.headTitle = 'CSVファイル選択';
+
   res.render('pages/admin/csv/choice', {pageData});
 });
 
-router.get('/admin/csv/headerChoice', async (req: Request, res: Response) => {
+router.get('/admin/csv/headerChoice', csrfProtection, async (req: Request, res: Response) => {
   try {
-    pageData = {
-      headTitle: 'ヘッダー選択',
-      path: req.url,
-      anyData: {
-        csvHeader: await csvFile.getHeaderNames(),
-      },
-    };
+    pageData.anyData = {csvHeader: await csvFile.getHeaderNames()};
+    pageData.headTitle = 'CSVファイルヘッダー選択';
+    pageData.csrfToken = req.csrfToken();
+
     res.render('pages/admin/csv/headerChoice', {pageData});
   } catch (e) {
     logger.error(e as string);
@@ -197,10 +189,7 @@ router.get('/admin/csv/headerChoice', async (req: Request, res: Response) => {
 router.get('/admin/csv/loading', (req: Request, res: Response) => {
   if (!csvFile.isExistFile()) return res.redirect('/admin/home');
 
-  pageData = {
-    headTitle: '読み込み中',
-    path: req.url,
-  };
+  pageData.headTitle = '読み込み中...';
 
   return res.render('pages/admin/csv/loading', {pageData});
 });
@@ -219,7 +208,7 @@ router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Respon
   res.redirect('/admin/csv/headerChoice');
 });
 
-router.post('/admin/csv/formHader', async (req: Request, res: Response) => {
+router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Response) => {
   try {
     const csv = await csvFile.getFileContent(); // csvファイルの内容を取得
     if (csvFile.File !== undefined) res.redirect('/admin/csv/loading');
