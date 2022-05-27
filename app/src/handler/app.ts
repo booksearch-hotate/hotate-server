@@ -43,7 +43,6 @@ app.use(session({
     // ここに関してはマジでマジックナンバーでも伝わるやろ
     // eslint-disable-next-line no-magic-numbers
     maxAge: 60 * 60 * 1000, // 1時間
-    httpOnly: true,
   },
 }));
 
