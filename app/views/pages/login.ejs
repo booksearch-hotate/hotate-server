@@ -8,6 +8,7 @@
     <%- include('./../components/navbar') %>
     <h1 class="text-center">ログイン</h1>
     <form method="POST" action="/check" class="px-4">
+      <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
       <div class="mb-3">
         <label for="input_id" class="form-label">ユーザ名</label>
         <input type="text" class="form-control" id="input_id" name="id" placeholder="ユーザ名" required>
