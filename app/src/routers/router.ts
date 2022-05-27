@@ -13,12 +13,14 @@ import AuthorApplicationService from '../application/AuthorApplicationService';
 import PublisherApplicationService
   from '../application/PublisherApplicationService';
 import AdminApplicationService from '../application/AdminApplicationService';
+import SearchHistoryApplicationService from '../application/SearchHistoryApplicationService';
 
 /* repository */
 import BookRepository from '../interface/repository/BookRepository';
 import AuthorRepository from '../interface/repository/AuthorRepository';
 import PublisherRepository from '../interface/repository/PublisherRepository';
 import AdminRepository from '../interface/repository/AdminRepository';
+import SearchHistoryRepository from '../interface/repository/SearchHistoryRepository';
 
 /* infrastructure */
 import CsvFile from '../infrastructure/fileAccessor/csvFile';
@@ -27,6 +29,7 @@ import Logger from '../infrastructure/logger/logger';
 import db from '../infrastructure/db';
 import EsCsv from '../infrastructure/elasticsearch/esCsv';
 import EsSearchBook from '../infrastructure/elasticsearch/esSearchBook';
+import EsSearchHistory from '../infrastructure/elasticsearch/esSearchHistory';
 
 /* DTO */
 import AdminData from '../application/dto/AdminData';
@@ -50,6 +53,9 @@ const publisherApplicationService = new PublisherApplicationService(
 );
 const adminApplicationService = new AdminApplicationService(
     new AdminRepository(db),
+);
+const searchHistoryApplicationService = new SearchHistoryApplicationService(
+    new SearchHistoryRepository(new EsSearchHistory('search_history')),
 );
 
 /* ejsにデータを渡す際に使用するオブジェクト */
@@ -95,6 +101,7 @@ router.get('/search', async (req: Request, res: Response) => {
   const isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
   let resDatas: BookData[] = [];
   if (searchWord !== '') {
+    searchHistoryApplicationService.add(searchWord);
     resDatas = await bookApplicationService.searchBooks(searchWord, isStrict);
   }
   pageData.headTitle = '検索結果 | HOTATE';
