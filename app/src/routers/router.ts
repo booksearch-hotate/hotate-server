@@ -91,9 +91,10 @@ router.get('/', (req: Request, res: Response) => {
 
 router.get('/search', async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
+  const isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
   let resDatas: BookData[] = [];
   if (searchWord !== '') {
-    resDatas = await bookApplicationService.searchBooks(searchWord);
+    resDatas = await bookApplicationService.searchBooks(searchWord, isStrict);
   }
   pageData.headTitle = '検索結果 | HOTATE';
   pageData.anyData = {searchRes: resDatas};

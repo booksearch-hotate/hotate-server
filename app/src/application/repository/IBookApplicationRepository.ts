@@ -6,4 +6,5 @@ export interface IBookApplicationRepository {
   search (query: string): Promise<BookModel[]>
   executeBulkApi (): Promise<void>
   searchById (id: string): Promise<BookModel>
+  searchUsingLike(words: string): Promise<BookModel[]>
 }
