@@ -48,4 +48,4 @@ CREATE TABLE IF NOT EXISTS using_tags (
   PRIMARY KEY (id),
   FOREIGN KEY (book_id) REFERENCES books(id),
   FOREIGN KEY (tag_id) REFERENCES tags(id)
-)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
