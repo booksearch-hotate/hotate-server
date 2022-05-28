@@ -114,11 +114,18 @@ router.get('/search', async (req: Request, res: Response) => {
 
 router.get('/item/:bookId', async (req: Request, res: Response) => {
   const id = req.params.bookId; // 本のID
-  const bookData = await bookApplicationService.searchBookById(id);
-  pageData.headTitle = `${bookData.BookName} | HOTATE`;
-  pageData.anyData = {bookData};
-
-  res.render('pages/item', {pageData});
+  let bookData: BookData;
+  try {
+    bookData = await bookApplicationService.searchBookById(id);
+    pageData.headTitle = `${bookData.BookName} | HOTATE`;
+    pageData.anyData = {bookData, isError: false};
+  } catch {
+    logger.warn('本が見つかりませんでした。');
+    pageData.headTitle = '本が見つかりませんでした。';
+    pageData.anyData = {isError: true};
+  } finally {
+    res.render('pages/item', {pageData});
+  }
 });
 
 router.get('/login', csrfProtection, (req: Request, res: Response) => {
