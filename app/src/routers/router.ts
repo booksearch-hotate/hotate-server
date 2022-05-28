@@ -120,7 +120,7 @@ router.get('/item/:bookId', async (req: Request, res: Response) => {
     pageData.headTitle = `${bookData.BookName} | HOTATE`;
     pageData.anyData = {bookData, isError: false};
   } catch {
-    logger.warn('本が見つかりませんでした。');
+    logger.warn(`Not found bookId: ${id}`);
     pageData.headTitle = '本が見つかりませんでした。';
     pageData.anyData = {isError: true};
   } finally {
