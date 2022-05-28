@@ -34,3 +34,18 @@ CREATE TABLE IF NOT EXISTS admin (
   pw varchar(255) NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS tags (
+  id varchar(255) NOT NULL,
+  name varchar(2555) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS using_tags (
+  id int NOT NULL AUTO_INCREMENT,
+  book_id varchar(255) NOT NULL,
+  tag_id varchar(255) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (book_id) REFERENCES books(id),
+  FOREIGN KEY (tag_id) REFERENCES tags(id)
+)
