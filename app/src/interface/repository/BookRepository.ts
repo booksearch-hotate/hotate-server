@@ -129,11 +129,23 @@ export default class BookRepository implements IBookApplicationRepository {
   public async searchUsingLike(words: string): Promise<BookModel[]> {
     // book_nameのLIKE検索
     const books = await this.db.Book.findAll({where: {book_name: {[Op.like]: `%${words}%`}}});
+    const bookModels = await this.createBookModelList(books);
+    return bookModels;
+  }
+
+  public async executeBulkApi(): Promise<void> {
+    await this.esSearchBook.executeBulkApi();
+  }
+
+  private async createBookModelList(books: any[]): Promise<BookModel[]> {
     const bookModels: BookModel[] = [];
 
-    for (const fetchBook of books) {
-      const authorId = fetchBook.author_id;
-      const publisherId = fetchBook.publisher_id;
+    for (const book of books) {
+      const bookByDb = await this.db.Book.findOne({where: {id: book.book_id}});
+      if (!bookByDb) throw new Error('book not found');
+
+      const authorId = bookByDb.author_id;
+      const publisherId = bookByDb.publisher_id;
 
       const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
@@ -144,23 +156,19 @@ export default class BookRepository implements IBookApplicationRepository {
       const publisherModel = new PublisherModel(publisher.id, publisher.name);
 
       const bookModel = new BookModel(
-          fetchBook.id,
-          fetchBook.book_name,
-          fetchBook.book_sub_name,
-          fetchBook.book_content,
-          fetchBook.isbn,
-          fetchBook.ndc,
-          fetchBook.year,
+          bookByDb.id,
+          bookByDb.book_name,
+          bookByDb.book_sub_name,
+          bookByDb.book_content,
+          bookByDb.isbn,
+          bookByDb.ndc,
+          bookByDb.year,
           authorModel,
           publisherModel,
       );
       bookModels.push(bookModel);
     }
     return bookModels;
-  }
-
-  public async executeBulkApi(): Promise<void> {
-    await this.esSearchBook.executeBulkApi();
   }
 
   public async getTagsByBookId(bookId: string): Promise<TagModel[]> {
@@ -173,5 +181,15 @@ export default class BookRepository implements IBookApplicationRepository {
       tagModels.push(tagModel);
     }
     return tagModels;
+  }
+
+  public async searchByTag(tagName: string): Promise<BookModel[]> {
+    const tag = await this.db.Tag.findOne({where: {name: tagName}});
+    if (!tag) throw new Error('tag not found');
+
+    const books = await this.db.UsingTag.findAll({where: {tag_id: tag.id}});
+    const bookModels = await this.createBookModelList(books);
+
+    return bookModels;
   }
 }

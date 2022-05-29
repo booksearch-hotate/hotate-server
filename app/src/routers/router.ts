@@ -104,10 +104,11 @@ router.get('/', (req: Request, res: Response) => {
 router.get('/search', async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
   const isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
+  const isTag = req.query.tag === 'true'; // タグ検索かどうか
   let resDatas: BookData[] = [];
   let searchHisDatas: string[] = [];
   if (searchWord !== '') {
-    resDatas = await bookApplicationService.searchBooks(searchWord, isStrict);
+    resDatas = await bookApplicationService.searchBooks(searchWord, isStrict, isTag);
     searchHisDatas = await searchHistoryApplicationService.search(searchWord);
   }
   pageData.headTitle = '検索結果 | HOTATE';
