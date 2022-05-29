@@ -38,11 +38,13 @@
                       <h6 class="card-subtitle mb-2 text-muted"><%= data.AuthorName %> ・ <%= data.publisherName%></h6>
                       <p class="card-text"><%= data.BookContent %></p>
                       <% data.Tags.forEach(tag => { %>
-                        <p><%= tag %></p>
+                        <%- include('../components/bookTag', {tag: tag}) %>
                       <% }) %>
-                      <a href="/item/<%= data.id %>">
-                        <span class="mx-3"><%- include('./../icons/book') %></span>詳細
-                      </a>
+                      <div class="mt-2">
+                        <a href="/item/<%= data.id %>">
+                          <span class="mx-3"><%- include('./../icons/book') %></span>詳細
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>

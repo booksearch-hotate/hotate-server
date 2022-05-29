@@ -133,3 +133,16 @@ body {
   border-radius: 10px;
   border: 1px #3a3f3c solid;
 }
+
+.book-tag-box {
+  display: inline-flex;
+  align-items: center;
+  background: rgb(226, 247, 236);
+  border-radius: 10px;
+  border: 1px #3a3f3c solid;
+}
+
+.book-tag-text {
+  margin: 0;
+  font-size: 1rem;
+}
