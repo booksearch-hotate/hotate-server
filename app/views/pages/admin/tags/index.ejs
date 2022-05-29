@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+  </head>
+  <body>
+    <%- include('./../../../components/navbar') %>
+    <h3>タグ一覧</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>タグID</th>
+          <th>タグ名</th>
+          <th>削除</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let tag of pageData.anyData.tags) { %>
+          <tr>
+            <td><%= tag.Id %></td>
+            <td><%= tag.Name %></td>
+            <td>
+              <form action="/admin/tags/delete" method="post">
+                <input type="hidden" name="id" value="<%= tag.Id %>">
+                <button type="submit" class="btn btn-danger">削除</button>
+              </form>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <%- include('./../../../components/inputJs') %>
+  </body>
+</html>

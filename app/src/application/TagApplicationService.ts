@@ -4,6 +4,8 @@ import TagService from '../domain/service/tagService';
 
 import {ITagApplicationServiceRepository} from './repository/ITagApplicationServiceRepository';
 
+import TagData from './dto/TagData';
+
 import Logger from '../infrastructure/logger/logger';
 
 const logger = new Logger('TagApplicationService');
@@ -48,5 +50,14 @@ export default class TagApplicationService {
       logger.debug('saveCombination');
     }
     return isExistCombination;
+  }
+
+  public async findAll(): Promise<TagData[]> {
+    const tags = await this.tagApplicationServiceRepository.findAll();
+    return tags.map((tag) => new TagData(tag.Id, tag.Name));
+  }
+
+  public async delete(id: string): Promise<void> {
+    await this.tagApplicationServiceRepository.delete(id);
   }
 }
