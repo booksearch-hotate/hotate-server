@@ -333,11 +333,18 @@ router.post('/api/:isbn/imgLink', async (req: Request, res: Response) => {
 });
 
 router.post('/api/:bookId/tag', async (req: Request, res: Response) => {
-  const name: string = req.body.name;
-  const bookId = req.params.bookId;
-  logger.info(`${bookId}のタグを追加します。 => ${name}`);
-  await tagApplicationService.create(name, bookId);
-  res.json({});
+  let status = '';
+  try {
+    const name: string = req.body.name;
+    const bookId = req.params.bookId;
+    const isExist = await tagApplicationService.create(name, bookId);
+    status = isExist ? 'duplicate' : 'success';
+    res.json({status});
+  } catch (e) {
+    logger.error(e as string);
+    status = 'error';
+    res.json({status});
+  }
 });
 
 export default router;

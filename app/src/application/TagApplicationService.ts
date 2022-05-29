@@ -17,7 +17,13 @@ export default class TagApplicationService {
     this.tagService = new TagService(this.tagApplicationServiceRepository);
   }
 
-  public async create(name: string, bookId: string): Promise<void> {
+  /**
+   * タグと本を結びつける
+   * @param name タグの名称
+   * @param bookId 本のID
+   * @returns 重複した組み合わせがあったか
+   */
+  public async create(name: string, bookId: string): Promise<boolean> {
     let tag = new TagModel(this.tagService.createUUID(), name);
 
     /* tagsにタグが存在するか確認し、存在しない場合はtagsに新規追加する処理 */
@@ -41,5 +47,6 @@ export default class TagApplicationService {
       await this.tagApplicationServiceRepository.saveCombination(tag, bookId); // using_tagsに追加
       logger.debug('saveCombination');
     }
+    return isExistCombination;
   }
 }
