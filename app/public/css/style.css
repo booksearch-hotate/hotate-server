@@ -140,6 +140,8 @@ body {
   background: rgb(226, 247, 236);
   border-radius: 10px;
   border: 1px #3a3f3c solid;
+  text-decoration: none;
+  color: #2f3230;
 }
 
 .book-tag-text {
