@@ -58,7 +58,9 @@ export default class BookApplicationService {
       const sliceStrLengh = 50;
       if (book.Content !== null && book.Content.length > sliceStrLengh) book.Content = book.Content.substring(0, sliceStrLengh) + '...';
 
-      const bookData = new BookData(book);
+      const tags = await this.bookRepository.getTagsByBookId(book.Id);
+
+      const bookData = new BookData(book, tags);
       bookDatas.push(bookData);
     }
 
