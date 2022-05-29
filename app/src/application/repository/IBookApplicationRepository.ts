@@ -9,4 +9,5 @@ export interface IBookApplicationRepository {
   searchById (id: string): Promise<BookModel>
   searchUsingLike(words: string): Promise<BookModel[]>
   getTagsByBookId(bookId: string): Promise<TagModel[]>
+  searchByTag(tagName: string): Promise<BookModel[]>
 }
