@@ -14,6 +14,7 @@ import PublisherApplicationService
   from '../application/PublisherApplicationService';
 import AdminApplicationService from '../application/AdminApplicationService';
 import SearchHistoryApplicationService from '../application/SearchHistoryApplicationService';
+import TagApplicationService from '../application/TagApplicationService';
 
 /* repository */
 import BookRepository from '../interface/repository/BookRepository';
@@ -21,6 +22,7 @@ import AuthorRepository from '../interface/repository/AuthorRepository';
 import PublisherRepository from '../interface/repository/PublisherRepository';
 import AdminRepository from '../interface/repository/AdminRepository';
 import SearchHistoryRepository from '../interface/repository/SearchHistoryRepository';
+import TagRepository from '../interface/repository/TagRepository';
 
 /* infrastructure */
 import CsvFile from '../infrastructure/fileAccessor/csvFile';
@@ -53,6 +55,9 @@ const publisherApplicationService = new PublisherApplicationService(
 );
 const adminApplicationService = new AdminApplicationService(
     new AdminRepository(db),
+);
+const tagApplicationService = new TagApplicationService(
+    new TagRepository(db),
 );
 const searchHistoryApplicationService = new SearchHistoryApplicationService(
     new SearchHistoryRepository(new EsSearchHistory('search_history')),
@@ -314,11 +319,25 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
   }
 });
 
+/*
+===
+API
+===
+*/
+
 router.post('/api/:isbn/imgLink', async (req: Request, res: Response) => {
   const isbn = req.params.isbn;
   let imgLink = await bookApplicationService.getImgLink(isbn);
   if (imgLink === null) imgLink = '';
   res.json({imgLink});
+});
+
+router.post('/api/:bookId/tag', async (req: Request, res: Response) => {
+  const name: string = req.body.name;
+  const bookId = req.params.bookId;
+  logger.info(`${bookId}のタグを追加します。 => ${name}`);
+  await tagApplicationService.create(name, bookId);
+  res.json({});
 });
 
 export default router;
