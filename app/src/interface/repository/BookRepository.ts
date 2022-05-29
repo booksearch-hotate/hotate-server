@@ -3,19 +3,25 @@ import {Op} from 'sequelize';
 import Book from '../../infrastructure/db/tables/book'; // ここのBookはドメインオブジェクトではない！
 import Author from '../../infrastructure/db/tables/author';
 import Publisher from '../../infrastructure/db/tables/publisher';
+import UsingTag from '../../infrastructure/db/tables/usingTag';
+import Tag from '../../infrastructure/db/tables/tag';
+
 import {IBookApplicationRepository} from '../../application/repository/IBookApplicationRepository';
 import BookModel from '../../domain/model/bookModel';
 import AuthorModel from '../../domain/model/authorModel';
 import PublisherModel from '../../domain/model/publisherModel';
-import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
+import TagModel from '../../domain/model/tagModel';
 
+import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
 import {IEsBook} from '../../infrastructure/elasticsearch/IElasticSearchDocument';
 
 /* Sequelizeを想定 */
 interface sequelize {
-  Book: typeof Book,
+  Book: typeof Book
   Author: typeof Author
   Publisher: typeof Publisher
+  UsingTag: typeof UsingTag
+  Tag: typeof Tag
 }
 
 export default class BookRepository implements IBookApplicationRepository {
@@ -155,5 +161,17 @@ export default class BookRepository implements IBookApplicationRepository {
 
   public async executeBulkApi(): Promise<void> {
     await this.esSearchBook.executeBulkApi();
+  }
+
+  public async getTagsByBookId(bookId: string): Promise<TagModel[]> {
+    const tags = await this.db.UsingTag.findAll({where: {book_id: bookId}});
+    const tagModels: TagModel[] = [];
+    for (const tag of tags) {
+      const tagByDb = await this.db.Tag.findOne({where: {id: tag.tag_id}});
+      if (!tagByDb) throw new Error('tag not found');
+      const tagModel = new TagModel(tagByDb.id, tagByDb.name);
+      tagModels.push(tagModel);
+    }
+    return tagModels;
   }
 }
