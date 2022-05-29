@@ -4,6 +4,10 @@ import TagService from '../domain/service/tagService';
 
 import {ITagApplicationServiceRepository} from './repository/ITagApplicationServiceRepository';
 
+import Logger from '../infrastructure/logger/logger';
+
+const logger = new Logger('TagApplicationService');
+
 export default class TagApplicationService {
   private readonly tagApplicationServiceRepository: ITagApplicationServiceRepository;
   private readonly tagService: TagService;
@@ -18,6 +22,7 @@ export default class TagApplicationService {
 
     /* tagsにタグが存在するか確認し、存在しない場合はtagsに新規追加する処理 */
     const isExist = await this.tagService.isExist(tag); // Tagsに存在してないか確認
+    logger.debug(`isExist: ${isExist}`);
     if (!isExist) {
       await this.tagApplicationServiceRepository.createTag(tag); // Tagsに追加
     } else {
@@ -28,10 +33,13 @@ export default class TagApplicationService {
       tag = alreadyTag;
     }
 
+    logger.debug(`tag: ${tag}`);
+
     /* using_tagsに既に登録されているか */
     const isExistCombination = await this.tagApplicationServiceRepository.isExistCombination(tag.Id, bookId);
     if (!isExistCombination) {
       await this.tagApplicationServiceRepository.saveCombination(tag, bookId); // using_tagsに追加
+      logger.debug('saveCombination');
     }
   }
 }

@@ -18,10 +18,10 @@
         <div class="add-tag-form-box container">
           <div class="row">
             <div class="col-md-6">
-              <input type="text" class="form-control" id="add-tag-input" placeholder="タグを追加">
+              <input type="text" class="form-control" id="add-tag" placeholder="タグを追加">
             </div>
             <div class="col-md-6">
-              <button type="button" class="btn btn-primary" id="add-tag-btn">追加</button>
+              <button type="button" class="btn btn-primary" id="add-tag-btn" onclick="addTag()">追加</button>
             </div>
           </div>
         </div>
@@ -30,5 +30,6 @@
       <% } %>
     </main>
     <%- include('./../components/inputJs') %>
+    <script src="<%= pageData.origin %>/js/tagControll.js"></script>
   </body>
 </html>
