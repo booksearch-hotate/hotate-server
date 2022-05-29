@@ -15,6 +15,16 @@
           <img src="<%= data.ImgLink %>" class="img-fluid rounded-start">
           <p class="mt-3"><%= data.BookContent %></p>
         </div>
+        <div class="add-tag-form-box container">
+          <div class="row">
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="add-tag-input" placeholder="タグを追加">
+            </div>
+            <div class="col-md-6">
+              <button type="button" class="btn btn-primary" id="add-tag-btn">追加</button>
+            </div>
+          </div>
+        </div>
       <% } else { %>
         <h4 class="text-danger">本が見つかりませんでした。</h4>
       <% } %>
