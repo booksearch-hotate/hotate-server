@@ -199,6 +199,21 @@ router.get('/admin/home', (req: Request, res: Response) => {
   res.render('pages/admin/home', {pageData});
 });
 
+router.get('/admin/tags', async (req: Request, res: Response) => {
+  const tags = await tagApplicationService.findAll();
+
+  pageData.headTitle = 'タグ管理';
+  pageData.anyData = {tags};
+  res.render('pages/admin/tags/index', {pageData});
+});
+
+router.post('/admin/tags/delete', async (req: Request, res: Response) => {
+  const id = req.body.id;
+  await tagApplicationService.delete(id);
+
+  res.redirect('/admin/tags');
+});
+
 router.get('/admin/csv/choice', (req: Request, res: Response) => {
   pageData.headTitle = 'CSVファイル選択';
 
