@@ -60,6 +60,7 @@ export default class BookApplicationService {
         books = await this.bookRepository.searchByTag(query);
       } catch (e) {
         books = [];
+      }
     }
     /* DTOに変換 */
     const bookDatas: BookData[] = [];
