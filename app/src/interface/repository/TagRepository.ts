@@ -56,6 +56,7 @@ export default class TagRepository implements ITagApplicationServiceRepository {
   }
 
   public async delete(id: string): Promise<void> {
+    await this.db.UsingTag.destroy({where: {tag_id: id}});
     await this.db.Tag.destroy({where: {id}});
   }
 }
