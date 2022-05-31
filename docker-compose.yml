@@ -61,7 +61,6 @@ services:
           ELASTICSEARCH_REQUESTTIMEOUT: "60000"
         ports:
           - "5601:5601"
-        mem_limit: 1g
         networks:
           - esnet
         depends_on:
