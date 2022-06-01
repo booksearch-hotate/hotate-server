@@ -2,8 +2,6 @@ import Admin from '../../infrastructure/db/tables/admin';
 import dotenv from 'dotenv';
 import Logger from '../../infrastructure/logger/logger';
 
-import { Sequelize } from 'sequelize';
-
 import {IAdminApplicationRepository}
   from '../../application/repository/IAdminApplicationRepository';
 import AdminModel from '../../domain/model/adminModel';
@@ -35,15 +33,6 @@ export default class AdminRepository implements IAdminApplicationRepository {
       // https://sequelize.org/docs/v6/core-concepts/raw-queries/
       // eslint-disable-next-line no-magic-numbers
       const res = admin[0][0] as { id: string, pw: string };
-
-      const data = await this.db.Admin.findOne({
-        attributes: [
-          'id',
-          [Sequelize.fn('CONVERT', Sequelize.fn('AES_DECRYPT', Sequelize.fn('UNHEX', 'pw'), '${process.env.DB_PW_KEY}')), 'pw']
-        ]
-      })
-
-      console.log(data);
 
       return new AdminModel(res.id, res.pw);
     } catch (e) {
