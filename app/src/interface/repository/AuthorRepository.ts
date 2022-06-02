@@ -42,8 +42,8 @@ export default class AuthorRepository implements IAuthorApplicationRepository, I
   }
 
   public async deleteAll(): Promise<void> {
-    await this.db.Author.destroy({where: {}});
-    await this.esCsv.initIndex();
+    const deletes = [this.db.Author.destroy({where: {}}), this.esCsv.initIndex()];
+    await Promise.all(deletes);
   }
 
   public async executeBulkApi(): Promise<void> {

@@ -55,8 +55,8 @@ export default class BookRepository implements IBookApplicationRepository {
   }
 
   public async deleteAll(): Promise<void> {
-    await this.db.Book.destroy({where: {}});
-    await this.esSearchBook.initIndex();
+    const deletes = [this.db.Book.destroy({where: {}}), this.esSearchBook.initIndex()];
+    await Promise.all(deletes);
   }
 
   public async search(query: string): Promise<BookModel[]> {

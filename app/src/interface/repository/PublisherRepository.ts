@@ -42,8 +42,9 @@ export default class PublisherRepository implements IPublisherApplicationReposit
     return null;
   }
   public async deleteAll(): Promise<void> {
-    await this.db.Publisher.destroy({where: {}});
-    await this.esCsv.initIndex();
+    const deletes = [this.db.Publisher.destroy({where: {}}), this.esCsv.initIndex()];
+
+    await Promise.all(deletes);
   }
   public async executeBulkApi(): Promise<void> {
     await this.esCsv.executeBulkApi();
