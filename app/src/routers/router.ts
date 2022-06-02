@@ -3,6 +3,7 @@ import {Request, Response, Router, NextFunction} from 'express';
 import multer from 'multer';
 import {broadcast} from '../handler/websocket';
 import csurf from 'csurf';
+import {performance} from 'perf_hooks';
 
 /* module */
 import originMake from '../modules/origin';
@@ -268,6 +269,8 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
       },
     });
 
+
+    const startTimer = performance.now();
     /* 初期化 */
     await bookApplicationService.deleteBooks();
     await publisherApplicationService.deletePublishers();
@@ -320,6 +323,8 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
         total: csvLengh,
       },
     });
+    const endTimer = performance.now();
+    logger.info(`CSVファイルの読み込みに ${endTimer - startTimer}ms で終了しました。`);
   } catch (e) {
     logger.error(e as string);
 
