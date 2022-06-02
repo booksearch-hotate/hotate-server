@@ -26,11 +26,12 @@ export default class PublisherRepository implements IPublisherApplicationReposit
       id: publisher.Id,
       name: publisher.Name,
     });
+
     const doc: IEsPublisher = {
       db_id: publisher.Id,
       name: publisher.Name,
     };
-    await this.esCsv.create(doc);
+    this.esCsv.create(doc);
   }
 
   public async findByName(name: string | null): Promise<PublisherModel | null> {
