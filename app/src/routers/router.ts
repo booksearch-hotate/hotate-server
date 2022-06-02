@@ -115,7 +115,7 @@ router.get('/search', async (req: Request, res: Response) => {
     searchHisDatas = searchHis as string[];
   }
   pageData.headTitle = '検索結果 | HOTATE';
-  pageData.anyData = {searchRes: resDatas, searchHis: searchHisDatas};
+  pageData.anyData = {searchRes: resDatas, searchHis: searchHisDatas, searchWord: searchWord};
   await searchHistoryApplicationService.add(searchWord);
 
   res.render('pages/search', {pageData});

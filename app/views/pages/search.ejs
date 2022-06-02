@@ -7,6 +7,7 @@
     <%- include('./../components/navbar') %>
     <main>
       <h1 class="text-center mt-3">検索結果</h1>
+      <h4 class="text-center" style="color: #555">『<%= pageData.anyData.searchWord %>』</h4>
       <% if (pageData.anyData.searchRes.length === 0) { %>
         <div class="text-center">
           <h3 class="text-danger">検索結果が見つかりませんでした</h3>
@@ -14,7 +15,7 @@
         </div>
       <% } %>
       <% if (pageData.anyData.searchHis.length !== 0) { %>
-        <h4>他の人はこんな検索をしていました</h4>
+        <h4 class="mx-2">他の人はこんな検索をしていました</h4>
         <div class="search-history-tag-box px-2">
         <% pageData.anyData.searchHis.forEach(data => { %>
           <a href="/search?search=<%= data %>" class="search-history-tag px-3 py-1">
