@@ -23,7 +23,7 @@ export default class EsCsv extends ElasticSearch {
     fs.writeFileSync(this.bulkApiPath, '');
   }
 
-  public async create(doc: IEsPublisher | IEsBook | IEsAuthor): Promise<void> {
+  public create(doc: IEsPublisher | IEsBook | IEsAuthor): void {
     const index = {index: {}};
     const body = JSON.stringify(doc);
     const bulkApi = `${JSON.stringify(index)}\n${body}\n`;
