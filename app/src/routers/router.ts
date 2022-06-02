@@ -305,13 +305,15 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
           publisherName,
       ));
 
-      broadcast({
-        progress: 'progress',
-        data: {
-          current: i,
-          total: csvLengh,
-        },
-      });
+      if (i % 50 == 0) { // 50件ごとにブロードキャスト
+        broadcast({
+          progress: 'progress',
+          data: {
+            current: i,
+            total: csvLengh,
+          },
+        });
+      }
     }
 
     await Promise.all(booksPromise);
