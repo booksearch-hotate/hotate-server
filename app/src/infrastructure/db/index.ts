@@ -3,6 +3,8 @@ import Book from './tables/book';
 import Author from './tables/author';
 import Publisher from './tables/publisher';
 import Admin from './tables/admin';
+import Tag from './tables/tag';
+import UsingTag from './tables/usingTag';
 
 import {isLocal} from '../cli/cmdLine';
 
@@ -18,6 +20,8 @@ const db = {
   Author: Author.initialize(sequelize),
   Publisher: Publisher.initialize(sequelize),
   Admin: Admin.initialize(sequelize),
+  Tag: Tag.initialize(sequelize),
+  UsingTag: UsingTag.initialize(sequelize),
 };
 
 // テーブル同士の関係を作成

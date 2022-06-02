@@ -1,5 +1,6 @@
 import {IBookApplicationRepository}
   from './repository/IBookApplicationRepository';
+
 import BookModel from '../domain/model/bookModel';
 import AuthorModel from '../domain/model/authorModel';
 import PublisherModel from '../domain/model/publisherModel';
@@ -49,16 +50,27 @@ export default class BookApplicationService {
     await this.bookRepository.deleteAll();
   }
 
-  public async searchBooks(query: string, isStrict: boolean): Promise<BookData[]> {
+  public async searchBooks(query: string, isStrict: boolean, isTag: boolean): Promise<BookData[]> {
     // 検索から得られたbookModelの配列
-    const books = isStrict ? await this.bookRepository.searchUsingLike(query) : await this.bookRepository.search(query);
+    let books: BookModel[] = [];
+    if (!isTag) {
+      books = isStrict ? await this.bookRepository.searchUsingLike(query) : await this.bookRepository.search(query);
+    } else {
+      try {
+        books = await this.bookRepository.searchByTag(query);
+      } catch (e) {
+        books = [];
+      }
+    }
     /* DTOに変換 */
     const bookDatas: BookData[] = [];
     for (const book of books) {
       const sliceStrLengh = 50;
       if (book.Content !== null && book.Content.length > sliceStrLengh) book.Content = book.Content.substring(0, sliceStrLengh) + '...';
 
-      const bookData = new BookData(book);
+      const tags = await this.bookRepository.getTagsByBookId(book.Id);
+
+      const bookData = new BookData(book, tags);
       bookDatas.push(bookData);
     }
 
@@ -67,7 +79,8 @@ export default class BookApplicationService {
 
   public async searchBookById(id: string): Promise<BookData> {
     const book = await this.bookRepository.searchById(id);
-    const bookData = new BookData(book);
+    const tags = await this.bookRepository.getTagsByBookId(book.Id);
+    const bookData = new BookData(book, tags);
     bookData.ImgLink = await getImgLink(book.Isbn); // 画像のURLを取得
     return bookData;
   }

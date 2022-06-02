@@ -23,9 +23,21 @@
       <div class="form-group search-input-box">
         <input type="text" class="search-input" id="search-input" name="search" placeholder="本を検索" required>
       </div>
-      <div class="form-check form-switch text-center" style="font-size: 1.4rem;">
-        <input class="form-check-input" type="checkbox" name="strict" value="true" id="strictSearch" style="position: absolute;">
-        <label class="form-check-label" for="strictSearch">げんみつ検索</label>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-check form-switch text-center" style="font-size: 1.4rem;">
+              <input class="form-check-input" type="checkbox" name="strict" value="true" id="strictSearch" style="position: absolute;">
+              <label class="form-check-label" for="strictSearch">げんみつ検索</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-check form-switch text-center" style="font-size: 1.4rem;">
+              <input class="form-check-input" type="checkbox" name="tag" value="true" id="tagSearch" style="position: absolute;">
+              <label class="form-check-label" for="tagSearch">タグ検索</label>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>
