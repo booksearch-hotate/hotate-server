@@ -278,6 +278,8 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
 
     const csvLengh = csv.length;
 
+    const booksPromise = [];
+
     for (let i = 0; i < csvLengh; i++) {
       const row = csv[i];
 
@@ -288,7 +290,7 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
 
       const publisherId = await publisherApplicationService.createPublisher(publisherName);
 
-      await bookApplicationService.createBook(
+      booksPromise.push(bookApplicationService.createBook(
           row[req.body.bookName],
           row[req.body.bookSubName],
           row[req.body.bookContent],
@@ -299,7 +301,7 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
           authorName,
           publisherId,
           publisherName,
-      );
+      ));
 
       broadcast({
         progress: 'progress',
@@ -309,6 +311,8 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
         },
       });
     }
+
+    await Promise.all(booksPromise);
 
     /* bulk apiの実行 */
     const bulkApis = [
