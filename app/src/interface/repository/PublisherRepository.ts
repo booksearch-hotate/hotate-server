@@ -36,6 +36,7 @@ export default class PublisherRepository implements IPublisherApplicationReposit
 
   public async findByName(name: string | null): Promise<PublisherModel | null> {
     const publisher = await this.db.Publisher.findOne({
+      attributes: ['id'],
       where: {name},
     });
     if (publisher) return new PublisherModel(publisher.id, publisher.name);
