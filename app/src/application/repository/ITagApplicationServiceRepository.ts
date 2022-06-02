@@ -7,4 +7,5 @@ export interface ITagApplicationServiceRepository {
   isExistCombination(tagId: string, bookId: string): Promise<boolean>
   findAll (): Promise<TagModel[]>
   delete(id: string): Promise<void>
+  isExistTable(): Promise<boolean>
 }
