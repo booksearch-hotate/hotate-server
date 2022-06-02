@@ -9,13 +9,14 @@ hotateのnode上での変更等があった場合にこちらのファイルに�
 - Removed : 今回のリリースで削除されたDeprecatedな機能
 - Fixed : バグの修正
 - Security : 脆弱性の関するもの
+- Resolved : issueの解決など
 
 ## [Unreleased]
 ### Added
-- 本の詳細ページ
 - 検索時に予測する機能
-- タグ機能
-  - 検索やユーザによる追加が可能
+
+## Updated
+- 管理機能の改良
 
 ## [0.0.1] - 2022-05-09
 ### Added
@@ -61,3 +62,16 @@ hotateのnode上での変更等があった場合にこちらのファイルに�
 
 ### Resolved
 - [コード解析によるアラートの修正](https://github.com/booksearch-hotate/hotate-server/issues/22)の解決
+
+## [0.0.6](https://github.com/booksearch-hotate/hotate-server/pull/36) - 2022-06-02
+# v0.0.6
+
+## Resolved
+- 複数のissueを解決
+
+## Changed
+- デザインの修正
+
+## Added
+- タグ機能の追加
+- タグ管理機能の作成
