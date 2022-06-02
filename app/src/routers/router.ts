@@ -109,8 +109,10 @@ router.get('/search', async (req: Request, res: Response) => {
   let resDatas: BookData[] = [];
   let searchHisDatas: string[] = [];
   if (searchWord !== '') {
-    resDatas = await bookApplicationService.searchBooks(searchWord, isStrict, isTag);
-    searchHisDatas = await searchHistoryApplicationService.search(searchWord);
+    const promissList = [bookApplicationService.searchBooks(searchWord, isStrict, isTag), searchHistoryApplicationService.search(searchWord)];
+    const [books, searchHis] = await Promise.all(promissList);
+    resDatas = books as BookData[];
+    searchHisDatas = searchHis as string[];
   }
   pageData.headTitle = '検索結果 | HOTATE';
   pageData.anyData = {searchRes: resDatas, searchHis: searchHisDatas};
