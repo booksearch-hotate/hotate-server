@@ -26,23 +26,26 @@ export default class PublisherRepository implements IPublisherApplicationReposit
       id: publisher.Id,
       name: publisher.Name,
     });
+
     const doc: IEsPublisher = {
       db_id: publisher.Id,
       name: publisher.Name,
     };
-    await this.esCsv.create(doc);
+    this.esCsv.create(doc);
   }
 
   public async findByName(name: string | null): Promise<PublisherModel | null> {
     const publisher = await this.db.Publisher.findOne({
+      attributes: ['id'],
       where: {name},
     });
     if (publisher) return new PublisherModel(publisher.id, publisher.name);
     return null;
   }
   public async deleteAll(): Promise<void> {
-    await this.db.Publisher.destroy({where: {}});
-    await this.esCsv.initIndex();
+    const deletes = [this.db.Publisher.destroy({where: {}}), this.esCsv.initIndex()];
+
+    await Promise.all(deletes);
   }
   public async executeBulkApi(): Promise<void> {
     await this.esCsv.executeBulkApi();

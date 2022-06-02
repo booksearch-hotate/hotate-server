@@ -25,15 +25,17 @@ export default class AuthorRepository implements IAuthorApplicationRepository, I
       id: author.Id,
       name: author.Name,
     });
+
     const doc: IEsAuthor = {
       db_id: author.Id,
       name: author.Name,
     };
-    await this.esCsv.create(doc);
+    this.esCsv.create(doc);
   }
 
   public async findByName(name: string | null): Promise<AuthorModel | null> {
     const author = await this.db.Author.findOne({
+      attributes: ['id'],
       where: {name},
     });
     if (author) return new AuthorModel(author.id, author.name);
@@ -41,8 +43,8 @@ export default class AuthorRepository implements IAuthorApplicationRepository, I
   }
 
   public async deleteAll(): Promise<void> {
-    await this.db.Author.destroy({where: {}});
-    await this.esCsv.initIndex();
+    const deletes = [this.db.Author.destroy({where: {}}), this.esCsv.initIndex()];
+    await Promise.all(deletes);
   }
 
   public async executeBulkApi(): Promise<void> {

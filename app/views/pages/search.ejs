@@ -7,6 +7,7 @@
     <%- include('./../components/navbar') %>
     <main>
       <h1 class="text-center mt-3">検索結果</h1>
+      <h4 class="text-center" style="color: #555">『<%= pageData.anyData.searchWord %>』</h4>
       <% if (pageData.anyData.searchRes.length === 0) { %>
         <div class="text-center">
           <h3 class="text-danger">検索結果が見つかりませんでした</h3>
@@ -14,7 +15,7 @@
         </div>
       <% } %>
       <% if (pageData.anyData.searchHis.length !== 0) { %>
-        <h4>他の人はこんな検索をしていました</h4>
+        <h4 class="mx-2">他の人はこんな検索をしていました</h4>
         <div class="search-history-tag-box px-2">
         <% pageData.anyData.searchHis.forEach(data => { %>
           <a href="/search?search=<%= data %>" class="search-history-tag px-3 py-1">
@@ -37,9 +38,14 @@
                       <h5 class="card-title"><%= data.BookName %></h5>
                       <h6 class="card-subtitle mb-2 text-muted"><%= data.AuthorName %> ・ <%= data.publisherName%></h6>
                       <p class="card-text"><%= data.BookContent %></p>
-                      <a href="/item/<%= data.id %>">
-                        <span class="mx-3"><%- include('./../icons/book') %></span>詳細
-                      </a>
+                      <% data.Tags.forEach(tag => { %>
+                        <%- include('../components/bookTag', {tag: tag}) %>
+                      <% }) %>
+                      <div class="mt-2">
+                        <a href="/item/<%= data.id %>">
+                          <span class="mx-3"><%- include('./../icons/book') %></span>詳細
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -3,19 +3,25 @@ import {Op} from 'sequelize';
 import Book from '../../infrastructure/db/tables/book'; // ここのBookはドメインオブジェクトではない！
 import Author from '../../infrastructure/db/tables/author';
 import Publisher from '../../infrastructure/db/tables/publisher';
+import UsingTag from '../../infrastructure/db/tables/usingTag';
+import Tag from '../../infrastructure/db/tables/tag';
+
 import {IBookApplicationRepository} from '../../application/repository/IBookApplicationRepository';
 import BookModel from '../../domain/model/bookModel';
 import AuthorModel from '../../domain/model/authorModel';
 import PublisherModel from '../../domain/model/publisherModel';
-import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
+import TagModel from '../../domain/model/tagModel';
 
+import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
 import {IEsBook} from '../../infrastructure/elasticsearch/IElasticSearchDocument';
 
 /* Sequelizeを想定 */
 interface sequelize {
-  Book: typeof Book,
+  Book: typeof Book
   Author: typeof Author
   Publisher: typeof Publisher
+  UsingTag: typeof UsingTag
+  Tag: typeof Tag
 }
 
 export default class BookRepository implements IBookApplicationRepository {
@@ -39,17 +45,18 @@ export default class BookRepository implements IBookApplicationRepository {
       author_id: book.Author.Id,
       publisher_id: book.Publisher.Id,
     });
+
     const doc: IEsBook = {
       db_id: book.Id,
       book_name: book.Name,
       book_content: book.Content,
     };
-    await this.esSearchBook.create(doc);
+    this.esSearchBook.create(doc);
   }
 
   public async deleteAll(): Promise<void> {
-    await this.db.Book.destroy({where: {}});
-    await this.esSearchBook.initIndex();
+    const deletes = [this.db.Book.destroy({where: {}}), this.esSearchBook.initIndex()];
+    await Promise.all(deletes);
   }
 
   public async search(query: string): Promise<BookModel[]> {
@@ -123,11 +130,15 @@ export default class BookRepository implements IBookApplicationRepository {
   public async searchUsingLike(words: string): Promise<BookModel[]> {
     // book_nameのLIKE検索
     const books = await this.db.Book.findAll({where: {book_name: {[Op.like]: `%${words}%`}}});
+
     const bookModels: BookModel[] = [];
 
-    for (const fetchBook of books) {
-      const authorId = fetchBook.author_id;
-      const publisherId = fetchBook.publisher_id;
+    for (const book of books) {
+      const bookByDb = await this.db.Book.findOne({where: {id: book.id}});
+      if (!bookByDb) throw new Error('book not found');
+
+      const authorId = bookByDb.author_id;
+      const publisherId = bookByDb.publisher_id;
 
       const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
@@ -138,13 +149,13 @@ export default class BookRepository implements IBookApplicationRepository {
       const publisherModel = new PublisherModel(publisher.id, publisher.name);
 
       const bookModel = new BookModel(
-          fetchBook.id,
-          fetchBook.book_name,
-          fetchBook.book_sub_name,
-          fetchBook.book_content,
-          fetchBook.isbn,
-          fetchBook.ndc,
-          fetchBook.year,
+          bookByDb.id,
+          bookByDb.book_name,
+          bookByDb.book_sub_name,
+          bookByDb.book_content,
+          bookByDb.isbn,
+          bookByDb.ndc,
+          bookByDb.year,
           authorModel,
           publisherModel,
       );
@@ -155,5 +166,55 @@ export default class BookRepository implements IBookApplicationRepository {
 
   public async executeBulkApi(): Promise<void> {
     await this.esSearchBook.executeBulkApi();
+  }
+
+  public async getTagsByBookId(bookId: string): Promise<TagModel[]> {
+    const tags = await this.db.UsingTag.findAll({where: {book_id: bookId}});
+    const tagModels: TagModel[] = [];
+    for (const tag of tags) {
+      const tagByDb = await this.db.Tag.findOne({where: {id: tag.tag_id}});
+      if (!tagByDb) throw new Error('tag not found');
+      const tagModel = new TagModel(tagByDb.id, tagByDb.name);
+      tagModels.push(tagModel);
+    }
+    return tagModels;
+  }
+
+  public async searchByTag(tagName: string): Promise<BookModel[]> {
+    const tag = await this.db.Tag.findOne({where: {name: tagName}});
+    if (!tag) throw new Error('tag not found');
+
+    const books = await this.db.UsingTag.findAll({where: {tag_id: tag.id}});
+    const bookModels: BookModel[] = [];
+
+    for (const book of books) {
+      const bookByDb = await this.db.Book.findOne({where: {id: book.book_id}});
+      if (!bookByDb) throw new Error('book not found');
+
+      const authorId = bookByDb.author_id;
+      const publisherId = bookByDb.publisher_id;
+
+      const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
+      const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+
+      if (!(author && publisher)) throw new Error('author or publisher not found');
+
+      const authorModel = new AuthorModel(author.id, author.name);
+      const publisherModel = new PublisherModel(publisher.id, publisher.name);
+
+      const bookModel = new BookModel(
+          bookByDb.id,
+          bookByDb.book_name,
+          bookByDb.book_sub_name,
+          bookByDb.book_content,
+          bookByDb.isbn,
+          bookByDb.ndc,
+          bookByDb.year,
+          authorModel,
+          publisherModel,
+      );
+      bookModels.push(bookModel);
+    }
+    return bookModels;
   }
 }

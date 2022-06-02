@@ -1,4 +1,5 @@
 import BookModel from '../../domain/model/bookModel';
+import TagModel from '../../domain/model/tagModel';
 
 export default class BookData {
   private id: string;
@@ -8,8 +9,9 @@ export default class BookData {
   private bookContent!: string;
   private imgLink: string | null;
   private isbn: string | null;
+  private tags: string[] = [];
 
-  public constructor(book: BookModel) {
+  public constructor(book: BookModel, tags: TagModel[] | null = null) {
     this.id = book.Id;
     this.bookName = book.Name;
     this.authorName = book.Author.Name;
@@ -17,6 +19,12 @@ export default class BookData {
     this.BookContent = book.Content === null ? '' : book.Content;
     this.imgLink = null;
     this.isbn = book.Isbn;
+
+    if (tags !== null) {
+      tags.forEach((tag) => {
+        this.tags.push(tag.Name);
+      });
+    }
   }
 
   get Id(): string {
@@ -49,5 +57,9 @@ export default class BookData {
   }
   get ImgLink(): string | null {
     return this.imgLink;
+  }
+
+  get Tags(): string[] {
+    return this.tags;
   }
 }

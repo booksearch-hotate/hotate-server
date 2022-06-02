@@ -3,6 +3,7 @@ import {Request, Response, Router, NextFunction} from 'express';
 import multer from 'multer';
 import {broadcast} from '../handler/websocket';
 import csurf from 'csurf';
+import {performance} from 'perf_hooks';
 
 /* module */
 import originMake from '../modules/origin';
@@ -14,6 +15,7 @@ import PublisherApplicationService
   from '../application/PublisherApplicationService';
 import AdminApplicationService from '../application/AdminApplicationService';
 import SearchHistoryApplicationService from '../application/SearchHistoryApplicationService';
+import TagApplicationService from '../application/TagApplicationService';
 
 /* repository */
 import BookRepository from '../interface/repository/BookRepository';
@@ -21,6 +23,7 @@ import AuthorRepository from '../interface/repository/AuthorRepository';
 import PublisherRepository from '../interface/repository/PublisherRepository';
 import AdminRepository from '../interface/repository/AdminRepository';
 import SearchHistoryRepository from '../interface/repository/SearchHistoryRepository';
+import TagRepository from '../interface/repository/TagRepository';
 
 /* infrastructure */
 import CsvFile from '../infrastructure/fileAccessor/csvFile';
@@ -53,6 +56,9 @@ const publisherApplicationService = new PublisherApplicationService(
 );
 const adminApplicationService = new AdminApplicationService(
     new AdminRepository(db),
+);
+const tagApplicationService = new TagApplicationService(
+    new TagRepository(db),
 );
 const searchHistoryApplicationService = new SearchHistoryApplicationService(
     new SearchHistoryRepository(new EsSearchHistory('search_history')),
@@ -99,14 +105,17 @@ router.get('/', (req: Request, res: Response) => {
 router.get('/search', async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
   const isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
+  const isTag = req.query.tag === 'true'; // タグ検索かどうか
   let resDatas: BookData[] = [];
   let searchHisDatas: string[] = [];
   if (searchWord !== '') {
-    resDatas = await bookApplicationService.searchBooks(searchWord, isStrict);
-    searchHisDatas = await searchHistoryApplicationService.search(searchWord);
+    const promissList = [bookApplicationService.searchBooks(searchWord, isStrict, isTag), searchHistoryApplicationService.search(searchWord)];
+    const [books, searchHis] = await Promise.all(promissList);
+    resDatas = books as BookData[];
+    searchHisDatas = searchHis as string[];
   }
   pageData.headTitle = '検索結果 | HOTATE';
-  pageData.anyData = {searchRes: resDatas, searchHis: searchHisDatas};
+  pageData.anyData = {searchRes: resDatas, searchHis: searchHisDatas, searchWord: searchWord};
   await searchHistoryApplicationService.add(searchWord);
 
   res.render('pages/search', {pageData});
@@ -114,11 +123,18 @@ router.get('/search', async (req: Request, res: Response) => {
 
 router.get('/item/:bookId', async (req: Request, res: Response) => {
   const id = req.params.bookId; // 本のID
-  const bookData = await bookApplicationService.searchBookById(id);
-  pageData.headTitle = `${bookData.BookName} | HOTATE`;
-  pageData.anyData = {bookData};
-
-  res.render('pages/item', {pageData});
+  let bookData: BookData;
+  try {
+    bookData = await bookApplicationService.searchBookById(id);
+    pageData.headTitle = `${bookData.BookName} | HOTATE`;
+    pageData.anyData = {bookData, isError: false};
+  } catch {
+    logger.warn(`Not found bookId: ${id}`);
+    pageData.headTitle = '本が見つかりませんでした。';
+    pageData.anyData = {isError: true};
+  } finally {
+    res.render('pages/item', {pageData});
+  }
 });
 
 router.get('/login', csrfProtection, (req: Request, res: Response) => {
@@ -186,6 +202,21 @@ router.get('/admin/home', (req: Request, res: Response) => {
   res.render('pages/admin/home', {pageData});
 });
 
+router.get('/admin/tags', async (req: Request, res: Response) => {
+  const tags = await tagApplicationService.findAll();
+
+  pageData.headTitle = 'タグ管理';
+  pageData.anyData = {tags};
+  res.render('pages/admin/tags/index', {pageData});
+});
+
+router.post('/admin/tags/delete', async (req: Request, res: Response) => {
+  const id = req.body.id;
+  await tagApplicationService.delete(id);
+
+  res.redirect('/admin/tags');
+});
+
 router.get('/admin/csv/choice', (req: Request, res: Response) => {
   pageData.headTitle = 'CSVファイル選択';
 
@@ -231,6 +262,7 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
   try {
     const csv = await csvFile.getFileContent(); // csvファイルの内容を取得
     if (csvFile.File !== undefined) res.redirect('/admin/csv/loading');
+    else res.redirect('/admin/csv/choice');
 
     broadcast({
       progress: 'init',
@@ -240,12 +272,17 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
       },
     });
 
+
+    const startTimer = performance.now();
     /* 初期化 */
+    if (await tagApplicationService.isExistTable()) await tagApplicationService.deleteAll();
     await bookApplicationService.deleteBooks();
     await publisherApplicationService.deletePublishers();
     await authorApplicationService.deleteAuthors();
 
     const csvLengh = csv.length;
+
+    const booksPromise = [];
 
     for (let i = 0; i < csvLengh; i++) {
       const row = csv[i];
@@ -257,7 +294,7 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
 
       const publisherId = await publisherApplicationService.createPublisher(publisherName);
 
-      await bookApplicationService.createBook(
+      booksPromise.push(bookApplicationService.createBook(
           row[req.body.bookName],
           row[req.body.bookSubName],
           row[req.body.bookContent],
@@ -268,21 +305,28 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
           authorName,
           publisherId,
           publisherName,
-      );
+      ));
 
-      broadcast({
-        progress: 'progress',
-        data: {
-          current: i,
-          total: csvLengh,
-        },
-      });
+      if (i % 50 == 0) { // 50件ごとにブロードキャスト
+        broadcast({
+          progress: 'progress',
+          data: {
+            current: i,
+            total: csvLengh,
+          },
+        });
+      }
     }
 
+    await Promise.all(booksPromise);
+
     /* bulk apiの実行 */
-    await authorApplicationService.executeBulkApi();
-    await publisherApplicationService.executeBulkApi();
-    await bookApplicationService.executeBulkApi();
+    const bulkApis = [
+      bookApplicationService.executeBulkApi(),
+      authorApplicationService.executeBulkApi(),
+      publisherApplicationService.executeBulkApi(),
+    ];
+    await Promise.all(bulkApis);
 
     // 完了したことをwsで飛ばす
     broadcast({
@@ -292,6 +336,8 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
         total: csvLengh,
       },
     });
+    const endTimer = performance.now();
+    logger.info(`CSVファイルの読み込みに ${endTimer - startTimer}ms で終了しました。`);
   } catch (e) {
     logger.error(e as string);
 
@@ -307,11 +353,32 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
   }
 });
 
+/*
+===
+API
+===
+*/
+
 router.post('/api/:isbn/imgLink', async (req: Request, res: Response) => {
   const isbn = req.params.isbn;
   let imgLink = await bookApplicationService.getImgLink(isbn);
   if (imgLink === null) imgLink = '';
   res.json({imgLink});
+});
+
+router.post('/api/:bookId/tag', async (req: Request, res: Response) => {
+  let status = '';
+  try {
+    const name: string = req.body.name;
+    const bookId = req.params.bookId;
+    const isExist = await tagApplicationService.create(name, bookId);
+    status = isExist ? 'duplicate' : 'success';
+    res.json({status});
+  } catch (e) {
+    logger.error(e as string);
+    status = 'error';
+    res.json({status});
+  }
 });
 
 export default router;
