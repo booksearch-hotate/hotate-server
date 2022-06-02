@@ -60,4 +60,8 @@ export default class TagApplicationService {
   public async delete(id: string): Promise<void> {
     await this.tagApplicationServiceRepository.delete(id);
   }
+
+  public async isExistTable(): Promise<boolean> {
+    return await this.tagApplicationServiceRepository.isExistTable();
+  }
 }

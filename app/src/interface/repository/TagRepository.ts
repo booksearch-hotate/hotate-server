@@ -59,4 +59,11 @@ export default class TagRepository implements ITagApplicationServiceRepository {
     await this.db.UsingTag.destroy({where: {tag_id: id}});
     await this.db.Tag.destroy({where: {id}});
   }
+
+  public async isExistTable(): Promise<boolean> {
+    const usingTags = await this.db.UsingTag.findAll();
+
+    if (usingTags.length > 0) return true;
+    return false;
+  }
 }
