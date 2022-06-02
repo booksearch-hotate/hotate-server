@@ -8,4 +8,5 @@ export interface ITagApplicationServiceRepository {
   findAll (): Promise<TagModel[]>
   delete(id: string): Promise<void>
   isExistTable(): Promise<boolean>
+  deleteAll(): Promise<void>
 }
