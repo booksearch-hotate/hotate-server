@@ -262,6 +262,7 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
   try {
     const csv = await csvFile.getFileContent(); // csvファイルの内容を取得
     if (csvFile.File !== undefined) res.redirect('/admin/csv/loading');
+    else res.redirect('/admin/csv/choice');
 
     broadcast({
       progress: 'init',
