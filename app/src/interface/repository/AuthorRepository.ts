@@ -35,6 +35,7 @@ export default class AuthorRepository implements IAuthorApplicationRepository, I
 
   public async findByName(name: string | null): Promise<AuthorModel | null> {
     const author = await this.db.Author.findOne({
+      attributes: ['id'],
       where: {name},
     });
     if (author) return new AuthorModel(author.id, author.name);
