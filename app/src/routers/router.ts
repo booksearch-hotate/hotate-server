@@ -311,9 +311,12 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
     }
 
     /* bulk apiの実行 */
-    await authorApplicationService.executeBulkApi();
-    await publisherApplicationService.executeBulkApi();
-    await bookApplicationService.executeBulkApi();
+    const bulkApis = [
+      bookApplicationService.executeBulkApi(),
+      authorApplicationService.executeBulkApi(),
+      publisherApplicationService.executeBulkApi(),
+    ];
+    await Promise.all(bulkApis);
 
     // 完了したことをwsで飛ばす
     broadcast({
