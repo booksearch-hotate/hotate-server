@@ -25,11 +25,12 @@ export default class AuthorRepository implements IAuthorApplicationRepository, I
       id: author.Id,
       name: author.Name,
     });
+
     const doc: IEsAuthor = {
       db_id: author.Id,
       name: author.Name,
     };
-    await this.esCsv.create(doc);
+    this.esCsv.create(doc);
   }
 
   public async findByName(name: string | null): Promise<AuthorModel | null> {
