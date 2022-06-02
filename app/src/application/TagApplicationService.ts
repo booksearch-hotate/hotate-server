@@ -64,4 +64,11 @@ export default class TagApplicationService {
   public async isExistTable(): Promise<boolean> {
     return await this.tagApplicationServiceRepository.isExistTable();
   }
+
+  /**
+   * `tags`と`using_tags`を削除する
+   */
+  public async deleteAll(): Promise<void> {
+    await this.tagApplicationServiceRepository.deleteAll();
+  }
 }

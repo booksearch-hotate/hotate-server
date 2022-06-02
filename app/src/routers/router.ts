@@ -275,6 +275,7 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
 
     const startTimer = performance.now();
     /* 初期化 */
+    if (await tagApplicationService.isExistTable()) await tagApplicationService.deleteAll();
     await bookApplicationService.deleteBooks();
     await publisherApplicationService.deletePublishers();
     await authorApplicationService.deleteAuthors();
