@@ -34,7 +34,8 @@ export default class BookRepository implements IBookApplicationRepository {
   }
 
   public async save(book: BookModel): Promise<void> {
-    await this.db.Book.create({
+    const promisses = [];
+    promisses.push(this.db.Book.create({
       id: book.Id,
       book_name: book.Name,
       book_sub_name: book.SubName,
@@ -44,13 +45,14 @@ export default class BookRepository implements IBookApplicationRepository {
       year: book.Year,
       author_id: book.Author.Id,
       publisher_id: book.Publisher.Id,
-    });
+    }));
     const doc: IEsBook = {
       db_id: book.Id,
       book_name: book.Name,
       book_content: book.Content,
     };
-    await this.esSearchBook.create(doc);
+    promisses.push(this.esSearchBook.create(doc));
+    await Promise.all(promisses);
   }
 
   public async deleteAll(): Promise<void> {
