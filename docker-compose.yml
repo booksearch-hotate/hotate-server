@@ -64,14 +64,6 @@ services:
       - mysql
     networks:
       - esnet
-
-  json-server:
-    build:
-      context: json-server
-    volumes:
-      - ./json-server/:/data
-    ports:
-      - 3000:3000
   
 volumes:
   esdata:
