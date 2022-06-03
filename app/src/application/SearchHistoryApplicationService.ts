@@ -1,18 +1,29 @@
 import SearchHistoryModel from '../domain/model/searchHistoryModel';
 import {ISearchHistoryApplicationRepository} from './repository/ISearchHistoryApplicationRepository';
+import SearchHistoryService from '../domain/service/searchHistoryService';
+import SearchHistoryData from './dto/SearchHistoryData';
 
 export default class AdminApplicationService {
   private readonly searchHistoryApplicationRepository: ISearchHistoryApplicationRepository;
+  private readonly searchHistoryService: SearchHistoryService;
 
   public constructor(searchHistoryApplicationRepository: ISearchHistoryApplicationRepository) {
     this.searchHistoryApplicationRepository = searchHistoryApplicationRepository;
+    this.searchHistoryService = new SearchHistoryService();
   }
 
   public async add(words: string) {
-    await this.searchHistoryApplicationRepository.add(new SearchHistoryModel(words));
+    const id = this.searchHistoryService.createUUID();
+    await this.searchHistoryApplicationRepository.add(new SearchHistoryModel(words, id));
   }
 
-  public async search(words: string): Promise<string[]> {
-    return await this.searchHistoryApplicationRepository.search(words);
+  public async search(words: string): Promise<SearchHistoryData[]> {
+    const res = await this.searchHistoryApplicationRepository.search(words);
+    return res.map((tar) => new SearchHistoryData(tar));
+  }
+
+  public async find(count: number): Promise<SearchHistoryData[]> {
+    const res = await this.searchHistoryApplicationRepository.find(count);
+    return res.map((tar) => new SearchHistoryData(tar));
   }
 }
