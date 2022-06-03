@@ -90,8 +90,13 @@ export default class BookModel {
         bookNum,
         checkDigit,
       ].join('-');
-    } else {
-      this.isbn = isbn;
+    } else if (isbn !== null) {
+      if (isbn.indexOf('-') !== -1) {
+        const num = isbn.replace(/-/g, '');
+        if (num.length !== 13) this.isbn = null;
+      } else {
+        this.isbn = null;
+      }
     }
   }
 
