@@ -55,8 +55,47 @@ export default class EsSearchHistory extends ElasticSearch {
     const hits = res.data.hits.hits;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const words = hits.map((hit: any) => hit._source.search_words);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ids = hits.map((hit: any) => hit._id);
     // searchWordsは除外
     words.splice(words.indexOf(searchWords), 1);
+    ids.splice(ids.indexOf(searchWords), 1);
+
+    const tagModels: SearchHistoryModel[] = [];
+    for (let i = 0; i < ids.length; i++) {
+      const tagModel = new SearchHistoryModel(ids[i], words[i]);
+      tagModels.push(tagModel);
+    }
+
+    return tagModels;
+  }
+
+  public async find(count: number): Promise<SearchHistoryModel[]> {
+    const fromVal = count * 10;
+    const res = await axios.get(`${this.uri}/_search`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        query: {
+          match_all: {},
+        },
+        from: fromVal,
+        size: 10,
+      },
+    });
+    const hits = res.data.hits.hits;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const words = hits.map((hit: any) => hit._source.search_words);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ids = hits.map((hit: any) => hit._id);
+
+    const tagModels: SearchHistoryModel[] = [];
+    for (let i = 0; i < ids.length; i++) {
+      const tagModel = new SearchHistoryModel(ids[i], words[i]);
+      tagModels.push(tagModel);
+    }
 
     return tagModels;
   }
