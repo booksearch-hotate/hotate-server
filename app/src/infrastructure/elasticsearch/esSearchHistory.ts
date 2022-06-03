@@ -1,5 +1,6 @@
 import ElasticSearch from './elasticsearch';
 import axios from 'axios';
+import SearchHistoryModel from '../../domain/model/searchHistoryModel';
 
 export default class EsSearchHistory extends ElasticSearch {
   constructor(index: string) {
@@ -15,7 +16,7 @@ export default class EsSearchHistory extends ElasticSearch {
     }
   }
 
-  public async add(searchWords: string): Promise<void> {
+  public async add(searchWords: SearchHistoryModel): Promise<void> {
     // もしも同じ検索ワードがすでに登録されていたらスルー
     const res = await axios.get(`${this.uri}/_search`, {
       headers: {
@@ -24,7 +25,7 @@ export default class EsSearchHistory extends ElasticSearch {
       data: {
         query: {
           term: {
-            'search_words.keyword': searchWords,
+            'search_words.keyword': searchWords.Words,
           },
         },
       },
@@ -33,11 +34,12 @@ export default class EsSearchHistory extends ElasticSearch {
 
     // 追加
     await axios.post(`${this.uri}/_doc`, {
-      search_words: searchWords,
+      search_words: searchWords.Words,
+      id: searchWords.Id,
     });
   }
 
-  public async search(searchWords: string): Promise<string[]> {
+  public async search(searchWords: string): Promise<SearchHistoryModel[]> {
     const res = await axios.get(`${this.uri}/_search`, {
       headers: {
         'Content-Type': 'application/json',
@@ -56,6 +58,6 @@ export default class EsSearchHistory extends ElasticSearch {
     // searchWordsは除外
     words.splice(words.indexOf(searchWords), 1);
 
-    return words;
+    return tagModels;
   }
 }
