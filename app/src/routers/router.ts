@@ -138,7 +138,7 @@ router.get('/item/:bookId', async (req: Request, res: Response) => {
 });
 
 router.get('/login', csrfProtection, (req: Request, res: Response) => {
-  if (admin.verify(req.session.token)) return res.redirect('/admin/home');
+  if (admin.verify(req.session.token)) return res.redirect('/admin/');
   pageData.headTitle = 'ログイン | HOTATE';
   pageData.anyData = {loginStatus: admin.LoginStatus};
   pageData.csrfToken = req.csrfToken();
@@ -176,7 +176,7 @@ router.post('/check', csrfProtection, async (req: Request, res: Response) => {
         admin.create(adminData);
         admin.LoginStatus = 'login';
         if (!req.session.token) req.session.token = admin.Token;
-        res.redirect('/admin/home');
+        res.redirect('/admin/');
       } else {
         logger.warn('ログインに失敗しました。');
         admin.LoginStatus = 'miss';
@@ -197,9 +197,9 @@ router.post('/check', csrfProtection, async (req: Request, res: Response) => {
 // uriの始まりがauthのときに認証を行う
 router.use('/admin', authCheckMiddle);
 
-router.get('/admin/home', (req: Request, res: Response) => {
+router.get('/admin/', (req: Request, res: Response) => {
   pageData.headTitle = '管理画面';
-  res.render('pages/admin/home', {pageData});
+  res.render('pages/admin/', {pageData});
 });
 
 router.get('/admin/tags', async (req: Request, res: Response) => {
@@ -237,7 +237,7 @@ router.get('/admin/csv/headerChoice', csrfProtection, async (req: Request, res: 
 });
 
 router.get('/admin/csv/loading', (req: Request, res: Response) => {
-  if (!csvFile.isExistFile()) return res.redirect('/admin/home');
+  if (!csvFile.isExistFile()) return res.redirect('/admin/');
 
   pageData.headTitle = '読み込み中...';
 
