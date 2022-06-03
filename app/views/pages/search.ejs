@@ -18,8 +18,8 @@
         <h4 class="mx-2">他の人はこんな検索をしていました</h4>
         <div class="search-history-tag-box px-2">
         <% pageData.anyData.searchHis.forEach(data => { %>
-          <a href="/search?search=<%= data %>" class="search-history-tag px-3 py-1">
-            <%= data %>
+          <a href="/search?search=<%= data.Words %>" class="search-history-tag px-3 py-1">
+            <%= data.Words %>
           </a>
         <% }) %>
         </div>
