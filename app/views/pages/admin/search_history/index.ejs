@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+  </head>
+  <body>
+    <%- include('./../../../components/navbar') %>
+    <h3>検索履歴一覧</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>検索内容</th>
+          <th>削除</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let tag of pageData.anyData.searchHistory) { %>
+          <tr>
+            <td><%= tag.Id %></td>
+            <td><%= tag.Words %></td>
+            <td>
+              <form action="/admin/tags/delete" method="post">
+                <input type="hidden" name="id" value="<%= tag.Id %>">
+                <button type="submit" class="btn btn-danger">削除</button>
+              </form>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <div class="text-center">
+      <a href="/admin/">戻る</a>
+    </div>
+    <%- include('./../../../components/inputJs') %>
+  </body>
+</html>
