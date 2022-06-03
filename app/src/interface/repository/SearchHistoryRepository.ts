@@ -11,10 +11,14 @@ export default class SearchHistoryRepository implements ISearchHistoryApplicatio
   }
 
   public async add(tar: SearchHistoryModel) {
-    this.esSearchHistory.add(tar.Words);
+    this.esSearchHistory.add(tar);
   }
 
-  public async search(words: string): Promise<string[]> {
+  public async search(words: string): Promise<SearchHistoryModel[]> {
     return this.esSearchHistory.search(words);
+  }
+
+  public async find(count: number): Promise<SearchHistoryModel[]> {
+    return this.esSearchHistory.find(count);
   }
 }
