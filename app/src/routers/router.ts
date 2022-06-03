@@ -37,6 +37,7 @@ import EsSearchHistory from '../infrastructure/elasticsearch/esSearchHistory';
 /* DTO */
 import AdminData from '../application/dto/AdminData';
 import BookData from '../application/dto/BookData';
+import SearchHistoryData from '../application/dto/SearchHistoryData';
 
 // eslint-disable-next-line new-cap
 const router = Router(); // ルーティング
@@ -107,12 +108,12 @@ router.get('/search', async (req: Request, res: Response) => {
   const isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
   const isTag = req.query.tag === 'true'; // タグ検索かどうか
   let resDatas: BookData[] = [];
-  let searchHisDatas: string[] = [];
+  let searchHisDatas: SearchHistoryData[] = [];
   if (searchWord !== '') {
     const promissList = [bookApplicationService.searchBooks(searchWord, isStrict, isTag), searchHistoryApplicationService.search(searchWord)];
     const [books, searchHis] = await Promise.all(promissList);
     resDatas = books as BookData[];
-    searchHisDatas = searchHis as string[];
+    searchHisDatas = searchHis as SearchHistoryData[];
   }
   pageData.headTitle = '検索結果 | HOTATE';
   pageData.anyData = {searchRes: resDatas, searchHis: searchHisDatas, searchWord: searchWord};
@@ -215,6 +216,16 @@ router.post('/admin/tags/delete', async (req: Request, res: Response) => {
   await tagApplicationService.delete(id);
 
   res.redirect('/admin/tags');
+});
+
+router.get('/admin/search_history/', async (req: Request, res: Response) => {
+  let pageCount = Number(req.query.page as string);
+  if (isNaN(pageCount)) pageCount = 0;
+  const searchHistory = await searchHistoryApplicationService.find(pageCount);
+
+  pageData.headTitle = '検索履歴';
+  pageData.anyData = {searchHistory};
+  res.render('pages/admin/search_history/index', {pageData});
 });
 
 router.get('/admin/csv/choice', (req: Request, res: Response) => {
