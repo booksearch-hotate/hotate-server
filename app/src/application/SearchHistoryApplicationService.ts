@@ -14,7 +14,7 @@ export default class AdminApplicationService {
 
   public async add(words: string) {
     const id = this.searchHistoryService.createUUID();
-    await this.searchHistoryApplicationRepository.add(new SearchHistoryModel(words, id));
+    await this.searchHistoryApplicationRepository.add(new SearchHistoryModel(id, words));
   }
 
   public async search(words: string): Promise<SearchHistoryData[]> {
