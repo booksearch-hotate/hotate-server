@@ -1,6 +1,10 @@
 import AuthorModel from './authorModel';
 import PublisherModel from './publisherModel';
 
+import Logger from '../../infrastructure/logger/logger';
+
+const logger = new Logger('BookModel');
+
 export default class BookModel {
   private id: string;
   private name!: string;
@@ -105,7 +109,7 @@ export default class BookModel {
   }
   set Ndc(ndc: number | null) {
     if (ndc !== null && ndc.toString().length < 1) {
-      console.warn('NDCの桁数が足りません');
+      logger.warn('NDC format is incorrect; set to NULL.');
       ndc = null;
     }
     this.ndc = ndc;
@@ -116,7 +120,7 @@ export default class BookModel {
   }
   set Year(year: number | null) {
     if (year !== null && year.toString().length < 4) {
-      console.warn('年の桁数が足りません');
+      logger.warn('Year format is incorrect; set to NULL.');
       year = null;
     }
     this.year = year;
