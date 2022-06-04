@@ -20,6 +20,7 @@
             <td><%= tag.Words %></td>
             <td>
               <form action="/admin/search_history/delete" method="post">
+                <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
                 <input type="hidden" name="id" value="<%= tag.Id %>">
                 <button type="submit" class="btn btn-danger">削除</button>
               </form>

@@ -223,18 +223,19 @@ router.post('/admin/tags/delete', async (req: Request, res: Response) => {
 });
 
 /* 検索履歴一覧画面 */
-router.get('/admin/search_history/', async (req: Request, res: Response) => {
+router.get('/admin/search_history/', csrfProtection, async (req: Request, res: Response) => {
   let pageCount = Number(req.query.page as string);
   if (isNaN(pageCount)) pageCount = 0;
   const searchHistory = await searchHistoryApplicationService.find(pageCount);
 
   pageData.headTitle = '検索履歴';
   pageData.anyData = {searchHistory};
+  pageData.csrfToken = req.csrfToken();
   res.render('pages/admin/search_history/index', {pageData});
 });
 
 /* 検索履歴削除 */
-router.post('/admin/search_history/delete', async (req: Request, res: Response) => {
+router.post('/admin/search_history/delete', csrfProtection, async (req: Request, res: Response) => {
   try {
     const id = req.body.id;
     await searchHistoryApplicationService.delete(id);
