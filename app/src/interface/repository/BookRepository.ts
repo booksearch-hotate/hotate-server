@@ -229,8 +229,17 @@ export default class BookRepository implements IBookApplicationRepository {
     return books.length;
   }
 
-  public async getTotalResults(searchWord: string, isStrict: boolean): Promise<number> {
-    if (!isStrict) return this.esSearchBook.Total;
-    else return await this.getCountUsingLike(searchWord);
+  private async getCountUsingTag(tagName: string): Promise<number> {
+    const tag = await this.db.Tag.findOne({where: {name: tagName}});
+    if (!tag) return 0;
+
+    const books = await this.db.UsingTag.findAll({where: {tag_id: tag.id}});
+    return books.length;
+  }
+
+  public async getTotalResults(searchWord: string, isStrict: boolean, isTag: boolean): Promise<number> {
+    if (isStrict) return this.esSearchBook.Total;
+    if (isTag) return await this.getCountUsingTag(searchWord);
+    return await this.getCountUsingLike(searchWord);
   }
 }
