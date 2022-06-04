@@ -59,8 +59,8 @@ export default class BookRepository implements IBookApplicationRepository {
     await Promise.all(deletes);
   }
 
-  public async search(query: string): Promise<BookModel[]> {
-    const bookIds = await this.esSearchBook.searchBooks(query); // 検索にヒットしたidの配列
+  public async search(query: string, pageCount: number): Promise<BookModel[]> {
+    const bookIds = await this.esSearchBook. searchBooks(query, pageCount); // 検索にヒットしたidの配列
     // bookIdsからbooksを取得する
     const books = await this.db.Book.findAll({where: {id: bookIds}});
 
@@ -127,9 +127,13 @@ export default class BookRepository implements IBookApplicationRepository {
    * LIKE検索を用いてmysqlで検索を行う
    * @param words 検索対象
    */
-  public async searchUsingLike(words: string): Promise<BookModel[]> {
+  public async searchUsingLike(words: string, pageCount: number): Promise<BookModel[]> {
     // book_nameのLIKE検索
-    const books = await this.db.Book.findAll({where: {book_name: {[Op.like]: `%${words}%`}}});
+    const books = await this.db.Book.findAll({
+      where: {book_name: {[Op.like]: `%${words}%`}},
+      limit: 10,
+      offset: pageCount * 10,
+    });
 
     const bookModels: BookModel[] = [];
 
@@ -216,5 +220,17 @@ export default class BookRepository implements IBookApplicationRepository {
       bookModels.push(bookModel);
     }
     return bookModels;
+  }
+
+  private async getCountUsingLike(searchWord: string): Promise<number> {
+    const books = await this.db.Book.findAll({
+      where: {book_name: {[Op.like]: `%${searchWord}%`}},
+    });
+    return books.length;
+  }
+
+  public async getTotalResults(searchWord: string, isStrict: boolean): Promise<number> {
+    if (!isStrict) return this.esSearchBook.Total;
+    else return await this.getCountUsingLike(searchWord);
   }
 }

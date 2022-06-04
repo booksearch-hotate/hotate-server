@@ -108,16 +108,31 @@ router.get('/search', async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
   const isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
   const isTag = req.query.tag === 'true'; // タグ検索かどうか
+
+  let pageCount = Number(req.query.page as string);
+  let totalPage = 0;
+
+  if (isNaN(pageCount)) pageCount = 0;
+  else pageCount--;
+
   let resDatas: BookData[] = [];
   let searchHisDatas: SearchHistoryData[] = [];
   if (searchWord !== '') {
-    const promissList = [bookApplicationService.searchBooks(searchWord, isStrict, isTag), searchHistoryApplicationService.search(searchWord)];
+    const promissList = [
+      bookApplicationService.searchBooks(searchWord, isStrict, isTag, pageCount),
+      searchHistoryApplicationService.search(searchWord),
+    ];
     const [books, searchHis] = await Promise.all(promissList);
     resDatas = books as BookData[];
     searchHisDatas = searchHis as SearchHistoryData[];
+
+    const total = await bookApplicationService.getTotalResults(searchWord, isStrict);
+    totalPage = Math.ceil(total / 10);
+    if (totalPage > 20) totalPage = 20;
   }
+
   pageData.headTitle = '検索結果 | HOTATE';
-  pageData.anyData = {searchRes: resDatas, searchHis: searchHisDatas, searchWord: searchWord};
+  pageData.anyData = {searchRes: resDatas, searchHis: searchHisDatas, searchWord, totalPage};
 
   searchHistoryApplicationService.add(searchWord);
 
