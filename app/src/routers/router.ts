@@ -103,6 +103,7 @@ router.get('/', (req: Request, res: Response) => {
   res.render('pages/index', {pageData});
 });
 
+/* 検索結果 */
 router.get('/search', async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
   const isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
@@ -122,6 +123,7 @@ router.get('/search', async (req: Request, res: Response) => {
   res.render('pages/search', {pageData});
 });
 
+/* 本詳細画面 */
 router.get('/item/:bookId', async (req: Request, res: Response) => {
   const id = req.params.bookId; // 本のID
   let bookData: BookData;
@@ -138,6 +140,7 @@ router.get('/item/:bookId', async (req: Request, res: Response) => {
   }
 });
 
+/* ログイン画面 */
 router.get('/login', csrfProtection, (req: Request, res: Response) => {
   if (admin.verify(req.session.token)) return res.redirect('/admin/');
   pageData.headTitle = 'ログイン | HOTATE';
@@ -161,9 +164,7 @@ const authCheckMiddle = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-/**
- * ログイン処理を行う関数
-*/
+/* ログイン処理 */
 router.post('/check', csrfProtection, async (req: Request, res: Response) => {
   try {
     logger.debug('check');
@@ -198,11 +199,13 @@ router.post('/check', csrfProtection, async (req: Request, res: Response) => {
 // uriの始まりがauthのときに認証を行う
 router.use('/admin', authCheckMiddle);
 
+/* 管理者用ホーム画面 */
 router.get('/admin/', (req: Request, res: Response) => {
   pageData.headTitle = '管理画面';
   res.render('pages/admin/', {pageData});
 });
 
+/* タグ管理画面 */
 router.get('/admin/tags', async (req: Request, res: Response) => {
   const tags = await tagApplicationService.findAll();
 
@@ -211,6 +214,7 @@ router.get('/admin/tags', async (req: Request, res: Response) => {
   res.render('pages/admin/tags/index', {pageData});
 });
 
+/* タグの削除 */
 router.post('/admin/tags/delete', async (req: Request, res: Response) => {
   const id = req.body.id;
   await tagApplicationService.delete(id);
@@ -218,6 +222,7 @@ router.post('/admin/tags/delete', async (req: Request, res: Response) => {
   res.redirect('/admin/tags');
 });
 
+/* 検索履歴一覧画面 */
 router.get('/admin/search_history/', async (req: Request, res: Response) => {
   let pageCount = Number(req.query.page as string);
   if (isNaN(pageCount)) pageCount = 0;
@@ -228,6 +233,7 @@ router.get('/admin/search_history/', async (req: Request, res: Response) => {
   res.render('pages/admin/search_history/index', {pageData});
 });
 
+/* 検索履歴削除 */
 router.post('/admin/search_history/delete', async (req: Request, res: Response) => {
   const id = req.body.id;
   await searchHistoryApplicationService.delete(id);
@@ -235,12 +241,14 @@ router.post('/admin/search_history/delete', async (req: Request, res: Response) 
   res.redirect('/admin/search_history/');
 });
 
+/* csvファイル選択画面 */
 router.get('/admin/csv/choice', (req: Request, res: Response) => {
   pageData.headTitle = 'CSVファイル選択';
 
   res.render('pages/admin/csv/choice', {pageData});
 });
 
+/* csvファイルのヘッダを選択する画面 */
 router.get('/admin/csv/headerChoice', csrfProtection, async (req: Request, res: Response) => {
   try {
     pageData.anyData = {csvHeader: await csvFile.getHeaderNames()};
@@ -254,6 +262,7 @@ router.get('/admin/csv/headerChoice', csrfProtection, async (req: Request, res: 
   }
 });
 
+/* ローディング画面 */
 router.get('/admin/csv/loading', (req: Request, res: Response) => {
   if (!csvFile.isExistFile()) return res.redirect('/admin/');
 
@@ -262,7 +271,7 @@ router.get('/admin/csv/loading', (req: Request, res: Response) => {
   return res.render('pages/admin/csv/loading', {pageData});
 });
 
-
+/* csvファイルの受け取り */
 router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Response) => {
   const file = req.file;
 
@@ -276,6 +285,7 @@ router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Respon
   res.redirect('/admin/csv/headerChoice');
 });
 
+/* csvファイルからDBへ登録する作業 */
 router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Response) => {
   try {
     const csv = await csvFile.getFileContent(); // csvファイルの内容を取得
@@ -372,12 +382,13 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
   }
 });
 
-/*
+/**
 ===
 API
 ===
-*/
+**/
 
+/* isbnに対応する画像をopenbdから取得 */
 router.post('/api/:isbn/imgLink', async (req: Request, res: Response) => {
   const isbn = req.params.isbn;
   let imgLink = await bookApplicationService.getImgLink(isbn);
@@ -385,6 +396,7 @@ router.post('/api/:isbn/imgLink', async (req: Request, res: Response) => {
   res.json({imgLink});
 });
 
+/* 本IDに対応するタグを作成 */
 router.post('/api/:bookId/tag', async (req: Request, res: Response) => {
   let status = '';
   try {
