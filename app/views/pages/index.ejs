@@ -10,6 +10,13 @@
       <img src="img/logo.png" class="hotate-logo my-3" alt="logo">
     </div>
     <h1 class="text-center mt-3">ようこそ、HOTATEへ!</h1>
+    <div class="home-search-box">
+      <form action="/search" method="get">
+        <div class="form-group search-input-box">
+          <input type="text" class="search-input" id="search-input" name="search" placeholder="本を検索" required>
+        </div>
+      </form>
+    </div>
     <%- include('./../components/inputJs') %>
   </body>
 </html>
