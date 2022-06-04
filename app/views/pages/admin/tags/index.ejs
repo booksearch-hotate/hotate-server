@@ -21,6 +21,7 @@
             <td><%= tag.Name %></td>
             <td>
               <form action="/admin/tags/delete" method="post">
+                <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
                 <input type="hidden" name="id" value="<%= tag.Id %>">
                 <button type="submit" class="btn btn-danger">削除</button>
               </form>

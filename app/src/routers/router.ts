@@ -206,16 +206,17 @@ router.get('/admin/', (req: Request, res: Response) => {
 });
 
 /* タグ管理画面 */
-router.get('/admin/tags', async (req: Request, res: Response) => {
+router.get('/admin/tags', csrfProtection, async (req: Request, res: Response) => {
   const tags = await tagApplicationService.findAll();
 
   pageData.headTitle = 'タグ管理';
   pageData.anyData = {tags};
+  pageData.csrfToken = req.csrfToken();
   res.render('pages/admin/tags/index', {pageData});
 });
 
 /* タグの削除 */
-router.post('/admin/tags/delete', async (req: Request, res: Response) => {
+router.post('/admin/tags/delete', csrfProtection, async (req: Request, res: Response) => {
   const id = req.body.id;
   await tagApplicationService.delete(id);
 
