@@ -134,7 +134,15 @@ router.get('/search', async (req: Request, res: Response) => {
   }
 
   pageData.headTitle = '検索結果 | HOTATE';
-  pageData.anyData = {searchRes: resDatas, searchHis: searchHisDatas, searchWord, totalPage};
+  pageData.anyData = {
+    searchRes: resDatas,
+    searchHis: searchHisDatas,
+    searchWord,
+    totalPage,
+    pageCount,
+    isStrict,
+    isTag,
+  };
 
   searchHistoryApplicationService.add(searchWord);
 

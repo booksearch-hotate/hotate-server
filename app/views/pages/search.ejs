@@ -1,3 +1,9 @@
+<%
+var queryLink = '';
+
+if (pageData.anyData.isStrict) queryLink += '&strict=true';
+if (pageData.anyData.isTag) queryLink += '&tag=true';
+%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -57,7 +63,7 @@
       <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
           <% for (let i = 1; i <= pageData.anyData.totalPage; i++) { %>
-            <li class="page-item"><a class="page-link" href="/search?search=<%= pageData.anyData.searchWord %>&page=<%= i %>"><%= i %></a></li>
+            <li class="page-item"><a class="page-link" href="/search?search=<%= pageData.anyData.searchWord %>&page=<%= i + queryLink %>"><%= i %></a></li>
           <% } %>
         </ul>
       </nav>
