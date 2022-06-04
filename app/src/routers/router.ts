@@ -235,8 +235,12 @@ router.get('/admin/search_history/', async (req: Request, res: Response) => {
 
 /* 検索履歴削除 */
 router.post('/admin/search_history/delete', async (req: Request, res: Response) => {
-  const id = req.body.id;
-  await searchHistoryApplicationService.delete(id);
+  try {
+    const id = req.body.id;
+    await searchHistoryApplicationService.delete(id);
+  } catch (e) {
+    logger.error(e as string);
+  }
 
   res.redirect('/admin/search_history/');
 });
