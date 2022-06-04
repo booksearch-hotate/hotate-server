@@ -242,8 +242,8 @@ export default class BookRepository implements IBookApplicationRepository {
   }
 
   public async getTotalResults(searchWord: string, isStrict: boolean, isTag: boolean): Promise<number> {
-    if (isStrict) return this.esSearchBook.Total;
+    if (isStrict) return await this.getCountUsingLike(searchWord);
     if (isTag) return await this.getCountUsingTag(searchWord);
-    return await this.getCountUsingLike(searchWord);
+    return this.esSearchBook.Total;
   }
 }
