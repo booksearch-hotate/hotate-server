@@ -60,7 +60,7 @@ export default class BookRepository implements IBookApplicationRepository {
   }
 
   public async search(query: string, pageCount: number): Promise<BookModel[]> {
-    const bookIds = await this.esSearchBook. searchBooks(query, pageCount); // 検索にヒットしたidの配列
+    const bookIds = await this.esSearchBook.searchBooks(query, pageCount); // 検索にヒットしたidの配列
     // bookIdsからbooksを取得する
     const books = await this.db.Book.findAll({where: {id: bookIds}});
 
