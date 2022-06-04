@@ -115,6 +115,8 @@ router.get('/search', async (req: Request, res: Response) => {
   if (isNaN(pageCount)) pageCount = 0;
   else pageCount--;
 
+  if (pageCount <= 0) pageCount = 0;
+
   let resDatas: BookData[] = [];
   let searchHisDatas: SearchHistoryData[] = [];
   if (searchWord !== '') {
