@@ -228,6 +228,13 @@ router.get('/admin/search_history/', async (req: Request, res: Response) => {
   res.render('pages/admin/search_history/index', {pageData});
 });
 
+router.post('/admin/search_history/delete', async (req: Request, res: Response) => {
+  const id = req.body.id;
+  await searchHistoryApplicationService.delete(id);
+
+  res.redirect('/admin/search_history/');
+});
+
 router.get('/admin/csv/choice', (req: Request, res: Response) => {
   pageData.headTitle = 'CSVファイル選択';
 

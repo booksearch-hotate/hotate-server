@@ -19,7 +19,7 @@
             <td><%= tag.Id %></td>
             <td><%= tag.Words %></td>
             <td>
-              <form action="/admin/tags/delete" method="post">
+              <form action="/admin/search_history/delete" method="post">
                 <input type="hidden" name="id" value="<%= tag.Id %>">
                 <button type="submit" class="btn btn-danger">削除</button>
               </form>

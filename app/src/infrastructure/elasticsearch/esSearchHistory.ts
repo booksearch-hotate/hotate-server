@@ -99,4 +99,8 @@ export default class EsSearchHistory extends ElasticSearch {
 
     return tagModels;
   }
+
+  public async delete(id: string): Promise<void> {
+    await axios.delete(`${this.uri}/_doc/${id}`);
+  }
 }

@@ -21,4 +21,8 @@ export default class SearchHistoryRepository implements ISearchHistoryApplicatio
   public async find(count: number): Promise<SearchHistoryModel[]> {
     return this.esSearchHistory.find(count);
   }
+
+  public async delete(id: string): Promise<void> {
+    await this.esSearchHistory.delete(id);
+  }
 }
