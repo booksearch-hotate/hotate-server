@@ -111,6 +111,8 @@ router.get('/search', async (req: Request, res: Response) => {
 
   let pageCount = Number(req.query.page as string);
   let totalPage = 0;
+  let minPage = 0;
+  let maxPage = 0;
 
   if (isNaN(pageCount)) pageCount = 0;
   else pageCount--;
@@ -129,8 +131,9 @@ router.get('/search', async (req: Request, res: Response) => {
     searchHisDatas = searchHis as SearchHistoryData[];
 
     const total = await bookApplicationService.getTotalResults(searchWord, isStrict);
-    totalPage = Math.ceil(total / 10);
-    if (totalPage > 20) totalPage = 20;
+    totalPage = Math.ceil(total / 10); // 最大ページ数
+    minPage = Math.max(pageCount - 3, 1); // 最小ページ数
+    maxPage = Math.min(pageCount + 3, totalPage); // 最大ページ数
   }
 
   pageData.headTitle = '検索結果 | HOTATE';
@@ -138,6 +141,10 @@ router.get('/search', async (req: Request, res: Response) => {
     searchRes: resDatas,
     searchHis: searchHisDatas,
     searchWord,
+    pageRange: {
+      min: minPage,
+      max: maxPage,
+    },
     totalPage,
     pageCount,
     isStrict,
