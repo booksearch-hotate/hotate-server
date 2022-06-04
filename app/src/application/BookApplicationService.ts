@@ -62,7 +62,7 @@ export default class BookApplicationService {
       books = isStrict ? await this.bookRepository.searchUsingLike(query, pageCount) : await this.bookRepository.search(query, pageCount);
     } else {
       try {
-        books = await this.bookRepository.searchByTag(query);
+        books = await this.bookRepository.searchByTag(query, pageCount);
       } catch (e) {
         books = [];
       }
