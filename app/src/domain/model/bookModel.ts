@@ -98,8 +98,9 @@ export default class BookModel {
       if (isbn.indexOf('-') !== -1) {
         const num = isbn.replace(/-/g, '');
         if (num.length !== 13) this.isbn = null;
+        else this.isbn = isbn;
       } else {
-        this.isbn = null;
+        this.isbn = isbn;
       }
     }
   }
