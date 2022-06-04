@@ -118,7 +118,8 @@ router.get('/search', async (req: Request, res: Response) => {
   }
   pageData.headTitle = '検索結果 | HOTATE';
   pageData.anyData = {searchRes: resDatas, searchHis: searchHisDatas, searchWord: searchWord};
-  await searchHistoryApplicationService.add(searchWord);
+
+  searchHistoryApplicationService.add(searchWord);
 
   res.render('pages/search', {pageData});
 });
