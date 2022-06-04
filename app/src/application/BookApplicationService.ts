@@ -50,11 +50,16 @@ export default class BookApplicationService {
     await this.bookRepository.deleteAll();
   }
 
-  public async searchBooks(query: string, isStrict: boolean, isTag: boolean): Promise<BookData[]> {
+  public async searchBooks(
+      query: string,
+      isStrict: boolean,
+      isTag: boolean,
+      pageCount: number,
+  ): Promise<BookData[]> {
     // 検索から得られたbookModelの配列
     let books: BookModel[] = [];
     if (!isTag) {
-      books = isStrict ? await this.bookRepository.searchUsingLike(query) : await this.bookRepository.search(query);
+      books = isStrict ? await this.bookRepository.searchUsingLike(query, pageCount) : await this.bookRepository.search(query, pageCount);
     } else {
       try {
         books = await this.bookRepository.searchByTag(query);
@@ -91,5 +96,9 @@ export default class BookApplicationService {
 
   public async executeBulkApi(): Promise<void> {
     await this.bookRepository.executeBulkApi();
+  }
+
+  public async getTotalResults(searchWords: string, isStrict: boolean): Promise<number> {
+    return await this.bookRepository.getTotalResults(searchWords, isStrict);
   }
 }
