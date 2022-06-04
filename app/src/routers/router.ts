@@ -137,7 +137,7 @@ router.get('/search', async (req: Request, res: Response) => {
     const total = await bookApplicationService.getTotalResults(searchWord, isStrict, isTag);
     totalPage = Math.ceil(total / 10); // 最大ページ数
     minPage = Math.max(pageCount - 3, 1); // 最小ページ数
-    maxPage = Math.min(pageCount + 3, totalPage); // 最大ページ数
+    maxPage = Math.min(Math.max(7 - minPage + 1, pageCount + 3), totalPage); // 最大ページ数
   }
 
   pageData.headTitle = '検索結果 | HOTATE';
