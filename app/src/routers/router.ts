@@ -155,7 +155,7 @@ router.get('/search', async (req: Request, res: Response) => {
     isTag,
   };
 
-  searchHistoryApplicationService.add(searchWord);
+  if (!isStrict && !isTag) searchHistoryApplicationService.add(searchWord);
 
   res.render('pages/search', {pageData});
 });
