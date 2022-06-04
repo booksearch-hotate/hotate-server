@@ -54,6 +54,13 @@
           <% } %>
         </div>
       </div>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <% for (let i = 1; i <= pageData.anyData.totalPage; i++) { %>
+            <li class="page-item"><a class="page-link" href="/search?search=<%= pageData.anyData.searchWord %>&page=<%= i %>"><%= i %></a></li>
+          <% } %>
+        </ul>
+      </nav>
     </main>
     <%- include('./../components/inputJs') %>
     <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
