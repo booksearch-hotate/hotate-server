@@ -98,7 +98,7 @@ export default class BookApplicationService {
     await this.bookRepository.executeBulkApi();
   }
 
-  public async getTotalResults(searchWords: string, isStrict: boolean): Promise<number> {
-    return await this.bookRepository.getTotalResults(searchWords, isStrict);
+  public async getTotalResults(searchWords: string, isStrict: boolean, isTag: boolean): Promise<number> {
+    return await this.bookRepository.getTotalResults(searchWords, isStrict, isTag);
   }
 }

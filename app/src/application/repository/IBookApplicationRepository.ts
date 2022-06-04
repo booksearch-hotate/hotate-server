@@ -10,5 +10,5 @@ export interface IBookApplicationRepository {
   searchUsingLike(words: string, pageCount: number): Promise<BookModel[]>
   getTagsByBookId(bookId: string): Promise<TagModel[]>
   searchByTag(tagName: string): Promise<BookModel[]>
-  getTotalResults(searchWord: string, isStrict: boolean): Promise<number>
+  getTotalResults(searchWord: string, isStrict: boolean, isTag: boolean): Promise<number>
 }

@@ -106,8 +106,12 @@ router.get('/', (req: Request, res: Response) => {
 /* 検索結果 */
 router.get('/search', async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
-  const isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
-  const isTag = req.query.tag === 'true'; // タグ検索かどうか
+  let isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
+  let isTag = req.query.tag === 'true'; // タグ検索かどうか
+
+  if (isTag && isStrict) {
+    isStrict = isTag = false;
+  }
 
   let pageCount = Number(req.query.page as string);
   let totalPage = 0;
@@ -130,7 +134,7 @@ router.get('/search', async (req: Request, res: Response) => {
     resDatas = books as BookData[];
     searchHisDatas = searchHis as SearchHistoryData[];
 
-    const total = await bookApplicationService.getTotalResults(searchWord, isStrict);
+    const total = await bookApplicationService.getTotalResults(searchWord, isStrict, isTag);
     totalPage = Math.ceil(total / 10); // 最大ページ数
     minPage = Math.max(pageCount - 3, 1); // 最小ページ数
     maxPage = Math.min(pageCount + 3, totalPage); // 最大ページ数

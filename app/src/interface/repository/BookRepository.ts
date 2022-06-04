@@ -186,7 +186,7 @@ export default class BookRepository implements IBookApplicationRepository {
 
   public async searchByTag(tagName: string): Promise<BookModel[]> {
     const tag = await this.db.Tag.findOne({where: {name: tagName}});
-    if (!tag) throw new Error('tag not found');
+    if (!tag) return [];
 
     const books = await this.db.UsingTag.findAll({where: {tag_id: tag.id}});
     const bookModels: BookModel[] = [];
