@@ -65,6 +65,12 @@ export default class TagApplicationService {
     return await this.tagApplicationServiceRepository.isExistTable();
   }
 
+  public async findById(id: string): Promise<TagData | null> {
+    const tag = await this.tagApplicationServiceRepository.findById(id);
+    if (tag) return new TagData(tag);
+    return null;
+  }
+
   /**
    * `tags`と`using_tags`を削除する
    */
