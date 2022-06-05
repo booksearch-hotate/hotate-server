@@ -13,9 +13,9 @@ export default class BookApplicationService {
   private readonly bookRepository: IBookApplicationRepository;
   private readonly bookService: BookService;
 
-  public constructor(bookRepository: IBookApplicationRepository) {
+  public constructor(bookRepository: IBookApplicationRepository, bookService: BookService) {
     this.bookRepository = bookRepository;
-    this.bookService = new BookService();
+    this.bookService = bookService;
   }
 
   public async createBook(

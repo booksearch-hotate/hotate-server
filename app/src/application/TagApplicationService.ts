@@ -14,9 +14,9 @@ export default class TagApplicationService {
   private readonly tagApplicationServiceRepository: ITagApplicationServiceRepository;
   private readonly tagService: TagService;
 
-  public constructor(tagApplicationServiceRepository: ITagApplicationServiceRepository) {
+  public constructor(tagApplicationServiceRepository: ITagApplicationServiceRepository, tagService: TagService) {
     this.tagApplicationServiceRepository = tagApplicationServiceRepository;
-    this.tagService = new TagService(this.tagApplicationServiceRepository);
+    this.tagService = tagService;
   }
 
   /**
