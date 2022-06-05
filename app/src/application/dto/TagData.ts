@@ -1,15 +1,14 @@
+import TagModel from '../../domain/model/tagModel';
+
 export default class TagData {
   private id: string;
   private name: string;
+  private createdAt: Date | null;
 
-  public constructor(id: string | undefined, name: string | undefined) {
-    if (id === undefined) throw new Error('idが不明です');
-    if (name === undefined) throw new Error('pwが不明です');
-
-    if (name === '') throw new Error('nameが空です');
-
-    this.id = id;
-    this.name = name;
+  public constructor(tagModel: TagModel) {
+    this.id = tagModel.Id;
+    this.name = tagModel.Name;
+    this.createdAt = tagModel.CreatedAt;
   }
 
   get Id(): string {
@@ -17,5 +16,8 @@ export default class TagData {
   }
   get Name(): string {
     return this.name;
+  }
+  get CreatedAt(): Date | null {
+    return this.createdAt;
   }
 }
