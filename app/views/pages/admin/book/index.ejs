@@ -39,7 +39,6 @@ switch (pageData.anyData.stateValue) {
             <td><%= book.BookName %></td>
             <td>
               <form action="/admin/book/edit" method="get">
-                <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
                 <input type="hidden" name="id" value="<%= book.Id %>">
                 <button type="submit" class="btn btn-success">編集</button>
               </form>

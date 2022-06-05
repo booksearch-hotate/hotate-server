@@ -396,7 +396,7 @@ router.post('/admin/search_history/delete', csrfProtection, async (req: Request,
   res.redirect('/admin/search_history/');
 });
 
-router.get('/admin/book', csrfProtection, async (req: Request, res: Response) => {
+router.get('/admin/book', async (req: Request, res: Response) => {
   let pageCount = Number(req.query.page as string);
   if (isNaN(pageCount)) pageCount = 0;
   else pageCount--;
@@ -429,8 +429,6 @@ router.get('/admin/book', csrfProtection, async (req: Request, res: Response) =>
     stateValue,
     bookCount: total,
   };
-  pageData.csrfToken = req.csrfToken();
-
   res.render('pages/admin/book/', {pageData});
 });
 
