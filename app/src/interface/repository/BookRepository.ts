@@ -178,7 +178,7 @@ export default class BookRepository implements IBookApplicationRepository {
     for (const tag of tags) {
       const tagByDb = await this.db.Tag.findOne({where: {id: tag.tag_id}});
       if (!tagByDb) throw new Error('tag not found');
-      const tagModel = new TagModel(tagByDb.id, tagByDb.name);
+      const tagModel = new TagModel(tagByDb.id, tagByDb.name, tagByDb.created_at);
       tagModels.push(tagModel);
     }
     return tagModels;

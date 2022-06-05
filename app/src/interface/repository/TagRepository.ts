@@ -24,7 +24,7 @@ export default class TagRepository implements ITagApplicationServiceRepository {
     const tag = await this.db.Tag.findOne({
       where: {name},
     });
-    if (tag) return new TagModel(tag.id, tag.name);
+    if (tag) return new TagModel(tag.id, tag.name, tag.created_at);
     return null;
   }
 
@@ -54,7 +54,7 @@ export default class TagRepository implements ITagApplicationServiceRepository {
     const tags = await this.db.Tag.findAll({
       order: [['created_at', 'DESC']],
     });
-    return tags.map((tag) => new TagModel(tag.id, tag.name));
+    return tags.map((tag) => new TagModel(tag.id, tag.name, tag.created_at));
   }
 
   public async delete(id: string): Promise<void> {

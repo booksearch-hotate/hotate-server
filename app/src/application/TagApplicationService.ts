@@ -26,7 +26,7 @@ export default class TagApplicationService {
    * @returns 重複した組み合わせがあったか
    */
   public async create(name: string, bookId: string): Promise<boolean> {
-    let tag = new TagModel(this.tagService.createUUID(), name);
+    let tag = new TagModel(this.tagService.createUUID(), name, null);
 
     /* tagsにタグが存在するか確認し、存在しない場合はtagsに新規追加する処理 */
     const isExist = await this.tagService.isExist(tag); // Tagsに存在してないか確認
