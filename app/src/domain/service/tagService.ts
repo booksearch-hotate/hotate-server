@@ -20,8 +20,8 @@ export default class TagService {
     return uuidv4();
   }
 
-  public async getCount(tagId: string): Promise<number> {
-    const count = await this.tagRepository.getCount(tagId);
+  public async getCount(tag: TagModel): Promise<number> {
+    const count = await this.tagRepository.getCount(tag.Id);
 
     return count;
   }
