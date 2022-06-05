@@ -17,7 +17,8 @@ export default class Tag extends Model {
     }, {
       sequelize,
       tableName: 'tags',
-      timestamps: false,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
     });
     return this;
   }
