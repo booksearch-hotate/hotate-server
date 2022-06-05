@@ -6,6 +6,9 @@
   <body>
     <%- include('./../../../components/navbar') %>
     <h3>タグ一覧</h3>
+    <% if (pageData.anyData.stateValue == 'success') { %>
+      <%- include('./../../../components/stateToast', {mes: 'タグの編集が完了しました！'}) %>
+    <% } %>
     <table class="table table-striped">
       <thead>
         <tr>

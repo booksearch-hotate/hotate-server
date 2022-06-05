@@ -41,6 +41,7 @@ import db from '../infrastructure/db';
 import EsCsv from '../infrastructure/elasticsearch/esCsv';
 import EsSearchBook from '../infrastructure/elasticsearch/esSearchBook';
 import EsSearchHistory from '../infrastructure/elasticsearch/esSearchHistory';
+import State from '../infrastructure/state';
 
 /* DTO */
 import AdminData from '../application/dto/AdminData';
@@ -92,6 +93,8 @@ interface IPage {
 let pageData: IPage;
 
 const admin = new AdminSession();
+
+const stateManager = new State();
 
 /**
  * originを取得
@@ -260,8 +263,14 @@ router.get('/admin/', (req: Request, res: Response) => {
 router.get('/admin/tags', csrfProtection, async (req: Request, res: Response) => {
   const tags = await tagApplicationService.findAll();
 
+  const stateValue = stateManager.get('tagEdit');
+
+  console.log(stateValue);
+
+  if (stateValue) stateManager.delete('tagEdit');
+
   pageData.headTitle = 'タグ管理';
-  pageData.anyData = {tags};
+  pageData.anyData = {tags, stateValue};
   pageData.csrfToken = req.csrfToken();
   res.render('pages/admin/tags/index', {pageData});
 });
@@ -296,6 +305,10 @@ router.post('/admin/tags/update', csrfProtection, async (req: Request, res: Resp
   if (name === '') return res.redirect(`/admin/tags/edit?id=${id}`);
 
   await tagApplicationService.update(id, name);
+
+  stateManager.add('tagEdit', 'success');
+
+  console.log(stateManager.get('tagEdit'));
 
   res.redirect('/admin/tags');
 });
