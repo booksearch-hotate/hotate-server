@@ -5,4 +5,5 @@ export interface IAuthorApplicationRepository {
   findByName (name: string | null): Promise<AuthorModel | null>
   deleteAll (): Promise<void>
   executeBulkApi (): Promise<void>
+  findById(bookId: string): Promise<AuthorModel>
 }

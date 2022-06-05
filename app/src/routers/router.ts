@@ -396,6 +396,42 @@ router.post('/admin/search_history/delete', csrfProtection, async (req: Request,
   res.redirect('/admin/search_history/');
 });
 
+/* 本の編集画面 */
+router.get('/admin/book/edit', csrfProtection, async (req: Request, res: Response) => {
+  const id = req.query.id;
+
+  if (typeof id !== 'string') return res.redirect('/admin/');
+
+  const book = await bookApplicationService.searchBookById(id);
+
+  pageData.headTitle = '本編集';
+  pageData.anyData = {book};
+  pageData.csrfToken = req.csrfToken();
+  res.render('pages/admin/book/edit', {pageData});
+});
+
+/* 本の更新処理 */
+router.post('/admin/book/update', csrfProtection, async (req: Request, res: Response) => {
+  const bookId = req.body.id;
+
+  const book = await bookApplicationService.searchBookById(bookId);
+  await bookApplicationService.update(
+      bookId,
+      req.body.title,
+      req.body.bookSubName,
+      req.body.bookContent,
+      req.body.isbn,
+      req.body.ndc,
+      req.body.year,
+      book.AuthorId,
+      book.AuthorName,
+      book.PublisherId,
+      book.PublisherName,
+  );
+
+  res.redirect('/admin/');
+});
+
 /* csvファイル選択画面 */
 router.get('/admin/csv/choice', (req: Request, res: Response) => {
   pageData.headTitle = 'CSVファイル選択';

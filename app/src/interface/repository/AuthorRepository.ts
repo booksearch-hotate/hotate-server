@@ -50,4 +50,13 @@ export default class AuthorRepository implements IAuthorApplicationRepository, I
   public async executeBulkApi(): Promise<void> {
     await this.esCsv.executeBulkApi();
   }
+
+  public async findById(authorId: string): Promise<AuthorModel> {
+    const author = await this.db.Author.findOne({
+      attributes: ['id', 'name'],
+      where: {id: authorId},
+    });
+    if (author) return new AuthorModel(author.id, author.name);
+    throw new Error('Author not found');
+  }
 }
