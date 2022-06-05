@@ -29,29 +29,7 @@
         <% } %>
       </tbody>
     </table>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <% if (pageData.anyData.pageCount >= 1) { %>
-            <li class="page-item">
-              <a class="page-link" href="/admin/search_history/?page=<%= pageData.anyData.pageCount %>" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-          <% } %>
-          <% for (let i = pageData.anyData.pageRange.min; i <= pageData.anyData.pageRange.max; i++) { %>
-            <li class="page-item <% if (i - 1 === pageData.anyData.pageCount){ %>active<% } %>">
-              <a class="page-link" href="/admin/search_history/?page=<%= i %>"><%= i %></a>
-            </li>
-          <% } %>
-          <% if (pageData.anyData.pageCount < pageData.anyData.totalPage - 1) { %>
-            <li class="page-item">
-              <a class="page-link" href="/admin/search_history/?page=<%= pageData.anyData.pageCount + 2 %>" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          <% } %>
-        </ul>
-      </nav>
+    <%- include('./../../../components/navigation', {paginationData: pageData.anyData.paginationData, url: '/admin/search_history/?'}) %>
     <div class="text-center">
       <a href="/admin/">戻る</a>
     </div>
