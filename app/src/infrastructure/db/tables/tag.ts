@@ -3,6 +3,8 @@ import {Sequelize, Model, DataTypes} from 'sequelize';
 export default class Tag extends Model {
   public id!: string;
   public name!: string;
+  public created_at!: Date;
+  public updated_at!: Date;
 
   public static initialize(sequelize: Sequelize) {
     this.init({
