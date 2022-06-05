@@ -34,7 +34,6 @@ switch (pageData.anyData.stateValue) {
       <tbody>
         <% for (let tag of pageData.anyData.searchHistory) { %>
           <tr>
-            <td><%= tag.Id %></td>
             <td><%= tag.Words %></td>
             <td>
               <form action="/admin/search_history/delete" method="post">
