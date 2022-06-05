@@ -7,9 +7,9 @@ export default class AdminApplicationService {
   private readonly adminRepository: IAdminApplicationRepository;
   private readonly adminService: AdminService;
 
-  public constructor(adminRepository: IAdminApplicationRepository) {
+  public constructor(adminRepository: IAdminApplicationRepository, adminService: AdminService) {
     this.adminRepository = adminRepository;
-    this.adminService = new AdminService();
+    this.adminService = adminService;
   }
 
   public async isValid(adminData: AdminData): Promise<boolean> {

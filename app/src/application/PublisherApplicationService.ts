@@ -6,9 +6,9 @@ export default class PublisherApplicationService {
   private readonly publisherRepository: IPublisherApplicationRepository;
   private readonly publisherService: PublisherService;
 
-  public constructor(publisherRepository: IPublisherApplicationRepository) {
+  public constructor(publisherRepository: IPublisherApplicationRepository, publisherService: PublisherService) {
     this.publisherRepository = publisherRepository;
-    this.publisherService = new PublisherService(publisherRepository);
+    this.publisherService = publisherService;
   }
 
   public async createPublisher(name: string): Promise<string> {

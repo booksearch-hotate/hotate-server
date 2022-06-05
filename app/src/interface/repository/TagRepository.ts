@@ -3,6 +3,7 @@ import Tag from '../../infrastructure/db/tables/tag';
 import UsingTag from '../../infrastructure/db/tables/usingTag';
 
 import {ITagApplicationServiceRepository} from '../../application/repository/ITagApplicationServiceRepository';
+import {ITagServiceRepository} from '../../domain/service/repository/ITagServiceRepository';
 
 import TagModel from '../../domain/model/tagModel';
 
@@ -13,7 +14,7 @@ interface sequelize {
   UsingTag: typeof UsingTag,
 }
 
-export default class TagRepository implements ITagApplicationServiceRepository {
+export default class TagRepository implements ITagApplicationServiceRepository, ITagServiceRepository {
   private readonly db: sequelize;
 
   public constructor(db: sequelize) {

@@ -7,9 +7,9 @@ export default class AdminApplicationService {
   private readonly searchHistoryApplicationRepository: ISearchHistoryApplicationRepository;
   private readonly searchHistoryService: SearchHistoryService;
 
-  public constructor(searchHistoryApplicationRepository: ISearchHistoryApplicationRepository) {
+  public constructor(searchHistoryApplicationRepository: ISearchHistoryApplicationRepository, searchHistoryService: SearchHistoryService) {
     this.searchHistoryApplicationRepository = searchHistoryApplicationRepository;
-    this.searchHistoryService = new SearchHistoryService();
+    this.searchHistoryService = searchHistoryService;
   }
 
   public async add(words: string) {

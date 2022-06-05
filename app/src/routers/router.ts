@@ -8,6 +8,14 @@ import {performance} from 'perf_hooks';
 /* module */
 import originMake from '../modules/origin';
 
+/* domain service */
+import BookService from '../domain/service/bookService';
+import AuthorService from '../domain/service/authorService';
+import PublisherService from '../domain/service/publisherService';
+import AdminService from '../domain/service/adminService';
+import SearchHistoryService from '../domain/service/searchHistoryService';
+import TagService from '../domain/service/tagService';
+
 /* application searvice */
 import BookApplicationService from '../application/BookApplicationService';
 import AuthorApplicationService from '../application/AuthorApplicationService';
@@ -48,21 +56,27 @@ const csvFile = new CsvFile();
 /* アプリケーションサービスの初期化 */
 const bookApplicationService = new BookApplicationService(
     new BookRepository(db, new EsSearchBook('books')),
+    new BookService(),
 );
 const authorApplicationService = new AuthorApplicationService(
     new AuthorRepository(db, new EsCsv('authors')),
+    new AuthorService(new AuthorRepository(db, new EsCsv('authors'))),
 );
 const publisherApplicationService = new PublisherApplicationService(
     new PublisherRepository(db, new EsCsv('publishers')),
+    new PublisherService(new PublisherRepository(db, new EsCsv('publishers'))),
 );
 const adminApplicationService = new AdminApplicationService(
     new AdminRepository(db),
+    new AdminService(),
 );
 const tagApplicationService = new TagApplicationService(
     new TagRepository(db),
+    new TagService(new TagRepository(db)),
 );
 const searchHistoryApplicationService = new SearchHistoryApplicationService(
     new SearchHistoryRepository(new EsSearchHistory('search_history')),
+    new SearchHistoryService(),
 );
 
 /* ejsにデータを渡す際に使用するオブジェクト */
