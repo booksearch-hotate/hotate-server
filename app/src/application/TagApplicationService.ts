@@ -81,8 +81,4 @@ export default class TagApplicationService {
   public async update(id: string, name: string): Promise<void> {
     await this.tagApplicationServiceRepository.update(id, name);
   }
-
-  public async getCount(tagId: string): Promise<number> {
-    return await this.tagService.getCount(tagId);
-  }
 }
