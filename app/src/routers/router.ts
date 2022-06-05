@@ -232,8 +232,12 @@ router.get('/item/:bookId', async (req: Request, res: Response) => {
 /* ログイン画面 */
 router.get('/login', csrfProtection, (req: Request, res: Response) => {
   if (admin.verify(req.session.token)) return res.redirect('/admin/');
+
+  const stateValue = stateManager.get('loginState');
+  if (stateValue) stateManager.delete('loginState');
+
   pageData.headTitle = 'ログイン | HOTATE';
-  pageData.anyData = {loginStatus: admin.LoginStatus};
+  pageData.anyData = {stateValue};
   pageData.csrfToken = req.csrfToken();
 
   return res.render('pages/login', {pageData});
@@ -248,7 +252,7 @@ const authCheckMiddle = (req: Request, res: Response, next: NextFunction) => {
     next();
   } else {
     logger.info('トークンが無効です。ログインページへリダイレクトします。');
-    admin.LoginStatus = 'miss';
+    stateManager.add('loginState', 'invalidToken');
     res.redirect('/login');
   }
 };
@@ -256,7 +260,7 @@ const authCheckMiddle = (req: Request, res: Response, next: NextFunction) => {
 /* ログイン処理 */
 router.post('/check', csrfProtection, async (req: Request, res: Response) => {
   try {
-    logger.debug('check');
+    logger.debug('login check');
     if (req.body.id && req.body.pw) {
       const id = req.body.id;
       const pw = req.body.pw;
@@ -265,22 +269,24 @@ router.post('/check', csrfProtection, async (req: Request, res: Response) => {
       if (isValid) {
         logger.info('ログインに成功しました。');
         admin.create(adminData);
-        admin.LoginStatus = 'login';
         if (!req.session.token) req.session.token = admin.Token;
+
+        stateManager.add('loginState', 'success');
+
         res.redirect('/admin/');
       } else {
         logger.warn('ログインに失敗しました。');
-        admin.LoginStatus = 'miss';
+
+        stateManager.add('loginState', 'miss');
+
         res.redirect('/login');
       }
     } else {
-      admin.LoginStatus = 'miss';
       res.redirect('/login');
-      logger.warn('直接ログインしようとしました。');
     }
   } catch (e) {
     logger.error(e as string);
-    admin.LoginStatus = 'error';
+    stateManager.add('loginState', 'error');
     res.redirect('/login');
   }
 });
