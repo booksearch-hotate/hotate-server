@@ -10,6 +10,7 @@
       <thead>
         <tr>
           <th>タグ名</th>
+          <th>登録件数</th>
           <th>作成日時</th>
           <th>編集</th>
           <th>削除</th>
@@ -19,6 +20,7 @@
         <% for (let tag of pageData.anyData.tags) { %>
           <tr>
             <td><%= tag.Name %></td>
+            <td><%= tag.Count %></td>
             <td><%= tag.CreatedAt %></td>
             <td>
               <form action="/admin/tags/edit" method="get">
