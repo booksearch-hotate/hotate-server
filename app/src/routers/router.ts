@@ -215,10 +215,11 @@ router.get('/search', async (req: Request, res: Response) => {
 router.get('/item/:bookId', async (req: Request, res: Response) => {
   const id = req.params.bookId; // 本のID
   let bookData: BookData;
+  const isLogin = admin.verify(req.session.token);
   try {
     bookData = await bookApplicationService.searchBookById(id);
     pageData.headTitle = `${bookData.BookName} | HOTATE`;
-    pageData.anyData = {bookData, isError: false};
+    pageData.anyData = {bookData, isError: false, isLogin};
   } catch {
     logger.warn(`Not found bookId: ${id}`);
     pageData.headTitle = '本が見つかりませんでした。';
