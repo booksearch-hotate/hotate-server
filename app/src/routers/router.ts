@@ -302,8 +302,15 @@ router.get('/admin/', csrfProtection, (req: Request, res: Response) => {
 });
 
 router.post('/admin/logout', (req: Request, res: Response) => {
-  admin.delete(req);
-  res.redirect('/login');
+  try {
+    admin.delete(req);
+    res.redirect('/login');
+
+    logger.info('Logout succeeded.');
+  } catch (e: any) {
+    logger.error(e.message);
+    res.redirect('/admin');
+  }
 });
 
 /* タグ管理画面 */
