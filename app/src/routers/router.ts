@@ -303,7 +303,6 @@ router.get('/admin/', csrfProtection, (req: Request, res: Response) => {
 
 router.post('/admin/logout', (req: Request, res: Response) => {
   admin.delete(req);
-  console.log('ログアウトしました。');
   res.redirect('/login');
 });
 
