@@ -13,6 +13,10 @@
       <li><a href="./search_history">検索履歴管理</a></li>
       <li><a href="./book">本の管理</a></li>
     </ul>
+    <form action="/admin/logout" method="post">
+      <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+      <button type="submit" class="btn btn-primary">ログアウト</button>
+    </form>
+    <%- include('./../../components/inputJs') %>
   </body>
-  <%- include('./../../components/inputJs') %>
 </html>
