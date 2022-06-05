@@ -73,4 +73,12 @@ export default class TagRepository implements ITagApplicationServiceRepository {
     await this.db.UsingTag.destroy({where: {}});
     await this.db.Tag.destroy({where: {}});
   }
+
+  public async findById(id: string): Promise<TagModel | null> {
+    const tag = await this.db.Tag.findOne({
+      where: {id},
+    });
+    if (tag) return new TagModel(tag.id, tag.name, tag.created_at);
+    return null;
+  }
 }
