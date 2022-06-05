@@ -297,6 +297,12 @@ router.use('/admin', authCheckMiddle);
 /* 管理者用ホーム画面 */
 router.get('/admin/', csrfProtection, (req: Request, res: Response) => {
   pageData.headTitle = '管理画面';
+
+  const stateValue = stateManager.get('adminState');
+
+  if (stateValue) stateManager.delete('adminState');
+
+  pageData.anyData = {stateValue};
   pageData.csrfToken = req.csrfToken();
   res.render('pages/admin/', {pageData});
 });
@@ -307,8 +313,9 @@ router.post('/admin/logout', (req: Request, res: Response) => {
     res.redirect('/login');
 
     logger.info('Logout succeeded.');
-  } catch (e: any) {
-    logger.error(e.message);
+  } catch (e) {
+    logger.error(e as string);
+    stateManager.add('adminState', 'logoutError');
     res.redirect('/admin');
   }
 });
