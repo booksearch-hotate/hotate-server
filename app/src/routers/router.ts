@@ -367,10 +367,15 @@ router.get('/admin/search_history/', csrfProtection, async (req: Request, res: R
     pageCount,
   };
 
+  const stateValue = stateManager.get('searchHistoryEdit');
+
+  if (stateValue) stateManager.delete('searchHistoryEdit');
+
   pageData.headTitle = '検索履歴';
   pageData.anyData = {
     searchHistory,
     paginationData,
+    stateValue,
   };
   pageData.csrfToken = req.csrfToken();
   res.render('pages/admin/search_history/index', {pageData});
@@ -381,8 +386,10 @@ router.post('/admin/search_history/delete', csrfProtection, async (req: Request,
   try {
     const id = req.body.id;
     await searchHistoryApplicationService.delete(id);
+    stateManager.add('searchHistoryEdit', 'delete');
   } catch (e) {
     logger.error(e as string);
+    stateManager.add('searchHistoryEdit', 'error');
   }
 
   res.redirect('/admin/search_history/');
