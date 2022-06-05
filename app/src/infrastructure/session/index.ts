@@ -1,5 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import {Request} from 'express';
 
 import {IAdminSession} from '../../application/session/IAdminSession';
 import AdminData from '../../application/dto/AdminData';
@@ -39,6 +40,14 @@ export default class AdminSession implements IAdminSession {
       return false;
     }
     return false;
+  }
+
+  public delete(req: Request): void {
+    req.session.destroy((err) => {
+      if (err) throw err;
+    });
+    this.token = '';
+    this.loginStatus = 'logout';
   }
 
   public get Token(): string {

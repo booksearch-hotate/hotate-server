@@ -289,9 +289,16 @@ router.post('/check', csrfProtection, async (req: Request, res: Response) => {
 router.use('/admin', authCheckMiddle);
 
 /* 管理者用ホーム画面 */
-router.get('/admin/', (req: Request, res: Response) => {
+router.get('/admin/', csrfProtection, (req: Request, res: Response) => {
   pageData.headTitle = '管理画面';
+  pageData.csrfToken = req.csrfToken();
   res.render('pages/admin/', {pageData});
+});
+
+router.post('/admin/logout', (req: Request, res: Response) => {
+  admin.delete(req);
+  console.log('ログアウトしました。');
+  res.redirect('/login');
 });
 
 /* タグ管理画面 */
