@@ -54,7 +54,7 @@ export default class TagApplicationService {
 
   public async findAll(): Promise<TagData[]> {
     const tags = await this.tagApplicationServiceRepository.findAll();
-    return tags.map((tag) => new TagData(tag.Id, tag.Name));
+    return tags.map((tag) => new TagData(tag));
   }
 
   public async delete(id: string): Promise<void> {
