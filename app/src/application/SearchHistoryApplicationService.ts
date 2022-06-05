@@ -27,6 +27,10 @@ export default class AdminApplicationService {
     return res.map((tar) => new SearchHistoryData(tar));
   }
 
+  public async findAllCount(): Promise<number> {
+    return await this.searchHistoryApplicationRepository.findAllCount();
+  }
+
   public async delete(id: string): Promise<void> {
     await this.searchHistoryApplicationRepository.delete(id);
   }
