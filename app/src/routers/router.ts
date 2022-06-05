@@ -87,6 +87,15 @@ interface IPage {
   anyData?: unknown; // その他のデータ
 }
 
+interface IPaginationData {
+  pageRange: {
+    min: number,
+    max: number,
+  },
+  totalPage: number,
+  pageCount: number,
+}
+
 let pageData: IPage;
 
 const admin = new AdminSession();
@@ -178,17 +187,21 @@ router.get('/search', async (req: Request, res: Response) => {
     maxPage = paginationInfo.maxPage;
   }
 
-  pageData.headTitle = '検索結果 | HOTATE';
-  pageData.anyData = {
-    searchRes: resDatas,
-    searchHis: searchHisDatas,
-    searchWord,
+  const paginationData: IPaginationData = {
     pageRange: {
       min: minPage,
       max: maxPage,
     },
     totalPage,
     pageCount,
+  };
+
+  pageData.headTitle = '検索結果 | HOTATE';
+  pageData.anyData = {
+    searchRes: resDatas,
+    searchHis: searchHisDatas,
+    searchWord,
+    paginationData,
     isStrict,
     isTag,
   };
