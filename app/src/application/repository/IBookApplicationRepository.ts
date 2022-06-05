@@ -12,4 +12,6 @@ export interface IBookApplicationRepository {
   searchByTag(tagName: string, pageCount: number): Promise<BookModel[]>
   getTotalResults(searchWord: string, isStrict: boolean, isTag: boolean): Promise<number>
   update(bookModel: BookModel): Promise<void>
+  findAll (pageCount: number): Promise<BookModel[]>
+  findAllCount (): Promise<number>
 }

@@ -130,4 +130,20 @@ export default class BookApplicationService {
     );
     await this.bookRepository.update(book);
   }
+
+  public async findAll(pageCount: number): Promise<BookData[]> {
+    const books = await this.bookRepository.findAll(pageCount);
+    const bookDatas: BookData[] = [];
+    for (const book of books) {
+      const tags = await this.bookRepository.getTagsByBookId(book.Id);
+
+      const bookData = new BookData(book, tags);
+      bookDatas.push(bookData);
+    }
+    return bookDatas;
+  }
+
+  public async findAllCount(): Promise<number> {
+    return await this.bookRepository.findAllCount();
+  }
 }
