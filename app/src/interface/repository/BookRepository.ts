@@ -264,4 +264,44 @@ export default class BookRepository implements IBookApplicationRepository {
     };
     this.esSearchBook.update(doc);
   }
+
+  public async findAll(pageCount: number): Promise<BookModel[]> {
+    const books = await this.db.Book.findAll({
+      limit: 10,
+      offset: pageCount * 10,
+    });
+
+    const bookModels: BookModel[] = [];
+
+    for (const book of books) {
+      const authorId = book.author_id;
+      const publisherId = book.publisher_id;
+
+      const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
+      const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+
+      if (!(author && publisher)) throw new Error('author or publisher not found');
+
+      const authorModel = new AuthorModel(author.id, author.name);
+      const publisherModel = new PublisherModel(publisher.id, publisher.name);
+
+      const bookModel = new BookModel(
+          book.id,
+          book.book_name,
+          book.book_sub_name,
+          book.book_content,
+          book.isbn,
+          book.ndc,
+          book.year,
+          authorModel,
+          publisherModel,
+      );
+      bookModels.push(bookModel);
+    }
+    return bookModels;
+  }
+
+  public async findAllCount(): Promise<number> {
+    return await this.db.Book.count();
+  }
 }

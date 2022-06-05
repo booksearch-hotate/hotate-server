@@ -396,11 +396,48 @@ router.post('/admin/search_history/delete', csrfProtection, async (req: Request,
   res.redirect('/admin/search_history/');
 });
 
+router.get('/admin/book', csrfProtection, async (req: Request, res: Response) => {
+  let pageCount = Number(req.query.page as string);
+  if (isNaN(pageCount)) pageCount = 0;
+  else pageCount--;
+
+  if (pageCount <= 0) pageCount = 0;
+
+  const books = await bookApplicationService.findAll(pageCount);
+
+  const total = await bookApplicationService.findAllCount();
+
+  const paginationInfo = getPaginationInfo(pageCount, total);
+
+  const paginationData: IPaginationData = {
+    pageRange: {
+      min: paginationInfo.minPage,
+      max: paginationInfo.maxPage,
+    },
+    totalPage: paginationInfo.totalPage,
+    pageCount,
+  };
+
+  const stateValue = stateManager.get('bookEdit');
+
+  if (stateValue) stateManager.delete('bookEdit');
+
+  pageData.headTitle = '本の管理';
+  pageData.anyData = {
+    books,
+    paginationData,
+    stateValue,
+  };
+  pageData.csrfToken = req.csrfToken();
+
+  res.render('pages/admin/book/', {pageData});
+});
+
 /* 本の編集画面 */
 router.get('/admin/book/edit', csrfProtection, async (req: Request, res: Response) => {
   const id = req.query.id;
 
-  if (typeof id !== 'string') return res.redirect('/admin/');
+  if (typeof id !== 'string') return res.redirect('/admin/book');
 
   const book = await bookApplicationService.searchBookById(id);
 
@@ -429,7 +466,7 @@ router.post('/admin/book/update', csrfProtection, async (req: Request, res: Resp
       book.PublisherName,
   );
 
-  res.redirect('/admin/');
+  res.redirect('/admin/book');
 });
 
 /* csvファイル選択画面 */
