@@ -267,7 +267,7 @@ router.post('/check', csrfProtection, async (req: Request, res: Response) => {
       const adminData = new AdminData(id, pw);
       const isValid = await adminApplicationService.isValid(adminData);
       if (isValid) {
-        logger.info('ログインに成功しました。');
+        logger.info('Login succeeded.');
         admin.create(adminData);
         if (!req.session.token) req.session.token = admin.Token;
 
@@ -275,7 +275,7 @@ router.post('/check', csrfProtection, async (req: Request, res: Response) => {
 
         res.redirect('/admin/');
       } else {
-        logger.warn('ログインに失敗しました。');
+        logger.warn('Login failed.');
 
         stateManager.add('loginState', 'miss');
 
