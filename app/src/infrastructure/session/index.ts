@@ -10,7 +10,6 @@ dotenv.config();
 export default class AdminSession implements IAdminSession {
   private token: string;
   private readonly jwtSecret = process.env.JWTSECRET as string;
-  private loginStatus = 'logout';
   private id: string;
   private pw: string;
 
@@ -47,18 +46,9 @@ export default class AdminSession implements IAdminSession {
       if (err) throw err;
     });
     this.token = '';
-    this.loginStatus = 'logout';
   }
 
   public get Token(): string {
     return this.token;
-  }
-
-  public get LoginStatus(): string {
-    return this.loginStatus;
-  }
-
-  public set LoginStatus(status: string) {
-    this.loginStatus = status;
   }
 }
