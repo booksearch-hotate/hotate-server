@@ -54,7 +54,12 @@ export default class TagApplicationService {
 
   public async findAll(): Promise<TagData[]> {
     const tags = await this.tagApplicationServiceRepository.findAll();
-    return tags.map((tag) => new TagData(tag));
+    const res: TagData[] = [];
+    for (const tag of tags) {
+      const count = await this.tagService.getCount(tag);
+      res.push(new TagData(tag, count));
+    }
+    return res;
   }
 
   public async delete(id: string): Promise<void> {
@@ -67,7 +72,7 @@ export default class TagApplicationService {
 
   public async findById(id: string): Promise<TagData | null> {
     const tag = await this.tagApplicationServiceRepository.findById(id);
-    if (tag) return new TagData(tag);
+    if (tag) return new TagData(tag, await this.tagService.getCount(tag));
     return null;
   }
 
