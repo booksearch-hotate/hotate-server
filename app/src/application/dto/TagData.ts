@@ -4,11 +4,13 @@ export default class TagData {
   private id: string;
   private name: string;
   private createdAt: Date | null;
+  private count: number;
 
-  public constructor(tagModel: TagModel) {
+  public constructor(tagModel: TagModel, count: number) {
     this.id = tagModel.Id;
     this.name = tagModel.Name;
     this.createdAt = tagModel.CreatedAt;
+    this.count = count;
   }
 
   get Id(): string {
@@ -19,5 +21,8 @@ export default class TagData {
   }
   get CreatedAt(): Date | null {
     return this.createdAt;
+  }
+  get Count(): number {
+    return this.count;
   }
 }
