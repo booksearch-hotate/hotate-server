@@ -38,6 +38,7 @@ export default class EsSearchHistory extends ElasticSearch {
     await axios.post(`${this.uri}/_doc`, {
       search_words: searchWords.Words,
       id: searchWords.Id,
+      created_at: searchWords.CreatedAt,
     });
   }
 
@@ -60,13 +61,16 @@ export default class EsSearchHistory extends ElasticSearch {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ids = hits.map((hit: any) => hit._id);
+
+    const createdAts = hits.map((hit: any) => hit._source.created_at);
     // searchWordsは除外
     words.splice(words.indexOf(searchWords), 1);
     ids.splice(ids.indexOf(searchWords), 1);
+    createdAts.splice(createdAts.indexOf(searchWords), 1);
 
     const tagModels: SearchHistoryModel[] = [];
     for (let i = 0; i < ids.length; i++) {
-      const tagModel = new SearchHistoryModel(ids[i], words[i]);
+      const tagModel = new SearchHistoryModel(ids[i], words[i], createdAts[i]);
       tagModels.push(tagModel);
     }
 
@@ -96,9 +100,12 @@ export default class EsSearchHistory extends ElasticSearch {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ids = hits.map((hit: any) => hit._id);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const createdAts = hits.map((hit: any) => hit._source.created_at);
+
     const tagModels: SearchHistoryModel[] = [];
     for (let i = 0; i < ids.length; i++) {
-      const tagModel = new SearchHistoryModel(ids[i], words[i]);
+      const tagModel = new SearchHistoryModel(ids[i], words[i], createdAts[i]);
       tagModels.push(tagModel);
     }
 

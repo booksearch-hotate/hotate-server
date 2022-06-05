@@ -6,8 +6,8 @@ import {ISearchHistoryApplicationRepository} from '../../application/repository/
 export default class SearchHistoryRepository implements ISearchHistoryApplicationRepository {
   private readonly esSearchHistory: EsSearchHistory;
 
-  public constructor(searchHistoryModel: EsSearchHistory) {
-    this.esSearchHistory = searchHistoryModel;
+  public constructor(esSearchHistory: EsSearchHistory) {
+    this.esSearchHistory = esSearchHistory;
   }
 
   public async add(tar: SearchHistoryModel) {

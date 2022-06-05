@@ -3,7 +3,7 @@ import {ISearchHistoryApplicationRepository} from './repository/ISearchHistoryAp
 import SearchHistoryService from '../domain/service/searchHistoryService';
 import SearchHistoryData from './dto/SearchHistoryData';
 
-export default class AdminApplicationService {
+export default class SearchHistoryApplicationService {
   private readonly searchHistoryApplicationRepository: ISearchHistoryApplicationRepository;
   private readonly searchHistoryService: SearchHistoryService;
 
@@ -14,7 +14,7 @@ export default class AdminApplicationService {
 
   public async add(words: string) {
     const id = this.searchHistoryService.createUUID();
-    await this.searchHistoryApplicationRepository.add(new SearchHistoryModel(id, words));
+    await this.searchHistoryApplicationRepository.add(new SearchHistoryModel(id, words, new Date()));
   }
 
   public async search(words: string): Promise<SearchHistoryData[]> {

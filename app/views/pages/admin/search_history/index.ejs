@@ -28,6 +28,7 @@ switch (pageData.anyData.stateValue) {
       <thead>
         <tr>
           <th>検索内容</th>
+          <th>作成日時</th>
           <th>削除</th>
         </tr>
       </thead>
@@ -35,6 +36,7 @@ switch (pageData.anyData.stateValue) {
         <% for (let tag of pageData.anyData.searchHistory) { %>
           <tr>
             <td><%= tag.Words %></td>
+            <td><%= tag.CreatedAt %></td>
             <td>
               <form action="/admin/search_history/delete" method="post">
                 <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
