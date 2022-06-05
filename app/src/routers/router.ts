@@ -265,8 +265,6 @@ router.get('/admin/tags', csrfProtection, async (req: Request, res: Response) =>
 
   const stateValue = stateManager.get('tagEdit');
 
-  console.log(stateValue);
-
   if (stateValue) stateManager.delete('tagEdit');
 
   pageData.headTitle = 'タグ管理';
@@ -307,8 +305,6 @@ router.post('/admin/tags/update', csrfProtection, async (req: Request, res: Resp
   await tagApplicationService.update(id, name);
 
   stateManager.add('tagEdit', 'success');
-
-  console.log(stateManager.get('tagEdit'));
 
   res.redirect('/admin/tags');
 });
