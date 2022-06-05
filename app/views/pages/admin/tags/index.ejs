@@ -9,16 +9,16 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>タグID</th>
           <th>タグ名</th>
+          <th>作成日時</th>
           <th>削除</th>
         </tr>
       </thead>
       <tbody>
         <% for (let tag of pageData.anyData.tags) { %>
           <tr>
-            <td><%= tag.Id %></td>
             <td><%= tag.Name %></td>
+            <td><%= tag.CreatedAt %></td>
             <td>
               <form action="/admin/tags/delete" method="post">
                 <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
