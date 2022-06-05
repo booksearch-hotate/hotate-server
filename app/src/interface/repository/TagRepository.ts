@@ -86,4 +86,11 @@ export default class TagRepository implements ITagApplicationServiceRepository, 
   public async update(id: string, name: string): Promise<void> {
     await this.db.Tag.update({name}, {where: {id}});
   }
+
+  public async getCount(tagId: string): Promise<number> {
+    const count = await this.db.UsingTag.count({
+      where: {tag_id: tagId},
+    });
+    return count;
+  }
 }
