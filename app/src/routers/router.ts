@@ -5,9 +5,6 @@ import {broadcast} from '../handler/websocket';
 import csurf from 'csurf';
 import {performance} from 'perf_hooks';
 
-/* module */
-import originMake from '../modules/origin';
-
 /* domain service */
 import BookService from '../domain/service/bookService';
 import AuthorService from '../domain/service/authorService';
@@ -103,7 +100,7 @@ const inputOriginData = (req: Request, res: Response, next: NextFunction) => {
   pageData = {
     headTitle: '',
     path: req.url,
-    origin: originMake(req),
+    origin: req.protocol + '://' + req.headers.host,
     csrfToken: '',
   };
   next();
