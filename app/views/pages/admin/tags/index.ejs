@@ -11,6 +11,7 @@
         <tr>
           <th>タグ名</th>
           <th>作成日時</th>
+          <th>編集</th>
           <th>削除</th>
         </tr>
       </thead>
@@ -19,6 +20,12 @@
           <tr>
             <td><%= tag.Name %></td>
             <td><%= tag.CreatedAt %></td>
+            <td>
+              <form action="/admin/tags/edit" method="get">
+                <input type="hidden" name="id" value="<%= tag.Id %>">
+                <button type="submit" class="btn btn-success">編集</button>
+              </form>
+            </td>
             <td>
               <form action="/admin/tags/delete" method="post">
                 <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">

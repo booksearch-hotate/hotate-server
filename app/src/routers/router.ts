@@ -260,12 +260,16 @@ router.post('/admin/tags/delete', csrfProtection, async (req: Request, res: Resp
   res.redirect('/admin/tags');
 });
 
-router.get('/admin/tags/edit', async (req: Request, res: Response) => {
-  const id = req.body.id;
+router.get('/admin/tags/edit', csrfProtection, async (req: Request, res: Response) => {
+  const id = req.query.id;
+
+  if (typeof id !== 'string') return res.redirect('/admin/tags');
+
   const tag = await tagApplicationService.findById(id);
 
   pageData.headTitle = 'タグ編集';
   pageData.anyData = {tag};
+  pageData.csrfToken = req.csrfToken();
   res.render('pages/admin/tags/edit', {pageData});
 });
 
