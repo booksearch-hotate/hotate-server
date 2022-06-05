@@ -358,15 +358,19 @@ router.get('/admin/search_history/', csrfProtection, async (req: Request, res: R
 
   const paginationInfo = getPaginationInfo(pageCount, total);
 
-  pageData.headTitle = '検索履歴';
-  pageData.anyData = {
-    searchHistory,
+  const paginationData: IPaginationData = {
     pageRange: {
       min: paginationInfo.minPage,
       max: paginationInfo.maxPage,
     },
     totalPage: paginationInfo.totalPage,
     pageCount,
+  };
+
+  pageData.headTitle = '検索履歴';
+  pageData.anyData = {
+    searchHistory,
+    paginationData,
   };
   pageData.csrfToken = req.csrfToken();
   res.render('pages/admin/search_history/index', {pageData});
