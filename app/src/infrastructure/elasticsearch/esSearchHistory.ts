@@ -89,6 +89,11 @@ export default class EsSearchHistory extends ElasticSearch {
         },
         from: fromVal,
         size: 10,
+        sort: {
+          'created_at': {
+            order: 'desc',
+          },
+        },
       },
     });
     const hits = res.data.hits.hits;
