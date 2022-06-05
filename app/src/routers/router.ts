@@ -278,6 +278,8 @@ router.post('/admin/tags/delete', csrfProtection, async (req: Request, res: Resp
   const id = req.body.id;
   await tagApplicationService.delete(id);
 
+  stateManager.add('tagEdit', 'delete');
+
   res.redirect('/admin/tags');
 });
 
@@ -304,7 +306,7 @@ router.post('/admin/tags/update', csrfProtection, async (req: Request, res: Resp
 
   await tagApplicationService.update(id, name);
 
-  stateManager.add('tagEdit', 'success');
+  stateManager.add('tagEdit', 'update');
 
   res.redirect('/admin/tags');
 });
