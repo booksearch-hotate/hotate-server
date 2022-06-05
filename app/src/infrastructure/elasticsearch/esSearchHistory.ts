@@ -3,6 +3,8 @@ import axios from 'axios';
 import SearchHistoryModel from '../../domain/model/searchHistoryModel';
 
 export default class EsSearchHistory extends ElasticSearch {
+  private total = 0;
+
   constructor(index: string) {
     super(index);
     this.initSearchHistory();
@@ -86,6 +88,9 @@ export default class EsSearchHistory extends ElasticSearch {
       },
     });
     const hits = res.data.hits.hits;
+
+    this.total = res.data.hits.total.value;
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const words = hits.map((hit: any) => hit._source.search_words);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -102,5 +107,9 @@ export default class EsSearchHistory extends ElasticSearch {
 
   public async delete(id: string): Promise<void> {
     await axios.delete(`${this.uri}/_doc/${id}`);
+  }
+
+  get Total(): number {
+    return this.total;
   }
 }

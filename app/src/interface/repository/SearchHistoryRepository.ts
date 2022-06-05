@@ -11,15 +11,19 @@ export default class SearchHistoryRepository implements ISearchHistoryApplicatio
   }
 
   public async add(tar: SearchHistoryModel) {
-    this.esSearchHistory.add(tar);
+    await this.esSearchHistory.add(tar);
   }
 
   public async search(words: string): Promise<SearchHistoryModel[]> {
-    return this.esSearchHistory.search(words);
+    return await this.esSearchHistory.search(words);
   }
 
   public async find(count: number): Promise<SearchHistoryModel[]> {
-    return this.esSearchHistory.find(count);
+    return await this.esSearchHistory.find(count);
+  }
+
+  public async findAllCount(): Promise<number> {
+    return this.esSearchHistory.Total;
   }
 
   public async delete(id: string): Promise<void> {

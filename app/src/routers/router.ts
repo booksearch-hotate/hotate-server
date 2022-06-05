@@ -93,6 +93,29 @@ const admin = new AdminSession();
 
 const stateManager = new State();
 
+const getPaginationInfo = (query: any, total: number) => {
+  let pageCount = Number(query as string);
+  let totalPage = 0;
+  let minPage = 0;
+  let maxPage = 0;
+
+  if (isNaN(pageCount)) pageCount = 0;
+  else pageCount--;
+
+  if (pageCount <= 0) pageCount = 0;
+
+  totalPage = Math.ceil(total / 10); // 最大ページ数
+  minPage = Math.max(pageCount - 3, 1); // 最小ページ数
+  maxPage = Math.min(Math.max(7 - minPage + 1, pageCount + 3), totalPage); // 最大ページ数
+
+  return {
+    pageCount,
+    totalPage,
+    minPage,
+    maxPage,
+  };
+};
+
 /**
  * originを取得
  */
@@ -149,9 +172,10 @@ router.get('/search', async (req: Request, res: Response) => {
     searchHisDatas = searchHis as SearchHistoryData[];
 
     const total = await bookApplicationService.getTotalResults(searchWord, isStrict, isTag);
-    totalPage = Math.ceil(total / 10); // 最大ページ数
-    minPage = Math.max(pageCount - 3, 1); // 最小ページ数
-    maxPage = Math.min(Math.max(7 - minPage + 1, pageCount + 3), totalPage); // 最大ページ数
+    const paginationInfo = getPaginationInfo(pageCount, total);
+    totalPage = paginationInfo.totalPage;
+    minPage = paginationInfo.minPage;
+    maxPage = paginationInfo.maxPage;
   }
 
   pageData.headTitle = '検索結果 | HOTATE';
@@ -312,10 +336,25 @@ router.post('/admin/tags/update', csrfProtection, async (req: Request, res: Resp
 router.get('/admin/search_history/', csrfProtection, async (req: Request, res: Response) => {
   let pageCount = Number(req.query.page as string);
   if (isNaN(pageCount)) pageCount = 0;
+  else pageCount--;
+
+  if (pageCount <= 0) pageCount = 0;
+
   const searchHistory = await searchHistoryApplicationService.find(pageCount);
+  const total = await searchHistoryApplicationService.findAllCount();
+
+  const paginationInfo = getPaginationInfo(pageCount, total);
 
   pageData.headTitle = '検索履歴';
-  pageData.anyData = {searchHistory};
+  pageData.anyData = {
+    searchHistory,
+    pageRange: {
+      min: paginationInfo.minPage,
+      max: paginationInfo.maxPage,
+    },
+    totalPage: paginationInfo.totalPage,
+    pageCount,
+  };
   pageData.csrfToken = req.csrfToken();
   res.render('pages/admin/search_history/index', {pageData});
 });
