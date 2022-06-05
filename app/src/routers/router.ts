@@ -427,6 +427,7 @@ router.get('/admin/book', csrfProtection, async (req: Request, res: Response) =>
     books,
     paginationData,
     stateValue,
+    bookCount: total,
   };
   pageData.csrfToken = req.csrfToken();
 
