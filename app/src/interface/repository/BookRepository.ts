@@ -246,4 +246,22 @@ export default class BookRepository implements IBookApplicationRepository {
     if (isTag) return await this.getCountUsingTag(searchWord);
     return this.esSearchBook.Total;
   }
+
+  public async update(book: BookModel): Promise<void> {
+    await this.db.Book.update({
+      book_name: book.Name,
+      book_sub_name: book.SubName,
+      book_content: book.Content,
+      isbn: book.Isbn,
+      ndc: book.Ndc,
+      year: book.Year,
+    }, {where: {id: book.Id}});
+
+    const doc: IEsBook = {
+      db_id: book.Id,
+      book_name: book.Name,
+      book_content: book.Content,
+    };
+    this.esSearchBook.update(doc);
+  }
 }

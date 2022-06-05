@@ -101,4 +101,33 @@ export default class BookApplicationService {
   public async getTotalResults(searchWords: string, isStrict: boolean, isTag: boolean): Promise<number> {
     return await this.bookRepository.getTotalResults(searchWords, isStrict, isTag);
   }
+
+  public async update(
+      id: string,
+      bookName: string,
+      subName: string | null,
+      content: string | null,
+      isbn: string | null,
+      ndc: number | null,
+      year: number | null,
+      authorId: string,
+      authorName: string,
+      publisherId: string,
+      publisherName: string,
+  ) {
+    const author = new AuthorModel(authorId, authorName);
+    const publisher = new PublisherModel(publisherId, publisherName);
+    const book = new BookModel(
+        id,
+        bookName,
+        subName,
+        content,
+        isbn,
+        ndc,
+        year,
+        author,
+        publisher,
+    );
+    await this.bookRepository.update(book);
+  }
 }
