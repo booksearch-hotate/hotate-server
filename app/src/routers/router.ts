@@ -260,6 +260,7 @@ router.post('/admin/tags/delete', csrfProtection, async (req: Request, res: Resp
   res.redirect('/admin/tags');
 });
 
+/* タグの編集画面 */
 router.get('/admin/tags/edit', csrfProtection, async (req: Request, res: Response) => {
   const id = req.query.id;
 
@@ -271,6 +272,18 @@ router.get('/admin/tags/edit', csrfProtection, async (req: Request, res: Respons
   pageData.anyData = {tag};
   pageData.csrfToken = req.csrfToken();
   res.render('pages/admin/tags/edit', {pageData});
+});
+
+/* タグの編集処理 */
+router.post('/admin/tags/update', csrfProtection, async (req: Request, res: Response) => {
+  const id = req.body.id;
+  const name = req.body.name;
+
+  if (name === '') return res.redirect(`/admin/tags/edit?id=${id}`);
+
+  await tagApplicationService.update(id, name);
+
+  res.redirect('/admin/tags');
 });
 
 /* 検索履歴一覧画面 */

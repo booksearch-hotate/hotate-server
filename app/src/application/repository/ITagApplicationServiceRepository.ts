@@ -10,4 +10,5 @@ export interface ITagApplicationServiceRepository {
   isExistTable(): Promise<boolean>
   deleteAll(): Promise<void>
   findById(id: string): Promise<TagModel | null>
+  update(id: string, name: string): Promise<void>
 }
