@@ -51,7 +51,9 @@ export default class TagRepository implements ITagApplicationServiceRepository {
   }
 
   public async findAll(): Promise<TagModel[]> {
-    const tags = await this.db.Tag.findAll();
+    const tags = await this.db.Tag.findAll({
+      order: [['created_at', 'DESC']],
+    });
     return tags.map((tag) => new TagModel(tag.id, tag.name));
   }
 
