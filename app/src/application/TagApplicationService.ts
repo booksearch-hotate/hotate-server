@@ -77,4 +77,8 @@ export default class TagApplicationService {
   public async deleteAll(): Promise<void> {
     await this.tagApplicationServiceRepository.deleteAll();
   }
+
+  public async update(id: string, name: string): Promise<void> {
+    await this.tagApplicationServiceRepository.update(id, name);
+  }
 }

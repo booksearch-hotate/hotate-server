@@ -81,4 +81,8 @@ export default class TagRepository implements ITagApplicationServiceRepository {
     if (tag) return new TagModel(tag.id, tag.name, tag.created_at);
     return null;
   }
+
+  public async update(id: string, name: string): Promise<void> {
+    await this.db.Tag.update({name}, {where: {id}});
+  }
 }
