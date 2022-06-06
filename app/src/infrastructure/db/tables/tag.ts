@@ -1,4 +1,5 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
+import UsingTag from './usingTag';
 
 export default class Tag extends Model {
   public id!: string;
@@ -23,5 +24,12 @@ export default class Tag extends Model {
       updatedAt: 'updated_at',
     });
     return this;
+  }
+
+  public static associate() {
+    this.hasMany(UsingTag, {
+      sourceKey: 'id',
+      foreignKey: 'tag_id',
+    });
   }
 }
