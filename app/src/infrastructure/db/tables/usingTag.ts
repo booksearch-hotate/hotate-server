@@ -1,4 +1,6 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
+import Tag from './tag';
+import Book from './book';
 
 export default class UsingTag extends Model {
   public id!: number;
@@ -26,5 +28,10 @@ export default class UsingTag extends Model {
       timestamps: false,
     });
     return this;
+  }
+
+  public static associate() {
+    this.belongsTo(Tag, {foreignKey: 'tag_id', constraints: false});
+    this.belongsTo(Book, {foreignKey: 'book_id', constraints: false});
   }
 }
