@@ -55,8 +55,8 @@ export default class TagApplicationService {
   public async findAll(): Promise<TagData[]> {
     const tags = await this.tagApplicationServiceRepository.findAll();
     const res: TagData[] = [];
-    for (const tag of tags) {
-      const count = await this.tagService.getCount(tag);
+    for (const tagObj of tags) {
+      const [tag, count] = tagObj;
       res.push(new TagData(tag, count));
     }
     return res;

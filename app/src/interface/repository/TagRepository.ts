@@ -6,6 +6,7 @@ import {ITagApplicationServiceRepository} from '../../application/repository/ITa
 import {ITagServiceRepository} from '../../domain/service/repository/ITagServiceRepository';
 
 import TagModel from '../../domain/model/tagModel';
+import sequelize from 'sequelize';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -51,11 +52,28 @@ export default class TagRepository implements ITagApplicationServiceRepository, 
     return false;
   }
 
-  public async findAll(): Promise<TagModel[]> {
+  public async findAll(): Promise<[TagModel, number][]> {
     const tags = await this.db.Tag.findAll({
+      attributes: [
+        'id',
+        'name',
+        'created_at',
+        [sequelize.fn('count', sequelize.col('Tag.id')), 'count'],
+      ],
+      group: ['Tag.id'],
       order: [['created_at', 'DESC']],
+      include: [{
+        model: this.db.UsingTag,
+        required: true,
+        attributes: [],
+      }],
     });
-    return tags.map((tag) => new TagModel(tag.id, tag.name, tag.created_at));
+    const result: [TagModel, number][] = [];
+    tags.forEach((tag) => {
+      result.push([new TagModel(tag.id, tag.name, tag.created_at), tag.getDataValue('count')]);
+    });
+
+    return result;
   }
 
   public async delete(id: string): Promise<void> {
