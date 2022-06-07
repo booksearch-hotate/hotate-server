@@ -1,6 +1,6 @@
 {
   "name": "hotate_server",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Server used by the service, HOTATE.",
   "main": "index.js",
   "scripts": {

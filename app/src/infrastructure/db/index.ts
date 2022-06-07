@@ -28,5 +28,7 @@ const db = {
 db.Book.associate();
 db.Author.associate();
 db.Publisher.associate();
+db.Tag.associate();
+db.UsingTag.associate();
 
 export default db;

@@ -13,9 +13,9 @@ export default class BookApplicationService {
   private readonly bookRepository: IBookApplicationRepository;
   private readonly bookService: BookService;
 
-  public constructor(bookRepository: IBookApplicationRepository) {
+  public constructor(bookRepository: IBookApplicationRepository, bookService: BookService) {
     this.bookRepository = bookRepository;
-    this.bookService = new BookService();
+    this.bookService = bookService;
   }
 
   public async createBook(
@@ -50,14 +50,19 @@ export default class BookApplicationService {
     await this.bookRepository.deleteAll();
   }
 
-  public async searchBooks(query: string, isStrict: boolean, isTag: boolean): Promise<BookData[]> {
+  public async searchBooks(
+      query: string,
+      isStrict: boolean,
+      isTag: boolean,
+      pageCount: number,
+  ): Promise<BookData[]> {
     // 検索から得られたbookModelの配列
     let books: BookModel[] = [];
     if (!isTag) {
-      books = isStrict ? await this.bookRepository.searchUsingLike(query) : await this.bookRepository.search(query);
+      books = isStrict ? await this.bookRepository.searchUsingLike(query, pageCount) : await this.bookRepository.search(query, pageCount);
     } else {
       try {
-        books = await this.bookRepository.searchByTag(query);
+        books = await this.bookRepository.searchByTag(query, pageCount);
       } catch (e) {
         books = [];
       }
@@ -91,5 +96,54 @@ export default class BookApplicationService {
 
   public async executeBulkApi(): Promise<void> {
     await this.bookRepository.executeBulkApi();
+  }
+
+  public async getTotalResults(searchWords: string, isStrict: boolean, isTag: boolean): Promise<number> {
+    return await this.bookRepository.getTotalResults(searchWords, isStrict, isTag);
+  }
+
+  public async update(
+      id: string,
+      bookName: string,
+      subName: string | null,
+      content: string | null,
+      isbn: string | null,
+      ndc: number | null,
+      year: number | null,
+      authorId: string,
+      authorName: string,
+      publisherId: string,
+      publisherName: string,
+  ) {
+    const author = new AuthorModel(authorId, authorName);
+    const publisher = new PublisherModel(publisherId, publisherName);
+    const book = new BookModel(
+        id,
+        bookName,
+        subName,
+        content,
+        isbn,
+        ndc,
+        year,
+        author,
+        publisher,
+    );
+    await this.bookRepository.update(book);
+  }
+
+  public async findAll(pageCount: number): Promise<BookData[]> {
+    const books = await this.bookRepository.findAll(pageCount);
+    const bookDatas: BookData[] = [];
+    for (const book of books) {
+      const tags = await this.bookRepository.getTagsByBookId(book.Id);
+
+      const bookData = new BookData(book, tags);
+      bookDatas.push(bookData);
+    }
+    return bookDatas;
+  }
+
+  public async findAllCount(): Promise<number> {
+    return await this.bookRepository.findAllCount();
   }
 }

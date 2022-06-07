@@ -5,8 +5,13 @@ import {broadcast} from '../handler/websocket';
 import csurf from 'csurf';
 import {performance} from 'perf_hooks';
 
-/* module */
-import originMake from '../modules/origin';
+/* domain service */
+import BookService from '../domain/service/bookService';
+import AuthorService from '../domain/service/authorService';
+import PublisherService from '../domain/service/publisherService';
+import AdminService from '../domain/service/adminService';
+import SearchHistoryService from '../domain/service/searchHistoryService';
+import TagService from '../domain/service/tagService';
 
 /* application searvice */
 import BookApplicationService from '../application/BookApplicationService';
@@ -33,10 +38,12 @@ import db from '../infrastructure/db';
 import EsCsv from '../infrastructure/elasticsearch/esCsv';
 import EsSearchBook from '../infrastructure/elasticsearch/esSearchBook';
 import EsSearchHistory from '../infrastructure/elasticsearch/esSearchHistory';
+import State from '../infrastructure/state';
 
 /* DTO */
 import AdminData from '../application/dto/AdminData';
 import BookData from '../application/dto/BookData';
+import SearchHistoryData from '../application/dto/SearchHistoryData';
 
 // eslint-disable-next-line new-cap
 const router = Router(); // ルーティング
@@ -47,21 +54,27 @@ const csvFile = new CsvFile();
 /* アプリケーションサービスの初期化 */
 const bookApplicationService = new BookApplicationService(
     new BookRepository(db, new EsSearchBook('books')),
+    new BookService(),
 );
 const authorApplicationService = new AuthorApplicationService(
     new AuthorRepository(db, new EsCsv('authors')),
+    new AuthorService(new AuthorRepository(db, new EsCsv('authors'))),
 );
 const publisherApplicationService = new PublisherApplicationService(
     new PublisherRepository(db, new EsCsv('publishers')),
+    new PublisherService(new PublisherRepository(db, new EsCsv('publishers'))),
 );
 const adminApplicationService = new AdminApplicationService(
     new AdminRepository(db),
+    new AdminService(),
 );
 const tagApplicationService = new TagApplicationService(
     new TagRepository(db),
+    new TagService(new TagRepository(db)),
 );
 const searchHistoryApplicationService = new SearchHistoryApplicationService(
     new SearchHistoryRepository(new EsSearchHistory('search_history')),
+    new SearchHistoryService(),
 );
 
 /* ejsにデータを渡す際に使用するオブジェクト */
@@ -74,9 +87,43 @@ interface IPage {
   anyData?: unknown; // その他のデータ
 }
 
+interface IPaginationData {
+  pageRange: {
+    min: number,
+    max: number,
+  },
+  totalPage: number,
+  pageCount: number,
+}
+
 let pageData: IPage;
 
 const admin = new AdminSession();
+
+const stateManager = new State();
+
+const getPaginationInfo = (query: any, total: number) => {
+  let pageCount = Number(query as string);
+  let totalPage = 0;
+  let minPage = 0;
+  let maxPage = 0;
+
+  if (isNaN(pageCount)) pageCount = 0;
+  else pageCount--;
+
+  if (pageCount <= 0) pageCount = 0;
+
+  totalPage = Math.ceil(total / 10); // 最大ページ数
+  minPage = Math.max(pageCount - 3, 1); // 最小ページ数
+  maxPage = Math.min(Math.max(7 - minPage + 1, pageCount + 3), totalPage); // 最大ページ数
+
+  return {
+    pageCount,
+    totalPage,
+    minPage,
+    maxPage,
+  };
+};
 
 /**
  * originを取得
@@ -85,7 +132,7 @@ const inputOriginData = (req: Request, res: Response, next: NextFunction) => {
   pageData = {
     headTitle: '',
     path: req.url,
-    origin: originMake(req),
+    origin: req.protocol + '://' + req.headers.host,
     csrfToken: '',
   };
   next();
@@ -102,32 +149,77 @@ router.get('/', (req: Request, res: Response) => {
   res.render('pages/index', {pageData});
 });
 
+/* 検索結果 */
 router.get('/search', async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
-  const isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
-  const isTag = req.query.tag === 'true'; // タグ検索かどうか
+  let isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
+  let isTag = req.query.tag === 'true'; // タグ検索かどうか
+
+  if (isTag && isStrict) {
+    isStrict = isTag = false;
+  }
+
+  let pageCount = Number(req.query.page as string);
+  let totalPage = 0;
+  let minPage = 0;
+  let maxPage = 0;
+
+  if (isNaN(pageCount)) pageCount = 0;
+  else pageCount--;
+
+  if (pageCount <= 0) pageCount = 0;
+
   let resDatas: BookData[] = [];
-  let searchHisDatas: string[] = [];
+  let searchHisDatas: SearchHistoryData[] = [];
   if (searchWord !== '') {
-    const promissList = [bookApplicationService.searchBooks(searchWord, isStrict, isTag), searchHistoryApplicationService.search(searchWord)];
+    const promissList = [
+      bookApplicationService.searchBooks(searchWord, isStrict, isTag, pageCount),
+      searchHistoryApplicationService.search(searchWord),
+    ];
     const [books, searchHis] = await Promise.all(promissList);
     resDatas = books as BookData[];
-    searchHisDatas = searchHis as string[];
+    searchHisDatas = searchHis as SearchHistoryData[];
+
+    const total = await bookApplicationService.getTotalResults(searchWord, isStrict, isTag);
+    const paginationInfo = getPaginationInfo(pageCount, total);
+    totalPage = paginationInfo.totalPage;
+    minPage = paginationInfo.minPage;
+    maxPage = paginationInfo.maxPage;
   }
+
+  const paginationData: IPaginationData = {
+    pageRange: {
+      min: minPage,
+      max: maxPage,
+    },
+    totalPage,
+    pageCount,
+  };
+
   pageData.headTitle = '検索結果 | HOTATE';
-  pageData.anyData = {searchRes: resDatas, searchHis: searchHisDatas, searchWord: searchWord};
-  await searchHistoryApplicationService.add(searchWord);
+  pageData.anyData = {
+    searchRes: resDatas,
+    searchHis: searchHisDatas,
+    searchWord,
+    paginationData,
+    isStrict,
+    isTag,
+  };
+
+  if (!isStrict && !isTag) searchHistoryApplicationService.add(searchWord);
 
   res.render('pages/search', {pageData});
 });
 
+/* 本詳細画面 */
 router.get('/item/:bookId', async (req: Request, res: Response) => {
   const id = req.params.bookId; // 本のID
   let bookData: BookData;
+  const isLogin = admin.verify(req.session.token);
   try {
     bookData = await bookApplicationService.searchBookById(id);
     pageData.headTitle = `${bookData.BookName} | HOTATE`;
-    pageData.anyData = {bookData, isError: false};
+    pageData.anyData = {bookData, isError: false, isLogin};
   } catch {
     logger.warn(`Not found bookId: ${id}`);
     pageData.headTitle = '本が見つかりませんでした。';
@@ -137,10 +229,15 @@ router.get('/item/:bookId', async (req: Request, res: Response) => {
   }
 });
 
+/* ログイン画面 */
 router.get('/login', csrfProtection, (req: Request, res: Response) => {
-  if (admin.verify(req.session.token)) return res.redirect('/admin/home');
+  if (admin.verify(req.session.token)) return res.redirect('/admin/');
+
+  const stateValue = stateManager.get('loginState');
+  if (stateValue) stateManager.delete('loginState');
+
   pageData.headTitle = 'ログイン | HOTATE';
-  pageData.anyData = {loginStatus: admin.LoginStatus};
+  pageData.anyData = {stateValue};
   pageData.csrfToken = req.csrfToken();
 
   return res.render('pages/login', {pageData});
@@ -155,41 +252,41 @@ const authCheckMiddle = (req: Request, res: Response, next: NextFunction) => {
     next();
   } else {
     logger.info('トークンが無効です。ログインページへリダイレクトします。');
-    admin.LoginStatus = 'miss';
+    stateManager.add('loginState', 'invalidToken');
     res.redirect('/login');
   }
 };
 
-/**
- * ログイン処理を行う関数
-*/
+/* ログイン処理 */
 router.post('/check', csrfProtection, async (req: Request, res: Response) => {
   try {
-    logger.debug('check');
+    logger.debug('login check');
     if (req.body.id && req.body.pw) {
       const id = req.body.id;
       const pw = req.body.pw;
       const adminData = new AdminData(id, pw);
       const isValid = await adminApplicationService.isValid(adminData);
       if (isValid) {
-        logger.info('ログインに成功しました。');
+        logger.info('Login succeeded.');
         admin.create(adminData);
-        admin.LoginStatus = 'login';
         if (!req.session.token) req.session.token = admin.Token;
-        res.redirect('/admin/home');
+
+        stateManager.add('loginState', 'success');
+
+        res.redirect('/admin/');
       } else {
-        logger.warn('ログインに失敗しました。');
-        admin.LoginStatus = 'miss';
+        logger.warn('Login failed.');
+
+        stateManager.add('loginState', 'miss');
+
         res.redirect('/login');
       }
     } else {
-      admin.LoginStatus = 'miss';
       res.redirect('/login');
-      logger.warn('直接ログインしようとしました。');
     }
   } catch (e) {
     logger.error(e as string);
-    admin.LoginStatus = 'error';
+    stateManager.add('loginState', 'error');
     res.redirect('/login');
   }
 });
@@ -197,32 +294,214 @@ router.post('/check', csrfProtection, async (req: Request, res: Response) => {
 // uriの始まりがauthのときに認証を行う
 router.use('/admin', authCheckMiddle);
 
-router.get('/admin/home', (req: Request, res: Response) => {
+/* 管理者用ホーム画面 */
+router.get('/admin/', csrfProtection, (req: Request, res: Response) => {
   pageData.headTitle = '管理画面';
-  res.render('pages/admin/home', {pageData});
+
+  const stateValue = stateManager.get('adminState');
+
+  if (stateValue) stateManager.delete('adminState');
+
+  pageData.anyData = {stateValue};
+  pageData.csrfToken = req.csrfToken();
+  res.render('pages/admin/', {pageData});
 });
 
-router.get('/admin/tags', async (req: Request, res: Response) => {
+router.post('/admin/logout', (req: Request, res: Response) => {
+  try {
+    admin.delete(req);
+    res.redirect('/login');
+
+    logger.info('Logout succeeded.');
+  } catch (e) {
+    logger.error(e as string);
+    stateManager.add('adminState', 'logoutError');
+    res.redirect('/admin');
+  }
+});
+
+/* タグ管理画面 */
+router.get('/admin/tags', csrfProtection, async (req: Request, res: Response) => {
   const tags = await tagApplicationService.findAll();
 
+  const stateValue = stateManager.get('tagEdit');
+
+  if (stateValue) stateManager.delete('tagEdit');
+
   pageData.headTitle = 'タグ管理';
-  pageData.anyData = {tags};
+  pageData.anyData = {tags, stateValue};
+  pageData.csrfToken = req.csrfToken();
   res.render('pages/admin/tags/index', {pageData});
 });
 
-router.post('/admin/tags/delete', async (req: Request, res: Response) => {
+/* タグの削除 */
+router.post('/admin/tags/delete', csrfProtection, async (req: Request, res: Response) => {
   const id = req.body.id;
   await tagApplicationService.delete(id);
+
+  stateManager.add('tagEdit', 'delete');
 
   res.redirect('/admin/tags');
 });
 
+/* タグの編集画面 */
+router.get('/admin/tags/edit', csrfProtection, async (req: Request, res: Response) => {
+  const id = req.query.id;
+
+  if (typeof id !== 'string') return res.redirect('/admin/tags');
+
+  const tag = await tagApplicationService.findById(id);
+
+  pageData.headTitle = 'タグ編集';
+  pageData.anyData = {tag};
+  pageData.csrfToken = req.csrfToken();
+  res.render('pages/admin/tags/edit', {pageData});
+});
+
+/* タグの編集処理 */
+router.post('/admin/tags/update', csrfProtection, async (req: Request, res: Response) => {
+  const id = req.body.id;
+  const name = req.body.name;
+
+  if (name === '') return res.redirect(`/admin/tags/edit?id=${id}`);
+
+  await tagApplicationService.update(id, name);
+
+  stateManager.add('tagEdit', 'update');
+
+  res.redirect('/admin/tags');
+});
+
+/* 検索履歴一覧画面 */
+router.get('/admin/search_history/', csrfProtection, async (req: Request, res: Response) => {
+  let pageCount = Number(req.query.page as string);
+  if (isNaN(pageCount)) pageCount = 0;
+  else pageCount--;
+
+  if (pageCount <= 0) pageCount = 0;
+
+  const searchHistory = await searchHistoryApplicationService.find(pageCount);
+  const total = await searchHistoryApplicationService.findAllCount();
+
+  const paginationInfo = getPaginationInfo(pageCount, total);
+
+  const paginationData: IPaginationData = {
+    pageRange: {
+      min: paginationInfo.minPage,
+      max: paginationInfo.maxPage,
+    },
+    totalPage: paginationInfo.totalPage,
+    pageCount,
+  };
+
+  const stateValue = stateManager.get('searchHistoryEdit');
+
+  if (stateValue) stateManager.delete('searchHistoryEdit');
+
+  pageData.headTitle = '検索履歴';
+  pageData.anyData = {
+    searchHistory,
+    paginationData,
+    stateValue,
+  };
+  pageData.csrfToken = req.csrfToken();
+  res.render('pages/admin/search_history/index', {pageData});
+});
+
+/* 検索履歴削除 */
+router.post('/admin/search_history/delete', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    const id = req.body.id;
+    await searchHistoryApplicationService.delete(id);
+    stateManager.add('searchHistoryEdit', 'delete');
+  } catch (e) {
+    logger.error(e as string);
+    stateManager.add('searchHistoryEdit', 'error');
+  }
+
+  res.redirect('/admin/search_history/');
+});
+
+router.get('/admin/book', async (req: Request, res: Response) => {
+  let pageCount = Number(req.query.page as string);
+  if (isNaN(pageCount)) pageCount = 0;
+  else pageCount--;
+
+  if (pageCount <= 0) pageCount = 0;
+
+  const books = await bookApplicationService.findAll(pageCount);
+
+  const total = await bookApplicationService.findAllCount();
+
+  const paginationInfo = getPaginationInfo(pageCount, total);
+
+  const paginationData: IPaginationData = {
+    pageRange: {
+      min: paginationInfo.minPage,
+      max: paginationInfo.maxPage,
+    },
+    totalPage: paginationInfo.totalPage,
+    pageCount,
+  };
+
+  const stateValue = stateManager.get('bookEdit');
+
+  if (stateValue) stateManager.delete('bookEdit');
+
+  pageData.headTitle = '本の管理';
+  pageData.anyData = {
+    books,
+    paginationData,
+    stateValue,
+    bookCount: total,
+  };
+  res.render('pages/admin/book/', {pageData});
+});
+
+/* 本の編集画面 */
+router.get('/admin/book/edit', csrfProtection, async (req: Request, res: Response) => {
+  const id = req.query.id;
+
+  if (typeof id !== 'string') return res.redirect('/admin/book');
+
+  const book = await bookApplicationService.searchBookById(id);
+
+  pageData.headTitle = '本編集';
+  pageData.anyData = {book};
+  pageData.csrfToken = req.csrfToken();
+  res.render('pages/admin/book/edit', {pageData});
+});
+
+/* 本の更新処理 */
+router.post('/admin/book/update', csrfProtection, async (req: Request, res: Response) => {
+  const bookId = req.body.id;
+
+  const book = await bookApplicationService.searchBookById(bookId);
+  await bookApplicationService.update(
+      bookId,
+      req.body.title,
+      req.body.bookSubName,
+      req.body.bookContent,
+      req.body.isbn,
+      req.body.ndc,
+      req.body.year,
+      book.AuthorId,
+      book.AuthorName,
+      book.PublisherId,
+      book.PublisherName,
+  );
+
+  res.redirect('/admin/book');
+});
+
+/* csvファイル選択画面 */
 router.get('/admin/csv/choice', (req: Request, res: Response) => {
   pageData.headTitle = 'CSVファイル選択';
 
   res.render('pages/admin/csv/choice', {pageData});
 });
 
+/* csvファイルのヘッダを選択する画面 */
 router.get('/admin/csv/headerChoice', csrfProtection, async (req: Request, res: Response) => {
   try {
     pageData.anyData = {csvHeader: await csvFile.getHeaderNames()};
@@ -236,15 +515,16 @@ router.get('/admin/csv/headerChoice', csrfProtection, async (req: Request, res: 
   }
 });
 
+/* ローディング画面 */
 router.get('/admin/csv/loading', (req: Request, res: Response) => {
-  if (!csvFile.isExistFile()) return res.redirect('/admin/home');
+  if (!csvFile.isExistFile()) return res.redirect('/admin/');
 
   pageData.headTitle = '読み込み中...';
 
   return res.render('pages/admin/csv/loading', {pageData});
 });
 
-
+/* csvファイルの受け取り */
 router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Response) => {
   const file = req.file;
 
@@ -258,6 +538,7 @@ router.post('/admin/csv/sendFile', upload.single('csv'), async (req, res: Respon
   res.redirect('/admin/csv/headerChoice');
 });
 
+/* csvファイルからDBへ登録する作業 */
 router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Response) => {
   try {
     const csv = await csvFile.getFileContent(); // csvファイルの内容を取得
@@ -274,12 +555,13 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
 
 
     const startTimer = performance.now();
-    /* 初期化 */
-    if (await tagApplicationService.isExistTable()) await tagApplicationService.deleteAll();
-    await bookApplicationService.deleteBooks();
-    await publisherApplicationService.deletePublishers();
-    await authorApplicationService.deleteAuthors();
-
+    if (req.body.initData === 'true') {
+      /* 初期化 */
+      if (await tagApplicationService.isExistTable()) await tagApplicationService.deleteAll();
+      await bookApplicationService.deleteBooks();
+      await publisherApplicationService.deletePublishers();
+      await authorApplicationService.deleteAuthors();
+    }
     const csvLengh = csv.length;
 
     const booksPromise = [];
@@ -353,12 +635,13 @@ router.post('/admin/csv/formHader', csrfProtection, async (req: Request, res: Re
   }
 });
 
-/*
+/**
 ===
 API
 ===
-*/
+**/
 
+/* isbnに対応する画像をopenbdから取得 */
 router.post('/api/:isbn/imgLink', async (req: Request, res: Response) => {
   const isbn = req.params.isbn;
   let imgLink = await bookApplicationService.getImgLink(isbn);
@@ -366,6 +649,7 @@ router.post('/api/:isbn/imgLink', async (req: Request, res: Response) => {
   res.json({imgLink});
 });
 
+/* 本IDに対応するタグを作成 */
 router.post('/api/:bookId/tag', async (req: Request, res: Response) => {
   let status = '';
   try {

@@ -3,8 +3,10 @@ import Tag from '../../infrastructure/db/tables/tag';
 import UsingTag from '../../infrastructure/db/tables/usingTag';
 
 import {ITagApplicationServiceRepository} from '../../application/repository/ITagApplicationServiceRepository';
+import {ITagServiceRepository} from '../../domain/service/repository/ITagServiceRepository';
 
 import TagModel from '../../domain/model/tagModel';
+import sequelize from 'sequelize';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -13,7 +15,7 @@ interface sequelize {
   UsingTag: typeof UsingTag,
 }
 
-export default class TagRepository implements ITagApplicationServiceRepository {
+export default class TagRepository implements ITagApplicationServiceRepository, ITagServiceRepository {
   private readonly db: sequelize;
 
   public constructor(db: sequelize) {
@@ -24,7 +26,7 @@ export default class TagRepository implements ITagApplicationServiceRepository {
     const tag = await this.db.Tag.findOne({
       where: {name},
     });
-    if (tag) return new TagModel(tag.id, tag.name);
+    if (tag) return new TagModel(tag.id, tag.name, tag.created_at);
     return null;
   }
 
@@ -50,9 +52,28 @@ export default class TagRepository implements ITagApplicationServiceRepository {
     return false;
   }
 
-  public async findAll(): Promise<TagModel[]> {
-    const tags = await this.db.Tag.findAll();
-    return tags.map((tag) => new TagModel(tag.id, tag.name));
+  public async findAll(): Promise<[TagModel, number][]> {
+    const tags = await this.db.Tag.findAll({
+      attributes: [
+        'id',
+        'name',
+        'created_at',
+        [sequelize.fn('count', sequelize.col('Tag.id')), 'count'],
+      ],
+      group: ['Tag.id'],
+      order: [['created_at', 'DESC']],
+      include: [{
+        model: this.db.UsingTag,
+        required: true,
+        attributes: [],
+      }],
+    });
+    const result: [TagModel, number][] = [];
+    tags.forEach((tag) => {
+      result.push([new TagModel(tag.id, tag.name, tag.created_at), tag.getDataValue('count')]);
+    });
+
+    return result;
   }
 
   public async delete(id: string): Promise<void> {
@@ -70,5 +91,24 @@ export default class TagRepository implements ITagApplicationServiceRepository {
   public async deleteAll(): Promise<void> {
     await this.db.UsingTag.destroy({where: {}});
     await this.db.Tag.destroy({where: {}});
+  }
+
+  public async findById(id: string): Promise<TagModel | null> {
+    const tag = await this.db.Tag.findOne({
+      where: {id},
+    });
+    if (tag) return new TagModel(tag.id, tag.name, tag.created_at);
+    return null;
+  }
+
+  public async update(id: string, name: string): Promise<void> {
+    await this.db.Tag.update({name}, {where: {id}});
+  }
+
+  public async getCount(tagId: string): Promise<number> {
+    const count = await this.db.UsingTag.count({
+      where: {tag_id: tagId},
+    });
+    return count;
   }
 }

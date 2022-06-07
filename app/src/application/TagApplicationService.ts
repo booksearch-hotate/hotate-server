@@ -14,9 +14,9 @@ export default class TagApplicationService {
   private readonly tagApplicationServiceRepository: ITagApplicationServiceRepository;
   private readonly tagService: TagService;
 
-  public constructor(tagApplicationServiceRepository: ITagApplicationServiceRepository) {
+  public constructor(tagApplicationServiceRepository: ITagApplicationServiceRepository, tagService: TagService) {
     this.tagApplicationServiceRepository = tagApplicationServiceRepository;
-    this.tagService = new TagService(this.tagApplicationServiceRepository);
+    this.tagService = tagService;
   }
 
   /**
@@ -26,7 +26,7 @@ export default class TagApplicationService {
    * @returns 重複した組み合わせがあったか
    */
   public async create(name: string, bookId: string): Promise<boolean> {
-    let tag = new TagModel(this.tagService.createUUID(), name);
+    let tag = new TagModel(this.tagService.createUUID(), name, null);
 
     /* tagsにタグが存在するか確認し、存在しない場合はtagsに新規追加する処理 */
     const isExist = await this.tagService.isExist(tag); // Tagsに存在してないか確認
@@ -54,7 +54,12 @@ export default class TagApplicationService {
 
   public async findAll(): Promise<TagData[]> {
     const tags = await this.tagApplicationServiceRepository.findAll();
-    return tags.map((tag) => new TagData(tag.Id, tag.Name));
+    const res: TagData[] = [];
+    for (const tagObj of tags) {
+      const [tag, count] = tagObj;
+      res.push(new TagData(tag, count));
+    }
+    return res;
   }
 
   public async delete(id: string): Promise<void> {
@@ -65,10 +70,20 @@ export default class TagApplicationService {
     return await this.tagApplicationServiceRepository.isExistTable();
   }
 
+  public async findById(id: string): Promise<TagData | null> {
+    const tag = await this.tagApplicationServiceRepository.findById(id);
+    if (tag) return new TagData(tag, await this.tagService.getCount(tag));
+    return null;
+  }
+
   /**
    * `tags`と`using_tags`を削除する
    */
   public async deleteAll(): Promise<void> {
     await this.tagApplicationServiceRepository.deleteAll();
+  }
+
+  public async update(id: string, name: string): Promise<void> {
+    await this.tagApplicationServiceRepository.update(id, name);
   }
 }

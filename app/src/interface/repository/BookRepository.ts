@@ -59,8 +59,8 @@ export default class BookRepository implements IBookApplicationRepository {
     await Promise.all(deletes);
   }
 
-  public async search(query: string): Promise<BookModel[]> {
-    const bookIds = await this.esSearchBook.searchBooks(query); // 検索にヒットしたidの配列
+  public async search(query: string, pageCount: number): Promise<BookModel[]> {
+    const bookIds = await this.esSearchBook.searchBooks(query, pageCount); // 検索にヒットしたidの配列
     // bookIdsからbooksを取得する
     const books = await this.db.Book.findAll({where: {id: bookIds}});
 
@@ -127,9 +127,13 @@ export default class BookRepository implements IBookApplicationRepository {
    * LIKE検索を用いてmysqlで検索を行う
    * @param words 検索対象
    */
-  public async searchUsingLike(words: string): Promise<BookModel[]> {
+  public async searchUsingLike(words: string, pageCount: number): Promise<BookModel[]> {
     // book_nameのLIKE検索
-    const books = await this.db.Book.findAll({where: {book_name: {[Op.like]: `%${words}%`}}});
+    const books = await this.db.Book.findAll({
+      where: {book_name: {[Op.like]: `%${words}%`}},
+      limit: 10,
+      offset: pageCount * 10,
+    });
 
     const bookModels: BookModel[] = [];
 
@@ -174,15 +178,19 @@ export default class BookRepository implements IBookApplicationRepository {
     for (const tag of tags) {
       const tagByDb = await this.db.Tag.findOne({where: {id: tag.tag_id}});
       if (!tagByDb) throw new Error('tag not found');
-      const tagModel = new TagModel(tagByDb.id, tagByDb.name);
+      const tagModel = new TagModel(tagByDb.id, tagByDb.name, tagByDb.created_at);
       tagModels.push(tagModel);
     }
     return tagModels;
   }
 
-  public async searchByTag(tagName: string): Promise<BookModel[]> {
-    const tag = await this.db.Tag.findOne({where: {name: tagName}});
-    if (!tag) throw new Error('tag not found');
+  public async searchByTag(tagName: string, pageCount: number): Promise<BookModel[]> {
+    const tag = await this.db.Tag.findOne({
+      where: {name: tagName},
+      limit: 10,
+      offset: pageCount * 10,
+    });
+    if (!tag) return [];
 
     const books = await this.db.UsingTag.findAll({where: {tag_id: tag.id}});
     const bookModels: BookModel[] = [];
@@ -216,5 +224,84 @@ export default class BookRepository implements IBookApplicationRepository {
       bookModels.push(bookModel);
     }
     return bookModels;
+  }
+
+  private async getCountUsingLike(searchWord: string): Promise<number> {
+    const books = await this.db.Book.findAll({
+      where: {book_name: {[Op.like]: `%${searchWord}%`}},
+    });
+    return books.length;
+  }
+
+  private async getCountUsingTag(tagName: string): Promise<number> {
+    const tag = await this.db.Tag.findOne({where: {name: tagName}});
+    if (!tag) return 0;
+
+    const books = await this.db.UsingTag.findAll({where: {tag_id: tag.id}});
+    return books.length;
+  }
+
+  public async getTotalResults(searchWord: string, isStrict: boolean, isTag: boolean): Promise<number> {
+    if (isStrict) return await this.getCountUsingLike(searchWord);
+    if (isTag) return await this.getCountUsingTag(searchWord);
+    return this.esSearchBook.Total;
+  }
+
+  public async update(book: BookModel): Promise<void> {
+    await this.db.Book.update({
+      book_name: book.Name,
+      book_sub_name: book.SubName,
+      book_content: book.Content,
+      isbn: book.Isbn,
+      ndc: book.Ndc,
+      year: book.Year,
+    }, {where: {id: book.Id}});
+
+    const doc: IEsBook = {
+      db_id: book.Id,
+      book_name: book.Name,
+      book_content: book.Content,
+    };
+    this.esSearchBook.update(doc);
+  }
+
+  public async findAll(pageCount: number): Promise<BookModel[]> {
+    const books = await this.db.Book.findAll({
+      limit: 10,
+      offset: pageCount * 10,
+    });
+
+    const bookModels: BookModel[] = [];
+
+    for (const book of books) {
+      const authorId = book.author_id;
+      const publisherId = book.publisher_id;
+
+      const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
+      const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+
+      if (!(author && publisher)) throw new Error('author or publisher not found');
+
+      const authorModel = new AuthorModel(author.id, author.name);
+      const publisherModel = new PublisherModel(publisher.id, publisher.name);
+
+      const bookModel = new BookModel(
+          book.id,
+          book.book_name,
+          book.book_sub_name,
+          book.book_content,
+          book.isbn,
+          book.ndc,
+          book.year,
+          authorModel,
+          publisherModel,
+      );
+      bookModels.push(bookModel);
+    }
+    return bookModels;
+  }
+
+  public async findAllCount(): Promise<number> {
+    return await this.db.Book.count();
   }
 }

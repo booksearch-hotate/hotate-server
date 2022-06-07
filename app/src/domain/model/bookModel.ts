@@ -1,6 +1,10 @@
 import AuthorModel from './authorModel';
 import PublisherModel from './publisherModel';
 
+import Logger from '../../infrastructure/logger/logger';
+
+const logger = new Logger('BookModel');
+
 export default class BookModel {
   private id: string;
   private name!: string;
@@ -45,8 +49,12 @@ export default class BookModel {
     return this.name;
   }
   set Name(name: string) {
-    if (name === '') throw new Error('The name property of books is empty.');
-    this.name = name;
+    if (name === null) {
+      console.warn('The name property of books is empty.');
+      this.name = '';
+    } else {
+      this.name = name;
+    }
   }
 
   get SubName(): string | null {
@@ -69,7 +77,8 @@ export default class BookModel {
   set Isbn(isbn: string | null) {
     if (isbn === '') isbn = null;
     if (isbn !== null && isbn.length < 10) {
-      throw new Error(`ISBNの桁数が足りません${isbn} ${typeof isbn}`);
+      console.warn(`ISBNの桁数が足りません${isbn} ${typeof isbn}`);
+      isbn = null;
     }
     // もしもisbnが13桁でハイフンがない場合はハイフンを追加する
     if (isbn !== null && isbn.length === 13 && isbn.indexOf('-') === -1) {
@@ -85,8 +94,14 @@ export default class BookModel {
         bookNum,
         checkDigit,
       ].join('-');
-    } else {
-      this.isbn = isbn;
+    } else if (isbn !== null) {
+      if (isbn.indexOf('-') !== -1) {
+        const num = isbn.replace(/-/g, '');
+        if (num.length !== 13) this.isbn = null;
+        else this.isbn = isbn;
+      } else {
+        this.isbn = isbn;
+      }
     }
   }
 
@@ -95,9 +110,15 @@ export default class BookModel {
   }
   set Ndc(ndc: number | null) {
     if (ndc !== null && ndc.toString().length < 1) {
-      throw new Error('NDCの桁数が足りません');
+      logger.warn('NDC format is incorrect; set to NULL.');
+      ndc = null;
     }
-    this.ndc = ndc;
+    try {
+      Number(ndc);
+      this.ndc = ndc;
+    } catch (e) {
+      this.ndc = null;
+    }
   }
 
   get Year(): number | null {
@@ -105,7 +126,8 @@ export default class BookModel {
   }
   set Year(year: number | null) {
     if (year !== null && year.toString().length < 4) {
-      throw new Error('年の桁数が足りません');
+      logger.warn('Year format is incorrect; set to NULL.');
+      year = null;
     }
     this.year = year;
   }
