@@ -118,7 +118,7 @@ export default class EsSearchHistory extends ElasticSearch {
   }
 
   public async delete(id: string): Promise<void> {
-    await axios.delete(`${this.uri}/_doc/${id}`);
+    await axios.delete(`${this.uri}/_doc/${encodeURIComponent(id)}`);
   }
 
   get Total(): number {
