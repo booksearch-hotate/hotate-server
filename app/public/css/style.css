@@ -149,3 +149,10 @@ body {
   margin: 0;
   font-size: 1rem;
 }
+
+.state-info-toast {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: .6rem;
+}

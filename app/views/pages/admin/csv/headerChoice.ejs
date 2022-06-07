@@ -64,6 +64,10 @@
           <%- include('./../../../components/admin/csv/headerList.ejs',{ required: false }) %>
         </select>
       </section>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" name="initData" value="true" id="initData">
+        <label class="form-check-label" for="initData">データの初期化</label>
+      </div>
       <button type="submit" class="btn btn-primary" onclick="sendForm()">送信</button>
     </form>
     <%- include('./../../../components/inputJs') %>

@@ -24,3 +24,15 @@ $ npm run dev-build && node --enable-source-maps dist/server.js local
 また、ここに`output-log`を追加することでログファイルを出力することも可能です。
 
 elasticsearch、mysql、phpmyadminに関しては通常と同じようにdockerで起動して大丈夫です。
+
+## 環境変数について
+
+このサービスでは環境変数を設定する必要があります。項目は以下の通りです。
+
+| 値 | 内容 |
+| :--: | :--: |
+| DB_PW_KEY | DBの暗号化に用いる暗号鍵 |
+| SESSION_SECRET | セッション通信に用いる暗号鍵 |
+| JWTSECRET | JWTに用いる暗号鍵 |
+
+この内容を`app`フォルダ直下に`.env`の名称で作成してください。

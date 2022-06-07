@@ -1,0 +1,56 @@
+<%
+let mes = '';
+let type = '';
+
+switch (pageData.anyData.stateValue) {
+  case 'delete':
+    mes = '削除が完了しました';
+    type = 'success';
+    break;
+  case 'error':
+    mes = 'エラーが発生しました';
+    type = 'danger';
+    break;
+}
+%>
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+  </head>
+  <body>
+    <%- include('./../../../components/navbar') %>
+    <h3>本一覧</h3>
+    <h5>ログイン状態で本の詳細ページを閲覧すると、その本を編集することが可能です</h5>
+    <h5>合計 : <%= pageData.anyData.bookCount %>冊</h5>
+    <% if (mes.length) { %>
+      <%- include('./../../../components/stateToast', {mes: mes, type: type}) %>
+    <% } %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>本名称</th>
+          <th>編集</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let book of pageData.anyData.books) { %>
+          <tr>
+            <td><%= book.BookName %></td>
+            <td>
+              <form action="/admin/book/edit" method="get">
+                <input type="hidden" name="id" value="<%= book.Id %>">
+                <button type="submit" class="btn btn-success">編集</button>
+              </form>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <%- include('./../../../components/navigation', {paginationData: pageData.anyData.paginationData, url: '/admin/book/?'}) %>
+    <div class="text-center">
+      <a href="/admin/">戻る</a>
+    </div>
+    <%- include('./../../../components/inputJs') %>
+  </body>
+</html>

@@ -6,15 +6,27 @@ import {ISearchHistoryApplicationRepository} from '../../application/repository/
 export default class SearchHistoryRepository implements ISearchHistoryApplicationRepository {
   private readonly esSearchHistory: EsSearchHistory;
 
-  public constructor(searchHistoryModel: EsSearchHistory) {
-    this.esSearchHistory = searchHistoryModel;
+  public constructor(esSearchHistory: EsSearchHistory) {
+    this.esSearchHistory = esSearchHistory;
   }
 
   public async add(tar: SearchHistoryModel) {
-    this.esSearchHistory.add(tar.Words);
+    await this.esSearchHistory.add(tar);
   }
 
-  public async search(words: string): Promise<string[]> {
-    return this.esSearchHistory.search(words);
+  public async search(words: string): Promise<SearchHistoryModel[]> {
+    return await this.esSearchHistory.search(words);
+  }
+
+  public async find(count: number): Promise<SearchHistoryModel[]> {
+    return await this.esSearchHistory.find(count);
+  }
+
+  public async findAllCount(): Promise<number> {
+    return this.esSearchHistory.Total;
+  }
+
+  public async delete(id: string): Promise<void> {
+    await this.esSearchHistory.delete(id);
   }
 }

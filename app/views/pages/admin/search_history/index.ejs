@@ -1,12 +1,15 @@
 <%
 let mes = '';
+let type = '';
 
 switch (pageData.anyData.stateValue) {
-  case 'update':
-    mes = '編集が完了しました';
-    break;
   case 'delete':
     mes = '削除が完了しました';
+    type = 'success';
+    break;
+  case 'error':
+    mes = 'エラーが発生しました';
+    type = 'danger';
     break;
 }
 %>
@@ -17,34 +20,25 @@ switch (pageData.anyData.stateValue) {
   </head>
   <body>
     <%- include('./../../../components/navbar') %>
-    <h3>タグ一覧</h3>
+    <h3>検索履歴一覧</h3>
     <% if (mes.length) { %>
-      <%- include('./../../../components/stateToast', {mes: mes, type: 'success'}) %>
+      <%- include('./../../../components/stateToast', {mes: mes, type: type}) %>
     <% } %>
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>タグ名</th>
-          <th>登録件数</th>
+          <th>検索内容</th>
           <th>作成日時</th>
-          <th>編集</th>
           <th>削除</th>
         </tr>
       </thead>
       <tbody>
-        <% for (let tag of pageData.anyData.tags) { %>
+        <% for (let tag of pageData.anyData.searchHistory) { %>
           <tr>
-            <td><%= tag.Name %></td>
-            <td><%= tag.Count %></td>
+            <td><%= tag.Words %></td>
             <td><%= tag.CreatedAt %></td>
             <td>
-              <form action="/admin/tags/edit" method="get">
-                <input type="hidden" name="id" value="<%= tag.Id %>">
-                <button type="submit" class="btn btn-success">編集</button>
-              </form>
-            </td>
-            <td>
-              <form action="/admin/tags/delete" method="post">
+              <form action="/admin/search_history/delete" method="post">
                 <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
                 <input type="hidden" name="id" value="<%= tag.Id %>">
                 <button type="submit" class="btn btn-danger">削除</button>
@@ -54,6 +48,7 @@ switch (pageData.anyData.stateValue) {
         <% } %>
       </tbody>
     </table>
+    <%- include('./../../../components/navigation', {paginationData: pageData.anyData.paginationData, url: '/admin/search_history/?'}) %>
     <div class="text-center">
       <a href="/admin/">戻る</a>
     </div>

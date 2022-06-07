@@ -19,4 +19,10 @@ export default class TagService {
   public createUUID(): string {
     return uuidv4();
   }
+
+  public async getCount(tag: TagModel): Promise<number> {
+    const count = await this.tagRepository.getCount(tag.Id);
+
+    return count;
+  }
 }

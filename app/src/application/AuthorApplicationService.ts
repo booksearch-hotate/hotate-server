@@ -2,13 +2,15 @@ import {IAuthorApplicationRepository} from './repository/IAuthorApplicationRepos
 import AuthorModel from '../domain/model/authorModel';
 import AuthorService from '../domain/service/authorService';
 
+import AuthorData from './dto/AuthorData';
+
 export default class AuthorApplicationService {
   private readonly authorRepository: IAuthorApplicationRepository;
   private readonly authorService: AuthorService;
 
-  public constructor(authorRepository: IAuthorApplicationRepository) {
+  public constructor(authorRepository: IAuthorApplicationRepository, authorService: AuthorService) {
     this.authorRepository = authorRepository;
-    this.authorService = new AuthorService(authorRepository);
+    this.authorService = authorService;
   }
 
   public async createAuthor(name: string): Promise<string> {
@@ -31,5 +33,10 @@ export default class AuthorApplicationService {
 
   public async executeBulkApi(): Promise<void> {
     await this.authorRepository.executeBulkApi();
+  }
+
+  public async findById(authorId: string): Promise<AuthorData> {
+    const author = await this.authorRepository.findById(authorId);
+    return new AuthorData(author);
   }
 }
