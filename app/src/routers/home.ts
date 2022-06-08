@@ -24,8 +24,8 @@ import AdminData from '../application/dto/AdminData';
 import BookData from '../application/dto/BookData';
 import SearchHistoryData from '../application/dto/SearchHistoryData';
 
-import {IPage} from './obj/IPage';
-import {IPaginationData} from './obj/IPaginationData';
+import {IPage} from './datas/IPage';
+import {IPaginationData} from './datas/IPaginationData';
 
 import getPaginationInfo from '../modules/getPaginationInfo';
 

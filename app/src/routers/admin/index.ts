@@ -13,7 +13,7 @@ import Logger from '../../infrastructure/logger/logger';
 
 import AdminData from '../../application/dto/AdminData';
 
-import {IPage} from '../obj/IPage';
+import {IPage} from '../datas/IPage';
 
 // eslint-disable-next-line new-cap
 const adminRouter = Router();

@@ -10,8 +10,8 @@ import SearchHistoryRepository from '../../interface/repository/SearchHistoryRep
 
 import EsSearchHistory from '../../infrastructure/elasticsearch/esSearchHistory';
 
-import {IPage} from '../obj/IPage';
-import {IPaginationData} from '../obj/IPaginationData';
+import {IPage} from '../datas/IPage';
+import {IPaginationData} from '../datas/IPaginationData';
 
 import getPaginationInfo from '../../modules/getPaginationInfo';
 

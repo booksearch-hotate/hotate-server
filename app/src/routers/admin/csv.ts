@@ -25,7 +25,7 @@ import CsvFile from '../../infrastructure/fileAccessor/csvFile';
 import Logger from '../../infrastructure/logger/logger';
 import EsCsv from '../../infrastructure/elasticsearch/esCsv';
 
-import {IPage} from '../obj/IPage';
+import {IPage} from '../datas/IPage';
 
 
 // eslint-disable-next-line new-cap
