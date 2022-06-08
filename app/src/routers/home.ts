@@ -128,7 +128,7 @@ homeRouter.get('/search', async (req: Request, res: Response) => {
 homeRouter.get('/item/:bookId', async (req: Request, res: Response) => {
   const id = req.params.bookId; // 本のID
   let bookData: BookData;
-  const isLogin = admin.verify(req.session.token);
+  const isLogin = admin.verifyToken(req.session.token);
   try {
     bookData = await bookApplicationService.searchBookById(id);
     pageData.headTitle = `${bookData.BookName} | HOTATE`;
@@ -144,7 +144,7 @@ homeRouter.get('/item/:bookId', async (req: Request, res: Response) => {
 
 /* ログイン画面 */
 homeRouter.get('/login', csrfProtection, (req: Request, res: Response) => {
-  if (admin.verify(req.session.token)) return res.redirect('/admin/');
+  if (admin.verifyToken(req.session.token)) return res.redirect('/admin/');
 
   pageData.headTitle = 'ログイン | HOTATE';
   pageData.csrfToken = req.csrfToken();
@@ -163,8 +163,8 @@ homeRouter.post('/check', csrfProtection, async (req: Request, res: Response) =>
       const isValid = await adminApplicationService.isValid(adminData);
       if (isValid) {
         logger.info('Login succeeded.');
-        admin.create(adminData);
-        if (!req.session.token) req.session.token = admin.Token;
+        const createdToken = admin.create(adminData);
+        if (!req.session.token) req.session.token = createdToken;
 
         res.redirect('/admin/');
       } else {
