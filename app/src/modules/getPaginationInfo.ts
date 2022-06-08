@@ -4,16 +4,12 @@
  * @param total 全体のデータ件数
  * @returns ページング情報
  */
-export default function getPaginationInfo(query: any, total: number) {
-  let pageCount = Number(query as string);
+export default function getPaginationInfo(pageCount: number, total: number) {
   let totalPage = 0;
   let minPage = 0;
   let maxPage = 0;
 
-  if (isNaN(pageCount)) pageCount = 0;
-  else pageCount--;
-
-  if (pageCount <= 0) pageCount = 0;
+  if (pageCount < 0 || isNaN(pageCount)) throw new Error('The pageCount is incorrect. Did you use `conversionPageCounter`?');
 
   totalPage = Math.ceil(total / 10); // 最大ページ数
   minPage = Math.max(pageCount - 3, 1); // 最小ページ数
