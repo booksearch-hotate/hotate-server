@@ -55,7 +55,6 @@ const adminApplicationService = new AdminApplicationService(
     new AdminService(),
 );
 
-/* ルーティング */
 homeRouter.get('/', (req: Request, res: Response) => {
   pageData.headTitle = 'ホーム | HOTATE';
 
