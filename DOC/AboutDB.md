@@ -26,3 +26,5 @@ authors {
   varchar name
 }
 ```
+
+[SQL](https://github.com/booksearch-hotate/hotate-server/blob/main/db/init/001_createhotate.sql)
