@@ -30,8 +30,10 @@ export default class AdminSession implements IAdminSession {
 
   public verify(token: string | undefined): boolean {
     try {
+      console.log(`token: ${token}`);
       if (token === undefined) return false;
       const decoded = jwt.verify(token, this.jwtSecret) as { id: string, pw: string };
+      console.log(decoded);
       if (decoded.id === this.id && decoded.pw === this.pw) {
         return true;
       }

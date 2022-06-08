@@ -4,7 +4,12 @@ import bodyParser from 'body-parser';
 import session from 'express-session';
 import dotenv from 'dotenv';
 
-import router from '../routers/router';
+import homeRouter from '../routers/home';
+import bookRouter from '../routers/admin/book';
+import adminRouter from '../routers/admin/index';
+import searchHistoryRouter from '../routers/admin/searchHistory';
+import csvRouter from '../routers/admin/csv';
+import tagsRouter from '../routers/admin/tags';
 
 import Logger from '../infrastructure/logger/logger';
 
@@ -48,7 +53,12 @@ app.use(session({
 
 app.use(limiter);
 
-app.use('/', router);
+app.use('/', homeRouter);
+app.use('/admin', adminRouter);
+app.use('/admin/book', bookRouter);
+app.use('/admin/search_history', searchHistoryRouter);
+app.use('/admin/csv', csvRouter);
+app.use('/admin/tags', tagsRouter);
 
 // listen
 export function startAppServer(port: number) {
