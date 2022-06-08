@@ -23,24 +23,19 @@ export default class AdminSession implements IAdminSession {
       pw: adminData.Pw,
     };
     this.token = jwt.sign(jwtPayload, this.jwtSecret);
-    this.id = adminData.Id;
-    this.pw = adminData.Pw;
     return this.token;
   }
 
-  public verify(token: string | undefined): boolean {
+  public verifyToken(token: string | undefined): boolean {
     try {
-      console.log(`token: ${token}`);
       if (token === undefined) return false;
       const decoded = jwt.verify(token, this.jwtSecret) as { id: string, pw: string };
-      console.log(decoded);
-      if (decoded.id === this.id && decoded.pw === this.pw) {
-        return true;
-      }
+      this.id = decoded.id;
+      this.pw = decoded.pw;
+      return true;
     } catch (e) {
       return false;
     }
-    return false;
   }
 
   public delete(req: Request): void {
@@ -50,7 +45,11 @@ export default class AdminSession implements IAdminSession {
     this.token = '';
   }
 
-  public get Token(): string {
-    return this.token;
+  public get Id(): string {
+    return this.id;
+  }
+
+  public get Pw(): string {
+    return this.pw;
   }
 }
