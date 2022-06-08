@@ -3,6 +3,8 @@ erDiagram
 
 publishers ||--|{books: "1:n"
 authors ||--|{books: "1:n"
+tags ||--|{using_tags: ""
+books ||--|{using_tags: ""
 
 books {
   varchar id
@@ -24,6 +26,19 @@ publishers {
 authors {
   varchar id
   varchar name
+}
+
+tags {
+  varchar id
+  varchar name
+  timestamp created_at
+  timestamp updated_at
+}
+
+using_tags {
+  int id
+  varchar book_id
+  varchar tag_id
 }
 ```
 
