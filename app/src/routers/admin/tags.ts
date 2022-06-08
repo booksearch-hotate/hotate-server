@@ -9,7 +9,7 @@ import TagRepository from '../../interface/repository/TagRepository';
 
 import db from '../../infrastructure/db';
 
-import {IPage} from '../obj/IPage';
+import {IPage} from '../datas/IPage';
 
 // eslint-disable-next-line new-cap
 const tagsRouter = Router();

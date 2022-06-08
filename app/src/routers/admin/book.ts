@@ -11,8 +11,8 @@ import BookRepository from '../../interface/repository/BookRepository';
 import db from '../../infrastructure/db';
 import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
 
-import {IPage} from '../obj/IPage';
-import {IPaginationData} from '../obj/IPaginationData';
+import {IPage} from '../datas/IPage';
+import {IPaginationData} from '../datas/IPaginationData';
 
 import getPaginationInfo from '../../modules/getPaginationInfo';
 
