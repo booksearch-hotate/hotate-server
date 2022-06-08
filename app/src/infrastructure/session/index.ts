@@ -8,13 +8,12 @@ import AdminData from '../../application/dto/AdminData';
 dotenv.config();
 
 export default class AdminSession implements IAdminSession {
-  private token: string;
   private readonly jwtSecret = process.env.JWTSECRET as string;
   private id: string;
   private pw: string;
 
   constructor() {
-    this.id = this.pw = this.token = '';
+    this.id = this.pw = '';
   }
 
   public create(adminData: AdminData): string {
@@ -22,8 +21,7 @@ export default class AdminSession implements IAdminSession {
       id: adminData.Id,
       pw: adminData.Pw,
     };
-    this.token = jwt.sign(jwtPayload, this.jwtSecret);
-    return this.token;
+    return jwt.sign(jwtPayload, this.jwtSecret);
   }
 
   public verifyToken(token: string | undefined): boolean {
