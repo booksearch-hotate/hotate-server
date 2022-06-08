@@ -37,10 +37,7 @@ export default class AdminSession implements IAdminSession {
   }
 
   public delete(req: Request): void {
-    req.session.destroy((err) => {
-      if (err) throw err;
-    });
-    this.token = '';
+    req.session.token = '';
   }
 
   public get Id(): string {
