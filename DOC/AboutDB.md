@@ -6,6 +6,11 @@ authors ||--|{books: "1:n"
 tags ||--|{using_tags: ""
 books ||--|{using_tags: ""
 
+admin {
+  varchar id
+  varchar pw
+}
+
 books {
   varchar id
   varchar isbn
