@@ -1,14 +1,14 @@
 ```mermaid
 erDiagram
 books {
-  String id
-  String isbn
-  String book_name
-  String book_sub_name
-  String author_id
-  Int ndc
-  String publisher_id
-  Int year
-  Text book_content
+  varchar id
+  varchar isbn
+  varchar book_name
+  varchar book_sub_name
+  int ndc
+  int year
+  text book_content
+  varchar author_id
+  varchar publisher_id
 }
 ```
