@@ -28,6 +28,7 @@ import {IPage} from './datas/IPage';
 import {IPaginationData} from './datas/IPaginationData';
 
 import getPaginationInfo from '../modules/getPaginationInfo';
+import conversionpageCounter from '../modules/conversionPageCounter';
 
 // eslint-disable-next-line new-cap
 const homeRouter = Router();
@@ -71,15 +72,10 @@ homeRouter.get('/search', async (req: Request, res: Response) => {
     isStrict = isTag = false;
   }
 
-  let pageCount = Number(req.query.page as string);
+  const pageCount = conversionpageCounter(req);
   let totalPage = 0;
   let minPage = 0;
   let maxPage = 0;
-
-  if (isNaN(pageCount)) pageCount = 0;
-  else pageCount--;
-
-  if (pageCount <= 0) pageCount = 0;
 
   let resDatas: BookData[] = [];
   let searchHisDatas: SearchHistoryData[] = [];
