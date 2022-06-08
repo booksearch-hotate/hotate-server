@@ -10,6 +10,7 @@ import adminRouter from '../routers/admin/index';
 import searchHistoryRouter from '../routers/admin/searchHistory';
 import csvRouter from '../routers/admin/csv';
 import tagsRouter from '../routers/admin/tags';
+import apiRouter from '../routers/api';
 
 import Logger from '../infrastructure/logger/logger';
 
@@ -59,6 +60,7 @@ app.use('/admin/book', bookRouter);
 app.use('/admin/search_history', searchHistoryRouter);
 app.use('/admin/csv', csvRouter);
 app.use('/admin/tags', tagsRouter);
+app.use('/api', apiRouter);
 
 // listen
 export function startAppServer(port: number) {
