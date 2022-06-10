@@ -15,6 +15,8 @@ import AdminData from '../../application/dto/AdminData';
 
 import {IPage} from '../datas/IPage';
 
+import conversionpageStatus from '../../modules/conversionPageStatus';
+
 // eslint-disable-next-line new-cap
 const adminRouter = Router();
 
@@ -54,12 +56,8 @@ adminRouter.get('/', csrfProtection, (req: Request, res: Response) => {
 
   pageData.csrfToken = req.csrfToken();
 
-  const sessionVal = req.session.status;
-
-  if (sessionVal !== undefined && sessionVal.type === 'Success' && sessionVal.from === 'login') {
-    pageData.status = 'success';
-    req.session.status = undefined;
-  }
+  pageData.status = conversionpageStatus(req.session.status);
+  req.session.status = undefined;
 
   res.render('pages/admin/', {pageData});
 });
@@ -67,11 +65,13 @@ adminRouter.get('/', csrfProtection, (req: Request, res: Response) => {
 adminRouter.post('/logout', (req: Request, res: Response) => {
   try {
     admin.delete(req);
+    req.session.status = {type: 'Success', mes: 'ログアウトが完了しました'};
     res.redirect('/login');
 
     logger.info('Logout succeeded.');
-  } catch (e) {
+  } catch (e: any) {
     logger.error(e as string);
+    req.session.status = {type: 'Failure', error: e, mes: 'ログアウトに失敗しました'};
     res.redirect('/admin');
   }
 });

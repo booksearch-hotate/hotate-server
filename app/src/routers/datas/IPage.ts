@@ -5,5 +5,10 @@ export interface IPage {
   origin?: string;
   csrfToken: string;
   anyData?: unknown; // その他のデータ
-  status?: string;
+  status?: IPageStatus;
+}
+
+export interface IPageStatus {
+  mes: string,
+  buttonType: 'danger' | 'success' | 'warning' | 'info'
 }
