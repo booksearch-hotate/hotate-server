@@ -17,6 +17,8 @@ import Logger from '../infrastructure/logger/logger';
 
 import {isLocal} from '../infrastructure/cli/cmdLine';
 
+import ResStatus from '../infrastructure/session/status/resStatus';
+
 const app: Application = express();
 const logger = new Logger('system');
 
@@ -36,6 +38,7 @@ declare module 'express-session' {
   // eslint-disable-next-line no-unused-vars
   interface SessionData {
     token: string,
+    status: ResStatus
   }
 }
 

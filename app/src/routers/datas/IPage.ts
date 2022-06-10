@@ -5,4 +5,5 @@ export interface IPage {
   origin?: string;
   csrfToken: string;
   anyData?: unknown; // その他のデータ
+  status?: string;
 }
