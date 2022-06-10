@@ -53,6 +53,13 @@ adminRouter.get('/', csrfProtection, (req: Request, res: Response) => {
   pageData.headTitle = '管理画面';
 
   pageData.csrfToken = req.csrfToken();
+
+  const sessionVal = req.session.status;
+
+  if (sessionVal !== undefined && sessionVal.type === 'Success' && sessionVal.from === 'login') {
+    pageData.status = 'success';
+  }
+
   res.render('pages/admin/', {pageData});
 });
 

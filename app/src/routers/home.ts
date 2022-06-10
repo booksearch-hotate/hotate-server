@@ -157,9 +157,12 @@ homeRouter.post('/check', csrfProtection, async (req: Request, res: Response) =>
       const adminData = new AdminData(id, pw);
       const isValid = await adminApplicationService.isValid(adminData);
       if (isValid) {
+        /* ログイン成功 */
         logger.info('Login succeeded.');
         const createdToken = admin.create(adminData);
         if (!req.session.token) req.session.token = createdToken;
+
+        req.session.status = {type: 'Success', from: 'login'};
 
         res.redirect('/admin/');
       } else {
