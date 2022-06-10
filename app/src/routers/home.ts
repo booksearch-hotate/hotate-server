@@ -29,6 +29,7 @@ import {IPaginationData} from './datas/IPaginationData';
 
 import getPaginationInfo from '../modules/getPaginationInfo';
 import conversionpageCounter from '../modules/conversionPageCounter';
+import conversionpageStatus from '../modules/conversionPageStatus';
 
 // eslint-disable-next-line new-cap
 const homeRouter = Router();
@@ -144,6 +145,9 @@ homeRouter.get('/login', csrfProtection, (req: Request, res: Response) => {
   pageData.headTitle = 'ログイン | HOTATE';
   pageData.csrfToken = req.csrfToken();
 
+  pageData.status = conversionpageStatus(req.session.status);
+  req.session.status = undefined;
+
   return res.render('pages/login', {pageData});
 });
 
@@ -161,8 +165,6 @@ homeRouter.post('/check', csrfProtection, async (req: Request, res: Response) =>
         logger.info('Login succeeded.');
         const createdToken = admin.create(adminData);
         if (!req.session.token) req.session.token = createdToken;
-
-        req.session.status = {type: 'Success', from: 'login'};
 
         res.redirect('/admin/');
       } else {
