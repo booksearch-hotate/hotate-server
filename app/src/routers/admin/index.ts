@@ -58,6 +58,7 @@ adminRouter.get('/', csrfProtection, (req: Request, res: Response) => {
 
   if (sessionVal !== undefined && sessionVal.type === 'Success' && sessionVal.from === 'login') {
     pageData.status = 'success';
+    req.session.status = undefined;
   }
 
   res.render('pages/admin/', {pageData});
