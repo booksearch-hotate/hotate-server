@@ -166,6 +166,11 @@ homeRouter.post('/check', csrfProtection, async (req: Request, res: Response) =>
         const createdToken = admin.create(adminData);
         if (!req.session.token) req.session.token = createdToken;
 
+        req.session.status = {
+          type: 'Success',
+          mes: 'ログインに成功しました',
+        };
+
         res.redirect('/admin/');
       } else {
         logger.warn('Login failed.');
@@ -175,8 +180,13 @@ homeRouter.post('/check', csrfProtection, async (req: Request, res: Response) =>
     } else {
       res.redirect('/login');
     }
-  } catch (e) {
+  } catch (e: any) {
     logger.error(e as string);
+    req.session.status = {
+      type: 'Failure',
+      error: e,
+      mes: 'ログインに失敗しました。',
+    };
     res.redirect('/login');
   }
 });
