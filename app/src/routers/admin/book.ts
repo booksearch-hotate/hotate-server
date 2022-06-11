@@ -25,6 +25,7 @@ import {IPaginationData} from '../datas/IPaginationData';
 import getPaginationInfo from '../../modules/getPaginationInfo';
 import conversionpageCounter from '../../modules/conversionPageCounter';
 import isSameLenAllArray from '../../modules/isSameLenAllArray';
+import conversionpageStatus from '../../modules/conversionPageStatus';
 
 // eslint-disable-next-line new-cap
 const bookRouter = Router();
@@ -74,6 +75,10 @@ bookRouter.get('/', async (req: Request, res: Response) => {
     paginationData,
     bookCount: total,
   };
+
+  pageData.status = conversionpageStatus(req.session.status);
+  req.session.status = undefined;
+
   res.render('pages/admin/book/', {pageData});
 });
 
