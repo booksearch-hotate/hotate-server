@@ -126,19 +126,18 @@ bookRouter.get('/add', (req: Request, res: Response) => {
 /* 本の追加処理 */
 bookRouter.post('/add', async (req: Request, res: Response) => {
   console.log(req.body);
-
-  const isSameLen = isSameLenAllArray([
-    req.body.bookName,
-    req.body.bookSubName,
-    req.body.content,
-    req.body.isbn,
-    req.body.ndc,
-    req.body.year,
-    req.body.authorName,
-    req.body.publisherName,
-  ]);
-
   try {
+    const isSameLen = isSameLenAllArray([
+      req.body.bookName,
+      req.body.bookSubName,
+      req.body.content,
+      req.body.isbn,
+      req.body.ndc,
+      req.body.year,
+      req.body.authorName,
+      req.body.publisherName,
+    ]);
+
     if (!isSameLen) throw new Error('Datas could not be successfully retrieved.');
 
     for (let i = 0; i < req.body.isbn.length; i++) {
