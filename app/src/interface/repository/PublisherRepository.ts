@@ -1,4 +1,8 @@
+import sequelize from 'sequelize';
+
 import Publisher from '../../infrastructure/db/tables/publisher';
+import Book from '../../infrastructure/db/tables/book';
+
 import {IPublisherApplicationRepository} from '../../application/repository/IPublisherApplicationRepository';
 import {IPublisherDomainRepository} from '../../domain/service/repository/IPublisherDomainRepository';
 import PublisherModel from '../../domain/model/publisherModel';
@@ -9,7 +13,8 @@ import {IEsPublisher} from '../../infrastructure/elasticsearch/IElasticSearchDoc
 
 /* Sequelizeを想定 */
 interface sequelize {
-  Publisher: typeof Publisher
+  Publisher: typeof Publisher,
+  Book: typeof Book,
 }
 
 export default class PublisherRepository implements IPublisherApplicationRepository, IPublisherDomainRepository {
@@ -49,5 +54,35 @@ export default class PublisherRepository implements IPublisherApplicationReposit
   }
   public async executeBulkApi(): Promise<void> {
     await this.esCsv.executeBulkApi();
+  }
+
+  public async deleteNoUsed(publisherId: string): Promise<void> {
+    const sql = await this.db.Publisher.findOne({
+      attributes: [
+        'id',
+        [sequelize.fn('count', sequelize.col('Publisher.id')), 'count'],
+      ],
+      where: {
+        id: publisherId,
+      },
+      group: ['Books.publisher_id'],
+      include: [{
+        model: this.db.Book,
+        required: true,
+        attributes: [],
+      }],
+    });
+
+    if (sql === null) return;
+
+    const count = sql.getDataValue('count');
+
+    if (Number(count) === 0) {
+      await this.db.Publisher.destroy({
+        where: {
+          id: publisherId,
+        },
+      });
+    }
   }
 }
