@@ -163,8 +163,11 @@ bookRouter.post('/add', async (req: Request, res: Response) => {
           publisherName,
       );
     }
-  } catch (e) {
-    console.log(e);
+
+    req.session.status = {type: 'Success', mes: `${req.body.isbn.length}冊の本を追加しました`};
+  } catch (e: any) {
+    logger.error(e as string);
+    req.session.status = {type: 'Failure', error: e, mes: '本の追加中にエラーが発生しました'};
   } finally {
     res.redirect('/admin/book');
   }
