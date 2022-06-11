@@ -100,22 +100,39 @@ bookRouter.get('/edit', csrfProtection, async (req: Request, res: Response) => {
 
 /* 本の更新処理 */
 bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) => {
-  const bookId = req.body.id;
+  try {
+    const bookId = req.body.id;
 
-  const book = await bookApplicationService.searchBookById(bookId);
-  await bookApplicationService.update(
-      bookId,
-      req.body.title,
-      req.body.bookSubName,
-      req.body.bookContent,
-      req.body.isbn,
-      req.body.ndc,
-      req.body.year,
-      book.AuthorId,
-      book.AuthorName,
-      book.PublisherId,
-      book.PublisherName,
-  );
+    const book = await bookApplicationService.searchBookById(bookId);
+    const beforeAuthorId = book.AuthorId;
+    const beforePublisherId = book.PublisherId;
+
+    const authorId = await authorApplicationService.createAuthor(req.body.authorName);
+
+    const publisherId = await publisherApplicationService.createPublisher(req.body.publisherName);
+
+    await bookApplicationService.update(
+        bookId,
+        req.body.title,
+        req.body.bookSubName,
+        req.body.bookContent,
+        req.body.isbn,
+        req.body.ndc,
+        req.body.year,
+        authorId,
+        req.body.authorName,
+        publisherId,
+        req.body.publisherName,
+    );
+
+    await authorApplicationService.deleteNotUsed(beforeAuthorId);
+    await publisherApplicationService.deleteNotUsed(beforePublisherId);
+
+    req.session.status = {type: 'Success', mes: '本の更新が完了しました'};
+  } catch (e: any) {
+    logger.error(e as string);
+    req.session.status = {type: 'Failure', error: e, mes: '本の更新に失敗しました'};
+  }
 
   res.redirect('/admin/book');
 });
