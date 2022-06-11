@@ -51,7 +51,7 @@ export default class BookRepository implements IBookApplicationRepository {
       book_name: book.Name,
       book_content: book.Content,
     };
-    this.esSearchBook.create(doc);
+    this.esSearchBook.insertBulk(doc);
   }
 
   public async deleteAll(): Promise<void> {
