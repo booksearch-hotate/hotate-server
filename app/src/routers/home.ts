@@ -69,6 +69,7 @@ homeRouter.get('/search', async (req: Request, res: Response) => {
   let isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
   let isTag = req.query.tag === 'true'; // タグ検索かどうか
 
+  /* タグ検索とぜったい検索が両方とも選択されている場合、両方とも無効化 */
   if (isTag && isStrict) {
     isStrict = isTag = false;
   }
