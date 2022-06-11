@@ -3,6 +3,7 @@ import expressRateLimit from 'express-rate-limit';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import dotenv from 'dotenv';
+import csurf from 'csurf';
 
 /* routers */
 import homeRouter from '../routers/home';
@@ -57,6 +58,8 @@ app.use(session({
 }));
 
 app.use(limiter);
+
+app.use(csurf({cookie: false}));
 
 app.use('/', homeRouter);
 app.use('/admin', adminRouter);
