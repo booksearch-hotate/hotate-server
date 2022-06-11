@@ -16,7 +16,8 @@ import PublisherRepository from '../../interface/repository/PublisherRepository'
 
 import db from '../../infrastructure/db';
 import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
-import EsCsv from '../../infrastructure/elasticsearch/esCsv';
+import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
+import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 import Logger from '../../infrastructure/logger/logger';
 
 import {IPage} from '../datas/IPage';
@@ -42,13 +43,13 @@ const bookApplicationService = new BookApplicationService(
 );
 
 const authorApplicationService = new AuthorApplicationService(
-    new AuthorRepository(db, new EsCsv('authors')),
-    new AuthorService(new AuthorRepository(db, new EsCsv('authors'))),
+    new AuthorRepository(db, new EsAuthor('authors')),
+    new AuthorService(new AuthorRepository(db, new EsAuthor('authors'))),
 );
 
 const publisherApplicationService = new PublisherApplicationService(
-    new PublisherRepository(db, new EsCsv('publishers')),
-    new PublisherService(new PublisherRepository(db, new EsCsv('publishers'))),
+    new PublisherRepository(db, new EsPublisher('publishers')),
+    new PublisherService(new PublisherRepository(db, new EsPublisher('publishers'))),
 );
 
 bookRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
@@ -107,9 +108,9 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
     const beforeAuthorId = book.AuthorId;
     const beforePublisherId = book.PublisherId;
 
-    const authorId = await authorApplicationService.createAuthor(req.body.authorName);
+    const authorId = await authorApplicationService.createAuthor(req.body.authorName, false);
 
-    const publisherId = await publisherApplicationService.createPublisher(req.body.publisherName);
+    const publisherId = await publisherApplicationService.createPublisher(req.body.publisherName, false);
 
     await bookApplicationService.update(
         bookId,
@@ -172,8 +173,8 @@ bookRouter.post('/add', csrfProtection, async (req: Request, res: Response) => {
       const authorName = req.body.authorName[i];
       const publisherName = req.body.publisherName[i];
 
-      const authorId = await authorApplicationService.createAuthor(authorName);
-      const publisherId = await publisherApplicationService.createPublisher(publisherName);
+      const authorId = await authorApplicationService.createAuthor(authorName, false);
+      const publisherId = await publisherApplicationService.createPublisher(publisherName, false);
 
       await bookApplicationService.createBook(
           req.body.bookName[i],
