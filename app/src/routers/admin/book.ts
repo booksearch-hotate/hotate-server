@@ -17,6 +17,7 @@ import PublisherRepository from '../../interface/repository/PublisherRepository'
 import db from '../../infrastructure/db';
 import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
 import EsCsv from '../../infrastructure/elasticsearch/esCsv';
+import Logger from '../../infrastructure/logger/logger';
 
 import {IPage} from '../datas/IPage';
 import {IPaginationData} from '../datas/IPaginationData';
@@ -31,6 +32,8 @@ const bookRouter = Router();
 const pageData: IPage = {} as IPage;
 
 const csrfProtection = csurf({cookie: false});
+
+const logger = new Logger('admin-book');
 
 const bookApplicationService = new BookApplicationService(
     new BookRepository(db, new EsSearchBook('books')),
