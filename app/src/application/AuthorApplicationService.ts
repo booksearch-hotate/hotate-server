@@ -13,7 +13,7 @@ export default class AuthorApplicationService {
     this.authorService = authorService;
   }
 
-  public async createAuthor(name: string): Promise<string> {
+  public async createAuthor(name: string, isBulk: boolean): Promise<string> {
     const author = new AuthorModel(this.authorService.createUUID(), name);
     let id;
     if (await this.authorService.isExist(author)) {
@@ -21,7 +21,7 @@ export default class AuthorApplicationService {
       if (found === null) throw new Error('Author not found');
       id = found.Id;
     } else {
-      await this.authorRepository.save(author);
+      await this.authorRepository.save(author, isBulk);
       id = author.Id;
     }
     return id;
