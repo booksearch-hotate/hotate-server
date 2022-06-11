@@ -128,7 +128,6 @@ bookRouter.get('/add', (req: Request, res: Response) => {
 
 /* 本の追加処理 */
 bookRouter.post('/add', async (req: Request, res: Response) => {
-  console.log(req.body);
   try {
     const isSameLen = isSameLenAllArray([
       req.body.bookName,
