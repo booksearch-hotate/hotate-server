@@ -11,7 +11,7 @@ export default class PublisherApplicationService {
     this.publisherService = publisherService;
   }
 
-  public async createPublisher(name: string): Promise<string> {
+  public async createPublisher(name: string, isBulk: boolean): Promise<string> {
     const publisher = new PublisherModel(this.publisherService.createUUID(), name);
     let id;
     if (await this.publisherService.isExist(publisher)) {
@@ -19,7 +19,7 @@ export default class PublisherApplicationService {
       if (found === null) throw new Error('Publisher not found');
       id = found.Id;
     } else {
-      await this.publisherRepository.save(publisher);
+      await this.publisherRepository.save(publisher, isBulk);
       id = publisher.Id;
     }
     return id;
