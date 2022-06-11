@@ -1,27 +1,32 @@
+import sequelize from 'sequelize';
+
 import Publisher from '../../infrastructure/db/tables/publisher';
+import Book from '../../infrastructure/db/tables/book';
+
 import {IPublisherApplicationRepository} from '../../application/repository/IPublisherApplicationRepository';
 import {IPublisherDomainRepository} from '../../domain/service/repository/IPublisherDomainRepository';
 import PublisherModel from '../../domain/model/publisherModel';
 
-import EsCsv from '../../infrastructure/elasticsearch/esCsv';
+import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 
 import {IEsPublisher} from '../../infrastructure/elasticsearch/IElasticSearchDocument';
 
 /* Sequelizeを想定 */
 interface sequelize {
-  Publisher: typeof Publisher
+  Publisher: typeof Publisher,
+  Book: typeof Book,
 }
 
 export default class PublisherRepository implements IPublisherApplicationRepository, IPublisherDomainRepository {
   private readonly db: sequelize;
-  private readonly esCsv: EsCsv;
+  private readonly esPublisher: EsPublisher;
 
-  public constructor(db: sequelize, esCsv: EsCsv) {
+  public constructor(db: sequelize, esPublisher: EsPublisher) {
     this.db = db;
-    this.esCsv = esCsv;
+    this.esPublisher = esPublisher;
   }
 
-  public async save(publisher: PublisherModel): Promise<void> {
+  public async save(publisher: PublisherModel, isBulk: boolean = false): Promise<void> {
     await this.db.Publisher.create({
       id: publisher.Id,
       name: publisher.Name,
@@ -31,7 +36,8 @@ export default class PublisherRepository implements IPublisherApplicationReposit
       db_id: publisher.Id,
       name: publisher.Name,
     };
-    this.esCsv.create(doc);
+    if (isBulk) this.esPublisher.insertBulk(doc);
+    else await this.esPublisher.create(doc);
   }
 
   public async findByName(name: string | null): Promise<PublisherModel | null> {
@@ -43,11 +49,31 @@ export default class PublisherRepository implements IPublisherApplicationReposit
     return null;
   }
   public async deleteAll(): Promise<void> {
-    const deletes = [this.db.Publisher.destroy({where: {}}), this.esCsv.initIndex()];
+    const deletes = [this.db.Publisher.destroy({where: {}}), this.esPublisher.initIndex()];
 
     await Promise.all(deletes);
   }
   public async executeBulkApi(): Promise<void> {
-    await this.esCsv.executeBulkApi();
+    await this.esPublisher.executeBulkApi();
+  }
+
+  public async deleteNoUsed(publisherId: string): Promise<void> {
+    const count = await this.db.Book.count({
+      where: {
+        publisher_id: publisherId,
+      },
+    });
+
+    if (Number(count) === 0) {
+      const list = [
+        this.db.Publisher.destroy({
+          where: {
+            id: publisherId,
+          },
+        }),
+        this.esPublisher.delete(publisherId),
+      ];
+      await Promise.all(list);
+    }
   }
 }

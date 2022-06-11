@@ -51,7 +51,7 @@ export default class BookRepository implements IBookApplicationRepository {
       book_name: book.Name,
       book_content: book.Content,
     };
-    this.esSearchBook.create(doc);
+    this.esSearchBook.insertBulk(doc);
   }
 
   public async deleteAll(): Promise<void> {
@@ -255,6 +255,8 @@ export default class BookRepository implements IBookApplicationRepository {
       isbn: book.Isbn,
       ndc: book.Ndc,
       year: book.Year,
+      author_id: book.Author.Id,
+      publisher_id: book.Publisher.Id,
     }, {where: {id: book.Id}});
 
     const doc: IEsBook = {
@@ -303,5 +305,13 @@ export default class BookRepository implements IBookApplicationRepository {
 
   public async findAllCount(): Promise<number> {
     return await this.db.Book.count();
+  }
+
+  public async deleteBook(id: string): Promise<void> {
+    const list = [
+      this.db.Book.destroy({where: {id}}),
+      this.esSearchBook.delete(id),
+    ];
+    await Promise.all(list);
   }
 }

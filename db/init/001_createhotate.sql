@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS books (
   publisher_id varchar(255) NOT NULL,
   year int NULL DEFAULT NULL,
   book_content text NULL DEFAULT NULL,
+  created_at timestamp NOT NULL,
+  updated_at timestamp NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (author_id) REFERENCES authors(id),
   FOREIGN KEY (publisher_id) REFERENCES publishers(id)
