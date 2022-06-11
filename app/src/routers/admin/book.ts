@@ -119,7 +119,7 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
 });
 
 /* 本の追加画面 */
-bookRouter.get('/add', (req: Request, res: Response) => {
+bookRouter.get('/add', csrfProtection, (req: Request, res: Response) => {
   let count = Number(req.query.c as string);
 
   if (isNaN(count) || count <= 0) count = 1;
@@ -128,11 +128,12 @@ bookRouter.get('/add', (req: Request, res: Response) => {
 
   pageData.headTitle = '本の追加';
   pageData.anyData = {count};
+  pageData.csrfToken = req.csrfToken();
   res.render('pages/admin/book/add', {pageData});
 });
 
 /* 本の追加処理 */
-bookRouter.post('/add', async (req: Request, res: Response) => {
+bookRouter.post('/add', csrfProtection, async (req: Request, res: Response) => {
   try {
     const isSameLen = isSameLenAllArray([
       req.body.bookName,
