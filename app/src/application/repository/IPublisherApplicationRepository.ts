@@ -1,8 +1,9 @@
 import PublisherModel from '../../domain/model/publisherModel';
 
 export interface IPublisherApplicationRepository {
-  save (publisher: PublisherModel): Promise<void>
+  save (publisher: PublisherModel, isBulk: boolean): Promise<void>
   findByName (name: string | null): Promise<PublisherModel | null>
   deleteAll (): Promise<void>
   executeBulkApi (): Promise<void>
+  deleteNoUsed(publisherId: string): Promise<void>
 }

@@ -5,3 +5,5 @@ db/data
 
 app/dist
 app/log
+
+test/*

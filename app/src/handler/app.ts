@@ -3,12 +3,22 @@ import expressRateLimit from 'express-rate-limit';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import dotenv from 'dotenv';
+import csurf from 'csurf';
 
-import router from '../routers/router';
+/* routers */
+import homeRouter from '../routers/home';
+import bookRouter from '../routers/admin/book';
+import adminRouter from '../routers/admin/index';
+import searchHistoryRouter from '../routers/admin/searchHistory';
+import csvRouter from '../routers/admin/csv';
+import tagsRouter from '../routers/admin/tags';
+import apiRouter from '../routers/api';
 
 import Logger from '../infrastructure/logger/logger';
 
 import {isLocal} from '../infrastructure/cli/cmdLine';
+
+import ResStatus from '../infrastructure/session/status/resStatus';
 
 const app: Application = express();
 const logger = new Logger('system');
@@ -28,7 +38,8 @@ const limiter = expressRateLimit({
 declare module 'express-session' {
   // eslint-disable-next-line no-unused-vars
   interface SessionData {
-    token: string
+    token: string,
+    status: ResStatus
   }
 }
 
@@ -48,7 +59,15 @@ app.use(session({
 
 app.use(limiter);
 
-app.use('/', router);
+app.use(csurf({cookie: false}));
+
+app.use('/', homeRouter);
+app.use('/admin', adminRouter);
+app.use('/admin/book', bookRouter);
+app.use('/admin/search_history', searchHistoryRouter);
+app.use('/admin/csv', csvRouter);
+app.use('/admin/tags', tagsRouter);
+app.use('/api', apiRouter);
 
 // listen
 export function startAppServer(port: number) {

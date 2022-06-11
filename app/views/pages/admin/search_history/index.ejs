@@ -1,18 +1,3 @@
-<%
-let mes = '';
-let type = '';
-
-switch (pageData.anyData.stateValue) {
-  case 'delete':
-    mes = '削除が完了しました';
-    type = 'success';
-    break;
-  case 'error':
-    mes = 'エラーが発生しました';
-    type = 'danger';
-    break;
-}
-%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -21,9 +6,6 @@ switch (pageData.anyData.stateValue) {
   <body>
     <%- include('./../../../components/navbar') %>
     <h3>検索履歴一覧</h3>
-    <% if (mes.length) { %>
-      <%- include('./../../../components/stateToast', {mes: mes, type: type}) %>
-    <% } %>
     <table class="table table-striped">
       <thead>
         <tr>

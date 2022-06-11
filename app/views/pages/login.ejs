@@ -1,22 +1,3 @@
-<%
-let mes = '';
-let type = '';
-
-switch (pageData.anyData.stateValue) {
-  case 'error':
-    mes = 'ログイン中にエラーが発生しました。詳しくはログをご覧ください。';
-    type = 'danger';
-    break;
-  case 'invalidToken':
-    mes = 'セッションが切れました。再度ログインしてください。';
-    type = 'warning';
-    break;
-  case 'miss':
-    mes = 'ログインに失敗しました。';
-    type = 'warning';
-    break;
-}
-%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -40,9 +21,7 @@ switch (pageData.anyData.stateValue) {
         <button type="submit" class="btn btn-primary">ログイン</button>
       </div>
     </form>
-    <% if (mes.length) { %>
-      <%- include('./../components/stateToast', {mes: mes, type: type}) %>
-    <% } %>
+    <%- include('./../components/stateToast', {pageData}) %>
     <%- include('./../components/inputJs') %>
   </body>
 </html>

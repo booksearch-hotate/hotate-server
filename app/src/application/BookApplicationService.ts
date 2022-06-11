@@ -146,4 +146,8 @@ export default class BookApplicationService {
   public async findAllCount(): Promise<number> {
     return await this.bookRepository.findAllCount();
   }
+
+  public async deleteBook(id: string): Promise<void> {
+    await this.bookRepository.deleteBook(id);
+  }
 }
