@@ -60,12 +60,15 @@ export default class Book extends Model {
   public publisher_id!: string;
   public year!: number;
   public book_content!: string;
+  public created_at!: Date;
+  public updated_at!: Date;
 
   public static initialize(sequelize: Sequelize) {
     this.init(initColumn as unknown as ModelAttributes, {
       sequelize,
       tableName: 'books',
-      timestamps: false,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
     });
     return this;
   }
