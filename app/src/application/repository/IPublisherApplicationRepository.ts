@@ -5,4 +5,5 @@ export interface IPublisherApplicationRepository {
   findByName (name: string | null): Promise<PublisherModel | null>
   deleteAll (): Promise<void>
   executeBulkApi (): Promise<void>
+  deleteNoUsed(publisherId: string): Promise<void>
 }
