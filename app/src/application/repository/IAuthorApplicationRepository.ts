@@ -6,4 +6,5 @@ export interface IAuthorApplicationRepository {
   deleteAll (): Promise<void>
   executeBulkApi (): Promise<void>
   findById(bookId: string): Promise<AuthorModel>
+  deleteNoUsed(authorId: string): Promise<void>
 }
