@@ -255,6 +255,8 @@ export default class BookRepository implements IBookApplicationRepository {
       isbn: book.Isbn,
       ndc: book.Ndc,
       year: book.Year,
+      author_id: book.Author.Id,
+      publisher_id: book.Publisher.Id,
     }, {where: {id: book.Id}});
 
     const doc: IEsBook = {
