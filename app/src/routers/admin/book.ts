@@ -143,6 +143,7 @@ bookRouter.post('/add', async (req: Request, res: Response) => {
     if (!isSameLen) throw new Error('Datas could not be successfully retrieved.');
 
     for (let i = 0; i < req.body.isbn.length; i++) {
+      if (req.body.bookName[i] === '') throw new Error('Name of book is empty.');
       const authorName = req.body.authorName[i];
       const publisherName = req.body.publisherName[i];
 
