@@ -23,6 +23,7 @@ import {IPaginationData} from '../datas/IPaginationData';
 
 import getPaginationInfo from '../../modules/getPaginationInfo';
 import conversionpageCounter from '../../modules/conversionPageCounter';
+import isSameLenAllArray from '../../modules/isSameLenAllArray';
 
 // eslint-disable-next-line new-cap
 const bookRouter = Router();
@@ -119,23 +120,45 @@ bookRouter.get('/add', (req: Request, res: Response) => {
 bookRouter.post('/add', async (req: Request, res: Response) => {
   console.log(req.body);
 
-  const authorId = await authorApplicationService.createAuthor(req.body.authorName);
-  const publisherId = await publisherApplicationService.createPublisher(req.body.publisherName);
+  const isSameLen = isSameLenAllArray([
+    req.body.title,
+    req.body.bookSubName,
+    req.body.bookContent,
+    req.body.isbn,
+    req.body.ndc,
+    req.body.year,
+    req.body.authorName,
+    req.body.publisherName,
+  ]);
 
-  await bookApplicationService.createBook(
-      req.body.bookName,
-      req.body.bookSubName,
-      req.body.content,
-      req.body.isbn,
-      req.body.ndc,
-      req.body.year,
-      authorId,
-      req.body.authorName,
-      publisherId,
-      req.body.publisherName,
-  );
+  try {
+    if (!isSameLen) throw new Error('Datas could not be successfully retrieved.');
 
-  res.redirect('/admin/book');
+    for (let i = 0; i < req.body.isbn.length; i++) {
+      const authorName = req.body.authorName[i];
+      const publisherName = req.body.publisherName[i];
+
+      const authorId = await authorApplicationService.createAuthor(authorName);
+      const publisherId = await publisherApplicationService.createPublisher(publisherName);
+
+      await bookApplicationService.createBook(
+          req.body.bookName[i],
+          req.body.bookSubName[i],
+          req.body.content[i],
+          req.body.isbn[i],
+          req.body.ndc[i],
+          req.body.year[i],
+          authorId,
+          authorName,
+          publisherId,
+          publisherName,
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  } finally {
+    res.redirect('/admin/book');
+  }
 });
 
 export default bookRouter;
