@@ -2,14 +2,21 @@ import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 
 import BookService from '../../domain/service/bookService';
+import AuthorService from '../../domain/service/authorService';
+import PublisherService from '../../domain/service/publisherService';
 
 import BookApplicationService from '../../application/BookApplicationService';
+import AuthorApplicationService from '../../application/AuthorApplicationService';
+import PublisherApplicationService from '../../application/PublisherApplicationService';
 
 import BookRepository from '../../interface/repository/BookRepository';
+import AuthorRepository from '../../interface/repository/AuthorRepository';
+import PublisherRepository from '../../interface/repository/PublisherRepository';
 
 
 import db from '../../infrastructure/db';
 import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
+import EsCsv from '../../infrastructure/elasticsearch/esCsv';
 
 import {IPage} from '../datas/IPage';
 import {IPaginationData} from '../datas/IPaginationData';
@@ -27,6 +34,16 @@ const csrfProtection = csurf({cookie: false});
 const bookApplicationService = new BookApplicationService(
     new BookRepository(db, new EsSearchBook('books')),
     new BookService(),
+);
+
+const authorApplicationService = new AuthorApplicationService(
+    new AuthorRepository(db, new EsCsv('authors')),
+    new AuthorService(new AuthorRepository(db, new EsCsv('authors'))),
+);
+
+const publisherApplicationService = new PublisherApplicationService(
+    new PublisherRepository(db, new EsCsv('publishers')),
+    new PublisherService(new PublisherRepository(db, new EsCsv('publishers'))),
 );
 
 bookRouter.get('/', async (req: Request, res: Response) => {
@@ -96,6 +113,29 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
 bookRouter.get('/add', (req: Request, res: Response) => {
   pageData.headTitle = '本の追加';
   res.render('pages/admin/book/add', {pageData});
+});
+
+/* 本の追加処理 */
+bookRouter.post('/add', async (req: Request, res: Response) => {
+  console.log(req.body);
+
+  const authorId = await authorApplicationService.createAuthor(req.body.authorName);
+  const publisherId = await publisherApplicationService.createPublisher(req.body.publisherName);
+
+  await bookApplicationService.createBook(
+      req.body.bookName,
+      req.body.bookSubName,
+      req.body.content,
+      req.body.isbn,
+      req.body.ndc,
+      req.body.year,
+      authorId,
+      req.body.authorName,
+      publisherId,
+      req.body.publisherName,
+  );
+
+  res.redirect('/admin/book');
 });
 
 export default bookRouter;
