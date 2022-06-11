@@ -18,6 +18,7 @@
       <% } %>
         <div class="form-box">
           <form action="/admin/book/add" method="post">
+            <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
             <% for (let i = 0; i < pageData.anyData.count; i++) { %>
             <div class="form-header">
               <h3><%= i + 1 %>冊目</h3>
