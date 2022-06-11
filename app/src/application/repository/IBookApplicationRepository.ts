@@ -14,4 +14,5 @@ export interface IBookApplicationRepository {
   update(bookModel: BookModel): Promise<void>
   findAll (pageCount: number): Promise<BookModel[]>
   findAllCount (): Promise<number>
+  deleteBook (id: string): Promise<void>
 }
