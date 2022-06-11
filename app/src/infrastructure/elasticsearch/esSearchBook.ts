@@ -59,6 +59,16 @@ export default class EsSearchBook extends EsCsv {
     });
   }
 
+  public async delete(id: string): Promise<void> {
+    await axios.post(`${this.uri}/_delete_by_query?conflicts=proceed&pretty`, {
+      query: {
+        term: {
+          'db_id': id,
+        },
+      },
+    });
+  }
+
   get Total(): number {
     return this.total;
   }

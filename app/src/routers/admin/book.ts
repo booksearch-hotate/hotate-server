@@ -51,7 +51,7 @@ const publisherApplicationService = new PublisherApplicationService(
     new PublisherService(new PublisherRepository(db, new EsCsv('publishers'))),
 );
 
-bookRouter.get('/', async (req: Request, res: Response) => {
+bookRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   const pageCount = conversionpageCounter(req);
 
   const books = await bookApplicationService.findAll(pageCount);
@@ -78,6 +78,8 @@ bookRouter.get('/', async (req: Request, res: Response) => {
 
   pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
+
+  pageData.csrfToken = req.csrfToken();
 
   res.render('pages/admin/book/', {pageData});
 });
@@ -174,6 +176,20 @@ bookRouter.post('/add', csrfProtection, async (req: Request, res: Response) => {
   } catch (e: any) {
     logger.error(e as string);
     req.session.status = {type: 'Failure', error: e, mes: '本の追加中にエラーが発生しました'};
+  } finally {
+    res.redirect('/admin/book');
+  }
+});
+
+/* 本の削除機能 */
+bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    const id = req.body.id;
+    await bookApplicationService.deleteBook(id);
+    req.session.status = {type: 'Success', mes: '本の削除が完了しました'};
+  } catch (e: any) {
+    logger.error(e as string);
+    req.session.status = {type: 'Failure', error: e, mes: '本の削除に失敗しました'};
   } finally {
     res.redirect('/admin/book');
   }

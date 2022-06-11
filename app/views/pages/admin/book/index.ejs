@@ -16,6 +16,7 @@
         <tr>
           <th>本名称</th>
           <th>編集</th>
+          <th>削除</th>
         </tr>
       </thead>
       <tbody>
@@ -26,6 +27,13 @@
               <form action="/admin/book/edit" method="get">
                 <input type="hidden" name="id" value="<%= book.Id %>">
                 <button type="submit" class="btn btn-success">編集</button>
+              </form>
+            </td>
+            <td>
+              <form action="/admin/book/delete" method="post">
+                <input type="hidden" name="id" value="<%= book.Id %>">
+                <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+                <button type="submit" class="btn btn-danger">削除</button>
               </form>
             </td>
           </tr>
