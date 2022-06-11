@@ -47,7 +47,7 @@ export default class EsSearchBook extends EsCsv {
     await axios.post(`${this.uri}/_delete_by_query?conflicts=proceed&pretty`, {
       query: {
         term: {
-          'db_id': book.db_id,
+          'db_id.keyword': book.db_id,
         },
       },
     });
@@ -63,7 +63,7 @@ export default class EsSearchBook extends EsCsv {
     await axios.post(`${this.uri}/_delete_by_query?conflicts=proceed&pretty`, {
       query: {
         term: {
-          'db_id': id,
+          'db_id.keyword': id,
         },
       },
     });
