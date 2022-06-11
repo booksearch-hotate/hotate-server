@@ -7,7 +7,7 @@ import {IPublisherApplicationRepository} from '../../application/repository/IPub
 import {IPublisherDomainRepository} from '../../domain/service/repository/IPublisherDomainRepository';
 import PublisherModel from '../../domain/model/publisherModel';
 
-import EsCsv from '../../infrastructure/elasticsearch/esCsv';
+import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 
 import {IEsPublisher} from '../../infrastructure/elasticsearch/IElasticSearchDocument';
 
@@ -19,14 +19,14 @@ interface sequelize {
 
 export default class PublisherRepository implements IPublisherApplicationRepository, IPublisherDomainRepository {
   private readonly db: sequelize;
-  private readonly esCsv: EsCsv;
+  private readonly esPublisher: EsPublisher;
 
-  public constructor(db: sequelize, esCsv: EsCsv) {
+  public constructor(db: sequelize, esPublisher: EsPublisher) {
     this.db = db;
-    this.esCsv = esCsv;
+    this.esPublisher = esPublisher;
   }
 
-  public async save(publisher: PublisherModel): Promise<void> {
+  public async save(publisher: PublisherModel, isBulk: boolean = false): Promise<void> {
     await this.db.Publisher.create({
       id: publisher.Id,
       name: publisher.Name,
@@ -36,7 +36,8 @@ export default class PublisherRepository implements IPublisherApplicationReposit
       db_id: publisher.Id,
       name: publisher.Name,
     };
-    this.esCsv.create(doc);
+    if (isBulk) this.esPublisher.insertBulk(doc);
+    else await this.esPublisher.create(doc);
   }
 
   public async findByName(name: string | null): Promise<PublisherModel | null> {
@@ -48,41 +49,31 @@ export default class PublisherRepository implements IPublisherApplicationReposit
     return null;
   }
   public async deleteAll(): Promise<void> {
-    const deletes = [this.db.Publisher.destroy({where: {}}), this.esCsv.initIndex()];
+    const deletes = [this.db.Publisher.destroy({where: {}}), this.esPublisher.initIndex()];
 
     await Promise.all(deletes);
   }
   public async executeBulkApi(): Promise<void> {
-    await this.esCsv.executeBulkApi();
+    await this.esPublisher.executeBulkApi();
   }
 
   public async deleteNoUsed(publisherId: string): Promise<void> {
-    const sql = await this.db.Publisher.findOne({
-      attributes: [
-        'id',
-        [sequelize.fn('count', sequelize.col('Publisher.id')), 'count'],
-      ],
+    const count = await this.db.Book.count({
       where: {
-        id: publisherId,
+        publisher_id: publisherId,
       },
-      group: ['Books.publisher_id'],
-      include: [{
-        model: this.db.Book,
-        required: true,
-        attributes: [],
-      }],
     });
 
-    if (sql === null) return;
-
-    const count = sql.getDataValue('count');
-
     if (Number(count) === 0) {
-      await this.db.Publisher.destroy({
-        where: {
-          id: publisherId,
-        },
-      });
+      const list = [
+        this.db.Publisher.destroy({
+          where: {
+            id: publisherId,
+          },
+        }),
+        this.esPublisher.delete(publisherId),
+      ];
+      await Promise.all(list);
     }
   }
 }
