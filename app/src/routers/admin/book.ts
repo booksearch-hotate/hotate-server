@@ -92,4 +92,10 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
   res.redirect('/admin/book');
 });
 
+/* 本の追加画面 */
+bookRouter.get('/add', (req: Request, res: Response) => {
+  pageData.headTitle = '本の追加';
+  res.render('pages/admin/book/add', {pageData});
+});
+
 export default bookRouter;
