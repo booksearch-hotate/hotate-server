@@ -23,7 +23,8 @@ import db from '../../infrastructure/db';
 import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
 import CsvFile from '../../infrastructure/fileAccessor/csvFile';
 import Logger from '../../infrastructure/logger/logger';
-import EsCsv from '../../infrastructure/elasticsearch/esCsv';
+import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
+import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 
 import {IPage} from '../datas/IPage';
 
@@ -52,13 +53,13 @@ const tagApplicationService = new TagApplicationService(
 );
 
 const authorApplicationService = new AuthorApplicationService(
-    new AuthorRepository(db, new EsCsv('authors')),
-    new AuthorService(new AuthorRepository(db, new EsCsv('authors'))),
+    new AuthorRepository(db, new EsAuthor('authors')),
+    new AuthorService(new AuthorRepository(db, new EsAuthor('authors'))),
 );
 
 const publisherApplicationService = new PublisherApplicationService(
-    new PublisherRepository(db, new EsCsv('publishers')),
-    new PublisherService(new PublisherRepository(db, new EsCsv('publishers'))),
+    new PublisherRepository(db, new EsPublisher('publishers')),
+    new PublisherService(new PublisherRepository(db, new EsPublisher('publishers'))),
 );
 
 /* csvファイル選択画面 */
@@ -138,9 +139,9 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
       const authorName = row[req.body.authorName];
       const publisherName = row[req.body.publisherName];
 
-      const authorId = await authorApplicationService.createAuthor(authorName);
+      const authorId = await authorApplicationService.createAuthor(authorName, true);
 
-      const publisherId = await publisherApplicationService.createPublisher(publisherName);
+      const publisherId = await publisherApplicationService.createPublisher(publisherName, true);
 
       booksPromise.push(bookApplicationService.createBook(
           row[req.body.bookName],
