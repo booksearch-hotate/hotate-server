@@ -112,7 +112,14 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
 
 /* 本の追加画面 */
 bookRouter.get('/add', (req: Request, res: Response) => {
+  let count = Number(req.query.c as string);
+
+  if (isNaN(count) || count <= 0) count = 1;
+
+  if (count > 10) count = 10;
+
   pageData.headTitle = '本の追加';
+  pageData.anyData = {count};
   res.render('pages/admin/book/add', {pageData});
 });
 
@@ -121,9 +128,9 @@ bookRouter.post('/add', async (req: Request, res: Response) => {
   console.log(req.body);
 
   const isSameLen = isSameLenAllArray([
-    req.body.title,
+    req.body.bookName,
     req.body.bookSubName,
-    req.body.bookContent,
+    req.body.content,
     req.body.isbn,
     req.body.ndc,
     req.body.year,
