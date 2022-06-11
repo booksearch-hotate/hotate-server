@@ -105,12 +105,16 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
     const bookId = req.body.id;
 
     const book = await bookApplicationService.searchBookById(bookId);
+    /* 変更前のauthorId、publisherIdを取得 */
     const beforeAuthorId = book.AuthorId;
     const beforePublisherId = book.PublisherId;
 
-    const authorId = await authorApplicationService.createAuthor(req.body.authorName, false);
-
-    const publisherId = await publisherApplicationService.createPublisher(req.body.publisherName, false);
+    /* 既に同名が存在する場合はそのauthorIdを、存在しない場合は登録しそのIDを取得 */
+    const createList = [
+      authorApplicationService.createAuthor(req.body.authorName, false),
+      publisherApplicationService.createPublisher(req.body.publisherName, false),
+    ];
+    const [authorId, publisherId] = await Promise.all(createList);
 
     await bookApplicationService.update(
         bookId,
@@ -126,8 +130,12 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
         req.body.publisherName,
     );
 
-    await authorApplicationService.deleteNotUsed(beforeAuthorId);
-    await publisherApplicationService.deleteNotUsed(beforePublisherId);
+    /* 使用されていない著者(出版社)を削除 */
+    const deleteNotUsedList = [
+      authorApplicationService.deleteNotUsed(beforeAuthorId),
+      publisherApplicationService.deleteNotUsed(beforePublisherId),
+    ];
+    await Promise.all(deleteNotUsedList);
 
     req.session.status = {type: 'Success', mes: '本の更新が完了しました'};
   } catch (e: any) {
