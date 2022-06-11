@@ -133,9 +133,9 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
   } catch (e: any) {
     logger.error(e as string);
     req.session.status = {type: 'Failure', error: e, mes: '本の更新に失敗しました'};
+  } finally {
+    res.redirect('/admin/book');
   }
-
-  res.redirect('/admin/book');
 });
 
 /* 本の追加画面 */
