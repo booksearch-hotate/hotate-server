@@ -19,6 +19,7 @@ body {
   width: 42px;
   height: 42px;
   cursor: pointer;
+  color: var(--main-font-color)!important;
 }
 
 /* 検索関係 */
