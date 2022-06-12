@@ -15,6 +15,10 @@ body {
   background-color: var(--main-theme-color);
 }
 
+.navbar-search-button {
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
 }
 
 /* 検索関係 */
