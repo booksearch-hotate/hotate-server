@@ -23,8 +23,9 @@ function makePhrase () {
   return resWords.slice(0, -1)
 }
 
-function viewSearchBox (searchBoxId) {
-  const searchBox = document.getElementById(searchBoxId)
+const searchBox = document.getElementById('search-box')
+
+function viewSearchBox () {
   searchBox.classList.add('is-active')
 
   /* 検索のプレースホルダーの内容をランダムに切り替え */
@@ -32,10 +33,9 @@ function viewSearchBox (searchBoxId) {
   searchInput.placeholder = `ex. ${makePhrase()}`
 }
 
-function hideSearchBox (searchBoxId) {
-  const searchBox = document.getElementById(searchBoxId)
+function hideSearchBox () {
   searchBox.classList.remove('is-active')
 }
 
-document.getElementById('search-button-text').addEventListener('click', () => { viewSearchBox('search-box') })
-document.getElementById('close-button').addEventListener('click', () => { hideSearchBox('search-box') })
+document.getElementById('search-button-text').addEventListener('click', () => { viewSearchBox() })
+document.getElementById('close-button').addEventListener('click', () => { hideSearchBox() })
