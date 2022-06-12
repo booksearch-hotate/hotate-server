@@ -12,7 +12,7 @@
 
 body {
   font-family: 'Text Me One', 'Zen Maru Gothic', sans-serif;
-  background-color: #f4e4d481;
+  background-color: var(--main-theme-color);
 }
 
 .navbar-box {
@@ -29,7 +29,7 @@ body {
 
 .navbar-title h1 a {
   text-decoration: none;
-  color: #000;
+  color: var(--main-font-color);
 }
 
 .navbar-links p {
@@ -67,7 +67,7 @@ body {
   height: 100vh;
   background: #244e5f5e;
   backdrop-filter: blur(5px);
-  color: #f4e4d4;
+  color: var(--main-theme-color);
   transition: all 0.3s;
   z-index: 5;
 }
@@ -112,7 +112,7 @@ body {
   background: rgba(255, 255, 255, 0);
   width: 100%;
   border: none;
-  border-bottom: 2px solid #f4e4d4;
+  border-bottom: 2px solid var(--main-theme-color);
   outline: none;
   font-size: 2rem;
   transition: border-bottom 0.3s;
