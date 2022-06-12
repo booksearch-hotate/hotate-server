@@ -1,15 +1,38 @@
-<div class="navbar-box px-3">
-  <div class="navbar-title">
-    <a href="<%= pageData.origin %>/">
-      <img src="<%= pageData.origin %>/img/logo.png" class="logo" alt="logo">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">
+      <img src="<%= pageData.origin %>/img/logo.png" alt="logo" width="80" height="35">
     </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Campaign</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">How</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Request</a>
+        </li>
+      </ul>
+        <span class="navbar-text">
+          <a class="nav-link p-0" onclick="viewSearchBox()" style="width: 42px; height: 42px; cursor: pointer;">
+              <%- include('./../icons/binocular') %>
+            </div>
+          </a>
+        </span>
+    </div>
   </div>
-  <div class="navbar-links">
-    <p><a href="/">ホーム</a></p>
-    <p><a href="/login">管理画面</a></p>
-    <p class="search-button-text" id="search-button-text">検索</p>
-  </div>
-</div>
+</nav>
 
 <!-- 検索時に表示 -->
 <div class="search-box" id="search-box">
