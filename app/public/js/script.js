@@ -37,5 +37,4 @@ function hideSearchBox () {
   searchBox.classList.remove('is-active')
 }
 
-document.getElementById('search-button-text').addEventListener('click', () => { viewSearchBox() })
 document.getElementById('close-button').addEventListener('click', () => { hideSearchBox() })
