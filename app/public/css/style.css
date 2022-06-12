@@ -4,6 +4,12 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Text+Me+One&family=Zen+Maru+Gothic:wght@300&display=swap');
 
+/* 変数の宣言 */
+:root {
+  --main-theme-color: #f4e4d4;
+  --main-font-color: #312a2a;
+}
+
 body {
   font-family: 'Text Me One', 'Zen Maru Gothic', sans-serif;
   background-color: #f4e4d481;
