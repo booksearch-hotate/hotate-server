@@ -10,7 +10,7 @@
         本の情報が登録されているcsvファイルを選択してください。<b>5000件</b>まで登録が可能です。
       </p>
     </header>
-    <form action="/admin/csv/sendFile" method="post" enctype="multipart/form-data">
+    <form action="/admin/csv/sendFile?_csrf=<%= pageData.csrfToken %>" method="post" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="formFile" class="form-label">CSVファイル</label>
         <input class="form-control" type="file" id="formFile" name="csv" accept=".csv">
