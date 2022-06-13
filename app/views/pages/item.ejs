@@ -10,7 +10,7 @@
       <% if (!pageData.anyData.isError) { %>
         <% data = pageData.anyData.bookData %>
         <div class="book-content text-center my-3">
-          <h3 class="mt-3"><%= data.BookName %></h3>
+          <%- include('./../components/headerTitle', {mes: data.BookName, logo: ''}) %>
           <h4 class="mt-3"><%= data.AuthorName %> ・ <%= data.publisherName%></h4>
           <img src="<%= data.ImgLink %>" class="img-fluid rounded-start">
           <p class="mt-3"><%= data.BookContent %></p>
