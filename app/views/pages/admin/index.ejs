@@ -8,16 +8,22 @@
     <header>
       <%- include('./../../components/headerTitle', {mes: '管理画面', logo:'person'}) %>
     </header>
-    <ul>
-      <li><a href="./csv/choice">CSVファイルを選択</a></li>
-      <li><a href="./tags">タグ管理</a></li>
-      <li><a href="./search_history">検索履歴管理</a></li>
-      <li><a href="./book">本の管理</a></li>
-    </ul>
-    <form action="/admin/logout" method="post">
-      <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
-      <button type="submit" class="btn btn-primary">ログアウト</button>
-    </form>
+    <main>
+      <div class="list-group m-4">
+        <a href="./csv/choice" class="list-group-item list-group-item-action">
+          CSVファイルから登録
+        </a>
+        <a href="./tags" class="list-group-item list-group-item-action">タグの管理</a>
+        <a href="./search_history" class="list-group-item list-group-item-action">検索履歴一覧</a>
+        <a href="./book" class="list-group-item list-group-item-action">本の管理</a>
+      </div>
+      <div class="logout text-center">
+        <form action="/admin/logout" method="post">
+          <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+          <button type="submit" class="btn btn-warning">ログアウト</button>
+        </form>
+      </div>
+    </main>
     <%- include('./../../components/stateToast', {pageData}) %>
     <%- include('./../../components/inputJs') %>
   </body>
