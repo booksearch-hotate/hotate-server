@@ -4,7 +4,12 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <%- include('./../../../components/navbar') %>
+    <header>
+      <%- include('./../../../components/headerTitle', {mes: 'csvファイルを選択', logo: 'filetype-csv'}) %>
+      <p class="common-header-sub-title">
+        本の情報が登録されているcsvファイルを選択してください。<b>5000件</b>まで登録が可能です。
+      </p>
+    </header>
     <form action="/admin/csv/sendFile" method="post" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="formFile" class="form-label">CSVファイル</label>
