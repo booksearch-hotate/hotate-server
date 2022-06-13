@@ -5,7 +5,9 @@
     <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/home.css" />
   </head>
   <body>
-    <h1>管理者ホーム画面</h1>
+    <header>
+      <%- include('./../../components/headerTitle', {mes: '管理画面', logo:'person'}) %>
+    </header>
     <ul>
       <li><a href="./csv/choice">CSVファイルを選択</a></li>
       <li><a href="./tags">タグ管理</a></li>
