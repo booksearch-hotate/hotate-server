@@ -63,8 +63,9 @@ const publisherApplicationService = new PublisherApplicationService(
 );
 
 /* csvファイル選択画面 */
-csvRouter.get('/choice', (req: Request, res: Response) => {
+csvRouter.get('/choice', csrfProtection, (req: Request, res: Response) => {
   pageData.headTitle = 'CSVファイル選択';
+  pageData.csrfToken = req.csrfToken();
 
   res.render('pages/admin/csv/choice', {pageData});
 });
@@ -92,7 +93,7 @@ csvRouter.get('/loading', (req: Request, res: Response) => {
 });
 
 /* csvファイルの受け取り */
-csvRouter.post('/sendFile', upload.single('csv'), async (req, res: Response) => {
+csvRouter.post('/sendFile', csrfProtection, upload.single('csv'), async (req, res: Response) => {
   const file = req.file;
 
   try {
