@@ -16,8 +16,8 @@ body {
 }
 
 .navbar-search-button {
-  width: 42px;
-  height: 42px;
+  width: 24px;
+  height: auto;
   cursor: pointer;
   color: var(--main-font-color)!important;
 }
