@@ -1,4 +1,5 @@
 import {Request, Response, Router} from 'express';
+import csurf from 'csurf';
 
 import TagService from '../../domain/service/tagService';
 import BookService from '../../domain/service/bookService';
@@ -25,8 +26,10 @@ const bookApplicationService = new BookApplicationService(
     new BookService(),
 );
 
+const csrfProtection = csurf({cookie: false});
+
 /* isbnに対応する画像をopenbdから取得 */
-apiRouter.post('/:isbn/imgLink', async (req: Request, res: Response) => {
+apiRouter.post('/:isbn/imgLink', csrfProtection, async (req: Request, res: Response) => {
   const isbn = req.params.isbn;
   let imgLink = await bookApplicationService.getImgLink(isbn);
   if (imgLink === null) imgLink = '';
