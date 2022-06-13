@@ -4,7 +4,6 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <%- include('./../../../components/navbar') %>
     <h3>本の編集</h3>
     <form action="/admin/book/update" method="post">
       <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
