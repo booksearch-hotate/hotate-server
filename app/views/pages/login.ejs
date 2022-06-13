@@ -5,8 +5,10 @@
     <link rel="stylesheet" href="<%= pageData.origin %>/css/login.css" />
   </head>
   <body>
-    <%- include('./../components/navbar') %>
-    <h1 class="text-center">ログイン</h1>
+    <header>
+      <%- include('./../components/navbar') %>
+      <%- include('./../components/headerTitle', {mes: 'Login', logo:'key'}) %>
+    </header>
     <form method="POST" action="/check" class="px-4">
       <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
       <div class="mb-3">
