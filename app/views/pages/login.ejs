@@ -18,8 +18,15 @@
         <label for="input_pw" class="form-label">パスワード</label>
         <input type="password" class="form-control" id="input_pw" name="pw" placeholder="パスワード" required>
       </div>
-      <div class="mb-3 text-center">
-        <button type="submit" class="btn btn-primary">ログイン</button>
+      <div class="mb-3 text-center container">
+        <div class="row">
+          <div class="col-sm-6">
+            <a href="/" class="btn btn-outline-success">戻る</a>
+          </div>
+          <div class="col-sm-6">
+            <button type="submit" class="btn btn-primary">ログイン</button>
+          </div>
+        </div>
       </div>
     </form>
     <%- include('./../components/stateToast', {pageData}) %>
