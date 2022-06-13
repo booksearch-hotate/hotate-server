@@ -64,7 +64,7 @@ homeRouter.get('/', (req: Request, res: Response) => {
 });
 
 /* 検索結果 */
-homeRouter.get('/search', async (req: Request, res: Response) => {
+homeRouter.get('/search', csrfProtection, async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
   let isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
   let isTag = req.query.tag === 'true'; // タグ検索かどうか
@@ -115,6 +115,7 @@ homeRouter.get('/search', async (req: Request, res: Response) => {
     isStrict,
     isTag,
   };
+  pageData.csrfToken = req.csrfToken();
 
   if (!isStrict && !isTag) searchHistoryApplicationService.add(searchWord);
 
