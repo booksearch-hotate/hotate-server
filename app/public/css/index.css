@@ -1,4 +1,37 @@
-.hotate-logo {
-  width: 300px;
-  height: auto;
+.home-search-box {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.search-input-main-box {
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 2rem;
+}
+
+.search-input-main {
+  background: rgba(255, 255, 255, 0);
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid var(--main-font-color);
+  outline: none;
+  font-size: 3.6rem;
+  transition: border-bottom 0.3s;
+  text-align: center;
+}
+
+.search-input-main:focus {
+  border-bottom: 2px solid #fff;
+}
+
+.detail-search-box {
+  width: 100%;
+}
+
+.detail-search-box p {
+  text-align: right;
+}
+
+.detail-search-box a {
+  cursor: pointer;
 }
