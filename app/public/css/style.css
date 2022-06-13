@@ -141,3 +141,28 @@ body {
   right: 0;
   margin: .6rem;
 }
+
+/* ヘッダのタイトルに関するスタイル */
+.header-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--main-font-color);
+  font-size: 2.4rem;
+  border-bottom: solid 2px #463927;
+  margin-left: 10px;
+  margin-right: 10px;
+  gap: 5px;
+}
+
+.header-title-log-box {
+  position: relative;
+  height: 2rem;
+  width: 2rem;
+}
+
+.header-title-log-box svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
