@@ -68,7 +68,7 @@ npm i -global markdownlint-cli
 ### markdownlintによる解析
 
 ```bash
-markdownlint '**/*.md'
+markdownlint '**/*.md' -c './.markdownlint.jsonc'
 ```
 
 ### markdownlintによる自動修正
@@ -76,5 +76,5 @@ markdownlint '**/*.md'
 **変更後の修正はできないのでご注意ください。**
 
 ```bash
-markdownlint '**/*.md' -f
+markdownlint '**/*.md' -c './.markdownlint.jsonc' -f
 ```
