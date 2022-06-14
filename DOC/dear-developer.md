@@ -77,21 +77,9 @@ docker-compose up phpmyadmin
 
 - envファイルの作成
 - 管理者のIDとパスワードをDBへ登録
-- Elasticsearh初回生成時に以下のAPIを叩く
-
-```bash
-$ curl  -H "Content-Type: application/json" -XPUT localhost:9200/_template/template_1 -d '
-{
-    "template" : "*",
-    "settings" : {
-        "number_of_shards" : 1, "number_of_replicas" : 0
-    }
-}'
-{"acknowledged":true}
-```
-
-- 既に生成した場合は以下のコマンドで既存のindexを変更する
+- 一度elasticsearchを起動した後、以下のコマンドを入力する
 
 ```bash
 curl -H "Content-Type: application/json" -XPUT localhost:9200/*/_settings -d '{"number_of_replicas":0}'
-{"acknowledged":true
+{"acknowledged":true}
+```

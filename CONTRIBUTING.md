@@ -41,7 +41,7 @@ npm run dev-build && npm run dev-run
 
 このリポジトリでは安全性のため環境変数ファイルはリポジトリに公開していません。環境変数は以下の通りです。(`v0.5.0`現在)
 
-```
+```env
 DB_PW_KEY=<DBのパスワード>
 SESSION_SECRET=<sessionのシークレットキー>
 JWTSECRET=<JWTのシークレットキー>
@@ -55,7 +55,9 @@ JWTSECRET=<JWTのシークレットキー>
 
 ## markdownlintについて
 
-このリポジトリ内のmarkdownは[markdownlint-cli](https://www.npmjs.com/package/markdownlint-cli)を用いています。そしてmarkdownの変更をプルリクした場合、github actionsでmarkdownlint-cliによるチェックが入ります。事前にmarkdownlintによるチェック・修正をおこなってください。
+このリポジトリ内のmarkdownは[markdownlint-cli](https://www.npmjs.com/package/markdownlint-cli)を用いています。
+そしてmarkdownの変更をプルリクした場合、github actionsでmarkdownlint-cliによるチェックが入ります。
+事前にmarkdownlintによるチェック・修正をおこなってください。
 
 ### markdownlintのインストール
 
@@ -65,7 +67,7 @@ npm i -global markdownlint-cli
 
 ### markdownlintによる解析
 
-```
+```bash
 markdownlint '**/*.md'
 ```
 
@@ -73,6 +75,6 @@ markdownlint '**/*.md'
 
 **変更後の修正はできないのでご注意ください。**
 
-```
+```bash
 markdownlint '**/*.md' -f
 ```
