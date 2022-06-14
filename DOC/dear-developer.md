@@ -69,6 +69,9 @@ $ docker-compose up phpmyadmin
 
 [DBの構成について](./AboutDB.md)をご覧ください。
 
+## 使用している技術
+使用している技術などについては[こちら](./use-tech.md)をご覧ください。
+
 ## TODO
 
 - envファイルの作成
