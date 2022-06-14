@@ -13,7 +13,6 @@
 
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/booksearch-hotate/hotate-server.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/booksearch-hotate/hotate-server/context:javascript)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/booksearch-hotate/hotate-server.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/booksearch-hotate/hotate-server/alerts/)
-
 </div>
 
 ## 使い方
