@@ -7,18 +7,17 @@ on:
       - 'udpate-doc-*'
 jobs:
   markdownlint-build:
+
     runs-on: ubuntu-latest
+
     timeout-minutes: 30
-    strategy:
-      matrix:
-        node-version: [14.x]
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 14.x
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 14.x
       - run: npm init -y
       - run: npm i -g markdownlint-cli
       - run: markdownlint '**/*.md' --ignore node_modules
