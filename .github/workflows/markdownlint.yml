@@ -9,6 +9,13 @@ jobs:
     timeout-minutes: 30
 
     steps:
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: |
+            Hello world ! :wave:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/checkout@v3
       - name: Use Node.js 14.x
         uses: actions/setup-node@v3
@@ -17,9 +24,3 @@ jobs:
       - run: npm init -y
       - run: npm i -g markdownlint-cli
       - run: markdownlint '**/*.md' --ignore node_modules
-      - name: Comment PR
-        uses: thollander/actions-comment-pull-request@v1
-        with:
-          message: |
-            Hello world ! :wave:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
