@@ -1,6 +1,5 @@
 <div align="center">
 <h1>HOTATE</h1>
-
 <img src="DOC/img/hotate_a.png" alt="logo" width="300px" />
 
 [![build](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml)
