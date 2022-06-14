@@ -139,12 +139,16 @@ homeRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Respon
     bookData = await bookApplicationService.searchBookById(id);
     pageData.headTitle = `${bookData.BookName} | HOTATE`;
     pageData.anyData = {bookData, isError: false, isLogin};
+
     pageData.csrfToken = req.csrfToken();
   } catch {
     logger.warn(`Not found bookId: ${id}`);
     pageData.headTitle = '本が見つかりませんでした。';
     pageData.anyData = {isError: true};
   } finally {
+    pageData.status = conversionpageStatus(req.session.status);
+    req.session.status = undefined;
+
     res.render('pages/item', {pageData});
   }
 });
@@ -155,9 +159,11 @@ homeRouter.post('/tag/insert', csrfProtection, async (req: Request, res: Respons
   try {
     const name: string = req.body.tagName;
     const isExist = await tagApplicationService.create(name, bookId);
-    isExist ? 'duplicate' : 'success';
+    if (isExist) req.session.status = {type: 'Warning', mes: `${name}は既に登録されています`};
+    else req.session.status = {type: 'Success', mes: `${name}の登録が完了しました`};
   } catch (e: any) {
     logger.error(e as string);
+    req.session.status = {type: 'Failure', error: e, mes: '登録に失敗しました'};
   } finally {
     res.redirect(`/item/${bookId}`);
   }
