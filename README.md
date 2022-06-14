@@ -1,5 +1,6 @@
+<h1 align="center">HOTATE</h1>
+
 <div align="center">
-<h1>HOTATE</h1>
   
 <img src="DOC/img/hotate_a.png" alt="logo" width="300px" />
 
