@@ -1,4 +1,5 @@
 # DBのE-R図
+
 HOTATEで用いられてるDBのE-R図です。
 
 ```mermaid
