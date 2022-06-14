@@ -18,6 +18,11 @@ export default function conversionpageStatus(status: ResStatus | undefined): IPa
           buttonType: 'danger',
         };
         break;
+      case 'Warning':
+        resObj = {
+          mes: status.mes,
+          buttonType: 'warning',
+        };
     }
     return resObj;
   } else {
