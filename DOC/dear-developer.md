@@ -15,15 +15,43 @@
 
 ソースマップや型チェックなど、開発時に必要となる機能を削減していますので、開発時にはご自身のPCにnodeをインストールしてください。なお開発者の2022/05/09現在のnodeのバージョンは`v16.13.0`です。
 
-そしてappフォルダ配下で以下のコマンドを入力すると正常に動作します。
+## ビルドと実行
+
+### ビルド
+
+typescriptからjavascriptへのビルドを行います。このビルドをせずに実行をしても**変更内容が反映されない**ので注意してください。
 
 ```bash
-$ npm run dev-build && node --enable-source-maps dist/server.js local
+$ npm run dev-build
 ```
 
-また、ここに`output-log`を追加することでログファイルを出力することも可能です。
+### 実行
 
-elasticsearch、mysql、phpmyadminに関しては通常と同じようにdockerで起動して大丈夫です。
+javascriptを実行します。
+
+```bash
+$ npm run dev-run
+```
+
+#### オプション
+
+`dev-run`ではデフォルトで`local`というオプションが付いており、ローカル環境での動作となっています。
+
+その他、以下のコマンドが存在します。
+
+| コマンド | 内容 |
+| :--: | :--: |
+| output-log | ログファイルを出力します。コンソール上にはログが一切表示されません。 |
+
+## Elasticsearch、DBの起動方法
+
+elasticsearch、mysql、phpmyadminに関しては通常と同じようにdockerで起動してください。
+
+```bash
+$ docker-compose up es
+$ docker-compose up mysql
+$ docker-compose up phpmyadmin
+```
 
 ## 環境変数について
 
