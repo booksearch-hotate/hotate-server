@@ -4,14 +4,17 @@ import csurf from 'csurf';
 import BookService from '../domain/service/bookService';
 import SearchHistoryService from '../domain/service/searchHistoryService';
 import AdminService from '../domain/service/adminService';
+import TagService from '../domain/service/tagService';
 
 import BookApplicationService from '../application/BookApplicationService';
 import SearchHistoryApplicationService from '../application/SearchHistoryApplicationService';
 import AdminApplicationService from '../application/AdminApplicationService';
+import TagApplicationService from '../application/TagApplicationService';
 
 import BookRepository from '../interface/repository/BookRepository';
 import SearchHistoryRepository from '../interface/repository/SearchHistoryRepository';
 import AdminRepository from '../interface/repository/AdminRepository';
+import TagRepository from '../interface/repository/TagRepository';
 
 
 import db from '../infrastructure/db';
@@ -55,6 +58,11 @@ const searchHistoryApplicationService = new SearchHistoryApplicationService(
 const adminApplicationService = new AdminApplicationService(
     new AdminRepository(db),
     new AdminService(),
+);
+
+const tagApplicationService = new TagApplicationService(
+    new TagRepository(db),
+    new TagService(new TagRepository(db)),
 );
 
 homeRouter.get('/', (req: Request, res: Response) => {
@@ -123,7 +131,7 @@ homeRouter.get('/search', csrfProtection, async (req: Request, res: Response) =>
 });
 
 /* 本詳細画面 */
-homeRouter.get('/item/:bookId', async (req: Request, res: Response) => {
+homeRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Response) => {
   const id = req.params.bookId; // 本のID
   let bookData: BookData;
   const isLogin = admin.verifyToken(req.session.token);
@@ -131,12 +139,33 @@ homeRouter.get('/item/:bookId', async (req: Request, res: Response) => {
     bookData = await bookApplicationService.searchBookById(id);
     pageData.headTitle = `${bookData.BookName} | HOTATE`;
     pageData.anyData = {bookData, isError: false, isLogin};
+
+    pageData.csrfToken = req.csrfToken();
   } catch {
     logger.warn(`Not found bookId: ${id}`);
     pageData.headTitle = '本が見つかりませんでした。';
     pageData.anyData = {isError: true};
   } finally {
+    pageData.status = conversionpageStatus(req.session.status);
+    req.session.status = undefined;
+
     res.render('pages/item', {pageData});
+  }
+});
+
+/* タグ追加処理 */
+homeRouter.post('/tag/insert', csrfProtection, async (req: Request, res: Response) => {
+  const bookId = req.body.bookId;
+  try {
+    const name: string = req.body.tagName;
+    const isExist = await tagApplicationService.create(name, bookId);
+    if (isExist) req.session.status = {type: 'Warning', mes: `${name}は既に登録されています`};
+    else req.session.status = {type: 'Success', mes: `${name}の登録が完了しました`};
+  } catch (e: any) {
+    logger.error(e as string);
+    req.session.status = {type: 'Failure', error: e, mes: '登録に失敗しました'};
+  } finally {
+    res.redirect(`/item/${bookId}`);
   }
 });
 
