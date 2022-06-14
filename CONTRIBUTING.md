@@ -52,3 +52,27 @@ JWTSECRET=<JWTのシークレットキー>
 ## 開発者向けドキュメントについて
 
 開発者向けのドキュメントを[こちら](https://github.com/booksearch-hotate/hotate-server/blob/main/DOC/dear-developer.md)に掲載しています。ぜひ一読してください！
+
+## markdownlintについて
+
+このリポジトリ内のmarkdownは[markdownlint-cli](https://www.npmjs.com/package/markdownlint-cli)を用いています。そしてmarkdownの変更をプルリクした場合、github actionsでmarkdownlint-cliによるチェックが入ります。事前にmarkdownlintによるチェック・修正をおこなってください。
+
+### markdownlintのインストール
+
+```bash
+npm i -global markdownlint-cli
+```
+
+### markdownlintによる解析
+
+```
+markdownlint '**/*.md'
+```
+
+### markdownlintによる自動修正
+
+**変更後の修正はできないのでご注意ください。**
+
+```
+markdownlint '**/*.md' -f
+```
