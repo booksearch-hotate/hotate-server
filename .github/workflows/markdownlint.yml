@@ -18,9 +18,9 @@ jobs:
       - run: npm i -g markdownlint-cli
       - run: markdownlint '**/*.md' --ignore node_modules
       - if: failure()
-        - name: Comment PR
-          uses: thollander/actions-comment-pull-request@v1
-          with:
-            message: |
-              Hello world ! :wave:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: |
+            Hello world ! :wave:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
