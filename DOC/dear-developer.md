@@ -22,7 +22,7 @@
 typescriptからjavascriptへのビルドを行います。このビルドをせずに実行をしても**変更内容が反映されない**ので注意してください。
 
 ```bash
-$ npm run dev-build
+npm run dev-build
 ```
 
 ### 実行
@@ -30,7 +30,7 @@ $ npm run dev-build
 javascriptを実行します。
 
 ```bash
-$ npm run dev-run
+npm run dev-run
 ```
 
 #### オプション
@@ -48,9 +48,9 @@ $ npm run dev-run
 elasticsearch、mysql、phpmyadminに関しては通常と同じようにdockerで起動してください。
 
 ```bash
-$ docker-compose up es
-$ docker-compose up mysql
-$ docker-compose up phpmyadmin
+docker-compose up es
+docker-compose up mysql
+docker-compose up phpmyadmin
 ```
 
 ## 環境変数について
@@ -70,6 +70,7 @@ $ docker-compose up phpmyadmin
 [DBの構成について](./AboutDB.md)をご覧ください。
 
 ## 使用している技術
+
 使用している技術などについては[こちら](./use-tech.md)をご覧ください。
 
 ## TODO
@@ -77,6 +78,7 @@ $ docker-compose up phpmyadmin
 - envファイルの作成
 - 管理者のIDとパスワードをDBへ登録
 - Elasticsearh初回生成時に以下のAPIを叩く
+
 ```bash
 $ curl  -H "Content-Type: application/json" -XPUT localhost:9200/_template/template_1 -d '
 {
@@ -87,8 +89,9 @@ $ curl  -H "Content-Type: application/json" -XPUT localhost:9200/_template/templ
 }'
 {"acknowledged":true}
 ```
-  - 既に生成した場合は以下のコマンドで既存のindexを変更する
+
+- 既に生成した場合は以下のコマンドで既存のindexを変更する
 
 ```bash
-$ curl -H "Content-Type: application/json" -XPUT localhost:9200/*/_settings -d '{"number_of_replicas":0}'
+curl -H "Content-Type: application/json" -XPUT localhost:9200/*/_settings -d '{"number_of_replicas":0}'
 {"acknowledged":true

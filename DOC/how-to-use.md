@@ -14,7 +14,7 @@ cdコマンドを用いればOK
 docker-compose up app
 ```
 
-## 5. webブラウザで[http://localhost:8080](http://localhost:8080)を開く！
+## 5. webブラウザで[http://localhost:8080](http://localhost:8080)を開く
 
 # 管理者のIDとパスワードを設定
 
