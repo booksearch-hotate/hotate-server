@@ -20,3 +20,5 @@ jobs:
       - run: npm init -y
       - run: npm i -g markdownlint-cli
       - run: markdownlint '**/*.md' --ignore node_modules
+      - if: failure()
+        run: echo failure
