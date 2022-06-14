@@ -64,3 +64,7 @@ $ docker-compose up phpmyadmin
 | JWTSECRET | JWTに用いる暗号鍵 |
 
 この内容を`app`フォルダ直下に`.env`の名称で作成してください。
+
+## DBの構造について
+
+[DBの構成について](./AboutDB.md)をご覧ください。
