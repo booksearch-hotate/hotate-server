@@ -1,10 +1,6 @@
 
 name: markdownlint
-on:
-  pull_request:
-    branches:
-      - main
-      - 'udpate-doc-*'
+on: [push]
 jobs:
   markdownlint-build:
 
