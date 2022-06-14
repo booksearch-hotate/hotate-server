@@ -39,3 +39,8 @@ DB_PW_KEY=<DBのパスワード>
 SESSION_SECRET=<sessionのシークレットキー>
 JWTSECRET=<JWTのシークレットキー>
 ```
+
+この環境変数をappフォルダ内の`.env`というファイル名で保存してください。
+
+## 開発者向けドキュメントについて
+開発者向けのドキュメントを[こちら](https://github.com/booksearch-hotate/hotate-server/blob/main/DOC/dear-developer.md)に掲載しています。ぜひ一読してください！
