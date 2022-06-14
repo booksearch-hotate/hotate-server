@@ -14,9 +14,9 @@ cdコマンドを用いればOK
 docker-compose up app
 ```
 
-## 5. webブラウザで[http://localhost:8080](http://localhost:8080)を開く！
+## 5. webブラウザで[http://localhost:8080](http://localhost:8080)を開く
 
-# 管理者のIDとパスワードを設定
+## 管理者のIDとパスワードを設定
 
 管理者用のIDとパスワードは初期化時に決めたものがありますので、それを入力してください。
 
@@ -36,7 +36,7 @@ docker-compose up app
 
 ### 3. 「DB_PW_KEY」の値をコピペする
 
-```
+```env
 DB_PW_KEY=<暗号鍵>
 ```
 
