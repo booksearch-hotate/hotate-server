@@ -1,5 +1,8 @@
 name: build
-on: [pull_request]
+on:
+  pull_request:
+    paths:
+      - 'app/**'
 jobs:
   app-build:
     runs-on: ubuntu-latest
