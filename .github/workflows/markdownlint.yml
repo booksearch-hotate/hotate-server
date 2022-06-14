@@ -14,7 +14,11 @@ jobs:
         node-version: [14.x]
 
     steps:
-      - name: markdownlint-cli
-        uses: nosborn/github-action-markdown-cli@v3.0.1
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
-          files: .
+          node-version: ${{ matrix.node-version }}
+      - run: npm init -y
+      - run: npm i -g markdownlint-cli
+      - run: markdownlint '**/*.md' --ignore node_modules
