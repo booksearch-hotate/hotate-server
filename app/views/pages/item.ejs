@@ -21,26 +21,30 @@
         <% if (pageData.anyData.isLogin) { %>
           <a href="/admin/book/edit?id=<%= data.Id %>">編集</a>
         <% } %>
-        <div class="add-tag-form-box container">
-          <div class="row">
-            <div class="col-md-6">
-              <input type="text" class="form-control" id="add-tag" placeholder="タグを追加">
+        <form action="/tag/insert" method="post">
+          <input type="hidden" name="bookId" value="<%= data.Id %>">
+          <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+          <div class="add-tag-form-box container">
+            <div class="row">
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="tagName" placeholder="タグを追加">
+              </div>
+              <div class="col-md-6">
+                <button type="submit" class="btn btn-primary">追加</button>
+              </div>
             </div>
-            <div class="col-md-6">
-              <button type="button" class="btn btn-primary" id="add-tag-btn" onclick="addTag()">追加</button>
+            <div class="row" id="tag-result-box">
+              <div class="col-md-12">
+                <p id="tag-result" class="m-0"></p>
+              </div>
             </div>
           </div>
-          <div class="row" id="tag-result-box">
-            <div class="col-md-12">
-              <p id="tag-result" class="m-0"></p>
-            </div>
-          </div>
-        </div>
+        </form>
       <% } else { %>
         <h4 class="text-danger">本が見つかりませんでした。</h4>
       <% } %>
     </main>
+    <%- include('./../components/stateToast', {pageData}) %>
     <%- include('./../components/inputJs') %>
-    <script src="<%= pageData.origin %>/js/tagControll.js"></script>
   </body>
 </html>
