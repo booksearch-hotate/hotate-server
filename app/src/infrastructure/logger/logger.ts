@@ -5,7 +5,7 @@ export default class Logger {
   private logger: log4js.Logger; // コンソールへの出力
 
   constructor(name: string) {
-    const defaultCategories = isLogOutput() ? {appenders: ['out', 'system'], level: 'warn'} : {appenders: ['system'], level: 'debug'};
+    const defaultCategories = isLogOutput() ? {appenders: ['out', 'system'], level: 'info'} : {appenders: ['system'], level: 'debug'};
     log4js.configure({
       appenders: {
         system: {type: 'stdout'}, // 標準出力
