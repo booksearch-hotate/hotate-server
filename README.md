@@ -31,3 +31,7 @@
 ## 開発者向けドキュメント
 
 [開発者向けドキュメント](./DOC/dear-developer.md)
+
+## About LICENCE
+
+Please click [here](./LICENCE) to view the license.
