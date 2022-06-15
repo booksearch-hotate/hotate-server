@@ -10,21 +10,24 @@ export default class ElasticSearch {
   protected index: string;
   protected uri: string;
 
-  constructor(index: string) {
+  constructor(index: 'books' | 'authors' | 'publishers' | 'search_history') {
     this.host = isLocal() ? 'localhost:9200' : 'es:9200';
     this.index = index;
     this.uri = `http://${this.host}/${this.index}`;
   }
 
-  public async initIndex(): Promise<void> {
-    let isNone = false;
+  public async deleteAll(): Promise<void> {
+    await axios.delete(`${this.uri}`);
+  }
+
+  public async initIndex(isRemove = true): Promise<void> {
     try {
       await axios.get(`${this.uri}`);
     } catch (e) {
-      isNone = true;
-      logger.info(`${this.index}は存在しません。`);
+      logger.info(`${this.index} does not exist.`);
+      await axios.put(`${this.uri}`);
+      return;
     }
-    if (!isNone) await axios.delete(`${this.uri}`);
-    await axios.put(`${this.uri}`);
+    if (isRemove) return axios.delete(`${this.uri}`);
   }
 }

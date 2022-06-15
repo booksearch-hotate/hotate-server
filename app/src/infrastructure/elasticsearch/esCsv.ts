@@ -7,11 +7,13 @@ import {IEsAuthor} from './documents/IEsAuthor';
 import {IEsBook} from './documents/IEsBook';
 import {IEsPublisher} from './documents/IEsPublisher';
 
+import esDocuments from './documents/DocumentType';
+
 
 export default class EsCsv extends ElasticSearch {
   private bulkApiPath: string;
 
-  constructor(index: string) {
+  constructor(index: esDocuments) {
     super(index);
 
     const bulkApiFileName = `${this.index}_bulkapi.json`;
