@@ -97,7 +97,7 @@ app.use('/api', apiRouter);
 // listen
 export function startAppServer(port: number) {
   app.listen(port, () => {
-    logger.info(`Server is running on ${port}`);
-    if (isLocal()) logger.info('現在ローカルで実行しています');
+    logger.info(`Server is running on http://localhost:${port}`);
+    if (isLocal()) console.log(colors.green('Currently running locally.'));
   });
 }
