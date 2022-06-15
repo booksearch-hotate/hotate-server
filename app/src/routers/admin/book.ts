@@ -15,7 +15,7 @@ import PublisherRepository from '../../interface/repository/PublisherRepository'
 
 
 import db from '../../infrastructure/db';
-import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
+import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 import Logger from '../../infrastructure/logger/logger';

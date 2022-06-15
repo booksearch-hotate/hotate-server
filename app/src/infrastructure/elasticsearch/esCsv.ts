@@ -3,7 +3,9 @@ import * as appRoot from 'app-root-path';
 import axios from 'axios';
 import fs from 'fs';
 
-import {IEsPublisher, IEsBook, IEsAuthor} from './IElasticSearchDocument';
+import {IEsAuthor} from './documents/IEsAuthor';
+import {IEsBook} from './documents/IEsBook';
+import {IEsPublisher} from './documents/IEsPublisher';
 
 
 export default class EsCsv extends ElasticSearch {

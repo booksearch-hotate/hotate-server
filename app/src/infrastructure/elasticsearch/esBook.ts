@@ -1,7 +1,7 @@
 import EsCsv from './esCsv';
 import axios from 'axios';
 
-import {IEsBook} from './IElasticSearchDocument';
+import {IEsBook} from './documents/IEsBook';
 
 export default class EsSearchBook extends EsCsv {
   private total = 0;

@@ -11,7 +11,7 @@ import TagRepository from '../../interface/repository/TagRepository';
 import BookRepository from '../../interface/repository/BookRepository';
 
 import db from '../../infrastructure/db';
-import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
+import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 
 // eslint-disable-next-line new-cap
 const apiRouter = Router();

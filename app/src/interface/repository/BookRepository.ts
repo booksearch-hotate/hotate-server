@@ -12,8 +12,8 @@ import AuthorModel from '../../domain/model/authorModel';
 import PublisherModel from '../../domain/model/publisherModel';
 import TagModel from '../../domain/model/tagModel';
 
-import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
-import {IEsBook} from '../../infrastructure/elasticsearch/IElasticSearchDocument';
+import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
+import {IEsBook} from '../../infrastructure/elasticsearch/documents/IEsBook';
 
 /* Sequelizeを想定 */
 interface sequelize {
