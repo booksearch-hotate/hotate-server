@@ -6,7 +6,7 @@ import {IAuthorDomainRepository} from '../../domain/service/repository/IAuthorDo
 import AuthorModel from '../../domain/model/authorModel';
 import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 
-import {IEsAuthor} from '../../infrastructure/elasticsearch/IElasticSearchDocument';
+import {IEsAuthor} from '../../infrastructure/elasticsearch/documents/IEsAuthor';
 
 import sequelize from 'sequelize';
 
