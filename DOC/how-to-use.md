@@ -45,8 +45,14 @@
 2. `docker-compose up mysql phpmyadmin`を入力
 3. webブラウザで[http://localhost:8081](http://localhost:8081)を開く
 4. 画面左側にある「hotate」 > 「admin」をクリック
+<img src="./img/how-to-use/1.png" height="300">
 5. 画面上側にある「SQL」をクリック
+<img src="./img/how-to-use/2.png" height="300">
 6. SQL文`DELETE FROM admin`を入力
 7. 画面右下ら辺にある「実行」をクリック
 8. `INSERT INTO admin VALUES ('<ID>', HEX(AES_ENCRYPT('<PW>', '<暗号鍵>')))`を入力
 	- `<ID>`には好きなIDを、`<PW>`には好きなパスワードを、`<暗号鍵>`には先程コピーした暗号鍵をペーストしてください
+
+このようになっていれば正しく変更できています。
+
+<img src="./img/how-to-use/.png" height="300">
