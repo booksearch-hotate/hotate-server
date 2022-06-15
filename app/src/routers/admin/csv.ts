@@ -20,7 +20,7 @@ import AuthorRepository from '../../interface/repository/AuthorRepository';
 import PublisherRepository from '../../interface/repository/PublisherRepository';
 
 import db from '../../infrastructure/db';
-import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
+import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 import CsvFile from '../../infrastructure/fileAccessor/csvFile';
 import Logger from '../../infrastructure/logger/logger';
 import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';

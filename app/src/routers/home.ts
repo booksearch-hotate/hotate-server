@@ -18,7 +18,7 @@ import TagRepository from '../interface/repository/TagRepository';
 
 
 import db from '../infrastructure/db';
-import EsSearchBook from '../infrastructure/elasticsearch/esSearchBook';
+import EsSearchBook from '../infrastructure/elasticsearch/esBook';
 import EsSearchHistory from '../infrastructure/elasticsearch/esSearchHistory';
 import Logger from '../infrastructure/logger/logger';
 import AdminSession from '../infrastructure/session';
