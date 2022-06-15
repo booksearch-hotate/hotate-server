@@ -35,12 +35,17 @@ npm run dev-run
 
 #### オプション
 
-`dev-run`ではデフォルトで`local`というオプションが付いており、ローカル環境での動作となっています。
+`dev-run`は以下のコマンドを実行します。
 
-その他、以下のコマンドが存在します。
+```bash
+node --enable-source-maps dist/server.js local
+```
+
+`dist/server.js`以降は**オプション**となっています。内容は以下のとおりです。
 
 | コマンド | 内容 |
 | :--: | :--: |
+| local | 動作環境をローカル環境(Dockerを用いない環境)で実行します。 |
 | output-log | ログファイルを出力します。コンソール上にはログが一切表示されません。 |
 
 ## Elasticsearch、DBの起動方法
@@ -48,9 +53,9 @@ npm run dev-run
 elasticsearch、mysql、phpmyadminに関しては通常と同じようにdockerで起動してください。
 
 ```bash
-docker-compose up es
-docker-compose up mysql
-docker-compose up phpmyadmin
+docker-compose up es // Elasticsearch
+docker-compose up mysql // MySql
+docker-compose up phpmyadmin // phpmyadmin
 ```
 
 ## 環境変数について
