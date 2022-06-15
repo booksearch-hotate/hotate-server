@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import session from 'express-session';
 import dotenv from 'dotenv';
 import csurf from 'csurf';
+import colors from 'colors/safe';
 
 /* routers */
 import homeRouter from '../routers/home';
@@ -20,8 +21,14 @@ import {isLocal} from '../infrastructure/cli/cmdLine';
 
 import ResStatus from '../infrastructure/session/status/resStatus';
 
+import ElasticSearch from '../infrastructure/elasticsearch/elasticsearch';
+
+import esDocuments from '../infrastructure/elasticsearch/documents/DocumentType';
+
 const app: Application = express();
 const logger = new Logger('system');
+
+const elasticsearchDocuments: esDocuments[] = ['books', 'authors', 'publishers', 'search_history'];
 
 dotenv.config(); // envファイルの読み込み
 
@@ -61,6 +68,24 @@ app.use(limiter);
 
 app.use(csurf({cookie: false}));
 
+const esPromiseList = [];
+
+for (const index of elasticsearchDocuments) {
+  esPromiseList.push(new ElasticSearch(index).initIndex(false));
+}
+
+Promise.all(esPromiseList).catch((e: any) => {
+  logger.fatal('Initialization failed.');
+
+  console.log(`
+  Elasticsearchの初期化に失敗しました。
+  これにより${colors.red('検索エンジンが使えない状況')}となります。
+  早急に改善してください。\n
+  ↓主要な問題とその解決策↓\n
+  ${colors.blue('https://github.com/booksearch-hotate/hotate-server/blob/main/DOC/resolve-problem.md')}
+  `);
+});
+
 app.use('/', homeRouter);
 app.use('/admin', adminRouter);
 app.use('/admin/book', bookRouter);
@@ -72,7 +97,8 @@ app.use('/api', apiRouter);
 // listen
 export function startAppServer(port: number) {
   app.listen(port, () => {
-    logger.info(`Server is running on ${port}`);
-    if (isLocal()) logger.info('現在ローカルで実行しています');
+    logger.info('Server is running on port');
+    if (isLocal()) console.log(colors.green('現在ローカル環境で動作しています。'));
+    console.log(`サーバの起動に成功しました！\nリンク : ${colors.blue(`http://localhost:${port}`)}`);
   });
 }

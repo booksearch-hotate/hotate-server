@@ -3,10 +3,12 @@ import axios from 'axios';
 
 import {IEsBook} from './documents/IEsBook';
 
+import esDocuments from './documents/DocumentType';
+
 export default class EsSearchBook extends EsCsv {
   private total = 0;
 
-  constructor(index: string) {
+  constructor(index: esDocuments) {
     super(index);
   }
 

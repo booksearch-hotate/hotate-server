@@ -71,7 +71,7 @@ export default class BookApplicationService {
     const bookDatas: BookData[] = [];
     for (const book of books) {
       const sliceStrLengh = 50;
-      if (book.Content !== null && book.Content.length > sliceStrLengh) book.Content = book.Content.substring(0, sliceStrLengh) + '...';
+      if (book.Content !== null && book.Content.length > sliceStrLengh) book.Content = `${book.Content.substring(0, sliceStrLengh)}...`;
 
       const tags = await this.bookRepository.getTagsByBookId(book.Id);
 

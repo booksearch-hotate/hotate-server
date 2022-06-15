@@ -21,6 +21,9 @@
     "rules": {
         "valid-jsdoc": "off",
         "require-jsdoc": "off",
-        "max-len": "off"
+        "max-len": "off",
+        "no-template-curly-in-string": "error",
+        "prefer-template": "error",
+        "quotes": [2, "single", { "avoidEscape": true }]
     }
 }
