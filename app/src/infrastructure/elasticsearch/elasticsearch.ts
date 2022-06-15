@@ -10,7 +10,7 @@ export default class ElasticSearch {
   protected index: string;
   protected uri: string;
 
-  constructor(index: string) {
+  constructor(index: 'books' | 'authors' | 'publishers' | 'search_history') {
     this.host = isLocal() ? 'localhost:9200' : 'es:9200';
     this.index = index;
     this.uri = `http://${this.host}/${this.index}`;
