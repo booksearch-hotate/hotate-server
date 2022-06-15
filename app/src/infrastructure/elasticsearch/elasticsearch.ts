@@ -14,7 +14,9 @@ export default class ElasticSearch {
     this.host = isLocal() ? 'localhost:9200' : 'es:9200';
     this.index = index;
     this.uri = `http://${this.host}/${this.index}`;
-    this.initIndex(false);
+    this.initIndex(false).catch((e: any) => {
+      logger.error(`Failed to initialize ${this.index}.`);
+    });
   }
 
   public async deleteAll(): Promise<void> {
@@ -26,9 +28,7 @@ export default class ElasticSearch {
       await axios.get(`${this.uri}`);
     } catch (e) {
       logger.info(`${this.index}は存在しません。`);
-      await axios.put(`${this.uri}`).catch((e: any) => {
-        logger.error(`Initialization failed.\nindex name : ${this.index}`);
-      });
+      await axios.put(`${this.uri}`);
       return;
     }
     if (isRemove) return axios.delete(`${this.uri}`);
