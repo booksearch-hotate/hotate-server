@@ -14,9 +14,6 @@ export default class ElasticSearch {
     this.host = isLocal() ? 'localhost:9200' : 'es:9200';
     this.index = index;
     this.uri = `http://${this.host}/${this.index}`;
-    this.initIndex(false).catch((e: any) => {
-      logger.error(`Failed to initialize ${this.index}.`);
-    });
   }
 
   public async deleteAll(): Promise<void> {
