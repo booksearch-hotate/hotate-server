@@ -24,7 +24,7 @@ export default class ElasticSearch {
     try {
       await axios.get(`${this.uri}`);
     } catch (e) {
-      logger.info(`${this.index}は存在しません。`);
+      logger.info(`${this.index} does not exist.`);
       await axios.put(`${this.uri}`);
       return;
     }

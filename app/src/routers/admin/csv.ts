@@ -98,9 +98,9 @@ csvRouter.post('/sendFile', csrfProtection, upload.single('csv'), async (req, re
 
   try {
     csvFile.File = file;
-    logger.info('CSVファイルを受信しました。');
+    logger.info('csv file retrieved.');
   } catch (err) {
-    logger.error('CSVファイルの受信に失敗しました。');
+    logger.error('Failed to retrieve csv file.');
   }
 
   res.redirect('/admin/csv/headerChoice');
@@ -187,7 +187,8 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
       },
     });
     const endTimer = performance.now();
-    logger.info(`CSVファイルの読み込みに ${endTimer - startTimer}ms で終了しました。`);
+
+    console.log(`CSVファイルの読み込みに ${endTimer - startTimer}ms で終了しました。`);
   } catch (e) {
     logger.error(e as string);
 
