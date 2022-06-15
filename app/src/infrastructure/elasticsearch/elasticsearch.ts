@@ -14,17 +14,23 @@ export default class ElasticSearch {
     this.host = isLocal() ? 'localhost:9200' : 'es:9200';
     this.index = index;
     this.uri = `http://${this.host}/${this.index}`;
+    this.initIndex(false);
   }
 
-  public async initIndex(): Promise<void> {
-    let isNone = false;
+  public async deleteAll(): Promise<void> {
+    await axios.delete(`${this.uri}`);
+  }
+
+  public async initIndex(isRemove = true): Promise<void> {
     try {
       await axios.get(`${this.uri}`);
     } catch (e) {
-      isNone = true;
       logger.info(`${this.index}は存在しません。`);
+      await axios.put(`${this.uri}`).catch((e: any) => {
+        logger.error(`Initialization failed.\nindex name : ${this.index}`);
+      });
+      return;
     }
-    if (!isNone) await axios.delete(`${this.uri}`);
-    await axios.put(`${this.uri}`);
+    if (isRemove) return axios.delete(`${this.uri}`);
   }
 }
