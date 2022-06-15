@@ -33,4 +33,8 @@ export default class Logger {
   public warn(message: string) {
     this.logger.warn(message);
   }
+
+  public fatal(message: string) {
+    this.logger.fatal(message);
+  }
 }

@@ -75,7 +75,7 @@ for (const index of elasticsearchDocuments) {
 }
 
 Promise.all(esPromiseList).catch((e: any) => {
-  logger.error('Initialization failed.');
+  logger.fatal('Initialization failed.');
 
   console.log(`
   Elasticsearchの初期化に失敗しました。
