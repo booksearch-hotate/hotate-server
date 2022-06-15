@@ -1,7 +1,7 @@
 import EsCsv from './esCsv';
 import axios from 'axios';
 
-import {IEsPublisher} from './IElasticSearchDocument';
+import {IEsPublisher} from './documents/IEsPublisher';
 
 export default class EsPublisher extends EsCsv {
   constructor(index: string) {

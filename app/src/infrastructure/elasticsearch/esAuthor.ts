@@ -1,7 +1,7 @@
 import EsCsv from './esCsv';
 import axios from 'axios';
 
-import {IEsAuthor} from './IElasticSearchDocument';
+import {IEsAuthor} from './documents/IEsAuthor';
 
 export default class EsAuthor extends EsCsv {
   constructor(index: string) {
