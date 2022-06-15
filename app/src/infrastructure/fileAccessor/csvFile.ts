@@ -2,9 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import csv from 'csvtojson';
 
-import {ICsvFile} from './ICsvFile';
-
-export default class CsvFile implements ICsvFile {
+export default class CsvFile {
   private file!: Express.Multer.File;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
