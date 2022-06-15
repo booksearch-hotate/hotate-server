@@ -19,7 +19,7 @@
 
 ※ 通常ならば`docker-compose up app`で全てのサービス(Elasticsearchなど)が起動するようになっています。
 
-1. `docker-compose up <アプリ名>`を入力
+- `docker-compose up <アプリ名>`を入力
 
 `<アプリ名>`の箇所は`docker-compose.yml`を参考にしてください。
 
