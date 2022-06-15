@@ -2,14 +2,13 @@ import fs from 'fs';
 import path from 'path';
 import csv from 'csvtojson';
 
-import {ICsvFile} from './ICsvFile';
-
-export default class CsvFile implements ICsvFile {
+export default class CsvFile {
   private file!: Express.Multer.File;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async getFileContent(): Promise<any> {
     const data = await csv().fromFile(this.file.path, {encoding: 'utf-8'});
+
     // dataの中にundefinedがある場合はnullに変換する
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data.forEach((row: any) => {
@@ -17,8 +16,11 @@ export default class CsvFile implements ICsvFile {
         if (row[key] === undefined || row[key] === '') row[key] = null;
       });
     });
+
     const maxLen = 5000; // csvファイルの最大行数
+
     if (!data.length) throw new Error('csv file is empty');
+
     if (data.length > maxLen) {
       throw new Error(`csv file is too large. max lengh is ${maxLen} but now is ${data.length}`);
     }
