@@ -12,7 +12,7 @@ import AuthorModel from '../../domain/model/authorModel';
 import PublisherModel from '../../domain/model/publisherModel';
 import TagModel from '../../domain/model/tagModel';
 
-import EsSearchBook from '../../infrastructure/elasticsearch/esSearchBook';
+import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 import {IEsBook} from '../../infrastructure/elasticsearch/IElasticSearchDocument';
 
 /* Sequelizeを想定 */
