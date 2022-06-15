@@ -2,10 +2,12 @@ import ElasticSearch from './elasticsearch';
 import axios from 'axios';
 import SearchHistoryModel from '../../domain/model/searchHistoryModel';
 
+import esDocuments from './documents/DocumentType';
+
 export default class EsSearchHistory extends ElasticSearch {
   private total = 0;
 
-  constructor(index: string) {
+  constructor(index: esDocuments) {
     super(index);
   }
 
