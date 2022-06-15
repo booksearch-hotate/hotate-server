@@ -7,15 +7,6 @@ export default class EsSearchHistory extends ElasticSearch {
 
   constructor(index: string) {
     super(index);
-    this.initSearchHistory();
-  }
-
-  private async initSearchHistory() {
-    try {
-      await axios.get(`${this.uri}`);
-    } catch (e) {
-      await axios.put(`${this.uri}`);
-    }
   }
 
   public async add(searchWords: SearchHistoryModel): Promise<void> {
