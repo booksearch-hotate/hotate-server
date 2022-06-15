@@ -55,4 +55,4 @@
 
 このようになっていれば正しく変更できています。
 
-<img src="./img/how-to-use/.png" height="300">
+<img src="./img/how-to-use/3.png" height="300">
