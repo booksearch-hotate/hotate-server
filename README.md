@@ -16,6 +16,12 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/booksearch-hotate/hotate-server.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/booksearch-hotate/hotate-server/alerts/)
 </div>
 
+## What's HOTATE?
+
+「HOTATE」は、ユーザに対して本との出逢いを増やして視野を広く持ってもらいたいという思いから立ち上がったサービスです。ユーザは本の検索やタグの管理、その他様々な便利な機能を用いて本を楽しむことが出来ます。
+
+想定している場所は図書館などの施設ですが、もちろん個人が運用することも可能です！
+
 ## 使い方
 
 [使い方](./DOC/how-to-use.md)
@@ -31,3 +37,7 @@
 ## 開発者向けドキュメント
 
 [開発者向けドキュメント](./DOC/dear-developer.md)
+
+## About LICENCE
+
+Please click [here](./LICENCE) to view the license.

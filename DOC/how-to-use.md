@@ -1,77 +1,58 @@
 # 使い方
 
-## 1. docker Desktopを起動
+## アプリのソースコード取得方法
 
-## 2. コマンドプロンプトを開く
+※本来は導入時に行うものですので、既にエンジニアによって導入手続きが終わっている場合は省略してください。
 
-## 3. hotate-serverフォルダまで移動する
+1. このリポジトリを`git clone`する
+2. `cd ./hotate-server`を入力
 
-cdコマンドを用いればOK
+## アプリの起動方法
 
-## 4. 以下のコマンドを入力する
+1. docker Desktopを起動し、docker Engineを起動する
+2. コマンドプロンプト（ターミナル）を開く
+3. hotate-serverフォルダまで移動
+4. `docker-compose up app`と入力
+5. webブラウザで[http://localhost:8080](http://localhost:8080)を開く
 
-```bash
-docker-compose up app
-```
+## 個別のサービス起動方法
 
-## 5. webブラウザで[http://localhost:8080](http://localhost:8080)を開く
+※ 通常ならば`docker-compose up app`で全てのサービス(Elasticsearchなど)が起動するようになっています。
 
-## 管理者のIDとパスワードを設定
+- `docker-compose up <アプリ名>`を入力
 
-管理者用のIDとパスワードは初期化時に決めたものがありますので、それを入力してください。
+`<アプリ名>`の箇所は`docker-compose.yml`を参考にしてください。
+
+## 管理者のIDとパスワードについて
+
+管理者用のIDとパスワードは導入時に決めたものがありますので、それを入力してください。
+
+### IDとパスワードの設定方法
 
 初期のIDとパスワードを忘れた、または変更したいという場合は以下の操作を試してください。
 
-## 注意
+#### 注意
 
 この作業は少々複雑な作業となります。**このドキュメントを慎重に読んで**作業してください。
 
-## envファイルから暗号鍵を取得する
+#### 方法
 
-### 1. 「hotate-server」>「app」を開く
+1. envファイルから暗号鍵を取得
+    1. 「hotate-server」 > 「app」を開く
+    2. 「.env」ファイルの中身を表示
+      - 表示されない場合は「隠しファイルを表示する」をチェックするなどしてください
+    3.「DB_PW_KEY」の値をコピーする
+2. `docker-compose up mysql phpmyadmin`を入力
+3. webブラウザで[http://localhost:8081](http://localhost:8081)を開く
+4. 画面左側にある「hotate」 > 「admin」をクリック
+<img src="./img/how-to-use/1.png" height="300">
+5. 画面上側にある「SQL」をクリック
+<img src="./img/how-to-use/2.png" height="300">
+6. SQL文`DELETE FROM admin`を入力
+7. 画面右下ら辺にある「実行」をクリック
+8. `INSERT INTO admin VALUES ('<ID>', HEX(AES_ENCRYPT('<PW>', '<暗号鍵>')))`を入力
+    - `<ID>`には好きなIDを、`<PW>`には好きなパスワードを、`<暗号鍵>`には先程コピーした暗号鍵をペーストしてください
 
-### 2. 「.env」ファイルの中身を表示する
+このようになっていれば正しく変更できています。
 
-表示されない場合は「隠しファイルを表示する」をチェックしてください
-
-### 3. 「DB_PW_KEY」の値をコピペする
-
-```env
-DB_PW_KEY=<暗号鍵>
-```
-
-この`<暗号鍵>`の部分をコピペしてください
-
-## 1. 以下のコマンドを入力
-
-```bash
-docker-compose up mysql phpmyadmin
-```
-
-## 2. webブラウザで[http://localhost:8081](http://localhost:8081)を開く
-
-※ 808**1**なので注意！
-
-## 3. 左側にある「hotate」 > 「admin」 をクリック
-
-## 4. 上側にある「SQL」をクリック
-
-## 5. SQL文を書く
-
-`SELECT * FROM admin WHERE 1`とある箇所を削除し、以下の文を貼り付ける。
-
-```sql
-DELETE FROM admin
-```
-
-## 6. 右の下ら辺にある「実行」をクリック
-
-実行する際に「本当に実行しますか？」的なのが表示されますが、OKを押してください。
-
-## 7. 次に以下のSQL文を記述し、実行
-
-```sql
-INSERT INTO admin VALUES ('<ID>', HEX(AES_ENCRYPT('<PW>', '<暗号鍵>')))
-```
-
-`<暗号鍵>`はコピペした鍵、`<ID>`は設定したいID名、`<PW>`は設定したいパスワードを入れてください。
+<img src="./img/how-to-use/3.png" height="300">
