@@ -9,7 +9,7 @@ export default class Logger {
     log4js.configure({
       appenders: {
         system: {type: 'stdout'}, // 標準出力
-        out: {type: 'file', filename: `log/${name}.log`}, // ログファイルへの出力
+        out: {type: 'file', filename: `log/system.log`}, // ログファイルへの出力
       },
       categories: {
         default: defaultCategories,
