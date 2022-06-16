@@ -148,21 +148,6 @@ export default class BookApplicationService {
     return await this.bookRepository.getTotalResults(searchWords, isStrict, isTag);
   }
 
-  /**
-   * 本IDに対応する本データを更新します。
-   *
-   * @param id 本ID
-   * @param bookName 題名
-   * @param subName 副題
-   * @param content 内容紹介
-   * @param isbn ISBN
-   * @param ndc 日本十進分類法
-   * @param year 出版年
-   * @param authorId 著者ID
-   * @param authorName 著者名
-   * @param publisherId 出版社ID
-   * @param publisherName 出版社名
-   */
   public async update(
       id: string,
       bookName: string,
@@ -192,11 +177,6 @@ export default class BookApplicationService {
     await this.bookRepository.update(book);
   }
 
-  /**
-   * 本データを全て取得します。ページ数に合わせた適切なデータを取得します。
-   * @param pageCount ページ数
-   * @returns 本データ
-   */
   public async findAll(pageCount: number): Promise<BookData[]> {
     const books = await this.bookRepository.findAll(pageCount);
     const bookDatas: BookData[] = [];
@@ -209,18 +189,10 @@ export default class BookApplicationService {
     return bookDatas;
   }
 
-  /**
-   * 本データの件数を取得します。
-   * @returns 本データの件数
-   */
   public async findAllCount(): Promise<number> {
     return await this.bookRepository.findAllCount();
   }
 
-  /**
-   * 本IDに対応した本データを削除します。
-   * @param id 本ID
-   */
   public async deleteBook(id: string): Promise<void> {
     await this.bookRepository.deleteBook(id);
   }
