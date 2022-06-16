@@ -94,7 +94,7 @@ homeRouter.get('/search', csrfProtection, async (req: Request, res: Response) =>
   let searchHisDatas: SearchHistoryData[] = [];
   if (searchWord !== '') {
     const promissList = [
-      bookApplicationService.searchBooks(searchWord, isStrict, isTag, pageCount),
+      bookApplicationService.searchBooks(searchWord, searchMode, pageCount),
       searchHistoryApplicationService.search(searchWord),
     ];
     const [books, searchHis] = await Promise.all(promissList);
