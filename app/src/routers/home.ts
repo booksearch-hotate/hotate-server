@@ -74,13 +74,16 @@ homeRouter.get('/', (req: Request, res: Response) => {
 /* 検索結果 */
 homeRouter.get('/search', csrfProtection, async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
-  let isStrict = req.query.strict === 'true'; // mysqlによるLIKE検索かどうか
-  let isTag = req.query.tag === 'true'; // タグ検索かどうか
+  type searchMode = 'strict' | 'tag' | 'none';
+  let searchMode: searchMode = 'none';
 
+  const isStrict = req.query.strict === 'true';
+  const isTag = req.query.tag == 'true';
+
+  if (isStrict) searchMode = 'strict';
+  if (isTag) searchMode = 'tag';
   /* タグ検索とぜったい検索が両方とも選択されている場合、両方とも無効化 */
-  if (isTag && isStrict) {
-    isStrict = isTag = false;
-  }
+  if (isTag && isStrict) searchMode = 'none';
 
   const pageCount = conversionpageCounter(req);
   let totalPage = 0;
