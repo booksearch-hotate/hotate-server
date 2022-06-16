@@ -7,6 +7,8 @@ import PublisherModel from '../domain/model/publisherModel';
 import BookService from '../domain/service/bookService';
 import BookData from './dto/BookData';
 
+import searchMode from '../routers/datas/searchModeType';
+
 import {getImgLink} from '../infrastructure/api/openbd';
 
 export default class BookApplicationService {
@@ -52,25 +54,25 @@ export default class BookApplicationService {
 
   public async searchBooks(
       query: string,
-      isStrict: boolean,
-      isTag: boolean,
+      searchMode: searchMode,
       pageCount: number,
   ): Promise<BookData[]> {
     // 検索から得られたbookModelの配列
     let books: BookModel[] = [];
-    if (!isTag) {
-      books = isStrict ? await this.bookRepository.searchUsingLike(query, pageCount) : await this.bookRepository.search(query, pageCount);
-    } else {
+    if (searchMode === 'tag') {
       try {
         books = await this.bookRepository.searchByTag(query, pageCount);
       } catch (e) {
         books = [];
       }
+    } else {
+      books = searchMode === 'strict' ? await this.bookRepository.searchUsingLike(query, pageCount) : await this.bookRepository.search(query, pageCount);
     }
     /* DTOに変換 */
     const bookDatas: BookData[] = [];
+
     for (const book of books) {
-      const sliceStrLengh = 50;
+      const sliceStrLengh = 50; // 紹介文を区切る文字数
       if (book.Content !== null && book.Content.length > sliceStrLengh) book.Content = `${book.Content.substring(0, sliceStrLengh)}...`;
 
       const tags = await this.bookRepository.getTagsByBookId(book.Id);
@@ -84,13 +86,17 @@ export default class BookApplicationService {
 
   public async searchBookById(id: string): Promise<BookData> {
     const book = await this.bookRepository.searchById(id);
+
     const tags = await this.bookRepository.getTagsByBookId(book.Id);
+
     const bookData = new BookData(book, tags);
+
     bookData.ImgLink = await getImgLink(book.Isbn); // 画像のURLを取得
+
     return bookData;
   }
 
-  public async getImgLink(isbn: string) {
+  public async getImgLink(isbn: string): Promise<string | null> {
     return await getImgLink(isbn);
   }
 
@@ -98,8 +104,12 @@ export default class BookApplicationService {
     await this.bookRepository.executeBulkApi();
   }
 
-  public async getTotalResults(searchWords: string, isStrict: boolean, isTag: boolean): Promise<number> {
-    return await this.bookRepository.getTotalResults(searchWords, isStrict, isTag);
+  public async getTotalResults(searchWords: string, searchMode: searchMode): Promise<number> {
+    if (searchMode === 'strict') return await this.bookRepository.getCountUsingLike(searchWords);
+
+    if (searchMode === 'tag') return await this.bookRepository.getCountUsingTag(searchWords);
+
+    return this.bookRepository.latestEsTotalCount();
   }
 
   public async update(
