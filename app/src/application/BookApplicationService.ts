@@ -18,6 +18,20 @@ export default class BookApplicationService {
     this.bookService = bookService;
   }
 
+  /**
+   * 本を新規に登録します。
+   *
+   * @param bookName 題名
+   * @param subName 副題
+   * @param content 内容紹介
+   * @param isbn ISBN
+   * @param ndc 日本十進分類法
+   * @param year 出版年
+   * @param authorId 著者ID
+   * @param authorName 著者名
+   * @param publisherId 出版社ID
+   * @param publisherName 出版社名
+   */
   public async createBook(
       bookName: string,
       subName: string | null,
@@ -46,10 +60,22 @@ export default class BookApplicationService {
     await this.bookRepository.save(book);
   }
 
+  /**
+   * 本データを**全て**削除します。
+   */
   public async deleteBooks(): Promise<void> {
     await this.bookRepository.deleteAll();
   }
 
+  /**
+   * 検索モードに対応した検索ワードから本を検索し、取得します。ページ数に対応して適切なデータを取得します。
+   *
+   * @param query 検索ワード
+   * @param isStrict げんみつモードか否か
+   * @param isTag タグモードか否か
+   * @param pageCount ページ数
+   * @returns {Promise<BookData[]>} 検索にヒットした本データ
+   */
   public async searchBooks(
       query: string,
       isStrict: boolean,
@@ -82,6 +108,11 @@ export default class BookApplicationService {
     return bookDatas;
   }
 
+  /**
+   * 本IDから本データを取得します。
+   * @param id 本ID
+   * @returns 本IDに対応した本データ
+   */
   public async searchBookById(id: string): Promise<BookData> {
     const book = await this.bookRepository.searchById(id);
     const tags = await this.bookRepository.getTagsByBookId(book.Id);
@@ -90,14 +121,29 @@ export default class BookApplicationService {
     return bookData;
   }
 
+  /**
+   * [openBD](https://openbd.jp/)が提供しているAPIを用いてISBNに対応した本の画像URLを取得します。
+   * @param isbn ISBN
+   * @returns 画像データがあるリンク
+   */
   public async getImgLink(isbn: string) {
     return await getImgLink(isbn);
   }
 
+  /**
+   * Bulkapiを実行します。
+   */
   public async executeBulkApi(): Promise<void> {
     await this.bookRepository.executeBulkApi();
   }
 
+  /**
+   * 検索結果から総数を取得します。
+   * @param searchWords 検索ワード
+   * @param isStrict げんみつモードか否か
+   * @param isTag タグモードか否か
+   * @returns 本の総数
+   */
   public async getTotalResults(searchWords: string, isStrict: boolean, isTag: boolean): Promise<number> {
     return await this.bookRepository.getTotalResults(searchWords, isStrict, isTag);
   }
