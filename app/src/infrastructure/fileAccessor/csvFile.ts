@@ -5,6 +5,10 @@ import csv from 'csvtojson';
 export default class CsvFile {
   private file!: Express.Multer.File;
 
+  /**
+   * csvファイルを取得します。
+   * @returns csvデータ
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async getFileContent(): Promise<any> {
     const data = await csv().fromFile(this.file.path, {encoding: 'utf-8'});
@@ -28,6 +32,9 @@ export default class CsvFile {
     return data;
   }
 
+  /**
+   * csvファイルを**削除**します。
+   */
   public deleteFiles(): void {
     const folder = path.dirname(this.file.path);
     fs.readdir(folder, (err, files) => {
@@ -40,10 +47,18 @@ export default class CsvFile {
     });
   }
 
+  /**
+   * csvファイルが存在するかどうかの判定を行います。
+   * @returns csvファイルが存在するか
+   */
   public isExistFile(): boolean {
     return fs.existsSync(this.file.path);
   }
 
+  /**
+   * csvファイルのヘッダ部分の文字列を取得します。
+   * @returns ヘッダ部分の文字列
+   */
   public async getHeaderNames(): Promise<string[]> {
     const csvData = await this.getFileContent();
 
