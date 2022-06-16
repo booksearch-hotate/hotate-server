@@ -70,8 +70,9 @@ export default class BookApplicationService {
     }
     /* DTOに変換 */
     const bookDatas: BookData[] = [];
+
     for (const book of books) {
-      const sliceStrLengh = 50;
+      const sliceStrLengh = 50; // 紹介文を区切る文字数
       if (book.Content !== null && book.Content.length > sliceStrLengh) book.Content = `${book.Content.substring(0, sliceStrLengh)}...`;
 
       const tags = await this.bookRepository.getTagsByBookId(book.Id);
@@ -85,13 +86,17 @@ export default class BookApplicationService {
 
   public async searchBookById(id: string): Promise<BookData> {
     const book = await this.bookRepository.searchById(id);
+
     const tags = await this.bookRepository.getTagsByBookId(book.Id);
+
     const bookData = new BookData(book, tags);
+
     bookData.ImgLink = await getImgLink(book.Isbn); // 画像のURLを取得
+
     return bookData;
   }
 
-  public async getImgLink(isbn: string) {
+  public async getImgLink(isbn: string): Promise<string | null> {
     return await getImgLink(isbn);
   }
 
@@ -101,7 +106,9 @@ export default class BookApplicationService {
 
   public async getTotalResults(searchWords: string, searchMode: searchMode): Promise<number> {
     if (searchMode === 'strict') return await this.bookRepository.getCountUsingLike(searchWords);
+
     if (searchMode === 'tag') return await this.bookRepository.getCountUsingTag(searchWords);
+
     return this.bookRepository.latestEsTotalCount();
   }
 
