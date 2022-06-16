@@ -6,12 +6,19 @@ import {IEsBook} from './documents/IEsBook';
 import esDocuments from './documents/DocumentType';
 
 export default class EsSearchBook extends EsCsv {
-  private total = 0;
+  private total = 0; // 検索結果の総数
 
   constructor(index: esDocuments) {
     super(index);
   }
 
+  /**
+   * 検索ワードから検索を行います。ページ数に合わせたデータを取得します。
+   *
+   * @param searchWords 検索ワード
+   * @param pageCount ページ数
+   * @returns {string[]} 検索結果
+   */
   public async searchBooks(searchWords: string, pageCount: number): Promise<string[]> {
     const res = await axios.get(`${this.uri}/_search`, {
       headers: {
@@ -45,6 +52,10 @@ export default class EsSearchBook extends EsCsv {
     return ids;
   }
 
+  /**
+   * 本のデータを更新します。
+   * @param book 本のドキュメント
+   */
   public async update(book: IEsBook): Promise<void> {
     await axios.post(`${this.uri}/_delete_by_query?conflicts=proceed&pretty`, {
       query: {
@@ -54,13 +65,13 @@ export default class EsSearchBook extends EsCsv {
       },
     });
 
-    await axios.post(`${this.uri}/_doc`, {
-      db_id: book.db_id,
-      book_name: book.book_name,
-      book_content: book.book_content,
-    });
+    await axios.post(`${this.uri}/_doc`, book);
   }
 
+  /**
+   * dbのidに対応する本ドキュメントを削除します。
+   * @param id 本のdbのid
+   */
   public async delete(id: string): Promise<void> {
     await axios.post(`${this.uri}/_delete_by_query?conflicts=proceed&pretty`, {
       query: {
