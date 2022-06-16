@@ -99,8 +99,10 @@ export default class BookApplicationService {
     await this.bookRepository.executeBulkApi();
   }
 
-  public async getTotalResults(searchWords: string, isStrict: boolean, isTag: boolean): Promise<number> {
-    return await this.bookRepository.getTotalResults(searchWords, isStrict, isTag);
+  public async getTotalResults(searchWords: string, searchMode: searchMode): Promise<number> {
+    if (searchMode === 'strict') return await this.bookRepository.getCountUsingLike(searchWords);
+    if (searchMode === 'tag') return await this.bookRepository.getCountUsingTag(searchWords);
+    return this.bookRepository.latestEsTotalCount();
   }
 
   public async update(
