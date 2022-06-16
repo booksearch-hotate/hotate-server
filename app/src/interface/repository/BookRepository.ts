@@ -226,14 +226,14 @@ export default class BookRepository implements IBookApplicationRepository {
     return bookModels;
   }
 
-  private async getCountUsingLike(searchWord: string): Promise<number> {
+  public async getCountUsingLike(searchWord: string): Promise<number> {
     const books = await this.db.Book.findAll({
       where: {book_name: {[Op.like]: `%${searchWord}%`}},
     });
     return books.length;
   }
 
-  private async getCountUsingTag(tagName: string): Promise<number> {
+  public async getCountUsingTag(tagName: string): Promise<number> {
     const tag = await this.db.Tag.findOne({where: {name: tagName}});
     if (!tag) return 0;
 
@@ -241,9 +241,7 @@ export default class BookRepository implements IBookApplicationRepository {
     return books.length;
   }
 
-  public async getTotalResults(searchWord: string, isStrict: boolean, isTag: boolean): Promise<number> {
-    if (isStrict) return await this.getCountUsingLike(searchWord);
-    if (isTag) return await this.getCountUsingTag(searchWord);
+  public latestEsTotalCount(): number {
     return this.esSearchBook.Total;
   }
 
