@@ -22,3 +22,5 @@
 ## 検索エンジン(ディレクトリ名 : elasticsearch)
 
 - [Elasticsearch](https://www.elastic.co/jp/) -> オープンソースの検索エンジン
+
+詳しい情報に関しては`package.json`などをご確認ください。
