@@ -7,6 +7,7 @@
 [![build](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml)
 ![GitHub repo size](https://img.shields.io/github/repo-size/booksearch-hotate/hotate-server)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/booksearch-hotate/hotate-server/main)
+[![markdownlint](https://github.com/booksearch-hotate/hotate-server/actions/workflows/markdownlint.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/markdownlint.yml)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/booksearch-hotate/hotate-server?include_prereleases)
 
 ![GitHub issues](https://img.shields.io/github/issues/booksearch-hotate/hotate-server)
