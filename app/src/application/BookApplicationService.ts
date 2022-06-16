@@ -7,6 +7,8 @@ import PublisherModel from '../domain/model/publisherModel';
 import BookService from '../domain/service/bookService';
 import BookData from './dto/BookData';
 
+import searchMode from '../routers/datas/searchModeType';
+
 import {getImgLink} from '../infrastructure/api/openbd';
 
 export default class BookApplicationService {
@@ -52,20 +54,19 @@ export default class BookApplicationService {
 
   public async searchBooks(
       query: string,
-      isStrict: boolean,
-      isTag: boolean,
+      searchMode: searchMode,
       pageCount: number,
   ): Promise<BookData[]> {
     // 検索から得られたbookModelの配列
     let books: BookModel[] = [];
-    if (!isTag) {
-      books = isStrict ? await this.bookRepository.searchUsingLike(query, pageCount) : await this.bookRepository.search(query, pageCount);
-    } else {
+    if (searchMode === 'tag') {
       try {
         books = await this.bookRepository.searchByTag(query, pageCount);
       } catch (e) {
         books = [];
       }
+    } else {
+      books = searchMode === 'strict' ? await this.bookRepository.searchUsingLike(query, pageCount) : await this.bookRepository.search(query, pageCount);
     }
     /* DTOに変換 */
     const bookDatas: BookData[] = [];
