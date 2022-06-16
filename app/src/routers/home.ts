@@ -30,6 +30,8 @@ import SearchHistoryData from '../application/dto/SearchHistoryData';
 import {IPage} from './datas/IPage';
 import {IPaginationData} from './datas/IPaginationData';
 
+import searchMode from './datas/searchModeType';
+
 import getPaginationInfo from '../modules/getPaginationInfo';
 import conversionpageCounter from '../modules/conversionPageCounter';
 import conversionpageStatus from '../modules/conversionPageStatus';
@@ -74,7 +76,6 @@ homeRouter.get('/', (req: Request, res: Response) => {
 /* 検索結果 */
 homeRouter.get('/search', csrfProtection, async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
-  type searchMode = 'strict' | 'tag' | 'none';
   let searchMode: searchMode = 'none';
 
   const isStrict = req.query.strict === 'true';
@@ -101,7 +102,7 @@ homeRouter.get('/search', csrfProtection, async (req: Request, res: Response) =>
     resDatas = books as BookData[];
     searchHisDatas = searchHis as SearchHistoryData[];
 
-    const total = await bookApplicationService.getTotalResults(searchWord, isStrict, isTag);
+    const total = await bookApplicationService.getTotalResults(searchWord, searchMode);
     const paginationInfo = getPaginationInfo(pageCount, total);
     totalPage = paginationInfo.totalPage;
     minPage = paginationInfo.minPage;
