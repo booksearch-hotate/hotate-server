@@ -20,6 +20,20 @@ export default class BookApplicationService {
     this.bookService = bookService;
   }
 
+  /**
+   * 本を新規に登録します。
+   *
+   * @param bookName 題名
+   * @param subName 副題
+   * @param content 内容紹介
+   * @param isbn ISBN
+   * @param ndc 日本十進分類法
+   * @param year 出版年
+   * @param authorId 著者ID
+   * @param authorName 著者名
+   * @param publisherId 出版社ID
+   * @param publisherName 出版社名
+   */
   public async createBook(
       bookName: string,
       subName: string | null,
@@ -48,10 +62,22 @@ export default class BookApplicationService {
     await this.bookRepository.save(book);
   }
 
+  /**
+   * 本データを**全て**削除します。
+   */
   public async deleteBooks(): Promise<void> {
     await this.bookRepository.deleteAll();
   }
 
+  /**
+   * 検索モードに対応した検索ワードから本を検索し、取得します。ページ数に対応して適切なデータを取得します。
+   *
+   * @param query 検索ワード
+   * @param isStrict げんみつモードか否か
+   * @param isTag タグモードか否か
+   * @param pageCount ページ数
+   * @returns {Promise<BookData[]>} 検索にヒットした本データ
+   */
   public async searchBooks(
       query: string,
       searchMode: searchMode,
@@ -84,6 +110,11 @@ export default class BookApplicationService {
     return bookDatas;
   }
 
+  /**
+   * 本IDから本データを取得します。
+   * @param id 本ID
+   * @returns 本IDに対応した本データ
+   */
   public async searchBookById(id: string): Promise<BookData> {
     const book = await this.bookRepository.searchById(id);
 
@@ -96,14 +127,29 @@ export default class BookApplicationService {
     return bookData;
   }
 
+  /**
+   * [openBD](https://openbd.jp/)が提供しているAPIを用いてISBNに対応した本の画像URLを取得します。
+   * @param isbn ISBN
+   * @returns 画像データがあるリンク
+   */
   public async getImgLink(isbn: string): Promise<string | null> {
     return await getImgLink(isbn);
   }
 
+  /**
+   * Bulkapiを実行します。
+   */
   public async executeBulkApi(): Promise<void> {
     await this.bookRepository.executeBulkApi();
   }
 
+  /**
+   * 検索結果から総数を取得します。
+   * @param searchWords 検索ワード
+   * @param isStrict げんみつモードか否か
+   * @param isTag タグモードか否か
+   * @returns 本の総数
+   */
   public async getTotalResults(searchWords: string, searchMode: searchMode): Promise<number> {
     if (searchMode === 'strict') return await this.bookRepository.getCountUsingLike(searchWords);
 
@@ -112,6 +158,21 @@ export default class BookApplicationService {
     return this.bookRepository.latestEsTotalCount();
   }
 
+  /**
+   * 本IDに対応する本データを更新します。
+   *
+   * @param id 本ID
+   * @param bookName 題名
+   * @param subName 副題
+   * @param content 内容紹介
+   * @param isbn ISBN
+   * @param ndc 日本十進分類法
+   * @param year 出版年
+   * @param authorId 著者ID
+   * @param authorName 著者名
+   * @param publisherId 出版社ID
+   * @param publisherName 出版社名
+   */
   public async update(
       id: string,
       bookName: string,
@@ -141,6 +202,11 @@ export default class BookApplicationService {
     await this.bookRepository.update(book);
   }
 
+  /**
+   * 本データを全て取得します。ページ数に合わせた適切なデータを取得します。
+   * @param pageCount ページ数
+   * @returns 本データ
+   */
   public async findAll(pageCount: number): Promise<BookData[]> {
     const books = await this.bookRepository.findAll(pageCount);
     const bookDatas: BookData[] = [];
@@ -153,10 +219,18 @@ export default class BookApplicationService {
     return bookDatas;
   }
 
+  /**
+   * 本データの件数を取得します。
+   * @returns 本データの件数
+   */
   public async findAllCount(): Promise<number> {
     return await this.bookRepository.findAllCount();
   }
 
+  /**
+   * 本IDに対応した本データを削除します。
+   * @param id 本ID
+   */
   public async deleteBook(id: string): Promise<void> {
     await this.bookRepository.deleteBook(id);
   }

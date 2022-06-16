@@ -2,6 +2,13 @@ import axios from 'axios';
 
 const url = 'http://api.openbd.jp/v1/get?isbn=';
 
+/**
+ * ISBNに対応する本の画像データを[openBD](https://openbd.jp/)から取得します。
+ *
+ * ISBNによっては画像が見つからない場合もあります。
+ * @param isbn ISBN
+ * @returns 画像データ
+ */
 export async function getImgLink(isbn: string | null): Promise<string | null> {
   if (isbn === null) return null;
   try {

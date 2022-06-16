@@ -11,6 +11,10 @@ export default class EsSearchHistory extends ElasticSearch {
     super(index);
   }
 
+  /**
+   * 検索ワードを新規に登録します。
+   * @param searchWords 検索ワード
+   */
   public async add(searchWords: SearchHistoryModel): Promise<void> {
     // もしも同じ検索ワードがすでに登録されていたらスルー
     const res = await axios.get(`${this.uri}/_search`, {
@@ -35,6 +39,11 @@ export default class EsSearchHistory extends ElasticSearch {
     });
   }
 
+  /**
+   * 検索ワードに近い検索履歴の文字列を検索します。
+   * @param searchWords 検索ワード
+   * @returns 検索履歴のモデル
+   */
   public async search(searchWords: string): Promise<SearchHistoryModel[]> {
     const res = await axios.get(`${this.uri}/_search`, {
       headers: {
@@ -70,6 +79,11 @@ export default class EsSearchHistory extends ElasticSearch {
     return tagModels;
   }
 
+  /**
+   * ページ数に対応する検索履歴を取得します。
+   * @param count ページ数
+   * @returns 検索履歴のモデル
+   */
   public async find(count: number): Promise<SearchHistoryModel[]> {
     const fromVal = count * 10;
     const res = await axios.get(`${this.uri}/_search`, {
@@ -110,6 +124,10 @@ export default class EsSearchHistory extends ElasticSearch {
     return tagModels;
   }
 
+  /**
+   * idに対応するドキュメントを削除します。
+   * @param id 検索履歴のid
+   */
   public async delete(id: string): Promise<void> {
     await axios.delete(`${this.uri}/_doc/${encodeURIComponent(id)}`);
   }
