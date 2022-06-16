@@ -5,7 +5,7 @@
 <img src="DOC/img/hotate_a.png" alt="logo" width="300px" />
 
 [![build](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml)
- [![markdownlint](https://github.com/booksearch-hotate/hotate-server/actions/workflows/markdownlint.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/markdownlint.yml)
+[![markdownlint](https://github.com/booksearch-hotate/hotate-server/actions/workflows/markdownlint.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/markdownlint.yml)
 ![GitHub repo size](https://img.shields.io/github/repo-size/booksearch-hotate/hotate-server)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/booksearch-hotate/hotate-server/main)
  
