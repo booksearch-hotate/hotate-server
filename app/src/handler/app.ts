@@ -1,6 +1,5 @@
 import express, {Application} from 'express';
 import expressRateLimit from 'express-rate-limit';
-import bodyParser from 'body-parser';
 import session from 'express-session';
 import dotenv from 'dotenv';
 import csurf from 'csurf';
@@ -50,8 +49,8 @@ declare module 'express-session' {
   }
 }
 
-app.use(bodyParser.urlencoded({extended: true})); // POSTで送られてきたデータを解析する
-app.use(bodyParser.json());
+app.use(express.urlencoded({extended: true})); // POSTで送られてきたデータを解析する
+app.use(express.json());
 app.use(session({
   secret: process.env.SESSION_SECRET as string, // トークンを署名するためのキー
   resave: false,
