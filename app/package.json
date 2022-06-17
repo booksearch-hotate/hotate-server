@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-build": "tsc --noEmit && node build.js dev",
     "pro-build": "node build.js pro",
-    "dev-run": "node --enable-source-maps dist/server.js local",
+    "dev-run": "node --enable-source-maps dist/server.js local output-log",
     "eslint-fix": "eslint --fix --ext .ts src/*"
   },
   "author": "",
@@ -15,7 +15,6 @@
   "dependencies": {
     "app-root-path": "^3.0.0",
     "axios": "^0.27.2",
-    "body-parser": "^1.20.0",
     "colors": "^1.4.0",
     "csurf": "^1.11.0",
     "csvtojson": "^2.0.10",
