@@ -48,6 +48,8 @@ node --enable-source-maps dist/server.js local
 | local | 動作環境をローカル環境(Dockerを用いない環境)で実行します。 |
 | output-log | ログファイルを出力します。コンソール上にはログが一切表示されません。 |
 
+`output-log`を用いる場合は`npm run dev-run -- output-log`と入力してください。
+
 ## Elasticsearch、DBの起動方法
 
 elasticsearch、mysql、phpmyadminに関しては通常と同じようにdockerで起動してください。
