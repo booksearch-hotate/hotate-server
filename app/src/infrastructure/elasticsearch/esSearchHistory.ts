@@ -62,7 +62,7 @@ export default class EsSearchHistory extends ElasticSearch {
     const words = hits.map((hit: any) => hit._source.search_words);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const ids = hits.map((hit: any) => hit._id);
+    const ids = hits.map((hit: any) => hit._source.id);
 
     const createdAts = hits.map((hit: any) => hit._source.created_at);
     // searchWordsは除外
@@ -110,7 +110,7 @@ export default class EsSearchHistory extends ElasticSearch {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const words = hits.map((hit: any) => hit._source.search_words);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const ids = hits.map((hit: any) => hit._id);
+    const ids = hits.map((hit: any) => hit._source.id);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const createdAts = hits.map((hit: any) => hit._source.created_at);
@@ -129,7 +129,13 @@ export default class EsSearchHistory extends ElasticSearch {
    * @param id 検索履歴のid
    */
   public async delete(id: string): Promise<void> {
-    await axios.delete(`${this.uri}/_doc/${encodeURIComponent(id)}`);
+    await axios.post(`${this.uri}/_delete_by_query?conflicts=proceed&pretty`, {
+      query: {
+        term: {
+          'id.keyword': id,
+        },
+      },
+    });
   }
 
   get Total(): number {
