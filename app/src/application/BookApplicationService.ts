@@ -73,8 +73,7 @@ export default class BookApplicationService {
    * 検索モードに対応した検索ワードから本を検索し、取得します。ページ数に対応して適切なデータを取得します。
    *
    * @param query 検索ワード
-   * @param isStrict げんみつモードか否か
-   * @param isTag タグモードか否か
+   * @param searchMode 検索モード
    * @param pageCount ページ数
    * @returns {Promise<BookData[]>} 検索にヒットした本データ
    */
@@ -146,13 +145,10 @@ export default class BookApplicationService {
   /**
    * 検索結果から総数を取得します。
    * @param searchWords 検索ワード
-   * @param isStrict げんみつモードか否か
-   * @param isTag タグモードか否か
+   * @param searchMode 検索のモード
    * @returns 本の総数
    */
   public async getTotalResults(searchWords: string, searchMode: searchMode): Promise<number> {
-    if (searchMode === 'strict') return await this.bookRepository.getCountUsingLike(searchWords);
-
     if (searchMode === 'tag') return await this.bookRepository.getCountUsingTag(searchWords);
 
     return this.bookRepository.latestEsTotalCount();
