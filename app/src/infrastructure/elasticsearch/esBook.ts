@@ -17,7 +17,7 @@ export default class EsSearchBook extends EsCsv {
    *
    * @param searchWords 検索ワード
    * @param pageCount ページ数
-   * @returns {string[]} 検索結果
+   * @returns {string[]} 検索結果のID
    */
   public async searchBooks(searchWords: string, pageCount: number): Promise<string[]> {
     const res = await axios.get(`${this.uri}/_search`, {
