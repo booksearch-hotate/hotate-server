@@ -1,5 +1,3 @@
-import {Op} from 'sequelize';
-
 import Book from '../../infrastructure/db/tables/book'; // ここのBookはドメインオブジェクトではない！
 import Author from '../../infrastructure/db/tables/author';
 import Publisher from '../../infrastructure/db/tables/publisher';
@@ -224,13 +222,6 @@ export default class BookRepository implements IBookApplicationRepository {
       bookModels.push(bookModel);
     }
     return bookModels;
-  }
-
-  public async getCountUsingLike(searchWord: string): Promise<number> {
-    const books = await this.db.Book.findAll({
-      where: {book_name: {[Op.like]: `%${searchWord}%`}},
-    });
-    return books.length;
   }
 
   public async getCountUsingTag(tagName: string): Promise<number> {
