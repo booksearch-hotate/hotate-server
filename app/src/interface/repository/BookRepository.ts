@@ -235,7 +235,7 @@ export default class BookRepository implements IBookApplicationRepository {
 
   public async getCountUsingTag(tagName: string): Promise<number> {
     const tag = await this.db.Tag.findOne({where: {name: tagName}});
-    if (!tag) return 0;
+    if (tag === null) return 0;
 
     const books = await this.db.UsingTag.findAll({where: {tag_id: tag.id}});
     return books.length;
