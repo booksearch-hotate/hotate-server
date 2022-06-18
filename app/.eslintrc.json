@@ -24,6 +24,7 @@
         "max-len": "off",
         "no-template-curly-in-string": "error",
         "prefer-template": "error",
-        "quotes": [2, "single", { "avoidEscape": true }]
+        "quotes": [2, "single", { "avoidEscape": true }],
+        "linebreak-style": "off"
     }
 }
