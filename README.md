@@ -43,4 +43,4 @@
 
 ## About LICENCE
 
-Please click [here](./LICENCE) to view the license.
+Please click [here](https://github.com/booksearch-hotate/hotate-server/blob/main/LICENSE) to view the license.
