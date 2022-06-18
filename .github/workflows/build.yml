@@ -10,5 +10,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+      - name: build app
+        run: docker-compose build app
       - name: compose up app
         run: docker-compose up -d app
