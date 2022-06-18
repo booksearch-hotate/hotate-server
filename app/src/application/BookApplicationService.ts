@@ -149,8 +149,6 @@ export default class BookApplicationService {
    * @returns 本の総数
    */
   public async getTotalResults(searchWords: string, searchMode: searchMode): Promise<number> {
-    if (searchMode === 'strict') return this.bookRepository.latestEsTotalCount();
-
     if (searchMode === 'tag') return await this.bookRepository.getCountUsingTag(searchWords);
 
     return this.bookRepository.latestEsTotalCount();
