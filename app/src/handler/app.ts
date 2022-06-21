@@ -51,7 +51,7 @@ declare module 'express-session' {
 
 app.use(express.urlencoded({extended: true})); // POSTで送られてきたデータを解析する
 app.use(express.json());
-app.use(session({
+app.use(session({ // lgtm [js/clear-text-cookie]
   secret: process.env.SESSION_SECRET as string, // トークンを署名するためのキー
   resave: false,
   saveUninitialized: true,
