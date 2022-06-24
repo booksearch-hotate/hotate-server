@@ -196,6 +196,9 @@ homeRouter.get('/init-admin', csrfProtection, async (req: Request, res: Response
   pageData.headTitle = '管理者の初期設定 | HOTATE';
   pageData.csrfToken = req.csrfToken();
 
+  pageData.status = conversionpageStatus(req.session.status);
+  req.session.status = undefined;
+
   res.render('pages/init-admin', {pageData});
 });
 
