@@ -202,6 +202,21 @@ homeRouter.get('/init-admin', csrfProtection, async (req: Request, res: Response
   res.render('pages/init-admin', {pageData});
 });
 
+homeRouter.post('/init-admin', csrfProtection, async (req: Request, res: Response) => {
+  const id = req.body.id;
+  const pw = req.body.pw;
+
+  console.log(`id: ${id}, pw: ${pw}`);
+  try {
+    await adminApplicationService.insertAdmin(id, pw);
+    req.session.status = {type: 'Success', mes: '管理者の追加に成功しました！'};
+    return res.redirect('/login');
+  } catch (e: any) {
+    req.session.status = {type: 'Failure', mes: '管理者の追加に失敗しました', error: e};
+    return res.redirect('/init-admin');
+  }
+});
+
 /* ログイン処理 */
 homeRouter.post('/check', csrfProtection, async (req: Request, res: Response) => {
   try {
