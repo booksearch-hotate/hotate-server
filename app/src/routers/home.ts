@@ -191,7 +191,7 @@ homeRouter.get('/login', csrfProtection, async (req: Request, res: Response) => 
 
 homeRouter.get('/init-admin', csrfProtection, async (req: Request, res: Response) => {
   // もしも管理者が存在していれば
-  if (await adminApplicationService.isExist()) return res.redirect('/home');
+  if (await adminApplicationService.isExist()) return res.redirect('/');
 
   pageData.headTitle = '管理者の初期設定 | HOTATE';
   pageData.csrfToken = req.csrfToken();
