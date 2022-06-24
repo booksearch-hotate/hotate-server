@@ -174,8 +174,11 @@ homeRouter.post('/tag/insert', csrfProtection, async (req: Request, res: Respons
 });
 
 /* ログイン画面 */
-homeRouter.get('/login', csrfProtection, (req: Request, res: Response) => {
+homeRouter.get('/login', csrfProtection, async (req: Request, res: Response) => {
   if (admin.verifyToken(req.session.token)) return res.redirect('/admin/');
+
+  // もしも管理者が存在してなければ
+  if (!await adminApplicationService.isExist()) return res.redirect('/init-admin');
 
   pageData.headTitle = 'ログイン | HOTATE';
   pageData.csrfToken = req.csrfToken();
@@ -184,6 +187,34 @@ homeRouter.get('/login', csrfProtection, (req: Request, res: Response) => {
   req.session.status = undefined;
 
   return res.render('pages/login', {pageData});
+});
+
+homeRouter.get('/init-admin', csrfProtection, async (req: Request, res: Response) => {
+  // もしも管理者が存在していれば
+  if (await adminApplicationService.isExist()) return res.redirect('/');
+
+  pageData.headTitle = '管理者の初期設定 | HOTATE';
+  pageData.csrfToken = req.csrfToken();
+
+  pageData.status = conversionpageStatus(req.session.status);
+  req.session.status = undefined;
+
+  res.render('pages/init-admin', {pageData});
+});
+
+homeRouter.post('/init-admin', csrfProtection, async (req: Request, res: Response) => {
+  const id = req.body.id;
+  const pw = req.body.pw;
+
+  console.log(`id: ${id}, pw: ${pw}`);
+  try {
+    await adminApplicationService.insertAdmin(id, pw);
+    req.session.status = {type: 'Success', mes: '管理者の追加に成功しました！'};
+    return res.redirect('/login');
+  } catch (e: any) {
+    req.session.status = {type: 'Failure', mes: '管理者の追加に失敗しました', error: e};
+    return res.redirect('/init-admin');
+  }
 });
 
 /* ログイン処理 */
