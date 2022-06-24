@@ -39,4 +39,16 @@ export default class AdminRepository implements IAdminApplicationRepository {
       throw new Error(`Could not obtain the administrator's id or pw.\n Error: ${e as string}`);
     }
   }
+
+  public async insertAdmin(id: string, pw: string): Promise<void> {
+    try {
+      const admin = new AdminModel(id, pw);
+
+      await this.db.Admin.sequelize?.query(
+          `INSERT INTO admin VALUES ('${admin.Id}', HEX(AES_ENCRYPT('${admin.Pw}', '${process.env.DB_PW_KEY}')))`,
+      );
+    } catch (e) {
+      throw e;
+    }
+  }
 }

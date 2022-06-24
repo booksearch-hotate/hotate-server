@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/index.css" />
+  </head>
+  <body>
+    <header class="text-center">
+      <h1>管理者初期設定</h1>
+      <p>管理者を設定します。途中から変更することも可能です。</p>
+    </header>
+
+    <main>
+      <form method="POST" action="/init-admin" class="px-4">
+        <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+        <div class="mb-3">
+          <label for="input_id" class="form-label">ユーザ名</label>
+          <input type="text" class="form-control" id="input_id" name="id" placeholder="ユーザ名" required>
+        </div>
+        <div class="mb-3">
+          <label for="input_pw" class="form-label">パスワード</label>
+          <input type="password" class="form-control" id="input_pw" name="pw" placeholder="パスワード" required>
+        </div>
+        <div class="mb-3 text-center container">
+          <div class="row">
+            <div class="col-sm-6">
+              <a href="/" class="btn btn-outline-success">戻る</a>
+            </div>
+            <div class="col-sm-6">
+              <button type="submit" class="btn btn-primary">新規登録</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </main>
+    <%- include('./../components/stateToast', {pageData}) %>
+    <%- include('./../components/inputJs') %>
+  </body>
+</html>
