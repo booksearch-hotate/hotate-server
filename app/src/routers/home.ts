@@ -189,6 +189,16 @@ homeRouter.get('/login', csrfProtection, async (req: Request, res: Response) => 
   return res.render('pages/login', {pageData});
 });
 
+homeRouter.get('/init-admin', csrfProtection, async (req: Request, res: Response) => {
+  // もしも管理者が存在していれば
+  if (await adminApplicationService.isExist()) return res.redirect('/home');
+
+  pageData.headTitle = '管理者の初期設定 | HOTATE';
+  pageData.csrfToken = req.csrfToken();
+
+  res.render('pages/init-admin', {pageData});
+});
+
 /* ログイン処理 */
 homeRouter.post('/check', csrfProtection, async (req: Request, res: Response) => {
   try {
