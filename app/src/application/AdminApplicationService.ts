@@ -29,4 +29,8 @@ export default class AdminApplicationService {
       return false;
     }
   }
+
+  public async insertAdmin(id: string, pw: string): Promise<void> {
+    await this.adminRepository.insertAdmin(id, pw);
+  }
 }
