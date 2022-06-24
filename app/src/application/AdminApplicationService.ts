@@ -17,4 +17,16 @@ export default class AdminApplicationService {
     const admin = await this.adminRepository.getAdmin();
     return this.adminService.isValid(target, admin);
   }
+
+  /**
+   * 管理者のIDとpwが設定されているか
+   */
+  public async isExist(): Promise<boolean> {
+    try {
+      await this.adminRepository.getAdmin();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }
