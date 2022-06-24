@@ -174,8 +174,11 @@ homeRouter.post('/tag/insert', csrfProtection, async (req: Request, res: Respons
 });
 
 /* ログイン画面 */
-homeRouter.get('/login', csrfProtection, (req: Request, res: Response) => {
+homeRouter.get('/login', csrfProtection, async (req: Request, res: Response) => {
   if (admin.verifyToken(req.session.token)) return res.redirect('/admin/');
+
+  // もしも管理者が存在してなければ
+  if (!await adminApplicationService.isExist()) return res.redirect('/init-admin');
 
   pageData.headTitle = 'ログイン | HOTATE';
   pageData.csrfToken = req.csrfToken();
