@@ -9,3 +9,5 @@ updates:
     directory: "/app" # Location of package manifests
     schedule:
       interval: "daily"
+    assignees:
+      - "elca-hub"
