@@ -239,6 +239,10 @@ homeRouter.post('/check', csrfProtection, async (req: Request, res: Response) =>
 
         res.redirect('/admin/');
       } else {
+        req.session.status = {
+          type: 'Warning',
+          mes: 'ログインに失敗しました。',
+        };
         logger.warn('Login failed.');
 
         res.redirect('/login');
