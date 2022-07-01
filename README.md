@@ -10,7 +10,7 @@
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/booksearch-hotate/hotate-server/main)
 
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/booksearch-hotate/hotate-server?include_prereleases)
-![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/booksearch-hotate/hotate-server/2)
+![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/booksearch-hotate/hotate-server/3)
 
 ![GitHub issues](https://img.shields.io/github/issues/booksearch-hotate/hotate-server)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/booksearch-hotate/hotate-server)
