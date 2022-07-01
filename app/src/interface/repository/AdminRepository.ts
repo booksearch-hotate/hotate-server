@@ -51,4 +51,14 @@ export default class AdminRepository implements IAdminApplicationRepository {
       throw e;
     }
   }
+
+  public async updateAdmin(admin: AdminModel): Promise<void> {
+    try {
+      await this.db.Admin.sequelize?.query(
+          `UPDATE admin SET id = '${admin.Id}', pw = HEX(AES_ENCRYPT('${admin.Pw}', '${process.env.DB_PW_KEY}'))`,
+      );
+    } catch (e) {
+      throw e;
+    }
+  }
 }

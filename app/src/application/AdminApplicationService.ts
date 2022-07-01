@@ -33,4 +33,10 @@ export default class AdminApplicationService {
   public async insertAdmin(id: string, pw: string): Promise<void> {
     await this.adminRepository.insertAdmin(id, pw);
   }
+
+  public async updateAdmin(id: string, pw: string): Promise<void> {
+    const admin = new AdminModel(id, pw);
+
+    await this.adminRepository.updateAdmin(admin);
+  }
 }
