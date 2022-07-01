@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+  </head>
+  <body>
+    <header>
+      <%- include('./../../../components/headerTitle', {mes: '管理者情報の編集'}) %>
+      <p class="common-header-sub-title">
+        管理者のIDとパスワードを設定できます。
+      </p>
+    </header>
+    <main>
+      <form action="/admin/setting/update" method="post">
+        <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+        <div class="form-group">
+          <label for="id" class="form-label">ID名</label>
+          <input class="form-control" type="text" id="id" name="id">
+        </div>
+        <div class="form-group">
+          <label for="pw" class="form-label">パスワード</label>
+          <input class="form-control" type="password" id="pw" name="pw">
+        </div>
+        <button type="submit" class="btn btn-outline-warning">更新</button>
+      </form>
+    </main>
+    <%- include('./../../../components/inputJs') %>
+  </body>
+</html>
