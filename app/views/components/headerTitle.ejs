@@ -1,6 +1,6 @@
 <div class="header-title my-3">
   <h2><%= mes %></h2>
-  <% if (logo !== undefined && logo.length !== 0) { %>
+  <% if (typeof logo !== 'undefined' && logo.length !== 0) { %>
     <div class="header-title-log-box">
       <%- include('./../icons/' + logo) %>
     </div>
