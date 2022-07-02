@@ -48,18 +48,22 @@ export default class BookApplicationService {
   ): Promise<void> {
     const author = new AuthorModel(authorId, authorName);
     const publisher = new PublisherModel(publisherId, publisherName);
-    const book = new BookModel(
-        this.bookService.createUUID(),
-        bookName,
-        subName,
-        content,
-        isbn,
-        ndc,
-        year,
-        author,
-        publisher,
-    );
-    await this.bookRepository.save(book);
+    try {
+      const book = new BookModel(
+          this.bookService.createUUID(),
+          bookName,
+          subName,
+          content,
+          isbn,
+          ndc,
+          year,
+          author,
+          publisher,
+      );
+      await this.bookRepository.save(book);
+    } catch (e: any) {
+      console.error(e);
+    }
   }
 
   /**
