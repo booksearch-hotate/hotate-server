@@ -7,6 +7,3 @@ app/dist
 app/log
 
 test/*
-
-!test/testData.csv
-!test/testData_utf8.csv
