@@ -206,7 +206,6 @@ homeRouter.post('/init-admin', csrfProtection, async (req: Request, res: Respons
   const id = req.body.id;
   const pw = req.body.pw;
 
-  console.log(`id: ${id}, pw: ${pw}`);
   try {
     await adminApplicationService.insertAdmin(id, pw);
     req.session.status = {type: 'Success', mes: '管理者の追加に成功しました！'};
