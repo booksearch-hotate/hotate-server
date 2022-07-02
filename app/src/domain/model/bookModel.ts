@@ -27,7 +27,8 @@ export default class BookModel {
       author: AuthorModel,
       publisher: PublisherModel,
   ) {
-    if (id === null) throw new Error('idがnullです');
+    if (id === null) throw new Error('Id is null.');
+    if (name === null) throw new Error('The title of the book is null.');
 
     this.id = id;
     this.Name = name;
