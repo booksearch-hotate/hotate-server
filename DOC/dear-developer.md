@@ -89,3 +89,11 @@ docker-compose up phpmyadmin // phpmyadmin
 curl -H "Content-Type: application/json" -XPUT localhost:9200/*/_settings -d '{"number_of_replicas":0}'
 {"acknowledged":true}
 ```
+
+## テスト用csvファイルに関して
+
+**v0.0.9b**より、テスト用のcsvファイルを公開しました。このcsvファイルは実際の本が登録されており、意図的にデータを欠落させているなどしています。デバッグ作業に役立ててください。
+
+どの部分を改変しているかは「type」に書かれていますので、参考にしてください。
+
+なお、テスト用のcsvファイルに関してですが、**testData.csv**と**testData_utf8.csv**が存在しています。testData.csvは文字コードが**ANCI(Shift_JIS)**、testData_utf8.csvは文字コードが**UTF-8**になっています。Shift-JISはWindows標準の文字コード、UTF-8はMac標準の文字コードとなっています。現在HOTATEは**UTF-8のみに対応**しています。
