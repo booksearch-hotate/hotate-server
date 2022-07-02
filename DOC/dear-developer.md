@@ -83,7 +83,6 @@ docker-compose up phpmyadmin // phpmyadmin
 ## TODO
 
 - envファイルの作成
-- 管理者のIDとパスワードをDBへ登録
 - 一度elasticsearchを起動した後、以下のコマンドを入力する
 
 ```bash
