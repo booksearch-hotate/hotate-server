@@ -144,6 +144,8 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
 
       const publisherId = await publisherApplicationService.createPublisher(publisherName, true);
 
+      for (const item in req.body) if (req.body[item] === undefined) req.body[item] = null;
+
       booksPromise.push(bookApplicationService.createBook(
           row[req.body.bookName],
           row[req.body.bookSubName],
