@@ -1,12 +1,18 @@
+import DepartmentModel from '../domain/model/departmentModel';
+
+import DepartmentService from '../domain/service/departmentService';
+
 import DepartmentData from './dto/DepartmentData';
 
 import {IDepartmentRepository} from './repository/IDepartmentApplicationRepository';
 
 export default class DepartmentApplicationService {
   private readonly departmentRepository: IDepartmentRepository;
+  private readonly departmentService: DepartmentService;
 
-  public constructor(bookRequestRepository: IDepartmentRepository) {
+  public constructor(bookRequestRepository: IDepartmentRepository, departmentService: DepartmentService) {
     this.departmentRepository = bookRequestRepository;
+    this.departmentService = departmentService;
   }
 
   /**
@@ -21,5 +27,10 @@ export default class DepartmentApplicationService {
     for (const model of fetchModel) res.push(new DepartmentData(model));
 
     return res;
+  }
+
+  public async insertDepartment(name: string): Promise<void> {
+    const department = new DepartmentModel(this.departmentService.createUUID(), name);
+    await this.departmentRepository.insertDepartment(department);
   }
 }

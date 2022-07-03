@@ -15,6 +15,7 @@ import csvRouter from '../routers/admin/csv';
 import tagsRouter from '../routers/admin/tags';
 import apiRouter from '../routers/api';
 import settingRouter from '../routers/admin/setting';
+import departmentRouter from '../routers/admin/department';
 
 import Logger from '../infrastructure/logger/logger';
 
@@ -96,6 +97,7 @@ app.use('/admin/search_history', searchHistoryRouter);
 app.use('/admin/csv', csvRouter);
 app.use('/admin/tags', tagsRouter);
 app.use('/admin/setting', settingRouter);
+app.use('/admin/department', departmentRouter);
 app.use('/api', apiRouter);
 
 // listen
