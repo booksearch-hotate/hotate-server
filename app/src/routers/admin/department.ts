@@ -28,6 +28,7 @@ departmentRouter.get('/', csrfProtection, async (req: Request, res: Response) =>
 
   pageData.anyData = {
     departmentList: await departmentApplicationService.findAllDepartment(),
+    isMax: await departmentApplicationService.isMax(),
   };
 
   pageData.csrfToken = req.csrfToken();
