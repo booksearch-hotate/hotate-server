@@ -36,6 +36,8 @@ departmentRouter.get('/', csrfProtection, async (req: Request, res: Response) =>
   pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
 
+  req.session.keepValue = undefined;
+
   res.render('pages/admin/department/index', {pageData});
 });
 
