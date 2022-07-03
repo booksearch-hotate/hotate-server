@@ -31,15 +31,19 @@ export default class DepartmentApplicationService {
     return res;
   }
 
+  public async isMax(): Promise<boolean> {
+    const count = await this.departmentRepository.count();
+
+    return this.MAX_DEPARTMENT_COUNT >= count;
+  }
+
   public async insertDepartment(name: string): Promise<boolean> {
     const department = new DepartmentModel(this.departmentService.createUUID(), name);
     const isExist = await this.departmentService.isExist(department);
 
     if (isExist) return false;
 
-    const count = await this.departmentRepository.count();
-
-    if (count >= this.MAX_DEPARTMENT_COUNT) throw new Error('The number of department names that can be registered is exceeded.');
+    if (await this.isMax()) throw new Error('The number of department names that can be registered is exceeded.');
 
     await this.departmentRepository.insertDepartment(department);
 
