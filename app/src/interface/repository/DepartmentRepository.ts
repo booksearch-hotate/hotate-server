@@ -44,4 +44,8 @@ export default class DepartmentRepository implements IDepartmentRepository, IDep
 
     return new DepartmentModel(fetchData.id, fetchData.name);
   }
+
+  public async count(): Promise<number> {
+    return await this.db.Department.count();
+  }
 }
