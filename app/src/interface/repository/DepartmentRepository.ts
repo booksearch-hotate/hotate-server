@@ -16,7 +16,9 @@ export default class DepartmentRepository implements IDepartmentRepository, IDep
   }
 
   public async findAllDepartment(): Promise<DepartmentModel[]> {
-    const fetchData = await this.db.Department.findAll();
+    const fetchData = await this.db.Department.findAll({
+      order: [['created_at', 'DESC']],
+    });
 
     const res: DepartmentModel[] = [];
 
