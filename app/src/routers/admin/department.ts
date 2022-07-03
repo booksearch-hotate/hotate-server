@@ -84,11 +84,36 @@ departmentRouter.get('/edit', csrfProtection, async (req: Request, res: Response
 
     pageData.csrfToken = req.csrfToken();
 
+    pageData.status = conversionpageStatus(req.session.status);
+    req.session.status = undefined;
+
+    req.session.keepValue = id;
+
     res.render('pages/admin/department/edit', {pageData});
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '編集に必要な情報が正常に取得できませんでした。'};
     res.redirect('/admin/department/');
+  }
+});
+
+departmentRouter.post('/update', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    const id = req.body.id;
+    const name = req.body.name;
+
+    if (id !== req.session.keepValue) throw new Error('There is a discrepancy in the id.');
+
+    console.log('hey');
+
+    await departmentApplicationService.update(id, name);
+
+    req.session.status = {type: 'Success', mes: '変更に成功しました'};
+  } catch (e: any) {
+    logger.error(e);
+    req.session.status = {type: 'Failure', error: e, mes: '変更中にエラーが発生しました。'};
+  } finally {
+    res.redirect('/admin/department');
   }
 });
 

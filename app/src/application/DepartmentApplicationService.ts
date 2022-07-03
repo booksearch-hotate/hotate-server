@@ -70,4 +70,9 @@ export default class DepartmentApplicationService {
 
     return new DepartmentData(fetchModel);
   }
+
+  public async update(id: string, name: string): Promise<void> {
+    const updateModel = new DepartmentModel(id, name);
+    await this.departmentRepository.update(updateModel);
+  }
 }

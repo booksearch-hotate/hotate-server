@@ -66,4 +66,10 @@ export default class DepartmentRepository implements IDepartmentRepository, IDep
 
     return new DepartmentModel(fetchData.id, fetchData.name);
   }
+
+  public async update(department: DepartmentModel): Promise<void> {
+    await this.db.Department.update({
+      name: department.Name,
+    }, {where: {id: department.Id}});
+  }
 }
