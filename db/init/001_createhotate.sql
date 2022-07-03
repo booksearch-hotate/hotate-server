@@ -57,5 +57,6 @@ CREATE TABLE IF NOT EXISTS using_tags (
 CREATE TABLE IF NOT EXISTS departments (
   id varchar(255) NOT NULL,
   name varchar(255) NOT NULL,
+  created_at timestamp NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
