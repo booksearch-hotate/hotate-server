@@ -5,6 +5,7 @@ import Publisher from './tables/publisher';
 import Admin from './tables/admin';
 import Tag from './tables/tag';
 import UsingTag from './tables/usingTag';
+import Department from './tables/departments';
 
 import {isLocal} from '../cli/cmdLine';
 
@@ -22,6 +23,7 @@ const db = {
   Admin: Admin.initialize(sequelize),
   Tag: Tag.initialize(sequelize),
   UsingTag: UsingTag.initialize(sequelize),
+  Department: Department.initialize(sequelize),
 };
 
 // テーブル同士の関係を作成
