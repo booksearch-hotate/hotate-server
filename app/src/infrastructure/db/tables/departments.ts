@@ -18,6 +18,7 @@ export default class Department extends Model {
       sequelize,
       tableName: 'departments',
       timestamps: true,
+      createdAt: 'created_at',
       updatedAt: false,
     });
     return this;
