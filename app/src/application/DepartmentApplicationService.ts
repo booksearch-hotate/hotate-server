@@ -18,7 +18,7 @@ export default class DepartmentApplicationService {
   }
 
   /**
-   * 登録されている学科をすべて取得します。
+   * 登録されている学科をすべて取得します
    * @returns {Promise<DepartmentModel[]>} 登録されている全学科の項目
    */
   public async findAllDepartment(): Promise<DepartmentData[]> {
@@ -31,12 +31,21 @@ export default class DepartmentApplicationService {
     return res;
   }
 
+  /**
+   * 現在登録している数が最大の個数かを取得します
+   * @returns {boolean} 現在登録している数が最大の個数か
+   */
   public async isMax(): Promise<boolean> {
     const count = await this.departmentRepository.count();
 
     return this.MAX_DEPARTMENT_COUNT >= count;
   }
 
+  /**
+   * 学科名を追加します。なお重複する場合は追加せずにfalseを返します
+   * @param name 追加する学科名
+   * @returns 追加できたか
+   */
   public async insertDepartment(name: string): Promise<boolean> {
     const department = new DepartmentModel(this.departmentService.createUUID(), name);
     const isExist = await this.departmentService.isExist(department);
