@@ -13,7 +13,6 @@ export default class Author extends Model {
       id: {
         type: DataTypes.STRING,
         primaryKey: true,
-        autoIncrement: true,
       },
       name: {
         type: DataTypes.STRING,

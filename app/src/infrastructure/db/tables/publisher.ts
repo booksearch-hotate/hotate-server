@@ -13,7 +13,6 @@ export default class Publisher extends Model {
       id: {
         type: DataTypes.STRING,
         primaryKey: true,
-        autoIncrement: true,
       },
       name: {
         type: DataTypes.STRING,
