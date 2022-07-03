@@ -3,6 +3,8 @@ import {IPage} from './datas/IPage';
 
 import DepartmentRepository from '../interface/repository/DepartmentRepository';
 
+import DepartmentService from '../domain/service/departmentService';
+
 import DepartmentApplicationService from '../application/DepartmentApplicationService';
 
 import db from '../infrastructure/db';
@@ -12,7 +14,7 @@ const requestRouter = Router();
 
 const pageData: IPage = {} as IPage;
 
-const departmentApplicationService = new DepartmentApplicationService(new DepartmentRepository(db));
+const departmentApplicationService = new DepartmentApplicationService(new DepartmentRepository(db), new DepartmentService());
 
 requestRouter.get('/request', async (req: Request, res: Response) => {
   pageData.headTitle = '本のリクエスト | HOTATE';

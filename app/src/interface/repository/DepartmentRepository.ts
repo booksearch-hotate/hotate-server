@@ -24,4 +24,11 @@ export default class DepartmentRepository implements IDepartmentRepository {
 
     return res;
   }
+
+  public async insertDepartment(department: DepartmentModel): Promise<void> {
+    await this.db.Department.create({
+      id: department.Id,
+      name: department.Name,
+    });
+  }
 }
