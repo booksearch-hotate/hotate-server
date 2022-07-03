@@ -7,6 +7,7 @@ import colors from 'colors/safe';
 
 /* routers */
 import homeRouter from '../routers/home';
+import requestRouter from '../routers/request';
 import bookRouter from '../routers/admin/book';
 import adminRouter from '../routers/admin/index';
 import searchHistoryRouter from '../routers/admin/searchHistory';
@@ -88,13 +89,14 @@ Promise.all(esPromiseList).catch((e: any) => {
 });
 
 app.use('/', homeRouter);
+app.use('/', requestRouter);
 app.use('/admin', adminRouter);
 app.use('/admin/book', bookRouter);
 app.use('/admin/search_history', searchHistoryRouter);
 app.use('/admin/csv', csvRouter);
 app.use('/admin/tags', tagsRouter);
-app.use('/api', apiRouter);
 app.use('/admin/setting', settingRouter);
+app.use('/api', apiRouter);
 
 // listen
 export function startAppServer(port: number) {
