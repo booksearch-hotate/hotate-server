@@ -69,4 +69,27 @@ departmentRouter.post('/delete', csrfProtection, async (req: Request, res: Respo
   }
 });
 
+departmentRouter.get('/edit', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    const id = req.query.id as string;
+    const fetchData = await departmentApplicationService.findById(id);
+
+    if (fetchData === null) throw new Error('id does not exist in DB.');
+
+    pageData.headTitle = '学科名の編集';
+
+    pageData.anyData = {
+      department: fetchData,
+    };
+
+    pageData.csrfToken = req.csrfToken();
+
+    res.render('pages/admin/department/edit', {pageData});
+  } catch (e: any) {
+    logger.error(e);
+    req.session.status = {type: 'Failure', error: e, mes: '編集に必要な情報が正常に取得できませんでした。'};
+    res.redirect('/admin/department/');
+  }
+});
+
 export default departmentRouter;

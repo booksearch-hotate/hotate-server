@@ -56,4 +56,14 @@ export default class DepartmentRepository implements IDepartmentRepository, IDep
       },
     });
   }
+
+  public async findById(id: string): Promise<DepartmentModel | null> {
+    const fetchData = await this.db.Department.findOne({
+      where: {id},
+    });
+
+    if (fetchData === null) return null;
+
+    return new DepartmentModel(fetchData.id, fetchData.name);
+  }
 }

@@ -29,7 +29,7 @@
           <tr>
             <td><%= department.Name %></td>
             <td>
-              <form action="/admin/department/change" method="get">
+              <form action="/admin/department/edit" method="get">
                 <input type="hidden" name="id" value="<%= department.Id %>">
                 <button type="submit" class="btn btn-outline-success">変更</button>
               </form>

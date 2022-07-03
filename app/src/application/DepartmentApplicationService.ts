@@ -62,4 +62,12 @@ export default class DepartmentApplicationService {
   public async deleteDepartment(id: string): Promise<void> {
     await this.departmentRepository.deleteDepartment(id);
   }
+
+  public async findById(id: string): Promise<DepartmentData | null> {
+    const fetchModel = await this.departmentRepository.findById(id);
+
+    if (fetchModel === null) return null;
+
+    return new DepartmentData(fetchModel);
+  }
 }
