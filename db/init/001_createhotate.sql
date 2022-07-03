@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS admin (
 
 CREATE TABLE IF NOT EXISTS tags (
   id varchar(255) NOT NULL,
-  name varchar(2555) NOT NULL,
+  name varchar(255) NOT NULL,
   created_at timestamp NOT NULL,
   updated_at timestamp NOT NULL,
   PRIMARY KEY (id)
