@@ -29,8 +29,14 @@ export default class DepartmentApplicationService {
     return res;
   }
 
-  public async insertDepartment(name: string): Promise<void> {
+  public async insertDepartment(name: string): Promise<boolean> {
     const department = new DepartmentModel(this.departmentService.createUUID(), name);
+    const isExist = await this.departmentService.isExist(department);
+
+    if (isExist) return false;
+
     await this.departmentRepository.insertDepartment(department);
+
+    return true;
   }
 }

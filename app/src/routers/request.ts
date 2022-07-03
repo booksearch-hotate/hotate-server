@@ -14,7 +14,7 @@ const requestRouter = Router();
 
 const pageData: IPage = {} as IPage;
 
-const departmentApplicationService = new DepartmentApplicationService(new DepartmentRepository(db), new DepartmentService());
+const departmentApplicationService = new DepartmentApplicationService(new DepartmentRepository(db), new DepartmentService(new DepartmentRepository(db)));
 
 requestRouter.get('/request', async (req: Request, res: Response) => {
   pageData.headTitle = '本のリクエスト | HOTATE';

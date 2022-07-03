@@ -21,7 +21,7 @@ const csrfProtection = csurf({cookie: false});
 
 const logger = new Logger('department');
 
-const departmentApplicationService = new DepartmentApplicationService(new DepartmentRepository(db), new DepartmentService());
+const departmentApplicationService = new DepartmentApplicationService(new DepartmentRepository(db), new DepartmentService(new DepartmentRepository(db)));
 
 departmentRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   pageData.headTitle = '学科名一覧';
@@ -41,9 +41,11 @@ departmentRouter.get('/', csrfProtection, async (req: Request, res: Response) =>
 departmentRouter.post('/insert', csrfProtection, async (req: Request, res: Response) => {
   try {
     const departmentName = req.body.insertName;
-    await departmentApplicationService.insertDepartment(departmentName);
 
-    req.session.status = {type: 'Success', mes: '学科の追加に成功しました'};
+    const isSucceed = await departmentApplicationService.insertDepartment(departmentName); // insertできたか
+
+    if (isSucceed) req.session.status = {type: 'Success', mes: '学科の追加に成功しました'};
+    else req.session.status = {type: 'Warning', mes: '学科名が重複しています'};
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '学科の追加に失敗しました'};

@@ -1,4 +1,5 @@
 import {IDepartmentRepository} from '../../application/repository/IDepartmentApplicationRepository';
+import {IDepartmentDomainRepository} from '../../domain/service/repository/IDepartmentDomainRepository';
 
 import DepartmentModel from '../../domain/model/departmentModel';
 import Department from '../../infrastructure/db/tables/departments';
@@ -7,7 +8,7 @@ interface sequelize {
   Department: typeof Department
 }
 
-export default class DepartmentRepository implements IDepartmentRepository {
+export default class DepartmentRepository implements IDepartmentRepository, IDepartmentDomainRepository {
   private readonly db: sequelize;
 
   public constructor(db: sequelize) {
@@ -30,5 +31,15 @@ export default class DepartmentRepository implements IDepartmentRepository {
       id: department.Id,
       name: department.Name,
     });
+  }
+
+  public async findByName(name: string | null): Promise<DepartmentModel | null> {
+    const fetchData = await this.db.Department.findOne({
+      where: {name},
+    });
+
+    if (fetchData === null) return null;
+
+    return new DepartmentModel(fetchData.id, fetchData.name);
   }
 }
