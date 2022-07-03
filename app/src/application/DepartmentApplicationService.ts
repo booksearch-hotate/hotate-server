@@ -10,6 +10,8 @@ export default class DepartmentApplicationService {
   private readonly departmentRepository: IDepartmentRepository;
   private readonly departmentService: DepartmentService;
 
+  private readonly MAX_DEPARTMENT_COUNT = 20;
+
   public constructor(bookRequestRepository: IDepartmentRepository, departmentService: DepartmentService) {
     this.departmentRepository = bookRequestRepository;
     this.departmentService = departmentService;
@@ -34,6 +36,10 @@ export default class DepartmentApplicationService {
     const isExist = await this.departmentService.isExist(department);
 
     if (isExist) return false;
+
+    const count = await this.departmentRepository.count();
+
+    if (count >= this.MAX_DEPARTMENT_COUNT) throw new Error('The number of department names that can be registered is exceeded.');
 
     await this.departmentRepository.insertDepartment(department);
 
