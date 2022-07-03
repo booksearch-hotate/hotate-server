@@ -53,3 +53,9 @@ CREATE TABLE IF NOT EXISTS using_tags (
   FOREIGN KEY (book_id) REFERENCES books(id),
   FOREIGN KEY (tag_id) REFERENCES tags(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS departments (
+  id varchar(255) NOT NULL,
+  name varchar(255) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
