@@ -13,7 +13,7 @@
           <label for="insertName" class="form-label">追加する学科名</label>
           <input class="form-control" type="text" id="insertName" name="insertName">
         </div>
-        <button type="submit" class="btn btn-outline-primary">追加</button>
+        <button type="submit" class="btn btn-outline-primary" disabled="<%= pageData.anyData.isMax %>">追加</button>
       </form>
     </div>
     <table class="table table-striped">
