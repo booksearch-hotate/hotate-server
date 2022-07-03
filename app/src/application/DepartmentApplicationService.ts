@@ -58,4 +58,8 @@ export default class DepartmentApplicationService {
 
     return true;
   }
+
+  public async deleteDepartment(id: string): Promise<void> {
+    await this.departmentRepository.deleteDepartment(id);
+  }
 }

@@ -48,4 +48,12 @@ export default class DepartmentRepository implements IDepartmentRepository, IDep
   public async count(): Promise<number> {
     return await this.db.Department.count();
   }
+
+  public async deleteDepartment(id: string): Promise<void> {
+    await this.db.Department.destroy({
+      where: {
+        id,
+      },
+    });
+  }
 }

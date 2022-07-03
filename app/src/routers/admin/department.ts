@@ -55,4 +55,18 @@ departmentRouter.post('/insert', csrfProtection, async (req: Request, res: Respo
   }
 });
 
+departmentRouter.post('/delete', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    const departmentId = req.body.deleteId;
+
+    await departmentApplicationService.deleteDepartment(departmentId);
+    req.session.status = {type: 'Success', mes: '学科の削除に成功しました'};
+  } catch (e: any) {
+    logger.error(e);
+    req.session.status = {type: 'Failure', error: e, mes: '学科の削除に失敗しました'};
+  } finally {
+    res.redirect('/admin/department/');
+  }
+});
+
 export default departmentRouter;
