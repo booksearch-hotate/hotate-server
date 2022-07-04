@@ -149,15 +149,22 @@ requestRouter.post('/register', csrfProtection, async (req: Request, res: Respon
     );
     logger.info(`Request received. Sender Name: ${userName}`);
 
-    req.session.status = {type: 'Success', mes: 'リクエストの記録が完了しました！リクエストありがとうございます！'};
-    req.session.keepValue = undefined;
-
-    res.redirect('/');
+    res.redirect('/thanks-request');
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: 'リクエストの記録に失敗しました'};
     res.redirect('/request');
   }
+});
+
+requestRouter.get('/thanks-request', (req: Request, res: Response) => {
+  if (typeof req.session.keepValue === 'undefined') return res.redirect('/');
+
+  req.session.keepValue = undefined;
+
+  pageData.headTitle = 'リクエスト完了 | HOTATE';
+
+  return res.render('pages/thanks-request', {pageData});
 });
 
 export default requestRouter;
