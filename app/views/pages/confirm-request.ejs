@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../components/head') %>
+  </head>
+  <body>
+    <header class="text-center">
+      <h1>リクエスト内容の確認</h1>
+      <p>リクエスト内容が正しければ「送信」を、誤りがあれば「戻る」を押してください。</p>
+    </header>
+
+    <main>
+      <form method="POST" action="/register" class="px-4">
+        <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+      
+        <div class="confirm-item-box">
+          <p>書名 : <%= pageData.anyData.request.BookName %></p>
+          <p></p>
+        </div>
+
+        <div class="text-center">
+          <a href="/request" class="btn btn-outline-success">戻る</a>
+          <button type="submit" class="btn btn-outline-primary">送信</button>
+        </div>
+      </form>
+    </main>
+    <%- include('./../components/stateToast', {pageData}) %>
+    <%- include('./../components/inputJs') %>
+  </body>
+</html>

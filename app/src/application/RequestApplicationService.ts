@@ -1,6 +1,8 @@
 import {IRequestApplicationRepository} from './repository/IRequestApplicationRepository';
 import RequestModel from '../domain/model/requestModel';
 
+import RequestData from './dto/RequestData';
+
 import RequestService from '../domain/service/requestService';
 
 export default class RequestApplicationService {
@@ -13,6 +15,7 @@ export default class RequestApplicationService {
   }
 
   public async register(
+      id: string,
       bookName: string,
       authorName: string,
       publisherName: string,
@@ -24,7 +27,7 @@ export default class RequestApplicationService {
       userName: string,
   ) {
     const requestModel = new RequestModel(
-        this.requestService.createUUID(),
+        id,
         bookName,
         authorName,
         publisherName,
@@ -37,5 +40,31 @@ export default class RequestApplicationService {
     );
 
     await this.requestRepository.register(requestModel);
+  }
+
+  public makeData(
+      bookName: string,
+      authorName: string,
+      publisherName: string,
+      isbn: string,
+      message: string,
+      departmentId: string,
+      schoolYear: string,
+      schoolClass: string,
+      userName: string,
+  ): RequestData {
+    const requestModel = new RequestModel(
+        this.requestService.createUUID(),
+        bookName,
+        authorName,
+        publisherName,
+        isbn,
+        message,
+        departmentId,
+        schoolYear,
+        schoolClass,
+        userName,
+    );
+    return new RequestData(requestModel);
   }
 }
