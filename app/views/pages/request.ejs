@@ -10,7 +10,7 @@
     </header>
 
     <main>
-      <form method="POST" action="/sendRequestBook" class="px-4">
+      <form method="POST" action="/register" class="px-4">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <div class="mb-3">
           <label for="bookName" class="form-label">書名</label>
@@ -36,7 +36,9 @@
         <div class="mb-3 row g-6 align-items-center">
           <div class="col-auto">
             <select class="form-select" name="department">
-              <option value="テスト">テスト</option>
+              <% for (let department of pageData.anyData.departmentList) { %>
+                <option value="<%= department.Id %>"><%= department.Name %></option>
+              <% } %>
             </select>
           </div>
           <div class="col-auto">

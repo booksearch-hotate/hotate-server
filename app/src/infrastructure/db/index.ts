@@ -6,6 +6,7 @@ import Admin from './tables/admin';
 import Tag from './tables/tag';
 import UsingTag from './tables/usingTag';
 import Department from './tables/departments';
+import Request from './tables/requests';
 
 import {isLocal} from '../cli/cmdLine';
 
@@ -24,6 +25,7 @@ const db = {
   Tag: Tag.initialize(sequelize),
   UsingTag: UsingTag.initialize(sequelize),
   Department: Department.initialize(sequelize),
+  Request: Request.initialize(sequelize),
 };
 
 // テーブル同士の関係を作成
@@ -32,5 +34,7 @@ db.Author.associate();
 db.Publisher.associate();
 db.Tag.associate();
 db.UsingTag.associate();
+db.Department.associate();
+db.Request.associate();
 
 export default db;
