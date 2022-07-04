@@ -60,3 +60,19 @@ CREATE TABLE IF NOT EXISTS departments (
   created_at timestamp NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS requests (
+  id varchar(255) NOT NULL,
+  book_name varchar(255) NULL DEFAULT NULL,
+  author_name varchar(255) NULL DEFAULT NULL,
+  publisher_name varchar(255) NULL DEFAULT NULL,
+  isbn varchar(255) NULL DEFAULT NULL,
+  message text NULL DEFAULT NULL,
+  department_id varchar(255) NOT NULL,
+  school_year varchar(100) NOT NULL,
+  school_class varchar(100) NOT NULL,
+  user_name varchar(255) NOT NULL,
+  created_at timestamp NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (department_id) REFERENCES departments(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
