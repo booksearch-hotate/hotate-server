@@ -14,22 +14,22 @@
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <div class="mb-3">
           <label for="bookName" class="form-label">書名</label>
-          <input type="text" class="form-control" id="bookName" name="bookName" placeholder="例) 余命3000文字">
+          <input type="text" class="form-control" id="bookName" name="bookName" placeholder="例) 余命3000文字" value="<%= pageData.anyData.saveVal.bookName %>">
         </div>
         <div class="mb-3">
           <label for="authorName" class="form-label">著者名</label>
-          <input type="text" class="form-control" id="authorName" name="authorName" placeholder="例) 村崎羯諦">
+          <input type="text" class="form-control" id="authorName" name="authorName" placeholder="例) 村崎羯諦" value="<%= pageData.anyData.saveVal.authorName %>">
         </div>
         <div class="mb-3">
           <label for="publisherName" class="form-label">出版社名</label>
-          <input type="text" class="form-control" id="publisherName" name="publisherName" placeholder="例) 小学館文庫">
+          <input type="text" class="form-control" id="publisherName" name="publisherName" placeholder="例) 小学館文庫" value="<%= pageData.anyData.saveVal.publisherName %>">
         </div>
         <div class="mb-3">
           <label for="isbn" class="form-label">ISBN</label>
-          <input type="text" class="form-control" id="isbn" name="isbn" placeholder="例) 9784094068498">
+          <input type="text" class="form-control" id="isbn" name="isbn" placeholder="例) 9784094068498" value="<%= pageData.anyData.saveVal.isbn %>">
         </div>
         <div class="mb-3 form-floating">
-          <textarea class="form-control" placeholder="書名が思い出せない場合などに入力してください" id="message" style="height: 100px" name="message"></textarea>
+          <input type="text" class="form-control" placeholder="書名が思い出せない場合などに入力してください" id="message" style="height: 100px" name="message"  value="<%= pageData.anyData.saveVal.message %>"></inp>
           <label for="message">本の内容・その他</label>
         </div>
 
@@ -68,7 +68,7 @@
 
         <div class="mb-3">
           <label for="userName" class="form-label">名前(必須)</label>
-          <input type="text" class="form-control" id="userName" name="userName" placeholder="例) 大淡路 不知火" required>
+          <input type="text" class="form-control" id="userName" name="userName" placeholder="例) 大淡路 不知火" required value="<%= pageData.anyData.saveVal.userName %>">
         </div>
 
         <div class="text-center">
