@@ -36,8 +36,11 @@ const requestApplicationService = new RequestApplicationService(
 requestRouter.get('/request', csrfProtection, async (req: Request, res: Response) => {
   pageData.headTitle = '本のリクエスト | HOTATE';
 
+  const keepReqObj = typeof req.session.keepValue === 'object' ? req.session.keepValue.keepReqObj : {};
+
   pageData.anyData = {
     departmentList: await departmentApplicationService.findAllDepartment(),
+    saveVal: keepReqObj,
   };
 
   pageData.csrfToken = req.csrfToken();
