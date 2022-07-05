@@ -1,3 +1,6 @@
+<%
+const itemComponentLink = './../components/confirmRequestItem'; 
+%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -13,10 +16,11 @@
       <form method="POST" action="/register" class="px-4">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
       
-        <div class="confirm-item-box">
-          <p>書名 : <%= pageData.anyData.request.BookName %></p>
-          <p></p>
-        </div>
+        <%- include(itemComponentLink, {title: '書名', content: pageData.anyData.request.BookName}) %>
+        <%- include(itemComponentLink, {title: '著者名', content: pageData.anyData.request.AuthorName}) %>
+        <%- include(itemComponentLink, {title: '出版社名', content: pageData.anyData.request.PublisherName}) %>
+        <%- include(itemComponentLink, {title: 'ISBN', content: pageData.anyData.request.Isbn}) %>
+        <%- include(itemComponentLink, {title: '内容', content: pageData.anyData.request.Message}) %>
 
         <div class="text-center">
           <a href="/request" class="btn btn-outline-success">戻る</a>
