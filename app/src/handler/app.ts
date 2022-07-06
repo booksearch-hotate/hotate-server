@@ -7,6 +7,9 @@ import colors from 'colors/safe';
 
 /* routers */
 import homeRouter from '../routers/home';
+import bookItemRouter from '../routers/bookItem';
+import loginRouter from '../routers/login';
+import searchRouter from '../routers/search';
 import requestRouter from '../routers/request';
 import bookRouter from '../routers/admin/book';
 import adminRouter from '../routers/admin/index';
@@ -91,6 +94,9 @@ Promise.all(esPromiseList).catch((e: any) => {
 });
 
 app.use('/', homeRouter);
+app.use('/', bookItemRouter);
+app.use('/', loginRouter);
+app.use('/', searchRouter);
 app.use('/', requestRouter);
 app.use('/admin', adminRouter);
 app.use('/admin/book', bookRouter);
