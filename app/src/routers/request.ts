@@ -82,21 +82,7 @@ requestRouter.get('/confirm-request', csrfProtection, async (req: Request, res: 
   pageData.csrfToken = req.csrfToken();
 
   try {
-    if (typeof req.session.keepValue !== 'object') throw new Error('The value could not be obtained correctly.');
-
-    const keepReqObj = req.session.keepValue.keepReqObj;
-
-    const reqData = requestApplicationService.makeData(
-        keepReqObj.bookName,
-        keepReqObj.authorName,
-        keepReqObj.publisherName,
-        keepReqObj.isbn,
-        keepReqObj.message,
-        keepReqObj.departmentId,
-        keepReqObj.schoolYear,
-        keepReqObj.schoolClass,
-        keepReqObj.userName,
-    );
+    const reqData = requestApplicationService.makeData(req.session.keepValue);
 
     pageData.anyData = {request: reqData};
 
@@ -109,22 +95,7 @@ requestRouter.get('/confirm-request', csrfProtection, async (req: Request, res: 
 
 requestRouter.post('/register', csrfProtection, async (req: Request, res: Response) => {
   try {
-    /* 上の行の処理とも同じなので共通化した方が良い */
-    if (typeof req.session.keepValue !== 'object') throw new Error('The value could not be obtained correctly.');
-
-    const keepReqObj = req.session.keepValue.keepReqObj;
-
-    const requestData = requestApplicationService.makeData(
-        keepReqObj.bookName,
-        keepReqObj.authorName,
-        keepReqObj.publisherName,
-        keepReqObj.isbn,
-        keepReqObj.message,
-        keepReqObj.departmentId,
-        keepReqObj.schoolYear,
-        keepReqObj.schoolClass,
-        keepReqObj.userName,
-    );
+    const requestData = requestApplicationService.makeData(req.session.keepValue);
 
     const id = requestData.Id;
     const bookName = requestData.BookName;

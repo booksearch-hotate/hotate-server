@@ -42,28 +42,22 @@ export default class RequestApplicationService {
     await this.requestRepository.register(requestModel);
   }
 
-  public makeData(
-      bookName: string,
-      authorName: string,
-      publisherName: string,
-      isbn: string,
-      message: string,
-      departmentId: string,
-      schoolYear: string,
-      schoolClass: string,
-      userName: string,
-  ): RequestData {
+  public makeData(saveData: any): RequestData {
+    if (typeof saveData !== 'object') throw new Error('The value could not be obtained correctly.');
+
+    const keepReqObj = saveData.keepReqObj;
+
     const requestModel = new RequestModel(
         this.requestService.createUUID(),
-        bookName,
-        authorName,
-        publisherName,
-        isbn,
-        message,
-        departmentId,
-        schoolYear,
-        schoolClass,
-        userName,
+        keepReqObj.bookName,
+        keepReqObj.authorName,
+        keepReqObj.publisherName,
+        keepReqObj.isbn,
+        keepReqObj.message,
+        keepReqObj.departmentId,
+        keepReqObj.schoolYear,
+        keepReqObj.schoolClass,
+        keepReqObj.userName,
     );
     return new RequestData(requestModel);
   }
