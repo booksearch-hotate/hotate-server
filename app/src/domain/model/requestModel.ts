@@ -1,3 +1,5 @@
+import DepartmentModel from './departmentModel';
+
 export default class RequestModel {
   private id: string;
   private bookName: string;
@@ -5,7 +7,7 @@ export default class RequestModel {
   private publisherName: string;
   private isbn: string;
   private message: string;
-  private departmentId: string;
+  private department: DepartmentModel;
   private schoolYear: string;
   private schoolClass: string;
   private userName: string;
@@ -17,13 +19,12 @@ export default class RequestModel {
       publisherName: string,
       isbn: string,
       message: string,
-      departmentId: string,
+      department: DepartmentModel,
       schoolYear: string,
       schoolClass: string,
       userName: string,
   ) {
     if (userName.length === 0) throw new Error('User name is empty.');
-    if (departmentId.length === 0) throw new Error('The id of the department does not exist.');
     if (schoolYear.length === 0) throw new Error('The grade does not exist.');
     if (schoolClass.length === 0) throw new Error('class does not exist.');
 
@@ -33,7 +34,7 @@ export default class RequestModel {
     this.publisherName = publisherName;
     this.isbn = isbn;
     this.message = message;
-    this.departmentId = departmentId;
+    this.department = department;
     this.schoolYear = schoolYear;
     this.schoolClass = schoolClass;
     this.userName = userName;
@@ -57,8 +58,8 @@ export default class RequestModel {
   get Message(): string {
     return this.message;
   }
-  get DepartmentId(): string {
-    return this.departmentId;
+  get Department(): DepartmentModel {
+    return this.department;
   }
   get SchoolYear(): string {
     return this.schoolYear;
