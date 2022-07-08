@@ -19,6 +19,7 @@ import tagsRouter from '../routers/admin/tags';
 import apiRouter from '../routers/api';
 import settingRouter from '../routers/admin/setting';
 import departmentRouter from '../routers/admin/department';
+import bookRequestRouter from '../routers/admin/bookRequest';
 
 import Logger from '../infrastructure/logger/logger';
 
@@ -105,6 +106,7 @@ app.use('/admin/csv', csvRouter);
 app.use('/admin/tags', tagsRouter);
 app.use('/admin/setting', settingRouter);
 app.use('/admin/department', departmentRouter);
+app.use('/admin/book-request', bookRequestRouter);
 app.use('/api', apiRouter);
 
 // listen
