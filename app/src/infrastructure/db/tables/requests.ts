@@ -23,8 +23,7 @@ export default class Request extends Model {
       },
       book_name: {
         type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: null,
+        allowNull: false,
       },
       author_name: {
         type: DataTypes.STRING,
