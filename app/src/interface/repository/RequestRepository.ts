@@ -22,7 +22,7 @@ export default class RequestRepository implements IRequestApplicationRepository 
       publisher_name: request.PublisherName,
       isbn: request.Isbn,
       message: request.Message,
-      department_id: request.DepartmentId,
+      department_id: request.Department.Id,
       school_year: request.SchoolYear,
       school_class: request.SchoolClass,
       user_name: request.UserName,
