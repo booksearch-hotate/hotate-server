@@ -3,15 +3,15 @@ import csurf from 'csurf';
 
 import AdminService from '../domain/service/adminService';
 
-import AdminApplicationService from '../application/AdminApplicationService';
+import AdminApplicationService from '../application/adminApplicationService';
 
-import AdminRepository from '../interface/repository/AdminRepository';
+import AdminRepository from '../interface/repository/adminRepository';
 
 import db from '../infrastructure/db';
 import Logger from '../infrastructure/logger/logger';
 import AdminSession from '../infrastructure/session';
 
-import AdminData from '../application/dto/AdminData';
+import AdminData from '../application/dto/adminData';
 
 import {IPage} from './datas/IPage';
 

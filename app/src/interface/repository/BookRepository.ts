@@ -1,8 +1,8 @@
-import Book from '../../infrastructure/db/tables/book'; // ここのBookはドメインオブジェクトではない！
-import Author from '../../infrastructure/db/tables/author';
-import Publisher from '../../infrastructure/db/tables/publisher';
-import UsingTag from '../../infrastructure/db/tables/usingTag';
-import Tag from '../../infrastructure/db/tables/tag';
+import Book from '../../infrastructure/db/tables/books'; // ここのBookはドメインオブジェクトではない！
+import Author from '../../infrastructure/db/tables/authors';
+import Publisher from '../../infrastructure/db/tables/publishers';
+import UsingTag from '../../infrastructure/db/tables/usingTags';
+import Tag from '../../infrastructure/db/tables/tags';
 
 import {IBookApplicationRepository} from '../../application/repository/IBookApplicationRepository';
 import BookModel from '../../domain/model/bookModel';

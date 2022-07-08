@@ -4,11 +4,11 @@ import csurf from 'csurf';
 import TagService from '../../domain/service/tagService';
 import BookService from '../../domain/service/bookService';
 
-import TagApplicationService from '../../application/TagApplicationService';
-import BookApplicationService from '../../application/BookApplicationService';
+import TagApplicationService from '../../application/tagApplicationService';
+import BookApplicationService from '../../application/bookApplicationService';
 
-import TagRepository from '../../interface/repository/TagRepository';
-import BookRepository from '../../interface/repository/BookRepository';
+import TagRepository from '../../interface/repository/tagRepository';
+import BookRepository from '../../interface/repository/bookRepository';
 
 import db from '../../infrastructure/db';
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';

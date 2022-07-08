@@ -1,7 +1,7 @@
 import sequelize from 'sequelize';
 
-import Publisher from '../../infrastructure/db/tables/publisher';
-import Book from '../../infrastructure/db/tables/book';
+import Publisher from '../../infrastructure/db/tables/publishers';
+import Book from '../../infrastructure/db/tables/books';
 
 import {IPublisherApplicationRepository} from '../../application/repository/IPublisherApplicationRepository';
 import {IPublisherDomainRepository} from '../../domain/service/repository/IPublisherDomainRepository';

@@ -1,4 +1,5 @@
 import RequestModel from '../../domain/model/requestModel';
+import DepartmentModel from '../../domain/model/departmentModel';
 
 export default class RequestData {
   private id: string;
@@ -7,7 +8,7 @@ export default class RequestData {
   private publisherName: string;
   private isbn: string;
   private message: string;
-  private departmentId: string;
+  private department: DepartmentModel;
   private schoolYear: string;
   private schoolClass: string;
   private userName: string;
@@ -19,7 +20,7 @@ export default class RequestData {
     this.publisherName = requestModel.PublisherName;
     this.isbn = requestModel.Isbn;
     this.message = requestModel.Message;
-    this.departmentId = requestModel.DepartmentId;
+    this.department = requestModel.Department;
     this.schoolYear = requestModel.SchoolYear;
     this.schoolClass = requestModel.SchoolClass;
     this.userName = requestModel.UserName;
@@ -43,8 +44,8 @@ export default class RequestData {
   get Message(): string {
     return this.message;
   }
-  get DepartmentId(): string {
-    return this.departmentId;
+  get Department(): DepartmentModel {
+    return this.department;
   }
   get SchoolYear(): string {
     return this.schoolYear;

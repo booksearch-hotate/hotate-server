@@ -1,10 +1,10 @@
 import {Sequelize} from 'sequelize';
-import Book from './tables/book';
-import Author from './tables/author';
-import Publisher from './tables/publisher';
+import Book from './tables/books';
+import Author from './tables/authors';
+import Publisher from './tables/publishers';
 import Admin from './tables/admin';
-import Tag from './tables/tag';
-import UsingTag from './tables/usingTag';
+import Tag from './tables/tags';
+import UsingTag from './tables/usingTags';
 import Department from './tables/departments';
 import Request from './tables/requests';
 

@@ -1,17 +1,25 @@
 import {IRequestApplicationRepository} from './repository/IRequestApplicationRepository';
+import {IDepartmentRepository} from './repository/IDepartmentApplicationRepository';
+
 import RequestModel from '../domain/model/requestModel';
 import DepartmentModel from '../domain/model/departmentModel';
 
-import RequestData from './dto/RequestData';
+import RequestData from './dto/requestData';
 
 import RequestService from '../domain/service/requestService';
 
 export default class RequestApplicationService {
   private requestRepository: IRequestApplicationRepository;
+  private deparmentRepository: IDepartmentRepository;
   private requestService: RequestService;
 
-  constructor(requestRepository: IRequestApplicationRepository, requestService: RequestService) {
+  constructor(
+      requestRepository: IRequestApplicationRepository,
+      departmentRepository: IDepartmentRepository,
+      requestService: RequestService,
+  ) {
     this.requestRepository = requestRepository;
+    this.deparmentRepository = departmentRepository;
     this.requestService = requestService;
   }
 
@@ -46,10 +54,16 @@ export default class RequestApplicationService {
     await this.requestRepository.register(requestModel);
   }
 
-  public makeData(saveData: any): RequestData {
+  public async makeData(saveData: any): Promise<RequestData> {
     if (typeof saveData !== 'object') throw new Error('The value could not be obtained correctly.');
 
     const keepReqObj = saveData.keepReqObj;
+
+    const departmentId = keepReqObj.departmentId as string;
+
+    const departmentModel = await this.deparmentRepository.findById(departmentId);
+
+    if (departmentModel === null) throw new Error('The name of the department could not be obtained.');
 
     const requestModel = new RequestModel(
         this.requestService.createUUID(),
@@ -58,7 +72,7 @@ export default class RequestApplicationService {
         keepReqObj.publisherName,
         keepReqObj.isbn,
         keepReqObj.message,
-        keepReqObj.departmentId,
+        departmentModel,
         keepReqObj.schoolYear,
         keepReqObj.schoolClass,
         keepReqObj.userName,

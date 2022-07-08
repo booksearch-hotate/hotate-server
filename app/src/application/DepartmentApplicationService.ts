@@ -2,7 +2,7 @@ import DepartmentModel from '../domain/model/departmentModel';
 
 import DepartmentService from '../domain/service/departmentService';
 
-import DepartmentData from './dto/DepartmentData';
+import DepartmentData from './dto/departmentData';
 
 import {IDepartmentRepository} from './repository/IDepartmentApplicationRepository';
 

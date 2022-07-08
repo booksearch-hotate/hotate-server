@@ -1,6 +1,6 @@
-import Book from '../../infrastructure/db/tables/book';
-import Tag from '../../infrastructure/db/tables/tag';
-import UsingTag from '../../infrastructure/db/tables/usingTag';
+import Book from '../../infrastructure/db/tables/books';
+import Tag from '../../infrastructure/db/tables/tags';
+import UsingTag from '../../infrastructure/db/tables/usingTags';
 
 import {ITagApplicationServiceRepository} from '../../application/repository/ITagApplicationServiceRepository';
 import {ITagServiceRepository} from '../../domain/service/repository/ITagServiceRepository';

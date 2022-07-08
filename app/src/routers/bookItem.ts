@@ -4,18 +4,18 @@ import csurf from 'csurf';
 import BookService from '../domain/service/bookService';
 import TagService from '../domain/service/tagService';
 
-import BookApplicationService from '../application/BookApplicationService';
-import TagApplicationService from '../application/TagApplicationService';
+import BookApplicationService from '../application/bookApplicationService';
+import TagApplicationService from '../application/tagApplicationService';
 
-import BookRepository from '../interface/repository/BookRepository';
-import TagRepository from '../interface/repository/TagRepository';
+import BookRepository from '../interface/repository/bookRepository';
+import TagRepository from '../interface/repository/tagRepository';
 
 import db from '../infrastructure/db';
 import EsSearchBook from '../infrastructure/elasticsearch/esBook';
 import Logger from '../infrastructure/logger/logger';
 import AdminSession from '../infrastructure/session';
 
-import BookData from '../application/dto/BookData';
+import BookData from '../application/dto/bookData';
 
 import {IPage} from './datas/IPage';
 

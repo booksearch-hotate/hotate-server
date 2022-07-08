@@ -2,14 +2,14 @@ import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 import {IPage} from './datas/IPage';
 
-import DepartmentRepository from '../interface/repository/DepartmentRepository';
-import RequestRepository from '../interface/repository/RequestRepository';
+import DepartmentRepository from '../interface/repository/departmentRepository';
+import RequestRepository from '../interface/repository/requestRepository';
 
 import DepartmentService from '../domain/service/departmentService';
 import RequestService from '../domain/service/requestService';
 
-import DepartmentApplicationService from '../application/DepartmentApplicationService';
-import RequestApplicationService from '../application/RequestApplicationService';
+import DepartmentApplicationService from '../application/departmentApplicationService';
+import RequestApplicationService from '../application/requestApplicationService';
 
 import db from '../infrastructure/db';
 import Logger from '../infrastructure/logger/logger';
@@ -30,6 +30,7 @@ const departmentApplicationService = new DepartmentApplicationService(
 
 const requestApplicationService = new RequestApplicationService(
     new RequestRepository(db),
+    new DepartmentRepository(db),
     new RequestService,
 );
 
@@ -95,7 +96,7 @@ requestRouter.get('/confirm-request', csrfProtection, async (req: Request, res: 
 
 requestRouter.post('/register', csrfProtection, async (req: Request, res: Response) => {
   try {
-    const requestData = requestApplicationService.makeData(req.session.keepValue);
+    const requestData = await requestApplicationService.makeData(req.session.keepValue);
 
     const id = requestData.Id;
     const bookName = requestData.BookName;
@@ -104,7 +105,7 @@ requestRouter.post('/register', csrfProtection, async (req: Request, res: Respon
     const isbn = requestData.Isbn;
     const message = requestData.Message;
 
-    const departmentId = requestData.DepartmentId;
+    const departmentId = requestData.Department.Id;
     const schoolYear = requestData.SchoolYear;
     const schoolClass = requestData.SchoolClass;
     const userName = requestData.UserName;
