@@ -4,25 +4,33 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <h3>本一覧</h3>
-    <h5>ログイン状態で本の詳細ページを閲覧すると、その本を編集することが可能です</h5>
-    <h5>合計 : <%= pageData.anyData.bookCount %>冊</h5>
-    <div class="add-book-box text-center">
-      <a href="/admin/book-request/add"><h3>本を追加する</h3></a>
-    </div>
+    <%- include('./../../../components/headerTitle', {mes: 'リクエスト一覧'}) %>
     <table class="table table-striped">
       <thead>
         <tr>
           <th>書名</th>
-          <th>リクエスト日時</th>
           <th>詳細</th>
           <th>削除</th>
         </tr>
       </thead>
       <tbody>
+        <% for (let request of pageData.anyData.requests) { %>
+          <tr>
+            <td><%= request.BookName %></td>
+            <td>
+              <%= request.Message %>
+            </td>
+            <td>
+              <form action="/admin/book-request/delete" method="post">
+                <input type="hidden" name="deleteId" value="<%= request.Id %>">
+                <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+                <button type="submit" class="btn btn-danger">削除</button>
+              </form>
+            </td>
+          </tr>
+        <% } %>
       </tbody>
     </table>
-    <%- include('./../../../components/navigation', {paginationData: pageData.anyData.paginationData, url: '/admin/book/?'}) %>
     <div class="text-center">
       <a href="/admin/">戻る</a>
     </div>
