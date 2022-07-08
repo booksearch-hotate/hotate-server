@@ -1,5 +1,6 @@
 import {IRequestApplicationRepository} from './repository/IRequestApplicationRepository';
 import RequestModel from '../domain/model/requestModel';
+import DepartmentModel from '../domain/model/departmentModel';
 
 import RequestData from './dto/RequestData';
 
@@ -22,10 +23,13 @@ export default class RequestApplicationService {
       isbn: string,
       message: string,
       departmentId: string,
+      departmentName: string,
       schoolYear: string,
       schoolClass: string,
       userName: string,
   ) {
+    const department = new DepartmentModel(departmentId, departmentName);
+
     const requestModel = new RequestModel(
         id,
         bookName,
@@ -33,7 +37,7 @@ export default class RequestApplicationService {
         publisherName,
         isbn,
         message,
-        departmentId,
+        department,
         schoolYear,
         schoolClass,
         userName,
