@@ -54,6 +54,14 @@ export default class RequestApplicationService {
     await this.requestRepository.register(requestModel);
   }
 
+  public async findAll(): Promise<RequestData[]> {
+    const requestModel = await this.requestRepository.findAll();
+
+    if (requestModel === null) return [];
+
+    return requestModel.map((item) => new RequestData(item));
+  }
+
   public async makeData(saveData: any): Promise<RequestData> {
     if (typeof saveData !== 'object') throw new Error('The value could not be obtained correctly.');
 
@@ -78,5 +86,9 @@ export default class RequestApplicationService {
         keepReqObj.userName,
     );
     return new RequestData(requestModel);
+  }
+
+  public async delete(id: string): Promise<void> {
+    await this.requestRepository.delete(id);
   }
 }
