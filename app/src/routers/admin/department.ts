@@ -2,11 +2,11 @@ import {Request, Response, Router} from 'express';
 import {IPage} from './../datas/IPage';
 import csurf from 'csurf';
 
-import DepartmentRepository from '../../interface/repository/DepartmentRepository';
+import DepartmentRepository from '../../interface/repository/departmentRepository';
 
 import DepartmentService from '../../domain/service/departmentService';
 
-import DepartmentApplicationService from '../../application/DepartmentApplicationService';
+import DepartmentApplicationService from '../../application/departmentApplicationService';
 
 import db from '../../infrastructure/db';
 import Logger from '../../infrastructure/logger/logger';

@@ -8,16 +8,16 @@ import TagService from '../../domain/service/tagService';
 import AuthorService from '../../domain/service/authorService';
 import PublisherService from '../../domain/service/publisherService';
 
-import BookApplicationService from '../../application/BookApplicationService';
-import TagApplicationService from '../../application/TagApplicationService';
-import AuthorApplicationService from '../../application/AuthorApplicationService';
+import BookApplicationService from '../../application/bookApplicationService';
+import TagApplicationService from '../../application/tagApplicationService';
+import AuthorApplicationService from '../../application/authorApplicationService';
 import PublisherApplicationService
-  from '../../application/PublisherApplicationService';
+  from '../../application/publisherApplicationService';
 
-import BookRepository from '../../interface/repository/BookRepository';
-import TagRepository from '../../interface/repository/TagRepository';
-import AuthorRepository from '../../interface/repository/AuthorRepository';
-import PublisherRepository from '../../interface/repository/PublisherRepository';
+import BookRepository from '../../interface/repository/bookRepository';
+import TagRepository from '../../interface/repository/tagRepository';
+import AuthorRepository from '../../interface/repository/authorRepository';
+import PublisherRepository from '../../interface/repository/publisherRepository';
 
 import db from '../../infrastructure/db';
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';

@@ -1,11 +1,12 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
-import UsingTag from './usingTag';
+import {HasManyCreateAssociationMixin} from 'sequelize';
+import Book from './books';
 
-export default class Tag extends Model {
+export default class Author extends Model {
   public id!: string;
   public name!: string;
-  public created_at!: Date;
-  public updated_at!: Date;
+
+  public createBook!: HasManyCreateAssociationMixin<Book>;
 
   public static initialize(sequelize: Sequelize) {
     this.init({
@@ -15,21 +16,21 @@ export default class Tag extends Model {
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
       },
     }, {
       sequelize,
-      tableName: 'tags',
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
+      tableName: 'authors',
+      timestamps: false,
     });
     return this;
   }
 
   public static associate() {
-    this.hasMany(UsingTag, {
+    this.hasMany(Book, {
       sourceKey: 'id',
-      foreignKey: 'tag_id',
+      foreignKey: 'author_id',
     });
   }
 }

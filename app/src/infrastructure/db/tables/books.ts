@@ -1,7 +1,7 @@
 import {Sequelize, Model, DataTypes, ModelAttributes} from 'sequelize';
 
-import Publisher from './publisher';
-import Author from './author';
+import Publisher from './publishers';
+import Author from './authors';
 
 interface IAttributeObj {
   type: DataTypes.DataType,
