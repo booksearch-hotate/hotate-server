@@ -109,6 +109,11 @@ requestRouter.post('/register', csrfProtection, async (req: Request, res: Respon
     const schoolClass = requestData.SchoolClass;
     const userName = requestData.UserName;
 
+    const departmentData = await departmentApplicationService.findById(departmentId);
+
+    // 学科情報が取得できなかった場合はエラー
+    if (departmentData === null) throw new Error('The name of the department could not be obtained.');
+
     await requestApplicationService.register(
         id,
         bookName,
@@ -116,7 +121,8 @@ requestRouter.post('/register', csrfProtection, async (req: Request, res: Respon
         publisherName,
         isbn,
         message,
-        departmentId,
+        departmentData.Id,
+        departmentData.Name,
         schoolYear,
         schoolClass,
         userName,
