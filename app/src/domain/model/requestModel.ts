@@ -24,6 +24,7 @@ export default class RequestModel {
       schoolClass: string,
       userName: string,
   ) {
+    if (bookName.length === 0) throw new Error('Name of book is empty.');
     if (userName.length === 0) throw new Error('User name is empty.');
     if (schoolYear.length === 0) throw new Error('The grade does not exist.');
     if (schoolClass.length === 0) throw new Error('class does not exist.');
