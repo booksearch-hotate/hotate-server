@@ -2,7 +2,7 @@ import {IAuthorApplicationRepository} from './repository/IAuthorApplicationRepos
 import AuthorModel from '../domain/model/authorModel';
 import AuthorService from '../domain/service/authorService';
 
-import AuthorData from './dto/AuthorData';
+import AuthorData from './dto/authorData';
 
 export default class AuthorApplicationService {
   private readonly authorRepository: IAuthorApplicationRepository;

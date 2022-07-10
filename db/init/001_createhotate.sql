@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS admin (
 
 CREATE TABLE IF NOT EXISTS tags (
   id varchar(255) NOT NULL,
-  name varchar(2555) NOT NULL,
+  name varchar(255) NOT NULL,
   created_at timestamp NOT NULL,
   updated_at timestamp NOT NULL,
   PRIMARY KEY (id)
@@ -52,4 +52,27 @@ CREATE TABLE IF NOT EXISTS using_tags (
   PRIMARY KEY (id),
   FOREIGN KEY (book_id) REFERENCES books(id),
   FOREIGN KEY (tag_id) REFERENCES tags(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS departments (
+  id varchar(255) NOT NULL,
+  name varchar(255) NOT NULL,
+  created_at timestamp NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS requests (
+  id varchar(255) NOT NULL,
+  book_name varchar(255) NOT NULL,
+  author_name varchar(255) NULL DEFAULT NULL,
+  publisher_name varchar(255) NULL DEFAULT NULL,
+  isbn varchar(255) NULL DEFAULT NULL,
+  message text NULL DEFAULT NULL,
+  department_id varchar(255) NOT NULL,
+  school_year varchar(100) NOT NULL,
+  school_class varchar(100) NOT NULL,
+  user_name varchar(255) NOT NULL,
+  created_at timestamp NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (department_id) REFERENCES departments(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

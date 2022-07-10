@@ -3,9 +3,9 @@ import csurf from 'csurf';
 
 import SearchHistoryService from '../../domain/service/searchHistoryService';
 
-import SearchHistoryApplicationService from '../../application/SearchHistoryApplicationService';
+import SearchHistoryApplicationService from '../../application/searchHistoryApplicationService';
 
-import SearchHistoryRepository from '../../interface/repository/SearchHistoryRepository';
+import SearchHistoryRepository from '../../interface/repository/searchHistoryRepository';
 
 
 import EsSearchHistory from '../../infrastructure/elasticsearch/esSearchHistory';

@@ -5,13 +5,13 @@ import BookService from '../../domain/service/bookService';
 import AuthorService from '../../domain/service/authorService';
 import PublisherService from '../../domain/service/publisherService';
 
-import BookApplicationService from '../../application/BookApplicationService';
-import AuthorApplicationService from '../../application/AuthorApplicationService';
-import PublisherApplicationService from '../../application/PublisherApplicationService';
+import BookApplicationService from '../../application/bookApplicationService';
+import AuthorApplicationService from '../../application/authorApplicationService';
+import PublisherApplicationService from '../../application/publisherApplicationService';
 
-import BookRepository from '../../interface/repository/BookRepository';
-import AuthorRepository from '../../interface/repository/AuthorRepository';
-import PublisherRepository from '../../interface/repository/PublisherRepository';
+import BookRepository from '../../interface/repository/bookRepository';
+import AuthorRepository from '../../interface/repository/authorRepository';
+import PublisherRepository from '../../interface/repository/publisherRepository';
 
 
 import db from '../../infrastructure/db';

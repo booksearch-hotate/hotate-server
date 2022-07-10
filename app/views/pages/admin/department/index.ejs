@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+  </head>
+  <body>
+    <h3>学科名一覧</h3>
+    <p>20学科まで追加可能です</p>
+    <div class="insert-department-box">
+      <form action="/admin/department/insert" method="post">
+        <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+        <div class="form-group">
+          <label for="insertName" class="form-label">追加する学科名</label>
+          <input class="form-control" type="text" id="insertName" name="insertName">
+        </div>
+        <button type="submit" class="btn btn-outline-primary" disabled="<%= pageData.anyData.isMax %>">追加</button>
+      </form>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>学科名</th>
+          <th>変更</th>
+          <th>削除</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let department of pageData.anyData.departmentList) { %>
+          <tr>
+            <td><%= department.Name %></td>
+            <td>
+              <form action="/admin/department/edit" method="get">
+                <input type="hidden" name="id" value="<%= department.Id %>">
+                <button type="submit" class="btn btn-outline-success">変更</button>
+              </form>
+            </td>
+            <td>
+              <form action="/admin/department/delete" method="post">
+                <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+                <input type="hidden" name="deleteId" value="<%= department.Id %>">
+                <button type="submit" class="btn btn-danger">削除</button>
+              </form>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <div class="text-center">
+      <a href="/admin/">戻る</a>
+    </div>
+    <%- include('./../../../components/stateToast', {pageData}) %>
+    <%- include('./../../../components/inputJs') %>
+  </body>
+</html>

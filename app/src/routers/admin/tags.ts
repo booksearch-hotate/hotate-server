@@ -3,9 +3,9 @@ import csurf from 'csurf';
 
 import TagService from '../../domain/service/tagService';
 
-import TagApplicationService from '../../application/TagApplicationService';
+import TagApplicationService from '../../application/tagApplicationService';
 
-import TagRepository from '../../interface/repository/TagRepository';
+import TagRepository from '../../interface/repository/tagRepository';
 
 import db from '../../infrastructure/db';
 

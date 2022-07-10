@@ -5,9 +5,9 @@ import Logger from '../../infrastructure/logger/logger';
 
 import {IPage} from '../datas/IPage';
 
-import AdminApplicationService from '../../application/AdminApplicationService';
+import AdminApplicationService from '../../application/adminApplicationService';
 
-import AdminRepository from '../../interface/repository/AdminRepository';
+import AdminRepository from '../../interface/repository/adminRepository';
 
 import AdminService from '../../domain/service/adminService';
 

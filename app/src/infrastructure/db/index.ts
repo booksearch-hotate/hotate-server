@@ -1,10 +1,12 @@
 import {Sequelize} from 'sequelize';
-import Book from './tables/book';
-import Author from './tables/author';
-import Publisher from './tables/publisher';
+import Book from './tables/books';
+import Author from './tables/authors';
+import Publisher from './tables/publishers';
 import Admin from './tables/admin';
-import Tag from './tables/tag';
-import UsingTag from './tables/usingTag';
+import Tag from './tables/tags';
+import UsingTag from './tables/usingTags';
+import Department from './tables/departments';
+import Request from './tables/requests';
 
 import {isLocal} from '../cli/cmdLine';
 
@@ -22,6 +24,8 @@ const db = {
   Admin: Admin.initialize(sequelize),
   Tag: Tag.initialize(sequelize),
   UsingTag: UsingTag.initialize(sequelize),
+  Department: Department.initialize(sequelize),
+  Request: Request.initialize(sequelize),
 };
 
 // テーブル同士の関係を作成
@@ -30,5 +34,7 @@ db.Author.associate();
 db.Publisher.associate();
 db.Tag.associate();
 db.UsingTag.associate();
+db.Department.associate();
+db.Request.associate();
 
 export default db;

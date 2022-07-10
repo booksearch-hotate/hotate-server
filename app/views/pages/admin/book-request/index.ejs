@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+  </head>
+  <body>
+    <%- include('./../../../components/headerTitle', {mes: 'リクエスト一覧'}) %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>書名</th>
+          <th>登録日時</th>
+          <th>詳細</th>
+          <th>削除</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let request of pageData.anyData.requests) { %>
+          <tr>
+            <td><%= request.BookName %></td>
+            <td><%= request.CreatedAt %></td>
+            <td>
+              <a href="/admin/book-request/detail?id=<%= request.Id %>" class="btn btn-success">詳細</a>
+            </td>
+            <td>
+              <form action="/admin/book-request/delete" method="post">
+                <input type="hidden" name="deleteId" value="<%= request.Id %>">
+                <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+                <button type="submit" class="btn btn-danger">削除</button>
+              </form>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <div class="text-center">
+      <a href="/admin/">戻る</a>
+    </div>
+    <%- include('./../../../components/stateToast', {pageData}) %>
+    <%- include('./../../../components/inputJs') %>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../components/head') %>
+  </head>
+  <body>
+    <header class="text-center">
+      <h1>リクエスト</h1>
+      <p>入荷してほしい本を入力してください。<br>入荷した際には図書室から連絡が届きます。</p>
+    </header>
+
+    <main>
+      <form method="POST" action="/confirm" class="px-4">
+        <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+        <div class="mb-3">
+          <label for="bookName" class="form-label">書名</label>
+          <input type="text" class="form-control" id="bookName" name="bookName" placeholder="例) 余命3000文字" value="<%= pageData.anyData.saveVal.bookName %>">
+        </div>
+        <div class="mb-3">
+          <label for="authorName" class="form-label">著者名</label>
+          <input type="text" class="form-control" id="authorName" name="authorName" placeholder="例) 村崎羯諦" value="<%= pageData.anyData.saveVal.authorName %>">
+        </div>
+        <div class="mb-3">
+          <label for="publisherName" class="form-label">出版社名</label>
+          <input type="text" class="form-control" id="publisherName" name="publisherName" placeholder="例) 小学館文庫" value="<%= pageData.anyData.saveVal.publisherName %>">
+        </div>
+        <div class="mb-3">
+          <label for="isbn" class="form-label">ISBN</label>
+          <input type="text" class="form-control" id="isbn" name="isbn" placeholder="例) 9784094068498" value="<%= pageData.anyData.saveVal.isbn %>">
+        </div>
+        <div class="mb-3 form-floating">
+          <input type="text" class="form-control" placeholder="書名が思い出せない場合などに入力してください" id="message" style="height: 100px" name="message"  value="<%= pageData.anyData.saveVal.message %>"></inp>
+          <label for="message">本の内容・その他</label>
+        </div>
+
+        <div class="mb-3 row g-6 align-items-center">
+          <div class="col-auto">
+            <select class="form-select" name="department">
+              <% for (let department of pageData.anyData.departmentList) { %>
+                <option value="<%= department.Id %>"><%= department.Name %></option>
+              <% } %>
+            </select>
+          </div>
+          <div class="col-auto">
+            科
+          </div>
+          <div class="col-auto">
+            <select class="form-select" name="schoolYear">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+          <div class="col-auto">
+            年
+          </div>
+          <div class="col-auto">
+            <select class="form-select" name="class">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+          <div class="col-auto">
+            組
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="userName" class="form-label">名前(必須)</label>
+          <input type="text" class="form-control" id="userName" name="userName" placeholder="例) 大淡路 不知火" required value="<%= pageData.anyData.saveVal.userName %>">
+        </div>
+
+        <div class="text-center">
+          <a href="/" class="btn btn-outline-success">戻る</a>
+          <button type="submit" class="btn btn-outline-primary">確認</button>
+        </div>
+      </form>
+    </main>
+    <%- include('./../components/stateToast', {pageData}) %>
+    <%- include('./../components/inputJs') %>
+  </body>
+</html>

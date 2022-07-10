@@ -4,7 +4,7 @@ import TagService from '../domain/service/tagService';
 
 import {ITagApplicationServiceRepository} from './repository/ITagApplicationServiceRepository';
 
-import TagData from './dto/TagData';
+import TagData from './dto/tagData';
 
 import Logger from '../infrastructure/logger/logger';
 

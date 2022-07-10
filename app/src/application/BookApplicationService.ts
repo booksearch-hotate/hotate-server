@@ -5,7 +5,7 @@ import BookModel from '../domain/model/bookModel';
 import AuthorModel from '../domain/model/authorModel';
 import PublisherModel from '../domain/model/publisherModel';
 import BookService from '../domain/service/bookService';
-import BookData from './dto/BookData';
+import BookData from './dto/bookData';
 
 import searchMode from '../routers/datas/searchModeType';
 
