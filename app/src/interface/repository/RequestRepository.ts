@@ -37,7 +37,7 @@ export default class RequestRepository implements IRequestApplicationRepository 
   }
 
   public async findAll(): Promise<RequestModel[] | null> {
-    const fetchData = await this.db.Request.findAll();
+    const fetchData = await this.db.Request.findAll({order: [['created_at', 'DESC']]});
     if (fetchData === null) return null;
 
     const res = [];
