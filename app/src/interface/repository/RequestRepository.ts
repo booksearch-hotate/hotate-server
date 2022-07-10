@@ -64,6 +64,7 @@ export default class RequestRepository implements IRequestApplicationRepository 
             item.school_year,
             item.school_class,
             item.user_name,
+            item.created_at,
         ));
       } catch (e: any) {
         continue;
