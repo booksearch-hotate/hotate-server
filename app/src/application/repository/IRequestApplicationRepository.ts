@@ -4,4 +4,5 @@ export interface IRequestApplicationRepository {
   register(request: RequestModel): Promise<void>
   delete(id: string): Promise<void>
   findAll(): Promise<RequestModel[] | null>
+  findById(requestId: string): Promise<RequestModel | null>
 }

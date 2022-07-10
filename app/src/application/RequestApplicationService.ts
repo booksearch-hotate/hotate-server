@@ -62,6 +62,12 @@ export default class RequestApplicationService {
     return requestModel.map((item) => new RequestData(item));
   }
 
+  public async findById(requestId: string): Promise<RequestData | null> {
+    const requestModel = await this.requestRepository.findById(requestId);
+
+    return requestModel === null ? null : new RequestData(requestModel);
+  }
+
   public async makeData(saveData: any): Promise<RequestData> {
     if (typeof saveData !== 'object') throw new Error('The value could not be obtained correctly.');
 
