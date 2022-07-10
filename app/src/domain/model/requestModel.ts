@@ -11,6 +11,7 @@ export default class RequestModel {
   private schoolYear: string;
   private schoolClass: string;
   private userName: string;
+  private createdAt: Date;
 
   public constructor(
       id: string,
@@ -23,6 +24,7 @@ export default class RequestModel {
       schoolYear: string,
       schoolClass: string,
       userName: string,
+      createdAt: Date | null = null,
   ) {
     if (bookName.length === 0) throw new Error('Name of book is empty.');
     if (userName.length === 0) throw new Error('User name is empty.');
@@ -39,6 +41,7 @@ export default class RequestModel {
     this.schoolYear = schoolYear;
     this.schoolClass = schoolClass;
     this.userName = userName;
+    this.createdAt = createdAt === null ? new Date() : createdAt;
   }
 
   get Id(): string {
@@ -70,5 +73,8 @@ export default class RequestModel {
   }
   get UserName(): string {
     return this.userName;
+  }
+  get CreatedAt(): Date {
+    return this.createdAt;
   }
 }

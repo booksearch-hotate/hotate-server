@@ -9,7 +9,7 @@
       <thead>
         <tr>
           <th>書名</th>
-          <th>詳細</th>
+          <th>登録日時</th>
           <th>削除</th>
         </tr>
       </thead>
@@ -17,9 +17,7 @@
         <% for (let request of pageData.anyData.requests) { %>
           <tr>
             <td><%= request.BookName %></td>
-            <td>
-              <%= request.Message %>
-            </td>
+            <td><%= request.CreatedAt %></td>
             <td>
               <form action="/admin/book-request/delete" method="post">
                 <input type="hidden" name="deleteId" value="<%= request.Id %>">
