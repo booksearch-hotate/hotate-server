@@ -33,10 +33,6 @@
 
 [主要な問題とその解決方法](./DOC/resolve-problem.md)
 
-## 詳しい更新履歴
-
-[CHANGELOG](./CHANGELOG.md)
-
 ## 開発者向けドキュメント
 
 [開発者向けドキュメント](./DOC/dear-developer.md)
