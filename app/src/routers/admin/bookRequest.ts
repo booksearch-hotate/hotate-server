@@ -12,6 +12,8 @@ import DepartmentRepository from '../../interface/repository/departmentRepositor
 import Logger from '../../infrastructure/logger/logger';
 import db from '../../infrastructure/db';
 
+import conversionpageStatus from '../../modules/conversionPageStatus';
+
 // eslint-disable-next-line new-cap
 const bookRequestRouter = Router();
 
@@ -34,7 +36,31 @@ bookRequestRouter.get('/', csrfProtection, async (req: Request, res: Response) =
   pageData.csrfToken = req.csrfToken();
   pageData.anyData = {requests};
 
+  pageData.status = conversionpageStatus(req.session.status);
+  req.session.status = undefined;
+
   res.render('pages/admin/book-request/index', {pageData});
+});
+
+bookRequestRouter.get('/detail', async (req: Request, res: Response) => {
+  try {
+    const requestId = req.query.id;
+
+    if (typeof requestId !== 'string') throw new Error('Failed to get id.');
+
+    const requestData = await requestApplicationService.findById(requestId);
+
+    if (requestData === null) throw new Error('Request data did not exist.');
+
+    pageData.headTitle = '本リクエストの詳細 | HOTATE';
+    pageData.anyData = {request: requestData};
+
+    res.render('pages/admin/book-request/detail', {pageData});
+  } catch (e: any) {
+    logger.error(e);
+    req.session.status = {type: 'Failure', error: e, mes: 'リクエスト情報の取得に失敗しました'};
+    res.redirect('/admin/book-request/');
+  }
 });
 
 bookRequestRouter.post('/delete', csrfProtection, async (req: Request, res: Response) => {

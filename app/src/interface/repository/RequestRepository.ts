@@ -73,4 +73,33 @@ export default class RequestRepository implements IRequestApplicationRepository 
 
     return res;
   }
+
+  public async findById(requestId: string): Promise<RequestModel | null> {
+    const fetchData = await this.db.Request.findOne({where: {id: requestId}});
+
+    if (fetchData === null) return null;
+
+    const fetchDepartmentData = await this.db.Department.findOne({where: {id: fetchData.department_id}});
+
+    if (fetchDepartmentData === null) throw new Error(`Request data existed, but departmental data did not.  requestId: ${fetchData.id}`);
+
+    const departmentModel = new DepartmentModel(
+        fetchDepartmentData.id,
+        fetchDepartmentData.name,
+    );
+
+    return new RequestModel(
+        fetchData.id,
+        fetchData.book_name,
+        fetchData.author_name,
+        fetchData.publisher_name,
+        fetchData.isbn,
+        fetchData.message,
+        departmentModel,
+        fetchData.school_year,
+        fetchData.school_class,
+        fetchData.user_name,
+        fetchData.created_at,
+    );
+  }
 }
