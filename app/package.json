@@ -11,7 +11,7 @@
     "eslint-fix": "eslint --fix --ext .ts src/*"
   },
   "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0 license",
   "dependencies": {
     "app-root-path": "^3.0.0",
     "axios": "^0.27.2",
