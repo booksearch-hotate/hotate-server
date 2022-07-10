@@ -7,7 +7,7 @@ import {IEsAuthor} from './documents/IEsAuthor';
 import {IEsBook} from './documents/IEsBook';
 import {IEsPublisher} from './documents/IEsPublisher';
 
-import esDocuments from './documents/DocumentType';
+import esDocuments from './documents/documentType';
 
 /**
  * csvファイルからbulk apiを作成する関係のクラスです。

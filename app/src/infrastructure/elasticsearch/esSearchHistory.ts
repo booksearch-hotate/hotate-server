@@ -2,7 +2,7 @@ import ElasticSearch from './elasticsearch';
 import axios from 'axios';
 import SearchHistoryModel from '../../domain/model/searchHistoryModel';
 
-import esDocuments from './documents/DocumentType';
+import esDocuments from './documents/documentType';
 
 export default class EsSearchHistory extends ElasticSearch {
   private total = 0;
