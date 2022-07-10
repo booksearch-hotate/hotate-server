@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import {IEsAuthor} from './documents/IEsAuthor';
 
-import esDocuments from './documents/DocumentType';
+import esDocuments from './documents/documentType';
 
 export default class EsAuthor extends EsCsv {
   constructor(index: esDocuments) {

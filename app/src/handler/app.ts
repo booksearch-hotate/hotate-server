@@ -29,7 +29,7 @@ import ResStatus from '../infrastructure/session/status/resStatus';
 
 import ElasticSearch from '../infrastructure/elasticsearch/elasticsearch';
 
-import esDocuments from '../infrastructure/elasticsearch/documents/DocumentType';
+import esDocuments from '../infrastructure/elasticsearch/documents/documentType';
 
 const app: Application = express();
 const logger = new Logger('system');
