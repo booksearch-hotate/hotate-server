@@ -18,7 +18,7 @@ const itemComponentLink = './../../../components/confirmRequestItem';
       <%- include(itemComponentLink, {title: 'ISBN', content: pageData.anyData.request.Isbn}) %>
       <%- include(itemComponentLink, {title: '内容', content: pageData.anyData.request.Message}) %>
       <%- include(itemComponentLink, {title: '日時', content: pageData.anyData.request.CreatedAt}) %>
-      <%- include(itemComponentLink, {title: '名前', content: `${pageData.anyData.request.Department.Name}科${pageData.anyData.request.SchoolYear}年${pageData.anyData.request.SchoolClass}組 ${pageData.anyData.request.UserName}`}) %>
+      <%- include(itemComponentLink, {title: '名前', content: `${pageData.anyData.request.StudentInfo} ${pageData.anyData.request.UserName}`}) %>
       <a href="/admin/book-request">戻る</a>
     </main>
     <%- include('./../../../components/inputJs') %>
