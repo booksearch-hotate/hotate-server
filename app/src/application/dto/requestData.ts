@@ -13,6 +13,7 @@ export default class RequestData {
   private schoolClass: string;
   private userName: string;
   private createAt: Date;
+  private studentInfo: string;
 
   public constructor(requestModel: RequestModel) {
     this.id = requestModel.Id;
@@ -26,6 +27,7 @@ export default class RequestData {
     this.schoolClass = requestModel.SchoolClass;
     this.userName = requestModel.UserName;
     this.createAt = requestModel.CreatedAt;
+    this.studentInfo = requestModel.makeStudentInfo();
   }
 
   get Id(): string {
@@ -60,5 +62,8 @@ export default class RequestData {
   }
   get CreatedAt(): Date {
     return this.createAt;
+  }
+  get StudentInfo(): string {
+    return this.studentInfo;
   }
 }
