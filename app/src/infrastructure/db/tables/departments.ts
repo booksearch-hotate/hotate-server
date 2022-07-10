@@ -1,37 +1,38 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
 import {HasManyCreateAssociationMixin} from 'sequelize';
-import Book from './book';
 
-export default class Publisher extends Model {
+import Request from './requests';
+
+export default class Department extends Model {
   public id!: string;
   public name!: string;
 
-  public createBook!: HasManyCreateAssociationMixin<Book>;
+  public createBook!: HasManyCreateAssociationMixin<Request>;
 
   public static initialize(sequelize: Sequelize) {
     this.init({
       id: {
         type: DataTypes.STRING,
         primaryKey: true,
-        autoIncrement: true,
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: null,
+        allowNull: false,
       },
     }, {
       sequelize,
-      tableName: 'publishers',
-      timestamps: false,
+      tableName: 'departments',
+      timestamps: true,
+      createdAt: 'created_at',
+      updatedAt: false,
     });
     return this;
   }
 
   public static associate() {
-    this.hasMany(Book, {
+    this.hasMany(Request, {
       sourceKey: 'id',
-      foreignKey: 'publisher_id',
+      foreignKey: 'department_id',
     });
   }
 }

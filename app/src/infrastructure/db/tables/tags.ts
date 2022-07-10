@@ -1,37 +1,35 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
-import {HasManyCreateAssociationMixin} from 'sequelize';
-import Book from './book';
+import UsingTag from './usingTags';
 
-export default class Author extends Model {
+export default class Tag extends Model {
   public id!: string;
   public name!: string;
-
-  public createBook!: HasManyCreateAssociationMixin<Book>;
+  public created_at!: Date;
+  public updated_at!: Date;
 
   public static initialize(sequelize: Sequelize) {
     this.init({
       id: {
         type: DataTypes.STRING,
         primaryKey: true,
-        autoIncrement: true,
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: null,
+        allowNull: false,
       },
     }, {
       sequelize,
-      tableName: 'authors',
-      timestamps: false,
+      tableName: 'tags',
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
     });
     return this;
   }
 
   public static associate() {
-    this.hasMany(Book, {
+    this.hasMany(UsingTag, {
       sourceKey: 'id',
-      foreignKey: 'author_id',
+      foreignKey: 'tag_id',
     });
   }
 }

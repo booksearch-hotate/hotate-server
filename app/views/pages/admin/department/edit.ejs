@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+  </head>
+  <body>
+    <h3>学科名の変更</h3>
+    <form action="/admin/department/update" method="post">
+      <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+      <input type="hidden" name="id" value="<%= pageData.anyData.department.Id %>">
+      <div class="form-group">
+        <label for="name" class="form-label">学科名の名称</label>
+        <input class="form-control" type="text" id="name" name="name" value="<%= pageData.anyData.department.Name %>">
+      </div>
+      <button class="btn btn-primary">確定</button>
+    </form>
+    <div class="text-center">
+      <a href="/admin/department/">戻る</a>
+    </div>
+    <%- include('./../../../components/stateToast', {pageData}) %>
+    <%- include('./../../../components/inputJs') %>
+  </body>
+</html>

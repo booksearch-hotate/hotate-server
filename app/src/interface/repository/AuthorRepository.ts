@@ -1,5 +1,5 @@
-import Author from '../../infrastructure/db/tables/author';
-import Book from '../../infrastructure/db/tables/book';
+import Author from '../../infrastructure/db/tables/authors';
+import Book from '../../infrastructure/db/tables/books';
 
 import {IAuthorApplicationRepository} from '../../application/repository/IAuthorApplicationRepository';
 import {IAuthorDomainRepository} from '../../domain/service/repository/IAuthorDomainRepository';

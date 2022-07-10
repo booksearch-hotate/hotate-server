@@ -1,6 +1,6 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
-import Tag from './tag';
-import Book from './book';
+import Tag from './tags';
+import Book from './books';
 
 export default class UsingTag extends Model {
   public id!: number;

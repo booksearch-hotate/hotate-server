@@ -1,0 +1,26 @@
+<%
+const itemComponentLink = './../../../components/confirmRequestItem'; 
+%>
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+  </head>
+  <body>
+    <header class="text-center">
+      <h1>リクスト内容の詳細</h1>
+    </header>
+
+    <main>
+      <%- include(itemComponentLink, {title: '書名', content: pageData.anyData.request.BookName}) %>
+      <%- include(itemComponentLink, {title: '著者名', content: pageData.anyData.request.AuthorName}) %>
+      <%- include(itemComponentLink, {title: '出版社名', content: pageData.anyData.request.PublisherName}) %>
+      <%- include(itemComponentLink, {title: 'ISBN', content: pageData.anyData.request.Isbn}) %>
+      <%- include(itemComponentLink, {title: '内容', content: pageData.anyData.request.Message}) %>
+      <%- include(itemComponentLink, {title: '日時', content: pageData.anyData.request.CreatedAt}) %>
+      <%- include(itemComponentLink, {title: '名前', content: `${pageData.anyData.request.Department.Name}科${pageData.anyData.request.SchoolYear}年${pageData.anyData.request.SchoolClass}組 ${pageData.anyData.request.UserName}`}) %>
+      <a href="/admin/book-request">戻る</a>
+    </main>
+    <%- include('./../../../components/inputJs') %>
+  </body>
+</html>
