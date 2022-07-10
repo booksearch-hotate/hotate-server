@@ -44,6 +44,10 @@ export default class RequestModel {
     this.createdAt = createdAt === null ? new Date() : createdAt;
   }
 
+  public makeStudentInfo(): string {
+    return `${this.SchoolYear}年 ${this.department.Name}科 ${this.SchoolClass}組`;
+  }
+
   get Id(): string {
     return this.id;
   }
