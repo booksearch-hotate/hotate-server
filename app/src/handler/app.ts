@@ -101,7 +101,7 @@ app.use('/', searchRouter);
 app.use('/', requestRouter);
 app.use('/admin', adminRouter);
 app.use('/admin/book', bookRouter);
-app.use('/admin/search_history', searchHistoryRouter);
+app.use('/admin/search-history', searchHistoryRouter);
 app.use('/admin/csv', csvRouter);
 app.use('/admin/tags', tagsRouter);
 app.use('/admin/setting', settingRouter);
