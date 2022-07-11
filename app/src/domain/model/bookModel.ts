@@ -91,8 +91,10 @@ export default class BookModel {
   set Ndc(ndc: number | null) {
     if (ndc !== null && ndc.toString().length < 1) {
       logger.warn('NDC format is incorrect; set to NULL.');
-      ndc = null;
+      this.ndc = null;
+      return;
     }
+
     try {
       Number(ndc);
       this.ndc = ndc;
@@ -110,6 +112,7 @@ export default class BookModel {
       year = null;
       return;
     }
+
     this.year = year;
   }
 
