@@ -23,7 +23,7 @@ import Logger from '../../infrastructure/logger/logger';
 import {IPage} from '../datas/IPage';
 import {IPaginationData} from '../datas/IPaginationData';
 
-import getPaginationInfo from '../../utils/getPaginationInfo';
+import PaginationInfo from '../../utils/getPaginationInfo';
 import conversionpageCounter from '../../utils/conversionPageCounter';
 import isSameLenAllArray from '../../utils/isSameLenAllArray';
 import conversionpageStatus from '../../utils/conversionPageStatus';
@@ -59,7 +59,7 @@ bookRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
 
   const total = await bookApplicationService.findAllCount();
 
-  const paginationInfo = getPaginationInfo(pageCount, total);
+  const paginationInfo = new PaginationInfo(pageCount, total, books.length, 10).getPaginationInfo();
 
   const paginationData: IPaginationData = {
     pageRange: {
