@@ -78,7 +78,7 @@ export default class BookModel {
   set Isbn(isbn: string | null) {
     if (isbn === '') isbn = null;
     if (isbn !== null && isbn.length < 10) {
-      logger.warn(`ISBNの桁数が足りません${isbn} ${typeof isbn}`);
+      logger.warn('There are not enough digits in isbn.');
       isbn = null;
     }
     // もしもisbnが13桁でハイフンがない場合はハイフンを追加する
