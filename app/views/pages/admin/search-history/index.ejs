@@ -19,7 +19,7 @@
             <td><%= tag.Words %></td>
             <td><%= tag.CreatedAt %></td>
             <td>
-              <form action="/admin/search_history/delete" method="post">
+              <form action="/admin/search-history/delete" method="post">
                 <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
                 <input type="hidden" name="id" value="<%= tag.Id %>">
                 <button type="submit" class="btn btn-danger">削除</button>
@@ -29,7 +29,7 @@
         <% } %>
       </tbody>
     </table>
-    <%- include('./../../../components/navigation', {paginationData: pageData.anyData.paginationData, url: '/admin/search_history/?'}) %>
+    <%- include('./../../../components/navigation', {paginationData: pageData.anyData.paginationData, url: '/admin/search-history/?'}) %>
     <div class="text-center">
       <a href="/admin/">戻る</a>
     </div>
