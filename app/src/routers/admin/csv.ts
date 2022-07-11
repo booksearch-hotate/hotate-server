@@ -190,7 +190,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
     });
     const endTimer = performance.now();
 
-    console.log(`CSVファイルの読み込みに ${endTimer - startTimer}ms で終了しました。`);
+    logger.debug(`CSVファイルの読み込みに ${endTimer - startTimer}ms で終了しました。`);
   } catch (e) {
     logger.error(e as string);
 
