@@ -89,8 +89,6 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
     pageCount,
   };
 
-  console.log(resDatas);
-
   pageData.headTitle = '検索結果 | HOTATE';
   pageData.anyData = {
     searchRes: resDatas,
