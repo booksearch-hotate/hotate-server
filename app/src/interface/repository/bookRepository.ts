@@ -257,9 +257,10 @@ export default class BookRepository implements IBookApplicationRepository {
   }
 
   public async findAll(pageCount: number): Promise<BookModel[]> {
+    const FETCH_DATA_NUM = 20;
     const books = await this.db.Book.findAll({
-      limit: 10,
-      offset: pageCount * 10,
+      limit: FETCH_DATA_NUM,
+      offset: pageCount * FETCH_DATA_NUM,
     });
 
     const bookModels: BookModel[] = [];
