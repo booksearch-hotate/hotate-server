@@ -11,6 +11,10 @@ import searchMode from '../routers/datas/searchModeType';
 
 import {getImgLink} from '../infrastructure/api/openbd';
 
+import Logger from '../infrastructure/logger/logger';
+
+const logger = new Logger('bookApplicationService');
+
 export default class BookApplicationService {
   private readonly bookRepository: IBookApplicationRepository;
   private readonly bookService: BookService;
@@ -62,7 +66,7 @@ export default class BookApplicationService {
       );
       await this.bookRepository.save(book);
     } catch (e: any) {
-      console.error(e);
+      logger.error(e);
     }
   }
 
