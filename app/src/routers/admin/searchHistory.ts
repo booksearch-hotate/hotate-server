@@ -52,7 +52,7 @@ searchHistoryRouter.get('/', csrfProtection, async (req: Request, res: Response)
     paginationData,
   };
   pageData.csrfToken = req.csrfToken();
-  res.render('pages/admin/search_history/index', {pageData});
+  res.render('pages/admin/search-history/index', {pageData});
 });
 
 /* 検索履歴削除 */
@@ -63,7 +63,7 @@ searchHistoryRouter.post('/delete', csrfProtection, async (req: Request, res: Re
   } catch (e) {
   }
 
-  res.redirect('/admin/search_history/');
+  res.redirect('/admin/search-history/');
 });
 
 export default searchHistoryRouter;
