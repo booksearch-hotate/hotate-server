@@ -157,7 +157,9 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
           authorName,
           publisherId,
           publisherName,
-      ));
+      ).catch((e: any) => {
+        logger.error(`Failed to add book.  bookName: ${row[req.body.bookName]}`);
+      }));
 
       if (i % 50 == 0) { // 50件ごとにブロードキャスト
         broadcast({
