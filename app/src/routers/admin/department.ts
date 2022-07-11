@@ -106,8 +106,6 @@ departmentRouter.post('/update', csrfProtection, async (req: Request, res: Respo
 
     if (id !== req.session.keepValue) throw new Error('There is a discrepancy in the id.');
 
-    console.log('hey');
-
     await departmentApplicationService.update(id, name);
 
     req.session.status = {type: 'Success', mes: '変更に成功しました'};
