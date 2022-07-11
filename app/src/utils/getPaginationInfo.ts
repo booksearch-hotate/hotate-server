@@ -1,6 +1,6 @@
 /**
  * ページネーションに関する情報を取得
- * @param query クエリとして指定されたページ数
+ * @param pageCount クエリとして指定されたページ数
  * @param total 全体のデータ件数
  * @returns ページング情報
  */
