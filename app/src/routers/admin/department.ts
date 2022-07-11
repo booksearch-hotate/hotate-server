@@ -10,7 +10,7 @@ import DepartmentApplicationService from '../../application/departmentApplicatio
 
 import db from '../../infrastructure/db';
 import Logger from '../../infrastructure/logger/logger';
-import conversionpageStatus from '../../modules/conversionPageStatus';
+import conversionpageStatus from '../../utils/conversionPageStatus';
 
 // eslint-disable-next-line new-cap
 const departmentRouter = Router();

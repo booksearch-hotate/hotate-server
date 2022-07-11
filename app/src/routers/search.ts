@@ -22,8 +22,8 @@ import {IPaginationData} from './datas/IPaginationData';
 
 import searchMode from './datas/searchModeType';
 
-import getPaginationInfo from '../modules/getPaginationInfo';
-import conversionpageCounter from '../modules/conversionPageCounter';
+import getPaginationInfo from '../utils/getPaginationInfo';
+import conversionpageCounter from '../utils/conversionPageCounter';
 
 // eslint-disable-next-line new-cap
 const searchRouter = Router();

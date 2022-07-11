@@ -19,7 +19,7 @@ import BookData from '../application/dto/bookData';
 
 import {IPage} from './datas/IPage';
 
-import conversionpageStatus from '../modules/conversionPageStatus';
+import conversionpageStatus from '../utils/conversionPageStatus';
 
 // eslint-disable-next-line new-cap
 const bookItemRouter = Router();

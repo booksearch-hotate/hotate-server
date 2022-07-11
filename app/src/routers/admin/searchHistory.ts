@@ -13,8 +13,8 @@ import EsSearchHistory from '../../infrastructure/elasticsearch/esSearchHistory'
 import {IPage} from '../datas/IPage';
 import {IPaginationData} from '../datas/IPaginationData';
 
-import getPaginationInfo from '../../modules/getPaginationInfo';
-import conversionpageCounter from '../../modules/conversionPageCounter';
+import getPaginationInfo from '../../utils/getPaginationInfo';
+import conversionpageCounter from '../../utils/conversionPageCounter';
 
 // eslint-disable-next-line new-cap
 const searchHistoryRouter = Router();
