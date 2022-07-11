@@ -76,34 +76,13 @@ export default class BookModel {
     return this.isbn;
   }
   set Isbn(isbn: string | null) {
-    if (isbn === '') isbn = null;
-    if (isbn !== null && isbn.length < 10) {
+    if (isbn === '' || isbn === null || isbn.length < 10) {
       logger.warn('There are not enough digits in isbn.');
-      isbn = null;
+      this.isbn = null;
+      return;
     }
-    // もしもisbnが13桁でハイフンがない場合はハイフンを追加する
-    if (isbn !== null && isbn.length === 13 && isbn.indexOf('-') === -1) {
-      const firstNum = isbn.substring(0, 3);
-      const contryCode = isbn.substring(3, 4);
-      const publisherNum = isbn.substring(4, 8);
-      const bookNum = isbn.substring(8, 12);
-      const checkDigit = isbn.substring(12, 13);
-      this.isbn = [
-        firstNum,
-        contryCode,
-        publisherNum,
-        bookNum,
-        checkDigit,
-      ].join('-');
-    } else if (isbn !== null) {
-      if (isbn.indexOf('-') !== -1) {
-        const num = isbn.replace(/-/g, '');
-        if (num.length !== 13) this.isbn = null;
-        else this.isbn = isbn;
-      } else {
-        this.isbn = isbn;
-      }
-    }
+
+    this.isbn = isbn;
   }
 
   get Ndc(): number | null {
@@ -129,6 +108,7 @@ export default class BookModel {
     if (year !== null && year.toString().length < 4) {
       logger.warn('Year format is incorrect; set to NULL.');
       year = null;
+      return;
     }
     this.year = year;
   }
