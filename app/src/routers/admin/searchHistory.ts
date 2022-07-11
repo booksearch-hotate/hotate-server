@@ -13,7 +13,8 @@ import EsSearchHistory from '../../infrastructure/elasticsearch/esSearchHistory'
 import {IPage} from '../datas/IPage';
 import {IPaginationData} from '../datas/IPaginationData';
 
-import getPaginationInfo from '../../utils/getPaginationInfo';
+import PaginationInfo from '../../utils/getPaginationInfo';
+
 import conversionpageCounter from '../../utils/conversionPageCounter';
 
 // eslint-disable-next-line new-cap
@@ -35,7 +36,7 @@ searchHistoryRouter.get('/', csrfProtection, async (req: Request, res: Response)
   const searchHistory = await searchHistoryApplicationService.find(pageCount);
   const total = await searchHistoryApplicationService.findAllCount();
 
-  const paginationInfo = getPaginationInfo(pageCount, total);
+  const paginationInfo = new PaginationInfo(pageCount, total, searchHistory.length, 5).getPaginationInfo();
 
   const paginationData: IPaginationData = {
     pageRange: {
