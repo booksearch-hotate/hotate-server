@@ -5,7 +5,7 @@ export default class PaginationInfo {
   private total: number;
   private paginationMargin: number;
 
-  private MIN_ITEM_COUNT = 5;
+  private MIN_ITEM_COUNT = 0;
   private MAX_ITEM_COUNT = 20;
   private MIN_PAGINATION_COUNT = 3;
   private MAX_PAGINATION_COUNT = 10;
