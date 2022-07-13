@@ -9,9 +9,9 @@ import AdminRepository from '../interface/repository/adminRepository';
 
 import db from '../infrastructure/db';
 import Logger from '../infrastructure/logger/logger';
-import AdminSession from '../infrastructure/session';
+import AdminSession from '../presentation/session';
 
-import AdminData from '../application/dto/adminData';
+import AdminData from '../presentation/mapper/adminData';
 
 import {IPage} from './datas/IPage';
 

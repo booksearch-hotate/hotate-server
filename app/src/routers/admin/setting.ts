@@ -11,7 +11,7 @@ import AdminRepository from '../../interface/repository/adminRepository';
 
 import AdminService from '../../domain/service/adminService';
 
-import AdminSession from '../../infrastructure/session';
+import AdminSession from '../../presentation/session';
 import db from '../../infrastructure/db';
 
 // eslint-disable-next-line new-cap
