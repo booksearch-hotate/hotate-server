@@ -1,7 +1,7 @@
 import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 import multer from 'multer';
-import {broadcast} from '../../handler/websocket';
+import {broadcast} from '../../handler/ws';
 
 import BookService from '../../domain/service/bookService';
 import TagService from '../../domain/service/tagService';
