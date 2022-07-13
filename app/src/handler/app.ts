@@ -25,7 +25,7 @@ import Logger from '../infrastructure/logger/logger';
 
 import {isLocal} from '../infrastructure/cli/cmdLine';
 
-import ResStatus from '../infrastructure/session/status/resStatus';
+import ResStatus from '../presentation/session/status/resStatus';
 
 import ElasticSearch from '../infrastructure/elasticsearch/elasticsearch';
 

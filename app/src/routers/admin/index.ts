@@ -8,10 +8,10 @@ import AdminRepository from '../../interface/repository/adminRepository';
 import AdminApplicationService from '../../application/adminApplicationService';
 
 import db from '../../infrastructure/db';
-import AdminSession from '../../infrastructure/session';
+import AdminSession from '../../presentation/session';
 import Logger from '../../infrastructure/logger/logger';
 
-import AdminData from '../../application/dto/adminData';
+import AdminData from '../../presentation/mapper/adminData';
 
 import {IPage} from '../datas/IPage';
 
