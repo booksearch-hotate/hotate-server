@@ -85,7 +85,8 @@ export default class EsSearchHistory extends ElasticSearch {
    * @returns 検索履歴のモデル
    */
   public async find(count: number): Promise<SearchHistoryModel[]> {
-    const fromVal = count * 10;
+    const FETCH_DATA_NUM = 20;
+    const fromVal = count * FETCH_DATA_NUM;
     const res = await axios.get(`${this.uri}/_search`, {
       headers: {
         'Content-Type': 'application/json',
@@ -95,7 +96,7 @@ export default class EsSearchHistory extends ElasticSearch {
           match_all: {},
         },
         from: fromVal,
-        size: 10,
+        size: FETCH_DATA_NUM,
         sort: {
           'created_at': {
             order: 'desc',

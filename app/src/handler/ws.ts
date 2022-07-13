@@ -3,7 +3,7 @@ import WebSocket from 'ws';
 let wss: WebSocket.Server;
 
 interface broadcastData {
-  progress: string,
+  progress: 'init' | 'error' | 'complete' | 'progress',
   data: {
     current: number,
     total: number,

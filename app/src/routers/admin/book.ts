@@ -23,10 +23,10 @@ import Logger from '../../infrastructure/logger/logger';
 import {IPage} from '../datas/IPage';
 import {IPaginationData} from '../datas/IPaginationData';
 
-import getPaginationInfo from '../../modules/getPaginationInfo';
-import conversionpageCounter from '../../modules/conversionPageCounter';
-import isSameLenAllArray from '../../modules/isSameLenAllArray';
-import conversionpageStatus from '../../modules/conversionPageStatus';
+import getPaginationInfo from '../../utils/getPaginationInfo';
+import conversionpageCounter from '../../utils/conversionPageCounter';
+import isSameLenAllArray from '../../utils/isSameLenAllArray';
+import conversionpageStatus from '../../utils/conversionPageStatus';
 
 // eslint-disable-next-line new-cap
 const bookRouter = Router();
@@ -59,7 +59,7 @@ bookRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
 
   const total = await bookApplicationService.findAllCount();
 
-  const paginationInfo = getPaginationInfo(pageCount, total);
+  const paginationInfo = getPaginationInfo(pageCount, total, books.length, 10);
 
   const paginationData: IPaginationData = {
     pageRange: {

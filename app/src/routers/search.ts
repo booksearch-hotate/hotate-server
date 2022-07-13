@@ -22,8 +22,8 @@ import {IPaginationData} from './datas/IPaginationData';
 
 import searchMode from './datas/searchModeType';
 
-import getPaginationInfo from '../modules/getPaginationInfo';
-import conversionpageCounter from '../modules/conversionPageCounter';
+import getPaginationInfo from '../utils/getPaginationInfo';
+import conversionpageCounter from '../utils/conversionPageCounter';
 
 // eslint-disable-next-line new-cap
 const searchRouter = Router();
@@ -72,7 +72,9 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
     searchHisDatas = searchHis as SearchHistoryData[];
 
     const total = await bookApplicationService.getTotalResults(searchWord, searchMode);
-    const paginationInfo = getPaginationInfo(pageCount, total);
+
+    const paginationInfo = getPaginationInfo(pageCount, total, 10, 7);
+
     totalPage = paginationInfo.totalPage;
     minPage = paginationInfo.minPage;
     maxPage = paginationInfo.maxPage;
@@ -86,8 +88,6 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
     totalPage,
     pageCount,
   };
-
-  console.log(resDatas);
 
   pageData.headTitle = '検索結果 | HOTATE';
   pageData.anyData = {

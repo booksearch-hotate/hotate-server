@@ -12,7 +12,7 @@ import DepartmentRepository from '../../interface/repository/departmentRepositor
 import Logger from '../../infrastructure/logger/logger';
 import db from '../../infrastructure/db';
 
-import conversionpageStatus from '../../modules/conversionPageStatus';
+import conversionpageStatus from '../../utils/conversionPageStatus';
 
 // eslint-disable-next-line new-cap
 const bookRequestRouter = Router();

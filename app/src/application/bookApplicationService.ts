@@ -11,6 +11,10 @@ import searchMode from '../routers/datas/searchModeType';
 
 import {getImgLink} from '../infrastructure/api/openbd';
 
+import Logger from '../infrastructure/logger/logger';
+
+const logger = new Logger('bookApplicationService');
+
 export default class BookApplicationService {
   private readonly bookRepository: IBookApplicationRepository;
   private readonly bookService: BookService;
@@ -36,11 +40,11 @@ export default class BookApplicationService {
    */
   public async createBook(
       bookName: string,
-      subName: string | null,
-      content: string | null,
-      isbn: string | null,
-      ndc: number | null,
-      year: number | null,
+      subName: string | undefined,
+      content: string | undefined,
+      isbn: string | undefined,
+      ndc: number | undefined,
+      year: number | undefined,
       authorId: string,
       authorName: string,
       publisherId: string,
@@ -52,17 +56,17 @@ export default class BookApplicationService {
       const book = new BookModel(
           this.bookService.createUUID(),
           bookName,
-          subName,
-          content,
-          isbn,
-          ndc,
-          year,
+          subName === undefined ? null : subName,
+          content === undefined ? null : content,
+          isbn === undefined ? null : isbn,
+          ndc === undefined ? null : ndc,
+          year === undefined ? null : year,
           author,
           publisher,
       );
       await this.bookRepository.save(book);
     } catch (e: any) {
-      console.error(e);
+      logger.error(e);
     }
   }
 
