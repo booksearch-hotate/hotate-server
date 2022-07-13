@@ -15,8 +15,6 @@ ws.onmessage = (event) => {
   const data = JSON.parse(event.data)
   const progress = data.progress // 現在の進捗状況(string)
 
-  console.log(data)
-
   if (progress === 'init') {
     headerText.innerText = 'データを初期化中...'
     console.log('init')

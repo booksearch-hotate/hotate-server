@@ -1,7 +1,7 @@
 import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 import multer from 'multer';
-import {broadcast} from '../../handler/websocket';
+import {broadcast} from '../../handler/ws';
 
 import BookService from '../../domain/service/bookService';
 import TagService from '../../domain/service/tagService';
@@ -157,7 +157,9 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
           authorName,
           publisherId,
           publisherName,
-      ));
+      ).catch((e: any) => {
+        logger.error(`Failed to add book.  bookName: ${row[req.body.bookName]}`);
+      }));
 
       if (i % 50 == 0) { // 50件ごとにブロードキャスト
         broadcast({
@@ -190,7 +192,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
     });
     const endTimer = performance.now();
 
-    console.log(`CSVファイルの読み込みに ${endTimer - startTimer}ms で終了しました。`);
+    logger.debug(`CSVファイルの読み込みに ${endTimer - startTimer}ms で終了しました。`);
   } catch (e) {
     logger.error(e as string);
 

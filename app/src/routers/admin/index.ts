@@ -15,7 +15,7 @@ import AdminData from '../../application/dto/adminData';
 
 import {IPage} from '../datas/IPage';
 
-import conversionpageStatus from '../../modules/conversionPageStatus';
+import conversionpageStatus from '../../utils/conversionPageStatus';
 
 // eslint-disable-next-line new-cap
 const adminRouter = Router();
