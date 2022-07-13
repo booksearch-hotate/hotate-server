@@ -22,7 +22,7 @@ import {IPaginationData} from './datas/IPaginationData';
 
 import searchMode from './datas/searchModeType';
 
-import PaginationInfo from '../utils/getPaginationInfo';
+import getPaginationInfo from '../utils/getPaginationInfo';
 import conversionpageCounter from '../utils/conversionPageCounter';
 
 // eslint-disable-next-line new-cap
@@ -73,7 +73,7 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
 
     const total = await bookApplicationService.getTotalResults(searchWord, searchMode);
 
-    const paginationInfo = new PaginationInfo(pageCount, total, 10, 7).getPaginationInfo();
+    const paginationInfo = getPaginationInfo(pageCount, total, 10, 7);
 
     totalPage = paginationInfo.totalPage;
     minPage = paginationInfo.minPage;
