@@ -31,9 +31,12 @@ import ElasticSearch from '../infrastructure/elasticsearch/elasticsearch';
 
 import esDocuments from '../infrastructure/elasticsearch/documents/documentType';
 
+const COOKIE_MAX_AGE = 60 * 60 * 1000; // 1時間
+
 const app: Application = express();
 const logger = new Logger('system');
 
+/* 起動時に接続確認を行うドキュメント */
 const elasticsearchDocuments: esDocuments[] = ['books', 'authors', 'publishers', 'search_history'];
 
 dotenv.config(); // envファイルの読み込み
@@ -59,15 +62,14 @@ declare module 'express-session' {
 
 app.use(express.urlencoded({extended: true})); // POSTで送られてきたデータを解析する
 app.use(express.json());
+
 app.use(session({ // lgtm [js/clear-text-cookie]
   secret: process.env.SESSION_SECRET as string, // トークンを署名するためのキー
   resave: false,
   saveUninitialized: true,
   rolling: true,
   cookie: {
-    // ここに関してはマジでマジックナンバーでも伝わるやろ
-    // eslint-disable-next-line no-magic-numbers
-    maxAge: 60 * 60 * 1000, // 1時間
+    maxAge: COOKIE_MAX_AGE,
     httpOnly: true,
   },
 }));
