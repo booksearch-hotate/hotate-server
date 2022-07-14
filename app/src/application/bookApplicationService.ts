@@ -1,9 +1,9 @@
-import {IBookApplicationRepository}
-  from './repository/IBookApplicationRepository';
+import {IBookRepository}
+  from '../domain/model/book/IBookRepository';
 
-import BookModel from '../domain/model/bookModel';
-import AuthorModel from '../domain/model/authorModel';
-import PublisherModel from '../domain/model/publisherModel';
+import BookModel from '../domain/model/book/bookModel';
+import AuthorModel from '../domain/model/author/authorModel';
+import PublisherModel from '../domain/model/publisher/publisherModel';
 import BookService from '../domain/service/bookService';
 import BookData from '../presentation/mapper/bookData';
 
@@ -16,10 +16,10 @@ import Logger from '../infrastructure/logger/logger';
 const logger = new Logger('bookApplicationService');
 
 export default class BookApplicationService {
-  private readonly bookRepository: IBookApplicationRepository;
+  private readonly bookRepository: IBookRepository;
   private readonly bookService: BookService;
 
-  public constructor(bookRepository: IBookApplicationRepository, bookService: BookService) {
+  public constructor(bookRepository: IBookRepository, bookService: BookService) {
     this.bookRepository = bookRepository;
     this.bookService = bookService;
   }

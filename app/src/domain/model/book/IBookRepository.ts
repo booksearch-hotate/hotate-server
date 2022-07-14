@@ -1,7 +1,7 @@
-import BookModel from '../../domain/model/bookModel';
-import TagModel from '../../domain/model/tagModel';
+import BookModel from './bookModel';
+import TagModel from '../tag/tagModel';
 
-export interface IBookApplicationRepository {
+export interface IBookRepository {
   save (book: BookModel): Promise<void>
   deleteAll (): Promise<void>
   search (query: string, pageCount: number): Promise<BookModel[]>

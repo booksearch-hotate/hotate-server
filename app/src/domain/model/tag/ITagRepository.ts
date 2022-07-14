@@ -1,6 +1,6 @@
-import TagModel from '../../domain/model/tagModel';
+import TagModel from './tagModel';
 
-export interface ITagApplicationServiceRepository {
+export interface ITagRepository {
   createTag (tagModel: TagModel): Promise<void>
   findByName (name: string): Promise<TagModel | null>
   saveCombination(tagModel: TagModel, bookId: string): Promise<void>
@@ -11,4 +11,5 @@ export interface ITagApplicationServiceRepository {
   deleteAll(): Promise<void>
   findById(id: string): Promise<TagModel | null>
   update(id: string, name: string): Promise<void>
+  getCount (tagId: string): Promise<number>
 }

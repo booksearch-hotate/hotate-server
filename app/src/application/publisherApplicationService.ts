@@ -1,12 +1,12 @@
-import {IPublisherApplicationRepository} from './repository/IPublisherApplicationRepository';
-import PublisherModel from '../domain/model/publisherModel';
+import {IPublisherRepository} from '../domain/model/publisher/IPublisherRepository';
+import PublisherModel from '../domain/model/publisher/publisherModel';
 import PublisherService from '../domain/service/publisherService';
 
 export default class PublisherApplicationService {
-  private readonly publisherRepository: IPublisherApplicationRepository;
+  private readonly publisherRepository: IPublisherRepository;
   private readonly publisherService: PublisherService;
 
-  public constructor(publisherRepository: IPublisherApplicationRepository, publisherService: PublisherService) {
+  public constructor(publisherRepository: IPublisherRepository, publisherService: PublisherService) {
     this.publisherRepository = publisherRepository;
     this.publisherService = publisherService;
   }

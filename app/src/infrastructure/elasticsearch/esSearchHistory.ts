@@ -1,6 +1,6 @@
 import ElasticSearch from './elasticsearch';
 import axios from 'axios';
-import SearchHistoryModel from '../../domain/model/searchHistoryModel';
+import SearchHistoryModel from '../../domain/model/searchHistory/searchHistoryModel';
 
 import esDocuments from './documents/documentType';
 

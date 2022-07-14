@@ -1,13 +1,13 @@
-import PublisherModel from '../model/publisherModel';
-import {IPublisherDomainRepository}
-  from './repository/IPublisherDomainRepository';
+import PublisherModel from '../model/publisher/publisherModel';
+
+import {IPublisherRepository} from '../model/publisher/IPublisherRepository';
 
 import {v4 as uuidv4} from 'uuid';
 
 export default class PublisherService {
-  private readonly publisherRepository: IPublisherDomainRepository;
+  private readonly publisherRepository: IPublisherRepository;
 
-  public constructor(publisherRepository: IPublisherDomainRepository) {
+  public constructor(publisherRepository: IPublisherRepository) {
     this.publisherRepository = publisherRepository;
   }
 

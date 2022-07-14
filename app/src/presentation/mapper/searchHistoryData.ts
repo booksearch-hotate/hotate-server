@@ -1,4 +1,4 @@
-import SearchHistoryModel from '../../domain/model/searchHistoryModel';
+import SearchHistoryModel from '../../domain/model/searchHistory/searchHistoryModel';
 
 export default class SearchHistoryData {
   private words: string;
