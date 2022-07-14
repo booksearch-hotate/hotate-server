@@ -6,17 +6,17 @@ import DepartmentModel from '../domain/model/department/departmentModel';
 
 import BookRequestData from '../domain/model/bookRequest/bookRequestData';
 
-import RequestService from '../domain/service/requestService';
+import BookRequestService from '../domain/service/bookRequestService';
 
-export default class RequestApplicationService {
+export default class BookRequestApplicationService {
   private requestRepository: IBookRequestRepository;
   private deparmentRepository: IDepartmentRepository;
-  private requestService: RequestService;
+  private requestService: BookRequestService;
 
   constructor(
       requestRepository: IBookRequestRepository,
       departmentRepository: IDepartmentRepository,
-      requestService: RequestService,
+      requestService: BookRequestService,
   ) {
     this.requestRepository = requestRepository;
     this.deparmentRepository = departmentRepository;
