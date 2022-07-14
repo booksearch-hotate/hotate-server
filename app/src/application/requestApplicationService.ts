@@ -4,7 +4,7 @@ import {IDepartmentRepository} from './repository/IDepartmentApplicationReposito
 import RequestModel from '../domain/model/requestModel';
 import DepartmentModel from '../domain/model/departmentModel';
 
-import RequestData from './dto/requestData';
+import RequestData from '../presentation/mapper/requestData';
 
 import RequestService from '../domain/service/requestService';
 
