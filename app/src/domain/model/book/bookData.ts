@@ -1,5 +1,5 @@
-import BookModel from '../../domain/model/book/bookModel';
-import TagModel from '../../domain/model/tag/tagModel';
+import BookModel from './bookModel';
+import TagModel from '../tag/tagModel';
 
 export default class BookData {
   private id: string;
