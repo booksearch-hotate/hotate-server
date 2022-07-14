@@ -1,23 +1,23 @@
-import {IRequestApplicationRepository} from '../../application/repository/IRequestApplicationRepository';
-import RequestModel from '../../domain/model/requestModel';
+import {IBookRequestRepository} from '../../domain/model/bookRequest/IBookRequestRepository';
+import BookRequestModel from '../../domain/model/bookRequest/bookRequestModel';
 
 import Request from '../../infrastructure/db/tables/requests';
 import Department from '../../infrastructure/db/tables/departments';
-import DepartmentModel from '../../domain/model/departmentModel';
+import DepartmentModel from '../../domain/model/department/departmentModel';
 
 interface sequelize {
   Request: typeof Request,
   Department: typeof Department,
 }
 
-export default class RequestRepository implements IRequestApplicationRepository {
+export default class RequestRepository implements IBookRequestRepository {
   private db: sequelize;
 
   constructor(db: sequelize) {
     this.db = db;
   }
 
-  public async register(request: RequestModel): Promise<void> {
+  public async register(request: BookRequestModel): Promise<void> {
     await this.db.Request.create({
       id: request.Id,
       book_name: request.BookName,
@@ -36,7 +36,7 @@ export default class RequestRepository implements IRequestApplicationRepository 
     await this.db.Request.destroy({where: {id: id}});
   }
 
-  public async findAll(): Promise<RequestModel[] | null> {
+  public async findAll(): Promise<BookRequestModel[] | null> {
     const fetchData = await this.db.Request.findAll({order: [['created_at', 'DESC']]});
     if (fetchData === null) return null;
 
@@ -53,7 +53,7 @@ export default class RequestRepository implements IRequestApplicationRepository 
             fetchDepartmentData.name,
         );
 
-        res.push(new RequestModel(
+        res.push(new BookRequestModel(
             item.id,
             item.book_name,
             item.author_name,
@@ -74,7 +74,7 @@ export default class RequestRepository implements IRequestApplicationRepository 
     return res;
   }
 
-  public async findById(requestId: string): Promise<RequestModel | null> {
+  public async findById(requestId: string): Promise<BookRequestModel | null> {
     const fetchData = await this.db.Request.findOne({where: {id: requestId}});
 
     if (fetchData === null) return null;
@@ -88,7 +88,7 @@ export default class RequestRepository implements IRequestApplicationRepository 
         fetchDepartmentData.name,
     );
 
-    return new RequestModel(
+    return new BookRequestModel(
         fetchData.id,
         fetchData.book_name,
         fetchData.author_name,

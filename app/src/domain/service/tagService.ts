@@ -1,12 +1,12 @@
-import TagModel from '../model/tagModel';
-import {ITagServiceRepository} from './repository/ITagServiceRepository';
+import TagModel from '../model/tag/tagModel';
+import {ITagRepository} from '../model/tag/ITagRepository';
 
 import {v4 as uuidv4} from 'uuid';
 
 export default class TagService {
-  private readonly tagRepository: ITagServiceRepository;
+  private readonly tagRepository: ITagRepository;
 
-  public constructor(tagRepository: ITagServiceRepository) {
+  public constructor(tagRepository: ITagRepository) {
     this.tagRepository = tagRepository;
   }
 

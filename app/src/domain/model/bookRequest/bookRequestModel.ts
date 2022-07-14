@@ -1,6 +1,6 @@
-import DepartmentModel from './departmentModel';
+import DepartmentModel from '../department/departmentModel';
 
-export default class RequestModel {
+export default class BookRequestModel {
   private id: string;
   private bookName: string;
   private authorName: string;

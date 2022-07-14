@@ -1,12 +1,12 @@
-import AuthorModel from '../model/authorModel';
-import {IAuthorDomainRepository} from './repository/IAuthorDomainRepository';
+import AuthorModel from '../model/author/authorModel';
+import {IAuthorRepository} from '../model/author/IAuthorRepository';
 
 import {v4 as uuidv4} from 'uuid';
 
 export default class AuthorService {
-  private readonly authorRepository: IAuthorDomainRepository;
+  private readonly authorRepository: IAuthorRepository;
 
-  public constructor(authorRepository: IAuthorDomainRepository) {
+  public constructor(authorRepository: IAuthorRepository) {
     this.authorRepository = authorRepository;
   }
 

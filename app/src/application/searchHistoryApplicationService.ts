@@ -1,13 +1,13 @@
-import SearchHistoryModel from '../domain/model/searchHistoryModel';
-import {ISearchHistoryApplicationRepository} from './repository/ISearchHistoryApplicationRepository';
+import SearchHistoryModel from '../domain/model/searchHistory/searchHistoryModel';
+import {ISearchHistoryRepository} from '../domain/model/searchHistory/ISearchHistoryRepository';
 import SearchHistoryService from '../domain/service/searchHistoryService';
 import SearchHistoryData from '../presentation/mapper/searchHistoryData';
 
 export default class SearchHistoryApplicationService {
-  private readonly searchHistoryApplicationRepository: ISearchHistoryApplicationRepository;
+  private readonly searchHistoryApplicationRepository: ISearchHistoryRepository;
   private readonly searchHistoryService: SearchHistoryService;
 
-  public constructor(searchHistoryApplicationRepository: ISearchHistoryApplicationRepository, searchHistoryService: SearchHistoryService) {
+  public constructor(searchHistoryApplicationRepository: ISearchHistoryRepository, searchHistoryService: SearchHistoryService) {
     this.searchHistoryApplicationRepository = searchHistoryApplicationRepository;
     this.searchHistoryService = searchHistoryService;
   }

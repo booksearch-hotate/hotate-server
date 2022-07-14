@@ -1,8 +1,8 @@
-import TagModel from '../domain/model/tagModel';
+import TagModel from '../domain/model/tag/tagModel';
 
 import TagService from '../domain/service/tagService';
 
-import {ITagApplicationServiceRepository} from './repository/ITagApplicationServiceRepository';
+import {ITagRepository} from '../domain/model/tag/ITagRepository';
 
 import TagData from '../presentation/mapper/tagData';
 
@@ -11,10 +11,10 @@ import Logger from '../infrastructure/logger/logger';
 const logger = new Logger('TagApplicationService');
 
 export default class TagApplicationService {
-  private readonly tagApplicationServiceRepository: ITagApplicationServiceRepository;
+  private readonly tagApplicationServiceRepository: ITagRepository;
   private readonly tagService: TagService;
 
-  public constructor(tagApplicationServiceRepository: ITagApplicationServiceRepository, tagService: TagService) {
+  public constructor(tagApplicationServiceRepository: ITagRepository, tagService: TagService) {
     this.tagApplicationServiceRepository = tagApplicationServiceRepository;
     this.tagService = tagService;
   }

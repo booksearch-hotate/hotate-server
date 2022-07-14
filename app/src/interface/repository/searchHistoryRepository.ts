@@ -1,9 +1,9 @@
 import EsSearchHistory from '../../infrastructure/elasticsearch/esSearchHistory';
-import SearchHistoryModel from '../../domain/model/searchHistoryModel';
+import SearchHistoryModel from '../../domain/model/searchHistory/searchHistoryModel';
 
-import {ISearchHistoryApplicationRepository} from '../../application/repository/ISearchHistoryApplicationRepository';
+import {ISearchHistoryRepository} from '../../domain/model/searchHistory/ISearchHistoryRepository';
 
-export default class SearchHistoryRepository implements ISearchHistoryApplicationRepository {
+export default class SearchHistoryRepository implements ISearchHistoryRepository {
   private readonly esSearchHistory: EsSearchHistory;
 
   public constructor(esSearchHistory: EsSearchHistory) {

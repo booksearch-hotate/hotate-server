@@ -1,20 +1,20 @@
-import {IRequestApplicationRepository} from './repository/IRequestApplicationRepository';
-import {IDepartmentRepository} from './repository/IDepartmentApplicationRepository';
+import {IBookRequestRepository} from '../domain/model/bookRequest/IBookRequestRepository';
+import {IDepartmentRepository} from '../domain/model/department/IDepartmentRepository';
 
-import RequestModel from '../domain/model/requestModel';
-import DepartmentModel from '../domain/model/departmentModel';
+import BookRequestModel from '../domain/model/bookRequest/bookRequestModel';
+import DepartmentModel from '../domain/model/department/departmentModel';
 
 import RequestData from '../presentation/mapper/requestData';
 
 import RequestService from '../domain/service/requestService';
 
 export default class RequestApplicationService {
-  private requestRepository: IRequestApplicationRepository;
+  private requestRepository: IBookRequestRepository;
   private deparmentRepository: IDepartmentRepository;
   private requestService: RequestService;
 
   constructor(
-      requestRepository: IRequestApplicationRepository,
+      requestRepository: IBookRequestRepository,
       departmentRepository: IDepartmentRepository,
       requestService: RequestService,
   ) {
@@ -38,7 +38,7 @@ export default class RequestApplicationService {
   ) {
     const department = new DepartmentModel(departmentId, departmentName);
 
-    const requestModel = new RequestModel(
+    const requestModel = new BookRequestModel(
         id,
         bookName,
         authorName,
@@ -79,7 +79,7 @@ export default class RequestApplicationService {
 
     if (departmentModel === null) throw new Error('The name of the department could not be obtained.');
 
-    const requestModel = new RequestModel(
+    const requestModel = new BookRequestModel(
         this.requestService.createUUID(),
         keepReqObj.bookName,
         keepReqObj.authorName,

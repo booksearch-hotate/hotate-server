@@ -1,5 +1,5 @@
-import RequestModel from '../../domain/model/requestModel';
-import DepartmentModel from '../../domain/model/departmentModel';
+import BookRequestModel from '../../domain/model/bookRequest/bookRequestModel';
+import DepartmentModel from '../../domain/model/department/departmentModel';
 
 export default class RequestData {
   private id: string;
@@ -15,7 +15,7 @@ export default class RequestData {
   private createAt: Date;
   private studentInfo: string;
 
-  public constructor(requestModel: RequestModel) {
+  public constructor(requestModel: BookRequestModel) {
     this.id = requestModel.Id;
     this.bookName = requestModel.BookName;
     this.authorName = requestModel.AuthorName;
