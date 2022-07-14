@@ -1,14 +1,14 @@
-import {IAuthorApplicationRepository} from './repository/IAuthorApplicationRepository';
-import AuthorModel from '../domain/model/authorModel';
+import {IAuthorRepository} from '../domain/model/author/IAuthorRepository';
+import AuthorModel from '../domain/model/author/authorModel';
 import AuthorService from '../domain/service/authorService';
 
-import AuthorData from '../presentation/mapper/authorData';
+import AuthorData from '../domain/model/author/authorData';
 
 export default class AuthorApplicationService {
-  private readonly authorRepository: IAuthorApplicationRepository;
+  private readonly authorRepository: IAuthorRepository;
   private readonly authorService: AuthorService;
 
-  public constructor(authorRepository: IAuthorApplicationRepository, authorService: AuthorService) {
+  public constructor(authorRepository: IAuthorRepository, authorService: AuthorService) {
     this.authorRepository = authorRepository;
     this.authorService = authorService;
   }

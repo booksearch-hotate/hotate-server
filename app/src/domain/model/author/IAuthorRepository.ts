@@ -1,6 +1,6 @@
-import AuthorModel from '../../domain/model/authorModel';
+import AuthorModel from './authorModel';
 
-export interface IAuthorApplicationRepository {
+export interface IAuthorRepository {
   save (author: AuthorModel, isBulk: boolean): Promise<void>
   findByName (name: string | null): Promise<AuthorModel | null>
   deleteAll (): Promise<void>

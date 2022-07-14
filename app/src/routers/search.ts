@@ -14,8 +14,8 @@ import db from '../infrastructure/db';
 import EsSearchBook from '../infrastructure/elasticsearch/esBook';
 import EsSearchHistory from '../infrastructure/elasticsearch/esSearchHistory';
 
-import BookData from '../presentation/mapper/bookData';
-import SearchHistoryData from '../presentation/mapper/searchHistoryData';
+import BookData from '../domain/model/book/bookData';
+import SearchHistoryData from '../domain/model/searchHistory/searchHistoryData';
 
 import {IPage} from './datas/IPage';
 import {IPaginationData} from './datas/IPaginationData';

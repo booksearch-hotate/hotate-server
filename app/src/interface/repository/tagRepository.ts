@@ -2,10 +2,9 @@ import Book from '../../infrastructure/db/tables/books';
 import Tag from '../../infrastructure/db/tables/tags';
 import UsingTag from '../../infrastructure/db/tables/usingTags';
 
-import {ITagApplicationServiceRepository} from '../../application/repository/ITagApplicationServiceRepository';
-import {ITagServiceRepository} from '../../domain/service/repository/ITagServiceRepository';
+import {ITagRepository} from '../../domain/model/tag/ITagRepository';
 
-import TagModel from '../../domain/model/tagModel';
+import TagModel from '../../domain/model/tag/tagModel';
 import sequelize from 'sequelize';
 
 /* Sequelizeを想定 */
@@ -15,7 +14,7 @@ interface sequelize {
   UsingTag: typeof UsingTag,
 }
 
-export default class TagRepository implements ITagApplicationServiceRepository, ITagServiceRepository {
+export default class TagRepository implements ITagRepository {
   private readonly db: sequelize;
 
   public constructor(db: sequelize) {

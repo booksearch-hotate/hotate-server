@@ -4,11 +4,11 @@ import Publisher from '../../infrastructure/db/tables/publishers';
 import UsingTag from '../../infrastructure/db/tables/usingTags';
 import Tag from '../../infrastructure/db/tables/tags';
 
-import {IBookApplicationRepository} from '../../application/repository/IBookApplicationRepository';
-import BookModel from '../../domain/model/bookModel';
-import AuthorModel from '../../domain/model/authorModel';
-import PublisherModel from '../../domain/model/publisherModel';
-import TagModel from '../../domain/model/tagModel';
+import {IBookRepository} from '../../domain/model/book/IBookRepository';
+import BookModel from '../../domain/model/book/bookModel';
+import AuthorModel from '../../domain/model/author/authorModel';
+import PublisherModel from '../../domain/model/publisher/publisherModel';
+import TagModel from '../../domain/model/tag/tagModel';
 
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 import {IEsBook} from '../../infrastructure/elasticsearch/documents/IEsBook';
@@ -22,7 +22,7 @@ interface sequelize {
   Tag: typeof Tag
 }
 
-export default class BookRepository implements IBookApplicationRepository {
+export default class BookRepository implements IBookRepository {
   private readonly db: sequelize;
   private readonly esSearchBook: EsSearchBook;
 

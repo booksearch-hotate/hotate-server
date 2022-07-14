@@ -1,13 +1,13 @@
 import {v4 as uuidv4} from 'uuid';
 
-import DepartmentModel from '../model/departmentModel';
+import DepartmentModel from '../model/department/departmentModel';
 
-import {IDepartmentDomainRepository} from './repository/IDepartmentDomainRepository';
+import {IDepartmentRepository} from '../model/department/IDepartmentRepository';
 
 export default class DepartmentService {
-  private readonly departmentRepository: IDepartmentDomainRepository;
+  private readonly departmentRepository: IDepartmentRepository;
 
-  public constructor(departmentRepository: IDepartmentDomainRepository) {
+  public constructor(departmentRepository: IDepartmentRepository) {
     this.departmentRepository = departmentRepository;
   }
 

@@ -1,6 +1,6 @@
-import SearchHistoryModel from '../../domain/model/searchHistoryModel';
+import SearchHistoryModel from './searchHistoryModel';
 
-export interface ISearchHistoryApplicationRepository {
+export interface ISearchHistoryRepository {
   add (searchHistoryModel: SearchHistoryModel): Promise<void>
   search (words: string): Promise<SearchHistoryModel[]>
   find (count: number): Promise<SearchHistoryModel[]>

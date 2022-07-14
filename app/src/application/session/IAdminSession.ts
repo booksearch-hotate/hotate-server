@@ -1,4 +1,4 @@
-import AdminData from '../../presentation/mapper/adminData';
+import AdminData from '../../domain/model/admin/adminData';
 
 export interface IAdminSession {
   create (adminData: AdminData): string

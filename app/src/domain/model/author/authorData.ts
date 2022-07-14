@@ -1,4 +1,4 @@
-import AuthorModel from '../../domain/model/authorModel';
+import AuthorModel from './authorModel';
 
 export default class AuthorData {
   private id: string;

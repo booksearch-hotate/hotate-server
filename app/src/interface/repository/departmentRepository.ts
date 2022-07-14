@@ -1,14 +1,13 @@
-import {IDepartmentRepository} from '../../application/repository/IDepartmentApplicationRepository';
-import {IDepartmentDomainRepository} from '../../domain/service/repository/IDepartmentDomainRepository';
+import {IDepartmentRepository} from '../../domain/model/department/IDepartmentRepository';
 
-import DepartmentModel from '../../domain/model/departmentModel';
+import DepartmentModel from '../../domain/model/department/departmentModel';
 import Department from '../../infrastructure/db/tables/departments';
 
 interface sequelize {
   Department: typeof Department
 }
 
-export default class DepartmentRepository implements IDepartmentRepository, IDepartmentDomainRepository {
+export default class DepartmentRepository implements IDepartmentRepository {
   private readonly db: sequelize;
 
   public constructor(db: sequelize) {

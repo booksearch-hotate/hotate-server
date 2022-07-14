@@ -1,9 +1,8 @@
 import Author from '../../infrastructure/db/tables/authors';
 import Book from '../../infrastructure/db/tables/books';
 
-import {IAuthorApplicationRepository} from '../../application/repository/IAuthorApplicationRepository';
-import {IAuthorDomainRepository} from '../../domain/service/repository/IAuthorDomainRepository';
-import AuthorModel from '../../domain/model/authorModel';
+import {IAuthorRepository} from '../../domain/model/author/IAuthorRepository';
+import AuthorModel from '../../domain/model/author/authorModel';
 import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 
 import {IEsAuthor} from '../../infrastructure/elasticsearch/documents/IEsAuthor';
@@ -16,7 +15,7 @@ interface sequelize {
   Book: typeof Book
 }
 
-export default class AuthorRepository implements IAuthorApplicationRepository, IAuthorDomainRepository {
+export default class AuthorRepository implements IAuthorRepository {
   private readonly db: sequelize;
   private readonly esAuthor: EsAuthor;
 
