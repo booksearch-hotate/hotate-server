@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import {Request} from 'express';
 
 import {IAdminSession} from '../../application/session/IAdminSession';
-import AdminData from '../../application/dto/adminData';
+import AdminData from '../mapper/adminData';
 
 dotenv.config();
 

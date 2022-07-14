@@ -13,9 +13,9 @@ import TagRepository from '../interface/repository/tagRepository';
 import db from '../infrastructure/db';
 import EsSearchBook from '../infrastructure/elasticsearch/esBook';
 import Logger from '../infrastructure/logger/logger';
-import AdminSession from '../infrastructure/session';
+import AdminSession from '../presentation/session';
 
-import BookData from '../application/dto/bookData';
+import BookData from '../presentation/mapper/bookData';
 
 import {IPage} from './datas/IPage';
 

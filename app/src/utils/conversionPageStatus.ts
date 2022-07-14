@@ -1,4 +1,4 @@
-import ResStatus from '../infrastructure/session/status/resStatus';
+import ResStatus from '../presentation/session/status/resStatus';
 import {IPageStatus} from '../routers/datas/IPage';
 
 export default function conversionpageStatus(status: ResStatus | undefined): IPageStatus | undefined {

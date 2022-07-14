@@ -1,7 +1,7 @@
 import SearchHistoryModel from '../domain/model/searchHistoryModel';
 import {ISearchHistoryApplicationRepository} from './repository/ISearchHistoryApplicationRepository';
 import SearchHistoryService from '../domain/service/searchHistoryService';
-import SearchHistoryData from './dto/searchHistoryData';
+import SearchHistoryData from '../presentation/mapper/searchHistoryData';
 
 export default class SearchHistoryApplicationService {
   private readonly searchHistoryApplicationRepository: ISearchHistoryApplicationRepository;
