@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 import Logger from '../../infrastructure/logger/logger';
 
 import {IAdminApplicationRepository}
-  from '../../application/repository/IAdminApplicationRepository';
-import AdminModel from '../../domain/model/adminModel';
+  from '../../domain/model/admin/IAdminRepository';
+import AdminModel from '../../domain/model/admin/adminModel';
 
 /* Sequelizeを想定 */
 interface sequelize {

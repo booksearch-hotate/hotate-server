@@ -6,10 +6,10 @@ import DepartmentRepository from '../interface/repository/departmentRepository';
 import RequestRepository from '../interface/repository/requestRepository';
 
 import DepartmentService from '../domain/service/departmentService';
-import RequestService from '../domain/service/requestService';
+import BookRequestService from '../domain/service/bookRequestService';
 
 import DepartmentApplicationService from '../application/departmentApplicationService';
-import RequestApplicationService from '../application/requestApplicationService';
+import BookRequestApplicationService from '../application/bookRequestApplicationService';
 
 import db from '../infrastructure/db';
 import Logger from '../infrastructure/logger/logger';
@@ -28,10 +28,10 @@ const departmentApplicationService = new DepartmentApplicationService(
     new DepartmentService(new DepartmentRepository(db)),
 );
 
-const requestApplicationService = new RequestApplicationService(
+const requestApplicationService = new BookRequestApplicationService(
     new RequestRepository(db),
     new DepartmentRepository(db),
-    new RequestService,
+    new BookRequestService,
 );
 
 requestRouter.get('/request', csrfProtection, async (req: Request, res: Response) => {

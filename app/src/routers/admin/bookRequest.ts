@@ -2,9 +2,9 @@ import {Request, Response, Router} from 'express';
 import {IPage} from './../datas/IPage';
 import csurf from 'csurf';
 
-import RequestApplicationService from '../../application/requestApplicationService';
+import BookRequestApplicationService from '../../application/bookRequestApplicationService';
 
-import RequestService from '../../domain/service/requestService';
+import BookRequestService from '../../domain/service/bookRequestService';
 
 import RequestRepository from '../../interface/repository/requestRepository';
 import DepartmentRepository from '../../interface/repository/departmentRepository';
@@ -23,10 +23,10 @@ const csrfProtection = csurf({cookie: false});
 
 const logger = new Logger('department');
 
-const requestApplicationService = new RequestApplicationService(
+const requestApplicationService = new BookRequestApplicationService(
     new RequestRepository(db),
     new DepartmentRepository(db),
-    new RequestService(),
+    new BookRequestService(),
 );
 
 bookRequestRouter.get('/', csrfProtection, async (req: Request, res: Response) => {

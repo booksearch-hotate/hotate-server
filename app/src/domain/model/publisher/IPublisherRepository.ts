@@ -1,6 +1,6 @@
-import PublisherModel from '../../domain/model/publisherModel';
+import PublisherModel from './publisherModel';
 
-export interface IPublisherApplicationRepository {
+export interface IPublisherRepository {
   save (publisher: PublisherModel, isBulk: boolean): Promise<void>
   findByName (name: string | null): Promise<PublisherModel | null>
   deleteAll (): Promise<void>

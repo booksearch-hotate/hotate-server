@@ -1,22 +1,22 @@
-import {IRequestApplicationRepository} from './repository/IRequestApplicationRepository';
-import {IDepartmentRepository} from './repository/IDepartmentApplicationRepository';
+import {IBookRequestRepository} from '../domain/model/bookRequest/IBookRequestRepository';
+import {IDepartmentRepository} from '../domain/model/department/IDepartmentRepository';
 
-import RequestModel from '../domain/model/requestModel';
-import DepartmentModel from '../domain/model/departmentModel';
+import BookRequestModel from '../domain/model/bookRequest/bookRequestModel';
+import DepartmentModel from '../domain/model/department/departmentModel';
 
-import RequestData from '../presentation/mapper/requestData';
+import BookRequestData from '../domain/model/bookRequest/bookRequestData';
 
-import RequestService from '../domain/service/requestService';
+import BookRequestService from '../domain/service/bookRequestService';
 
-export default class RequestApplicationService {
-  private requestRepository: IRequestApplicationRepository;
+export default class BookRequestApplicationService {
+  private requestRepository: IBookRequestRepository;
   private deparmentRepository: IDepartmentRepository;
-  private requestService: RequestService;
+  private requestService: BookRequestService;
 
   constructor(
-      requestRepository: IRequestApplicationRepository,
+      requestRepository: IBookRequestRepository,
       departmentRepository: IDepartmentRepository,
-      requestService: RequestService,
+      requestService: BookRequestService,
   ) {
     this.requestRepository = requestRepository;
     this.deparmentRepository = departmentRepository;
@@ -38,7 +38,7 @@ export default class RequestApplicationService {
   ) {
     const department = new DepartmentModel(departmentId, departmentName);
 
-    const requestModel = new RequestModel(
+    const requestModel = new BookRequestModel(
         id,
         bookName,
         authorName,
@@ -54,21 +54,21 @@ export default class RequestApplicationService {
     await this.requestRepository.register(requestModel);
   }
 
-  public async findAll(): Promise<RequestData[]> {
+  public async findAll(): Promise<BookRequestData[]> {
     const requestModel = await this.requestRepository.findAll();
 
     if (requestModel === null) return [];
 
-    return requestModel.map((item) => new RequestData(item));
+    return requestModel.map((item) => new BookRequestData(item));
   }
 
-  public async findById(requestId: string): Promise<RequestData | null> {
+  public async findById(requestId: string): Promise<BookRequestData | null> {
     const requestModel = await this.requestRepository.findById(requestId);
 
-    return requestModel === null ? null : new RequestData(requestModel);
+    return requestModel === null ? null : new BookRequestData(requestModel);
   }
 
-  public async makeData(saveData: any): Promise<RequestData> {
+  public async makeData(saveData: any): Promise<BookRequestData> {
     if (typeof saveData !== 'object') throw new Error('The value could not be obtained correctly.');
 
     const keepReqObj = saveData.keepReqObj;
@@ -79,7 +79,7 @@ export default class RequestApplicationService {
 
     if (departmentModel === null) throw new Error('The name of the department could not be obtained.');
 
-    const requestModel = new RequestModel(
+    const requestModel = new BookRequestModel(
         this.requestService.createUUID(),
         keepReqObj.bookName,
         keepReqObj.authorName,
@@ -91,7 +91,7 @@ export default class RequestApplicationService {
         keepReqObj.schoolClass,
         keepReqObj.userName,
     );
-    return new RequestData(requestModel);
+    return new BookRequestData(requestModel);
   }
 
   public async delete(id: string): Promise<void> {

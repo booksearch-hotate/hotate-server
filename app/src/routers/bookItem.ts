@@ -15,7 +15,7 @@ import EsSearchBook from '../infrastructure/elasticsearch/esBook';
 import Logger from '../infrastructure/logger/logger';
 import AdminSession from '../presentation/session';
 
-import BookData from '../presentation/mapper/bookData';
+import BookData from '../domain/model/book/bookData';
 
 import {IPage} from './datas/IPage';
 

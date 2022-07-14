@@ -11,7 +11,7 @@ import db from '../../infrastructure/db';
 import AdminSession from '../../presentation/session';
 import Logger from '../../infrastructure/logger/logger';
 
-import AdminData from '../../presentation/mapper/adminData';
+import AdminData from '../../domain/model/admin/adminData';
 
 import {IPage} from '../datas/IPage';
 

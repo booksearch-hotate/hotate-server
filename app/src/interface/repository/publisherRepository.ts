@@ -3,9 +3,8 @@ import sequelize from 'sequelize';
 import Publisher from '../../infrastructure/db/tables/publishers';
 import Book from '../../infrastructure/db/tables/books';
 
-import {IPublisherApplicationRepository} from '../../application/repository/IPublisherApplicationRepository';
-import {IPublisherDomainRepository} from '../../domain/service/repository/IPublisherDomainRepository';
-import PublisherModel from '../../domain/model/publisherModel';
+import {IPublisherRepository} from '../../domain/model/publisher/IPublisherRepository';
+import PublisherModel from '../../domain/model/publisher/publisherModel';
 
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 
@@ -17,7 +16,7 @@ interface sequelize {
   Book: typeof Book,
 }
 
-export default class PublisherRepository implements IPublisherApplicationRepository, IPublisherDomainRepository {
+export default class PublisherRepository implements IPublisherRepository {
   private readonly db: sequelize;
   private readonly esPublisher: EsPublisher;
 

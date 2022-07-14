@@ -1,6 +1,6 @@
-import AdminModel from '../domain/model/adminModel';
-import {IAdminApplicationRepository} from './repository/IAdminApplicationRepository';
-import AdminData from '../presentation/mapper/adminData';
+import AdminModel from '../domain/model/admin/adminModel';
+import {IAdminApplicationRepository} from '../domain/model/admin/IAdminRepository';
+import AdminData from '../domain/model/admin/adminData';
 import AdminService from '../domain/service/adminService';
 
 export default class AdminApplicationService {

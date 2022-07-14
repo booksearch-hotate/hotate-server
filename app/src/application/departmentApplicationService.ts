@@ -1,10 +1,10 @@
-import DepartmentModel from '../domain/model/departmentModel';
+import DepartmentModel from '../domain/model/department/departmentModel';
 
 import DepartmentService from '../domain/service/departmentService';
 
-import DepartmentData from '../presentation/mapper/departmentData';
+import DepartmentData from '../domain/model/department/departmentData';
 
-import {IDepartmentRepository} from './repository/IDepartmentApplicationRepository';
+import {IDepartmentRepository} from '../domain/model/department/IDepartmentRepository';
 
 export default class DepartmentApplicationService {
   private readonly departmentRepository: IDepartmentRepository;

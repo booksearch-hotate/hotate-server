@@ -1,4 +1,4 @@
-import TagModel from '../../domain/model/tagModel';
+import TagModel from './tagModel';
 
 export default class TagData {
   private id: string;

@@ -1,7 +1,7 @@
-import AuthorModel from './authorModel';
-import PublisherModel from './publisherModel';
+import AuthorModel from '../author/authorModel';
+import PublisherModel from '../publisher/publisherModel';
 
-import Logger from '../../infrastructure/logger/logger';
+import Logger from '../../../infrastructure/logger/logger';
 
 const logger = new Logger('BookModel');
 
