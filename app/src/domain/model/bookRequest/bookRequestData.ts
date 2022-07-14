@@ -1,7 +1,7 @@
-import BookRequestModel from '../../domain/model/bookRequest/bookRequestModel';
-import DepartmentModel from '../../domain/model/department/departmentModel';
+import BookRequestModel from './bookRequestModel';
+import DepartmentModel from '../department/departmentModel';
 
-export default class RequestData {
+export default class BookRequestData {
   private id: string;
   private bookName: string;
   private authorName: string;

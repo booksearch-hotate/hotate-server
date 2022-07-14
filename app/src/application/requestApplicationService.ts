@@ -4,7 +4,7 @@ import {IDepartmentRepository} from '../domain/model/department/IDepartmentRepos
 import BookRequestModel from '../domain/model/bookRequest/bookRequestModel';
 import DepartmentModel from '../domain/model/department/departmentModel';
 
-import RequestData from '../presentation/mapper/requestData';
+import BookRequestData from '../domain/model/bookRequest/bookRequestData';
 
 import RequestService from '../domain/service/requestService';
 
@@ -54,21 +54,21 @@ export default class RequestApplicationService {
     await this.requestRepository.register(requestModel);
   }
 
-  public async findAll(): Promise<RequestData[]> {
+  public async findAll(): Promise<BookRequestData[]> {
     const requestModel = await this.requestRepository.findAll();
 
     if (requestModel === null) return [];
 
-    return requestModel.map((item) => new RequestData(item));
+    return requestModel.map((item) => new BookRequestData(item));
   }
 
-  public async findById(requestId: string): Promise<RequestData | null> {
+  public async findById(requestId: string): Promise<BookRequestData | null> {
     const requestModel = await this.requestRepository.findById(requestId);
 
-    return requestModel === null ? null : new RequestData(requestModel);
+    return requestModel === null ? null : new BookRequestData(requestModel);
   }
 
-  public async makeData(saveData: any): Promise<RequestData> {
+  public async makeData(saveData: any): Promise<BookRequestData> {
     if (typeof saveData !== 'object') throw new Error('The value could not be obtained correctly.');
 
     const keepReqObj = saveData.keepReqObj;
@@ -91,7 +91,7 @@ export default class RequestApplicationService {
         keepReqObj.schoolClass,
         keepReqObj.userName,
     );
-    return new RequestData(requestModel);
+    return new BookRequestData(requestModel);
   }
 
   public async delete(id: string): Promise<void> {
