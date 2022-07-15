@@ -221,6 +221,10 @@ export default class BookApplicationService {
    * @param id 本ID
    */
   public async deleteBook(id: string): Promise<void> {
-    await this.bookRepository.deleteBook(id);
+    const book = await this.bookRepository.searchById(id);
+
+    if (book === null) return;
+
+    await this.bookRepository.deleteBook(book);
   }
 }

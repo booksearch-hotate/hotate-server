@@ -309,10 +309,10 @@ export default class BookRepository implements IBookRepository {
     return await this.db.Book.count();
   }
 
-  public async deleteBook(id: string): Promise<void> {
+  public async deleteBook(book: BookModel): Promise<void> {
     const list = [
-      this.db.Book.destroy({where: {id}}),
-      this.esSearchBook.delete(id),
+      this.db.Book.destroy({where: {id: book.Id}}),
+      this.esSearchBook.delete(book.Id),
     ];
     await Promise.all(list);
   }
