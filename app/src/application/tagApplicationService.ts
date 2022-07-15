@@ -11,11 +11,11 @@ import Logger from '../infrastructure/logger/logger';
 const logger = new Logger('TagApplicationService');
 
 export default class TagApplicationService {
-  private readonly tagApplicationServiceRepository: ITagRepository;
+  private readonly tagRepository: ITagRepository;
   private readonly tagService: TagService;
 
   public constructor(tagApplicationServiceRepository: ITagRepository, tagService: TagService) {
-    this.tagApplicationServiceRepository = tagApplicationServiceRepository;
+    this.tagRepository = tagApplicationServiceRepository;
     this.tagService = tagService;
   }
 
@@ -32,9 +32,9 @@ export default class TagApplicationService {
     const isExist = await this.tagService.isExist(tag); // Tagsに存在してないか確認
     logger.debug(`isExist: ${isExist}`);
     if (!isExist) {
-      await this.tagApplicationServiceRepository.createTag(tag); // Tagsに追加
+      await this.tagRepository.createTag(tag); // Tagsに追加
     } else {
-      const alreadyTag = await this.tagApplicationServiceRepository.findByName(tag.Name); // Tagsに存在しているか確認
+      const alreadyTag = await this.tagRepository.findByName(tag.Name); // Tagsに存在しているか確認
 
       if (alreadyTag === null) throw new Error('The tag already exists and an error occurred when I tried to retrieve that tag.');
 
@@ -44,16 +44,16 @@ export default class TagApplicationService {
     logger.debug(`tag: ${tag}`);
 
     /* using_tagsに既に登録されているか */
-    const isExistCombination = await this.tagApplicationServiceRepository.isExistCombination(tag.Id, bookId);
+    const isExistCombination = await this.tagRepository.isExistCombination(tag.Id, bookId);
     if (!isExistCombination) {
-      await this.tagApplicationServiceRepository.saveCombination(tag, bookId); // using_tagsに追加
+      await this.tagRepository.saveCombination(tag, bookId); // using_tagsに追加
       logger.debug('saveCombination');
     }
     return isExistCombination;
   }
 
   public async findAll(): Promise<TagData[]> {
-    const tags = await this.tagApplicationServiceRepository.findAll();
+    const tags = await this.tagRepository.findAll();
     const res: TagData[] = [];
     for (const tagObj of tags) {
       const [tag, count] = tagObj;
@@ -63,15 +63,15 @@ export default class TagApplicationService {
   }
 
   public async delete(id: string): Promise<void> {
-    await this.tagApplicationServiceRepository.delete(id);
+    await this.tagRepository.delete(id);
   }
 
   public async isExistTable(): Promise<boolean> {
-    return await this.tagApplicationServiceRepository.isExistTable();
+    return await this.tagRepository.isExistTable();
   }
 
   public async findById(id: string): Promise<TagData | null> {
-    const tag = await this.tagApplicationServiceRepository.findById(id);
+    const tag = await this.tagRepository.findById(id);
     if (tag) return new TagData(tag, await this.tagService.getCount(tag));
     return null;
   }
@@ -80,10 +80,10 @@ export default class TagApplicationService {
    * `tags`と`using_tags`を削除する
    */
   public async deleteAll(): Promise<void> {
-    await this.tagApplicationServiceRepository.deleteAll();
+    await this.tagRepository.deleteAll();
   }
 
   public async update(id: string, name: string): Promise<void> {
-    await this.tagApplicationServiceRepository.update(id, name);
+    await this.tagRepository.update(id, name);
   }
 }
