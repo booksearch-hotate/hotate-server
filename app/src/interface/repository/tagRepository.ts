@@ -74,6 +74,8 @@ export default class TagRepository implements ITagRepository {
 
     if (tags === null) return [];
 
+    // それぞれのタグが保有している本のidを取得
+    // 並列処理で取得
     const promiseTags = tags.map(async (tag) => {
       const fetchBookIds = await this.db.UsingTag.findAll({
         where: {tag_id: tag.id},
