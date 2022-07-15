@@ -1,5 +1,6 @@
 import AuthorModel from '../author/authorModel';
 import PublisherModel from '../publisher/publisherModel';
+import TagModel from '../tag/tagModel';
 
 import Logger from '../../../infrastructure/logger/logger';
 
@@ -15,6 +16,7 @@ export default class BookModel {
   private year!: number | null;
   private author!: AuthorModel;
   private publisher!: PublisherModel;
+  private tags!: TagModel[];
 
   public constructor(
       id: string,
@@ -26,6 +28,7 @@ export default class BookModel {
       year: number | null,
       author: AuthorModel,
       publisher: PublisherModel,
+      tags: TagModel[],
   ) {
     if (id === null) throw new Error('Id is null.');
     if (name === null) throw new Error('The title of the book is null.');
@@ -40,6 +43,7 @@ export default class BookModel {
 
     this.author = author;
     this.publisher = publisher;
+    this.tags = tags;
   }
 
   get Id(): string {
@@ -145,5 +149,9 @@ export default class BookModel {
 
   get Publisher(): PublisherModel {
     return this.publisher;
+  }
+
+  get Tags(): TagModel[] {
+    return this.tags;
   }
 }

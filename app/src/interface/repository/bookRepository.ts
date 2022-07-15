@@ -70,6 +70,7 @@ export default class BookRepository implements IBookRepository {
 
       const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+      const tags = await this.getTagsByBookId(fetchBook.id);
 
       if (!(author && publisher)) throw new Error('author or publisher not found');
 
@@ -86,6 +87,7 @@ export default class BookRepository implements IBookRepository {
           fetchBook.year,
           authorModel,
           publisherModel,
+          tags,
       );
       bookModels.push(bookModel);
     }
@@ -102,6 +104,8 @@ export default class BookRepository implements IBookRepository {
     const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
     const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
 
+    const tags = await this.getTagsByBookId(book.id);
+
     if (!(author && publisher)) throw new Error('author or publisher not found');
 
     const authorModel = new AuthorModel(author.id, author.name);
@@ -117,6 +121,7 @@ export default class BookRepository implements IBookRepository {
         book.year,
         authorModel,
         publisherModel,
+        tags,
     );
     return bookModel;
   }
@@ -143,6 +148,7 @@ export default class BookRepository implements IBookRepository {
 
       const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+      const tags = await this.getTagsByBookId(book.id);
 
       if (!(author && publisher)) throw new Error('author or publisher not found');
 
@@ -159,6 +165,7 @@ export default class BookRepository implements IBookRepository {
           bookByDb.year,
           authorModel,
           publisherModel,
+          tags,
       );
       bookModels.push(bookModel);
     }
@@ -202,6 +209,7 @@ export default class BookRepository implements IBookRepository {
 
       const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+      const tags = await this.getTagsByBookId(book.book_id);
 
       if (!(author && publisher)) throw new Error('author or publisher not found');
 
@@ -218,6 +226,7 @@ export default class BookRepository implements IBookRepository {
           bookByDb.year,
           authorModel,
           publisherModel,
+          tags,
       );
       bookModels.push(bookModel);
     }
@@ -272,6 +281,8 @@ export default class BookRepository implements IBookRepository {
       const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
 
+      const tags = await this.getTagsByBookId(book.id);
+
       if (!(author && publisher)) throw new Error('author or publisher not found');
 
       const authorModel = new AuthorModel(author.id, author.name);
@@ -287,6 +298,7 @@ export default class BookRepository implements IBookRepository {
           book.year,
           authorModel,
           publisherModel,
+          tags,
       );
       bookModels.push(bookModel);
     }
