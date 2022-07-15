@@ -33,4 +33,10 @@ export default class TagModel {
   get BookIds(): string[] {
     return this.bookIds;
   }
+
+  public changeName(name: string | null) {
+    if (name === null) throw new Error('The tag name is null.');
+
+    this.name = name;
+  }
 }
