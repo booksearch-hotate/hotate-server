@@ -2,8 +2,14 @@ export default class TagModel {
   private id: string;
   private name: string;
   private createdAt: Date | null;
+  private bookIds: string[];
 
-  public constructor(id: string | undefined, name: string | undefined, createdAt: Date | null) {
+  public constructor(
+      id: string | undefined,
+      name: string | undefined,
+      createdAt: Date | null,
+      bookIds: string[],
+  ) {
     if (id === undefined) throw new Error('idが不明です');
     if (name === undefined) throw new Error('pwが不明です');
 
@@ -12,6 +18,7 @@ export default class TagModel {
     this.id = id;
     this.name = name;
     this.createdAt = createdAt;
+    this.bookIds = bookIds;
   }
 
   get Id(): string {
@@ -22,5 +29,8 @@ export default class TagModel {
   }
   get CreatedAt(): Date | null {
     return this.createdAt;
+  }
+  get BookIds(): string[] {
+    return this.bookIds;
   }
 }
