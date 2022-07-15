@@ -80,6 +80,12 @@ export default class TagApplicationService {
   }
 
   public async update(id: string, name: string): Promise<void> {
-    await this.tagRepository.update(id, name);
+    const tag = await this.tagRepository.findById(id);
+
+    if (tag === null) throw new Error('The tag not found.');
+
+    tag.changeName(name);
+
+    await this.tagRepository.update(tag);
   }
 }

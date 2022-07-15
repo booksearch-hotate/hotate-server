@@ -10,6 +10,6 @@ export interface ITagRepository {
   isExistTable(): Promise<boolean>
   deleteAll(): Promise<void>
   findById(id: string): Promise<TagModel | null>
-  update(id: string, name: string): Promise<void>
+  update(tag: TagModel): Promise<void>
   getCount (tagId: string): Promise<number>
 }
