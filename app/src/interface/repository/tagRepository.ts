@@ -25,8 +25,14 @@ export default class TagRepository implements ITagRepository {
     const tag = await this.db.Tag.findOne({
       where: {name},
     });
-    if (tag) return new TagModel(tag.id, tag.name, tag.created_at);
-    return null;
+
+    if (tag === null) return null;
+
+    const fetchHavingBooks = await this.db.UsingTag.findAll({where: {tag_id: tag.id}});
+
+    const bookIds = fetchHavingBooks === null ? [] : fetchHavingBooks.map((column) => column.book_id);
+
+    return new TagModel(tag.id, tag.name, tag.created_at, bookIds);
   }
 
   public async createTag(tagModel: TagModel): Promise<void> {
@@ -51,15 +57,13 @@ export default class TagRepository implements ITagRepository {
     return false;
   }
 
-  public async findAll(): Promise<[TagModel, number][]> {
+  public async findAll(): Promise<TagModel[]> {
     const tags = await this.db.Tag.findAll({
       attributes: [
         'id',
         'name',
         'created_at',
-        [sequelize.fn('count', sequelize.col('Tag.id')), 'count'],
       ],
-      group: ['Tag.id'],
       order: [['created_at', 'DESC']],
       include: [{
         model: this.db.UsingTag,
@@ -67,12 +71,20 @@ export default class TagRepository implements ITagRepository {
         attributes: [],
       }],
     });
-    const result: [TagModel, number][] = [];
-    tags.forEach((tag) => {
-      result.push([new TagModel(tag.id, tag.name, tag.created_at), tag.getDataValue('count')]);
+
+    if (tags === null) return [];
+
+    const promiseTags = tags.map(async (tag) => {
+      const fetchBookIds = await this.db.UsingTag.findAll({
+        where: {tag_id: tag.id},
+      });
+
+      const bookIds = fetchBookIds === null ? [] : fetchBookIds.map((column) => column.book_id);
+
+      return new TagModel(tag.id, tag.name, tag.created_at, bookIds);
     });
 
-    return result;
+    return await Promise.all(promiseTags);
   }
 
   public async delete(id: string): Promise<void> {
@@ -96,7 +108,7 @@ export default class TagRepository implements ITagRepository {
     const tag = await this.db.Tag.findOne({
       where: {id},
     });
-    if (tag) return new TagModel(tag.id, tag.name, tag.created_at);
+    if (tag) return new TagModel(tag.id, tag.name, tag.created_at, []);
     return null;
   }
 

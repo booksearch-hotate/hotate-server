@@ -19,7 +19,7 @@
         <% for (let tag of pageData.anyData.tags) { %>
           <tr>
             <td><%= tag.Name %></td>
-            <td><%= tag.Count %></td>
+            <td><%= tag.BookIds.length %></td>
             <td><%= tag.CreatedAt %></td>
             <td>
               <form action="/admin/tags/edit" method="get">
