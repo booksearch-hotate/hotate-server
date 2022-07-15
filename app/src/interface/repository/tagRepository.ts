@@ -108,8 +108,12 @@ export default class TagRepository implements ITagRepository {
     const tag = await this.db.Tag.findOne({
       where: {id},
     });
-    if (tag) return new TagModel(tag.id, tag.name, tag.created_at, []);
-    return null;
+
+    if (tag === null) return null;
+
+    const fetchBookIds = await this.db.UsingTag.findAll({where: {tag_id: tag.id}});
+
+    return new TagModel(tag.id, tag.name, tag.created_at, fetchBookIds.map((column) => column.book_id));
   }
 
   public async update(tag: TagModel): Promise<void> {
