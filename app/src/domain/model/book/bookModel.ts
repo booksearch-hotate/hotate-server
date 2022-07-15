@@ -58,6 +58,12 @@ export default class BookModel {
     }
   }
 
+  public changeName(name: string | null) {
+    if (name === null) throw new Error('The book title is null.');
+
+    this.Name = name;
+  }
+
   get SubName(): string | null {
     return this.subName;
   }
@@ -68,13 +74,19 @@ export default class BookModel {
   get Content(): string | null {
     return this.content;
   }
+
   set Content(content: string | null) {
     this.content = content;
+  }
+
+  public changeContent(content: string |null) {
+    this.Content = content;
   }
 
   get Isbn(): string | null {
     return this.isbn;
   }
+
   set Isbn(isbn: string | null) {
     if (isbn === '' || isbn === null || isbn.length < 10) {
       logger.warn('There are not enough digits in isbn.');
@@ -85,28 +97,30 @@ export default class BookModel {
     this.isbn = isbn;
   }
 
+  public changeIsbn(isbn: string | null) {
+    this.Isbn = isbn;
+  }
+
   get Ndc(): number | null {
     return this.ndc;
   }
-  set Ndc(ndc: number | null) {
+
+  private set Ndc(ndc: number | null) {
     if (ndc !== null && ndc.toString().length < 1) {
       logger.warn('NDC format is incorrect; set to NULL.');
       this.ndc = null;
       return;
     }
+  }
 
-    try {
-      Number(ndc);
-      this.ndc = ndc;
-    } catch (e) {
-      this.ndc = null;
-    }
+  changeNdc(ndc: number | null) {
+    this.Ndc = ndc;
   }
 
   get Year(): number | null {
     return this.year;
   }
-  set Year(year: number | null) {
+  private set Year(year: number | null) {
     if (year !== null && year.toString().length < 4) {
       logger.warn('Year format is incorrect; set to NULL.');
       year = null;
@@ -114,6 +128,10 @@ export default class BookModel {
     }
 
     this.year = year;
+  }
+
+  public changeYear(year: number | null) {
+    this.Year = year;
   }
 
   get Author(): AuthorModel {
