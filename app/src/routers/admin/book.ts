@@ -109,13 +109,6 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
     const beforeAuthorId = book.AuthorId;
     const beforePublisherId = book.PublisherId;
 
-    /* 既に同名が存在する場合はそのauthorIdを、存在しない場合は登録しそのIDを取得 */
-    const createList = [
-      authorApplicationService.createAuthor(req.body.authorName, false),
-      publisherApplicationService.createPublisher(req.body.publisherName, false),
-    ];
-    const [authorId, publisherId] = await Promise.all(createList);
-
     await bookApplicationService.update(
         bookId,
         req.body.title,
@@ -124,10 +117,6 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
         req.body.isbn,
         req.body.ndc,
         req.body.year,
-        authorId,
-        req.body.authorName,
-        publisherId,
-        req.body.publisherName,
     );
 
     /* 使用されていない著者(出版社)を削除 */
