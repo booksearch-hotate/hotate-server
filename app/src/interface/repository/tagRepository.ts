@@ -89,9 +89,9 @@ export default class TagRepository implements ITagRepository {
     return await Promise.all(promiseTags);
   }
 
-  public async delete(id: string): Promise<void> {
-    await this.db.UsingTag.destroy({where: {tag_id: id}});
-    await this.db.Tag.destroy({where: {id}});
+  public async delete(tag: TagModel): Promise<void> {
+    await this.db.UsingTag.destroy({where: {tag_id: tag.Id}});
+    await this.db.Tag.destroy({where: {id: tag.Id}});
   }
 
   public async isExistTable(): Promise<boolean> {
