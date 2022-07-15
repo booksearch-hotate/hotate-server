@@ -67,8 +67,13 @@ export default class BookModel {
   get SubName(): string | null {
     return this.subName;
   }
+
   set SubName(subName: string | null) {
     this.subName = subName;
+  }
+
+  public changeSubName(subName: string | null) {
+    this.SubName = subName;
   }
 
   get Content(): string | null {
