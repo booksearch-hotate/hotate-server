@@ -172,10 +172,6 @@ export default class BookApplicationService {
    * @param isbn ISBN
    * @param ndc 日本十進分類法
    * @param year 出版年
-   * @param authorId 著者ID
-   * @param authorName 著者名
-   * @param publisherId 出版社ID
-   * @param publisherName 出版社名
    */
   public async update(
       id: string,
