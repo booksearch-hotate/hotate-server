@@ -2,12 +2,11 @@ import * as jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import {Request} from 'express';
 
-import {IAdminSession} from '../../application/session/IAdminSession';
 import AdminData from '../../domain/model/admin/adminData';
 
 dotenv.config();
 
-export default class AdminSession implements IAdminSession {
+export default class AdminSession {
   private readonly jwtSecret = process.env.JWTSECRET as string;
   private id: string;
   private pw: string;
