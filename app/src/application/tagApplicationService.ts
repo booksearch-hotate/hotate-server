@@ -61,6 +61,8 @@ export default class TagApplicationService {
   public async delete(id: string): Promise<void> {
     const tag = await this.tagRepository.findById(id);
 
+    if (tag === null) return;
+
     await this.tagRepository.delete(tag);
   }
 
