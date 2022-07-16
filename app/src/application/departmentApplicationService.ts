@@ -10,8 +10,6 @@ export default class DepartmentApplicationService {
   private readonly departmentRepository: IDepartmentRepository;
   private readonly departmentService: DepartmentService;
 
-  private readonly MAX_DEPARTMENT_COUNT = 20;
-
   public constructor(bookRequestRepository: IDepartmentRepository, departmentService: DepartmentService) {
     this.departmentRepository = bookRequestRepository;
     this.departmentService = departmentService;
@@ -36,9 +34,7 @@ export default class DepartmentApplicationService {
    * @returns {boolean} 現在登録している数が最大の個数か
    */
   public async isMax(): Promise<boolean> {
-    const count = await this.departmentRepository.count();
-
-    return this.MAX_DEPARTMENT_COUNT >= count;
+    return await this.departmentService.isOverNumberOfDepartment();
   }
 
   /**

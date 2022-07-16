@@ -7,6 +7,8 @@ import {IDepartmentRepository} from '../model/department/IDepartmentRepository';
 export default class DepartmentService {
   private readonly departmentRepository: IDepartmentRepository;
 
+  private readonly MAX_DEPARTMENT_COUNT = 20;
+
   public constructor(departmentRepository: IDepartmentRepository) {
     this.departmentRepository = departmentRepository;
   }
@@ -24,5 +26,10 @@ export default class DepartmentService {
     const found = await this.departmentRepository.findByName(department.Name);
 
     return found !== null;
+  }
+
+  public async isOverNumberOfDepartment(): Promise<boolean> {
+    const departmentNum = await this.departmentRepository.count();
+    return departmentNum > this.MAX_DEPARTMENT_COUNT;
   }
 }
