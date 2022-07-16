@@ -18,6 +18,7 @@ const apiRouter = Router();
 
 const tagApplicationService = new TagApplicationService(
     new TagRepository(db),
+    new BookRepository(db, new EsSearchBook('books')),
     new TagService(new TagRepository(db)),
 );
 

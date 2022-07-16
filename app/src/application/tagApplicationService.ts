@@ -3,6 +3,7 @@ import TagModel from '../domain/model/tag/tagModel';
 import TagService from '../domain/service/tagService';
 
 import {ITagRepository} from '../domain/model/tag/ITagRepository';
+import {IBookRepository} from '../domain/model/book/IBookRepository';
 
 import TagData from '../domain/model/tag/tagData';
 
@@ -12,10 +13,12 @@ const logger = new Logger('TagApplicationService');
 
 export default class TagApplicationService {
   private readonly tagRepository: ITagRepository;
+  private readonly bookRepository: IBookRepository;
   private readonly tagService: TagService;
 
-  public constructor(tagApplicationServiceRepository: ITagRepository, tagService: TagService) {
-    this.tagRepository = tagApplicationServiceRepository;
+  public constructor(tagRepository: ITagRepository, bookRepository: IBookRepository, tagService: TagService) {
+    this.tagRepository = tagRepository;
+    this.bookRepository = bookRepository;
     this.tagService = tagService;
   }
 
@@ -27,6 +30,10 @@ export default class TagApplicationService {
    */
   public async create(name: string, bookId: string): Promise<boolean> {
     let tag = new TagModel(this.tagService.createUUID(), name, null, [bookId]);
+
+    const book = await this.bookRepository.searchById(bookId);
+
+    if (book.isOverNumberOfTags()) throw new Error('The maximum number of tags that can be added to a tag has been exceeded.');
 
     /* tagsにタグが存在するか確認し、存在しない場合はtagsに新規追加する処理 */
     const isExist = await this.tagService.isExist(tag); // Tagsに存在してないか確認
