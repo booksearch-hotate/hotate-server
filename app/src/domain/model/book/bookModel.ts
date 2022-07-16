@@ -147,7 +147,7 @@ export default class BookModel {
     this.Isbn = isbn;
   }
 
-  public changeNdc(ndc: number | null) {
+  changeNdc(ndc: number | null) {
     this.Ndc = ndc;
   }
 
