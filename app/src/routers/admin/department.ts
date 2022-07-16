@@ -3,6 +3,7 @@ import {IPage} from './../datas/IPage';
 import csurf from 'csurf';
 
 import DepartmentRepository from '../../interface/repository/departmentRepository';
+import RequestRepository from '../../interface/repository/requestRepository';
 
 import DepartmentService from '../../domain/service/departmentService';
 
@@ -21,7 +22,11 @@ const csrfProtection = csurf({cookie: false});
 
 const logger = new Logger('department');
 
-const departmentApplicationService = new DepartmentApplicationService(new DepartmentRepository(db), new DepartmentService(new DepartmentRepository(db)));
+const departmentApplicationService = new DepartmentApplicationService(
+    new DepartmentRepository(db),
+    new RequestRepository(db),
+    new DepartmentService(new DepartmentRepository(db)),
+);
 
 departmentRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   pageData.headTitle = '学科名一覧';
@@ -62,6 +67,7 @@ departmentRouter.post('/delete', csrfProtection, async (req: Request, res: Respo
     const departmentId = req.body.deleteId;
 
     await departmentApplicationService.deleteDepartment(departmentId);
+
     req.session.status = {type: 'Success', mes: '学科の削除に成功しました'};
   } catch (e: any) {
     logger.error(e);

@@ -1,10 +1,15 @@
 import {IDepartmentRepository} from '../../domain/model/department/IDepartmentRepository';
 
 import DepartmentModel from '../../domain/model/department/departmentModel';
+
 import Department from '../../infrastructure/db/tables/departments';
+import Request from '../../infrastructure/db/tables/requests';
+
+import BookRequestModel from '../../domain/model/bookRequest/bookRequestModel';
 
 interface sequelize {
-  Department: typeof Department
+  Department: typeof Department,
+  Request: typeof Request,
 }
 
 export default class DepartmentRepository implements IDepartmentRepository {
@@ -70,5 +75,33 @@ export default class DepartmentRepository implements IDepartmentRepository {
     await this.db.Department.update({
       name: department.Name,
     }, {where: {id: department.Id}});
+  }
+
+  public async findBookRequestById(departmentId: string): Promise<BookRequestModel[]> {
+    const fetchData = await this.db.Request.findAll({
+      where: {
+        department_id: departmentId,
+      },
+    });
+
+    if (fetchData === null) return [];
+
+    const fetchDepartment = await this.db.Department.findOne({where: {id: departmentId}});
+
+    if (fetchDepartment === null) throw new Error();
+
+    return fetchData.map((column) => new BookRequestModel(
+        column.id,
+        column.book_name,
+        column.author_name,
+        column.publisher_name,
+        column.isbn,
+        column.message,
+        new DepartmentModel(column.department_id, fetchDepartment.name),
+        column.school_year,
+        column.school_class,
+        column.user_name,
+        column.created_at,
+    ));
   }
 }

@@ -1,3 +1,4 @@
+import BookRequestModel from '../bookRequest/bookRequestModel';
 import DepartmentModel from './departmentModel';
 
 export interface IDepartmentRepository {
@@ -8,4 +9,5 @@ export interface IDepartmentRepository {
   findById(id: string): Promise<DepartmentModel | null>,
   update(department: DepartmentModel): Promise<void>,
   findByName (name: string | null): Promise<DepartmentModel | null>,
+  findBookRequestById(departmentId: string): Promise<BookRequestModel[]>
 }
