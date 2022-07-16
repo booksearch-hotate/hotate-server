@@ -6,6 +6,9 @@ import TagService from '../../domain/service/tagService';
 import TagApplicationService from '../../application/tagApplicationService';
 
 import TagRepository from '../../interface/repository/tagRepository';
+import BookRepository from '../../interface/repository/bookRepository';
+
+import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 
 import db from '../../infrastructure/db';
 
@@ -20,6 +23,7 @@ const csrfProtection = csurf({cookie: false});
 
 const tagApplicationService = new TagApplicationService(
     new TagRepository(db),
+    new BookRepository(db, new EsSearchBook('books')),
     new TagService(new TagRepository(db)),
 );
 
