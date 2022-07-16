@@ -18,6 +18,8 @@ export default class BookModel {
   private publisher!: PublisherModel;
   private tags!: TagModel[];
 
+  private readonly MAX_NUMBER_OF_TAGS = 10;
+
   public constructor(
       id: string,
       name: string,
@@ -153,5 +155,9 @@ export default class BookModel {
 
   public changeYear(year: number | null) {
     this.Year = year;
+  }
+
+  public isOverNumberOfTags() {
+    return this.tags.length > this.MAX_NUMBER_OF_TAGS;
   }
 }
