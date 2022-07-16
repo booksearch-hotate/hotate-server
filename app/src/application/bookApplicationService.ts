@@ -63,6 +63,7 @@ export default class BookApplicationService {
           year === undefined ? null : year,
           author,
           publisher,
+          [],
       );
       await this.bookRepository.save(book);
     } catch (e: any) {
@@ -105,12 +106,13 @@ export default class BookApplicationService {
     const bookDatas: BookData[] = [];
 
     for (const book of books) {
-      const sliceStrLengh = 50; // 紹介文を区切る文字数
-      if (book.Content !== null && book.Content.length > sliceStrLengh) book.Content = `${book.Content.substring(0, sliceStrLengh)}...`;
+      const SLICE_STR_LENGTH = 50; // 紹介文を区切る文字数
+      const bookContent = book.Content;
+      if (bookContent !== null && bookContent.length > SLICE_STR_LENGTH) {
+        book.changeContent(`${bookContent.substring(0, SLICE_STR_LENGTH)}...`);
+      }
 
-      const tags = await this.bookRepository.getTagsByBookId(book.Id);
-
-      const bookData = new BookData(book, tags);
+      const bookData = new BookData(book);
       bookDatas.push(bookData);
     }
 
@@ -125,9 +127,7 @@ export default class BookApplicationService {
   public async searchBookById(id: string): Promise<BookData> {
     const book = await this.bookRepository.searchById(id);
 
-    const tags = await this.bookRepository.getTagsByBookId(book.Id);
-
-    const bookData = new BookData(book, tags);
+    const bookData = new BookData(book);
 
     bookData.ImgLink = await getImgLink(book.Isbn); // 画像のURLを取得
 
@@ -172,10 +172,6 @@ export default class BookApplicationService {
    * @param isbn ISBN
    * @param ndc 日本十進分類法
    * @param year 出版年
-   * @param authorId 著者ID
-   * @param authorName 著者名
-   * @param publisherId 出版社ID
-   * @param publisherName 出版社名
    */
   public async update(
       id: string,
@@ -185,24 +181,16 @@ export default class BookApplicationService {
       isbn: string | null,
       ndc: number | null,
       year: number | null,
-      authorId: string,
-      authorName: string,
-      publisherId: string,
-      publisherName: string,
   ) {
-    const author = new AuthorModel(authorId, authorName);
-    const publisher = new PublisherModel(publisherId, publisherName);
-    const book = new BookModel(
-        id,
-        bookName,
-        subName,
-        content,
-        isbn,
-        ndc,
-        year,
-        author,
-        publisher,
-    );
+    const book = await this.bookRepository.searchById(id);
+
+    book.changeName(bookName);
+    book.changeSubName(subName);
+    book.changeContent(content);
+    book.changeIsbn(isbn);
+    book.changeNdc(ndc);
+    book.changeYear(year);
+
     await this.bookRepository.update(book);
   }
 
@@ -214,12 +202,9 @@ export default class BookApplicationService {
   public async findAll(pageCount: number): Promise<BookData[]> {
     const books = await this.bookRepository.findAll(pageCount);
     const bookDatas: BookData[] = [];
-    for (const book of books) {
-      const tags = await this.bookRepository.getTagsByBookId(book.Id);
 
-      const bookData = new BookData(book, tags);
-      bookDatas.push(bookData);
-    }
+    for (const book of books) bookDatas.push(new BookData(book));
+
     return bookDatas;
   }
 
@@ -236,6 +221,10 @@ export default class BookApplicationService {
    * @param id 本ID
    */
   public async deleteBook(id: string): Promise<void> {
-    await this.bookRepository.deleteBook(id);
+    const book = await this.bookRepository.searchById(id);
+
+    if (book === null) return;
+
+    await this.bookRepository.deleteBook(book);
   }
 }

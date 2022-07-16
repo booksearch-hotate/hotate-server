@@ -70,6 +70,7 @@ export default class BookRepository implements IBookRepository {
 
       const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+      const tags = await this.getTagsByBookId(fetchBook.id);
 
       if (!(author && publisher)) throw new Error('author or publisher not found');
 
@@ -86,6 +87,7 @@ export default class BookRepository implements IBookRepository {
           fetchBook.year,
           authorModel,
           publisherModel,
+          tags,
       );
       bookModels.push(bookModel);
     }
@@ -102,6 +104,8 @@ export default class BookRepository implements IBookRepository {
     const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
     const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
 
+    const tags = await this.getTagsByBookId(book.id);
+
     if (!(author && publisher)) throw new Error('author or publisher not found');
 
     const authorModel = new AuthorModel(author.id, author.name);
@@ -117,6 +121,7 @@ export default class BookRepository implements IBookRepository {
         book.year,
         authorModel,
         publisherModel,
+        tags,
     );
     return bookModel;
   }
@@ -143,6 +148,7 @@ export default class BookRepository implements IBookRepository {
 
       const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+      const tags = await this.getTagsByBookId(book.id);
 
       if (!(author && publisher)) throw new Error('author or publisher not found');
 
@@ -159,6 +165,7 @@ export default class BookRepository implements IBookRepository {
           bookByDb.year,
           authorModel,
           publisherModel,
+          tags,
       );
       bookModels.push(bookModel);
     }
@@ -176,7 +183,7 @@ export default class BookRepository implements IBookRepository {
     for (const tag of tags) {
       const tagByDb = await this.db.Tag.findOne({where: {id: tag.tag_id}});
       if (!tagByDb) throw new Error('tag not found');
-      const tagModel = new TagModel(tagByDb.id, tagByDb.name, tagByDb.created_at);
+      const tagModel = new TagModel(tagByDb.id, tagByDb.name, tagByDb.created_at, []);
       tagModels.push(tagModel);
     }
     return tagModels;
@@ -202,6 +209,7 @@ export default class BookRepository implements IBookRepository {
 
       const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+      const tags = await this.getTagsByBookId(book.book_id);
 
       if (!(author && publisher)) throw new Error('author or publisher not found');
 
@@ -218,6 +226,7 @@ export default class BookRepository implements IBookRepository {
           bookByDb.year,
           authorModel,
           publisherModel,
+          tags,
       );
       bookModels.push(bookModel);
     }
@@ -272,6 +281,8 @@ export default class BookRepository implements IBookRepository {
       const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
 
+      const tags = await this.getTagsByBookId(book.id);
+
       if (!(author && publisher)) throw new Error('author or publisher not found');
 
       const authorModel = new AuthorModel(author.id, author.name);
@@ -287,6 +298,7 @@ export default class BookRepository implements IBookRepository {
           book.year,
           authorModel,
           publisherModel,
+          tags,
       );
       bookModels.push(bookModel);
     }
@@ -297,10 +309,10 @@ export default class BookRepository implements IBookRepository {
     return await this.db.Book.count();
   }
 
-  public async deleteBook(id: string): Promise<void> {
+  public async deleteBook(book: BookModel): Promise<void> {
     const list = [
-      this.db.Book.destroy({where: {id}}),
-      this.esSearchBook.delete(id),
+      this.db.Book.destroy({where: {id: book.Id}}),
+      this.esSearchBook.delete(book.Id),
     ];
     await Promise.all(list);
   }

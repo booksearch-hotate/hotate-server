@@ -1,5 +1,4 @@
 import BookModel from './bookModel';
-import TagModel from '../tag/tagModel';
 
 export default class BookData {
   private id: string;
@@ -16,7 +15,7 @@ export default class BookData {
   private ndc: number | null;
   private tags: string[] = [];
 
-  public constructor(book: BookModel, tags: TagModel[] | null = null) {
+  public constructor(book: BookModel) {
     this.id = book.Id;
     this.bookName = book.Name;
     this.authorName = book.Author.Name === null ? '' : book.Author.Name;
@@ -30,11 +29,7 @@ export default class BookData {
     this.authorId = book.Author.Id;
     this.publisherId = book.Publisher.Id;
 
-    if (tags !== null) {
-      tags.forEach((tag) => {
-        this.tags.push(tag.Name);
-      });
-    }
+    book.Tags.forEach((tag) => this.tags.push(tag.Name));
   }
 
   get Id(): string {

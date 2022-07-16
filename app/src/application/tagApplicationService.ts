@@ -3,6 +3,7 @@ import TagModel from '../domain/model/tag/tagModel';
 import TagService from '../domain/service/tagService';
 
 import {ITagRepository} from '../domain/model/tag/ITagRepository';
+import {IBookRepository} from '../domain/model/book/IBookRepository';
 
 import TagData from '../domain/model/tag/tagData';
 
@@ -11,11 +12,13 @@ import Logger from '../infrastructure/logger/logger';
 const logger = new Logger('TagApplicationService');
 
 export default class TagApplicationService {
-  private readonly tagApplicationServiceRepository: ITagRepository;
+  private readonly tagRepository: ITagRepository;
+  private readonly bookRepository: IBookRepository;
   private readonly tagService: TagService;
 
-  public constructor(tagApplicationServiceRepository: ITagRepository, tagService: TagService) {
-    this.tagApplicationServiceRepository = tagApplicationServiceRepository;
+  public constructor(tagRepository: ITagRepository, bookRepository: IBookRepository, tagService: TagService) {
+    this.tagRepository = tagRepository;
+    this.bookRepository = bookRepository;
     this.tagService = tagService;
   }
 
@@ -26,15 +29,19 @@ export default class TagApplicationService {
    * @returns 重複した組み合わせがあったか
    */
   public async create(name: string, bookId: string): Promise<boolean> {
-    let tag = new TagModel(this.tagService.createUUID(), name, null);
+    let tag = new TagModel(this.tagService.createUUID(), name, null, [bookId]);
+
+    const book = await this.bookRepository.searchById(bookId);
+
+    if (book.isOverNumberOfTags()) throw new Error('The maximum number of tags that can be added to a tag has been exceeded.');
 
     /* tagsにタグが存在するか確認し、存在しない場合はtagsに新規追加する処理 */
     const isExist = await this.tagService.isExist(tag); // Tagsに存在してないか確認
     logger.debug(`isExist: ${isExist}`);
     if (!isExist) {
-      await this.tagApplicationServiceRepository.createTag(tag); // Tagsに追加
+      await this.tagRepository.createTag(tag); // Tagsに追加
     } else {
-      const alreadyTag = await this.tagApplicationServiceRepository.findByName(tag.Name); // Tagsに存在しているか確認
+      const alreadyTag = await this.tagRepository.findByName(tag.Name); // Tagsに存在しているか確認
 
       if (alreadyTag === null) throw new Error('The tag already exists and an error occurred when I tried to retrieve that tag.');
 
@@ -44,35 +51,35 @@ export default class TagApplicationService {
     logger.debug(`tag: ${tag}`);
 
     /* using_tagsに既に登録されているか */
-    const isExistCombination = await this.tagApplicationServiceRepository.isExistCombination(tag.Id, bookId);
+    const isExistCombination = await this.tagRepository.isExistCombination(tag.Id, bookId);
     if (!isExistCombination) {
-      await this.tagApplicationServiceRepository.saveCombination(tag, bookId); // using_tagsに追加
+      await this.tagRepository.saveCombination(tag, bookId); // using_tagsに追加
       logger.debug('saveCombination');
     }
     return isExistCombination;
   }
 
   public async findAll(): Promise<TagData[]> {
-    const tags = await this.tagApplicationServiceRepository.findAll();
-    const res: TagData[] = [];
-    for (const tagObj of tags) {
-      const [tag, count] = tagObj;
-      res.push(new TagData(tag, count));
-    }
-    return res;
+    const tags = await this.tagRepository.findAll();
+    console.log(tags);
+    return tags.map((tag) => new TagData(tag));
   }
 
   public async delete(id: string): Promise<void> {
-    await this.tagApplicationServiceRepository.delete(id);
+    const tag = await this.tagRepository.findById(id);
+
+    if (tag === null) return;
+
+    await this.tagRepository.delete(tag);
   }
 
   public async isExistTable(): Promise<boolean> {
-    return await this.tagApplicationServiceRepository.isExistTable();
+    return await this.tagRepository.isExistTable();
   }
 
   public async findById(id: string): Promise<TagData | null> {
-    const tag = await this.tagApplicationServiceRepository.findById(id);
-    if (tag) return new TagData(tag, await this.tagService.getCount(tag));
+    const tag = await this.tagRepository.findById(id);
+    if (tag) return new TagData(tag);
     return null;
   }
 
@@ -80,10 +87,16 @@ export default class TagApplicationService {
    * `tags`と`using_tags`を削除する
    */
   public async deleteAll(): Promise<void> {
-    await this.tagApplicationServiceRepository.deleteAll();
+    await this.tagRepository.deleteAll();
   }
 
   public async update(id: string, name: string): Promise<void> {
-    await this.tagApplicationServiceRepository.update(id, name);
+    const tag = await this.tagRepository.findById(id);
+
+    if (tag === null) throw new Error('The tag not found.');
+
+    tag.changeName(name);
+
+    await this.tagRepository.update(tag);
   }
 }
