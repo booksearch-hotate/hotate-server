@@ -2,6 +2,8 @@ import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 import {IPage} from './datas/IPage';
 
+import {FormInvalidError} from '../domain/model/bookRequest/bookRequestModel';
+
 import DepartmentRepository from '../interface/repository/departmentRepository';
 import RequestRepository from '../interface/repository/requestRepository';
 
@@ -13,6 +15,8 @@ import BookRequestApplicationService from '../application/bookRequestApplication
 
 import db from '../infrastructure/db';
 import Logger from '../infrastructure/logger/logger';
+
+import conversionpageStatus from '../utils/conversionPageStatus';
 
 // eslint-disable-next-line new-cap
 const requestRouter = Router();
@@ -44,6 +48,9 @@ requestRouter.get('/request', csrfProtection, async (req: Request, res: Response
     departmentList: await departmentApplicationService.findAllDepartment(),
     saveVal: keepReqObj,
   };
+
+  pageData.status = conversionpageStatus(req.session.status);
+  req.session.status = undefined;
 
   pageData.csrfToken = req.csrfToken();
 
@@ -90,6 +97,10 @@ requestRouter.get('/confirm-request', csrfProtection, async (req: Request, res: 
 
     return res.render('pages/confirm-request', {pageData});
   } catch (e: any) {
+    if (e instanceof FormInvalidError) {
+      req.session.status = {type: 'Failure', error: e, mes: '必須項目が入力されていません'};
+      return res.redirect('/request');
+    }
     logger.error(e);
     return res.redirect('/');
   }
