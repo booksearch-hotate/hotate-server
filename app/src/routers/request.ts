@@ -25,6 +25,7 @@ const logger = new Logger('bookRequest');
 
 const departmentApplicationService = new DepartmentApplicationService(
     new DepartmentRepository(db),
+    new RequestRepository(db),
     new DepartmentService(new DepartmentRepository(db)),
 );
 

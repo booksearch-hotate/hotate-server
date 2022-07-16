@@ -5,13 +5,20 @@ import DepartmentService from '../domain/service/departmentService';
 import DepartmentData from '../domain/model/department/departmentData';
 
 import {IDepartmentRepository} from '../domain/model/department/IDepartmentRepository';
+import {IBookRequestRepository} from '../domain/model/bookRequest/IBookRequestRepository';
 
 export default class DepartmentApplicationService {
   private readonly departmentRepository: IDepartmentRepository;
+  private readonly bookRequestRepository: IBookRequestRepository;
   private readonly departmentService: DepartmentService;
 
-  public constructor(bookRequestRepository: IDepartmentRepository, departmentService: DepartmentService) {
-    this.departmentRepository = bookRequestRepository;
+  public constructor(
+      departmentRepository: IDepartmentRepository,
+      bookRequestRepository: IBookRequestRepository,
+      departmentService: DepartmentService,
+  ) {
+    this.departmentRepository = departmentRepository;
+    this.bookRequestRepository = bookRequestRepository;
     this.departmentService = departmentService;
   }
 
@@ -56,6 +63,13 @@ export default class DepartmentApplicationService {
   }
 
   public async deleteDepartment(id: string): Promise<void> {
+    const bookRequestsHaveId = await this.departmentRepository.findBookRequestById(id);
+
+    const deleteBookRequests = bookRequestsHaveId.map(async (bookRequest) => {
+      await this.bookRequestRepository.delete(bookRequest.Id);
+    });
+
+    await Promise.all(deleteBookRequests);
     await this.departmentRepository.deleteDepartment(id);
   }
 
