@@ -62,12 +62,6 @@ export default class BookModel {
     }
   }
 
-  public changeName(name: string | null) {
-    if (name === null) throw new Error('The book title is null.');
-
-    this.Name = name;
-  }
-
   get SubName(): string | null {
     return this.subName;
   }
@@ -76,20 +70,12 @@ export default class BookModel {
     this.subName = subName;
   }
 
-  public changeSubName(subName: string | null) {
-    this.SubName = subName;
-  }
-
   get Content(): string | null {
     return this.content;
   }
 
   set Content(content: string | null) {
     this.content = content;
-  }
-
-  public changeContent(content: string |null) {
-    this.Content = content;
   }
 
   get Isbn(): string | null {
@@ -106,10 +92,6 @@ export default class BookModel {
     this.isbn = isbn;
   }
 
-  public changeIsbn(isbn: string | null) {
-    this.Isbn = isbn;
-  }
-
   get Ndc(): number | null {
     return this.ndc;
   }
@@ -120,10 +102,6 @@ export default class BookModel {
       this.ndc = null;
       return;
     }
-  }
-
-  changeNdc(ndc: number | null) {
-    this.Ndc = ndc;
   }
 
   get Year(): number | null {
@@ -139,10 +117,6 @@ export default class BookModel {
     this.year = year;
   }
 
-  public changeYear(year: number | null) {
-    this.Year = year;
-  }
-
   get Author(): AuthorModel {
     return this.author;
   }
@@ -153,5 +127,31 @@ export default class BookModel {
 
   get Tags(): TagModel[] {
     return this.tags;
+  }
+
+  public changeName(name: string | null) {
+    if (name === null) throw new Error('The book title is null.');
+
+    this.Name = name;
+  }
+
+  public changeSubName(subName: string | null) {
+    this.SubName = subName;
+  }
+
+  public changeContent(content: string |null) {
+    this.Content = content;
+  }
+
+  public changeIsbn(isbn: string | null) {
+    this.Isbn = isbn;
+  }
+
+  changeNdc(ndc: number | null) {
+    this.Ndc = ndc;
+  }
+
+  public changeYear(year: number | null) {
+    this.Year = year;
   }
 }
