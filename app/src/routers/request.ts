@@ -84,7 +84,7 @@ requestRouter.get('/confirm-request', csrfProtection, async (req: Request, res: 
   pageData.csrfToken = req.csrfToken();
 
   try {
-    const reqData = requestApplicationService.makeData(req.session.keepValue);
+    const reqData = await requestApplicationService.makeData(req.session.keepValue);
 
     pageData.anyData = {request: reqData};
 
