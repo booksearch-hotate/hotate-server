@@ -3,6 +3,7 @@ import {IPage} from './../datas/IPage';
 import csurf from 'csurf';
 
 import DepartmentRepository from '../../interface/repository/departmentRepository';
+import RequestRepository from '../../interface/repository/requestRepository';
 
 import DepartmentService from '../../domain/service/departmentService';
 
@@ -21,7 +22,11 @@ const csrfProtection = csurf({cookie: false});
 
 const logger = new Logger('department');
 
-const departmentApplicationService = new DepartmentApplicationService(new DepartmentRepository(db), new DepartmentService(new DepartmentRepository(db)));
+const departmentApplicationService = new DepartmentApplicationService(
+    new DepartmentRepository(db),
+    new RequestRepository(db),
+    new DepartmentService(new DepartmentRepository(db)),
+);
 
 departmentRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   pageData.headTitle = '学科名一覧';
@@ -31,12 +36,12 @@ departmentRouter.get('/', csrfProtection, async (req: Request, res: Response) =>
     isMax: await departmentApplicationService.isMax(),
   };
 
-  pageData.csrfToken = req.csrfToken();
-
   pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
 
   req.session.keepValue = undefined;
+
+  pageData.csrfToken = req.csrfToken();
 
   res.render('pages/admin/department/index', {pageData});
 });
@@ -57,11 +62,41 @@ departmentRouter.post('/insert', csrfProtection, async (req: Request, res: Respo
   }
 });
 
+departmentRouter.get('/confirm-delete', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    const departmentId = req.query.did;
+
+    if (typeof departmentId !== 'string') throw new Error('Invalid request id.');
+
+    const department = await departmentApplicationService.findById(departmentId);
+
+    if (department === null) throw new Error('The department content cannot find.');
+
+    const bookRequestsHaveId = await departmentApplicationService.findBookRequestById(departmentId);
+
+    pageData.headTitle = '学科名の削除';
+
+    pageData.anyData = {
+      department: department,
+      bookRequests: bookRequestsHaveId,
+    };
+
+    pageData.csrfToken = req.csrfToken();
+
+    return res.render('pages/admin/department/confirm-delete', {pageData});
+  } catch (e: any) {
+    logger.error(e);
+    req.session.status = {type: 'Failure', error: e, mes: '学科の情報の取得に失敗しました。'};
+    res.redirect('/admin/department/');
+  }
+});
+
 departmentRouter.post('/delete', csrfProtection, async (req: Request, res: Response) => {
   try {
     const departmentId = req.body.deleteId;
 
     await departmentApplicationService.deleteDepartment(departmentId);
+
     req.session.status = {type: 'Success', mes: '学科の削除に成功しました'};
   } catch (e: any) {
     logger.error(e);

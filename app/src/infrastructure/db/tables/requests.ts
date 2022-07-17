@@ -8,7 +8,7 @@ export default class Request extends Model {
   public book_name!: string;
   public author_name!: string;
   public publisher_name!: string;
-  public department_id!: number;
+  public department_id!: string;
   public message!: string;
   public school_year!: string;
   public school_class!:string;

@@ -1,7 +1,7 @@
 <%
 let mes = content;
 
-if (mes === '') mes = 'なし';
+if (mes === '' || mes === null) mes = 'なし';
 %> 
 <div class="confirm-item-box">
   <p class="title mb-0"><%= title %></p>

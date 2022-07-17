@@ -4,16 +4,17 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <h3>学科名一覧</h3>
-    <p>20学科まで追加可能です</p>
+    <%- include('./../../../components/headerTitle', {mes: '学科名一覧'}) %>
     <div class="insert-department-box">
+      <h2>学科の追加</h2>
+      <p><b>20</b>個まで</p>
       <form action="/admin/department/insert" method="post">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <div class="form-group">
           <label for="insertName" class="form-label">追加する学科名</label>
           <input class="form-control" type="text" id="insertName" name="insertName">
         </div>
-        <button type="submit" class="btn btn-outline-primary" disabled="<%= pageData.anyData.isMax %>">追加</button>
+        <button type="submit" class="btn btn-outline-primary" <%if (pageData.anyData.isMax) { %>disabled<% } %>>追加</button>
       </form>
     </div>
     <table class="table table-striped">
@@ -35,9 +36,8 @@
               </form>
             </td>
             <td>
-              <form action="/admin/department/delete" method="post">
-                <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
-                <input type="hidden" name="deleteId" value="<%= department.Id %>">
+              <form action="/admin/department/confirm-delete" method="get">
+                <input type="hidden" name="did" value="<%= department.Id %>">
                 <button type="submit" class="btn btn-danger">削除</button>
               </form>
             </td>
