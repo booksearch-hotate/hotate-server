@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+  </head>
+  <body>
+    <h3>セクションの追加</h3>
+
+    <form method="post" action="/admin/recommendation/insert">
+      <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+      <div class="mb-3">
+        <label for="title" class="form-label" required>タイトル</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="タイトルを入力" required>
+      </div>
+
+      <div class="mb-3 form-floating">
+        <input type="text" class="form-control" placeholder="内容を追加" id="content" style="height: 200px" name="content" required>
+        <label for="content">内容</label>
+      </div>
+
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary">追加</button>
+      </div>
+    </form>
+
+    <div class="text-center">
+      <a href="/admin/recommendation">戻る</a>
+    </div>
+    <%- include('./../../../components/inputJs') %>
+  </body>
+</html>
