@@ -28,15 +28,13 @@ const departmentApplicationService = new DepartmentApplicationService(
     new DepartmentService(new DepartmentRepository(db)),
 );
 
-departmentRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
+departmentRouter.get('/', async (req: Request, res: Response) => {
   pageData.headTitle = '学科名一覧';
 
   pageData.anyData = {
     departmentList: await departmentApplicationService.findAllDepartment(),
     isMax: await departmentApplicationService.isMax(),
   };
-
-  pageData.csrfToken = req.csrfToken();
 
   pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
@@ -58,6 +56,35 @@ departmentRouter.post('/insert', csrfProtection, async (req: Request, res: Respo
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '学科の追加に失敗しました'};
   } finally {
+    res.redirect('/admin/department/');
+  }
+});
+
+departmentRouter.get('/confirm-delete', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    const departmentId = req.query.did;
+
+    if (typeof departmentId !== 'string') throw new Error('Invalid request id.');
+
+    const department = await departmentApplicationService.findById(departmentId);
+
+    if (department === null) throw new Error('The department content cannot find.');
+
+    const bookRequestsHaveId = await departmentApplicationService.findBookRequestById(departmentId);
+
+    pageData.headTitle = '学科名の削除';
+
+    pageData.anyData = {
+      department: department,
+      bookRequests: bookRequestsHaveId,
+    };
+
+    pageData.csrfToken = req.csrfToken();
+
+    return res.render('pages/admin/department/confirm-delete', {pageData});
+  } catch (e: any) {
+    logger.error(e);
+    req.session.status = {type: 'Failure', error: e, mes: '学科の情報の取得に失敗しました。'};
     res.redirect('/admin/department/');
   }
 });

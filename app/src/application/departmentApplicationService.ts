@@ -6,6 +6,7 @@ import DepartmentData from '../domain/model/department/departmentData';
 
 import {IDepartmentRepository} from '../domain/model/department/IDepartmentRepository';
 import {IBookRequestRepository} from '../domain/model/bookRequest/IBookRequestRepository';
+import BookRequestData from '../domain/model/bookRequest/bookRequestData';
 
 export default class DepartmentApplicationService {
   private readonly departmentRepository: IDepartmentRepository;
@@ -84,5 +85,10 @@ export default class DepartmentApplicationService {
   public async update(id: string, name: string): Promise<void> {
     const updateModel = new DepartmentModel(id, name);
     await this.departmentRepository.update(updateModel);
+  }
+
+  public async findBookRequestById(departmentId: string): Promise<BookRequestData[]> {
+    const fetchBookRequest = await this.departmentRepository.findBookRequestById(departmentId);
+    return fetchBookRequest.map((bookRequest) => new BookRequestData(bookRequest));
   }
 }
