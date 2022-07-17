@@ -1,5 +1,7 @@
 import DepartmentModel from '../department/departmentModel';
 
+export class FormInvalidError extends Error {};
+
 export default class BookRequestModel {
   private id: string;
   private bookName: string;
@@ -26,8 +28,9 @@ export default class BookRequestModel {
       userName: string,
       createdAt: Date | null = null,
   ) {
-    if (bookName.length === 0) throw new Error('Name of book is empty.');
-    if (userName.length === 0) throw new Error('User name is empty.');
+    if (bookName.length === 0) throw new FormInvalidError('Name of book is empty.');
+    if (userName.length === 0) throw new FormInvalidError('User name is empty.');
+
     if (schoolYear.length === 0) throw new Error('The grade does not exist.');
     if (schoolClass.length === 0) throw new Error('class does not exist.');
 
