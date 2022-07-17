@@ -28,7 +28,7 @@ const departmentApplicationService = new DepartmentApplicationService(
     new DepartmentService(new DepartmentRepository(db)),
 );
 
-departmentRouter.get('/', async (req: Request, res: Response) => {
+departmentRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   pageData.headTitle = '学科名一覧';
 
   pageData.anyData = {
@@ -40,6 +40,8 @@ departmentRouter.get('/', async (req: Request, res: Response) => {
   req.session.status = undefined;
 
   req.session.keepValue = undefined;
+
+  pageData.csrfToken = req.csrfToken();
 
   res.render('pages/admin/department/index', {pageData});
 });
