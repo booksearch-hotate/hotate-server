@@ -7,13 +7,17 @@
     <h3>学科の削除</h3>
     <div class="text-center">
       <h4>学科を削除してもよろしいですか？</h4>
+      <h5 class="text-danger">リクエストされている情報も一緒に削除されます。</h5>
     </div>
 
-    <div class="department-box">
-      <h3><%= pageData.anyData.department.Name %></h3>
+    <div class="department-box text-center">
+      <h3>学科名 : <%= pageData.anyData.department.Name %></h3>
     </div>
 
     <div class="book-request-box">
+      <% if (pageData.anyData.bookRequests.length === 0) { %>
+        <h4 class="text-center">リクエストはありません。</h4>
+      <% } else { %>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -30,6 +34,7 @@
         <% } %>
         </tbody>
       </table>
+      <% } %>
     </div>
 
     <div class="confirm-box">
