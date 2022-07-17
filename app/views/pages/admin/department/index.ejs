@@ -4,9 +4,9 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <h3>学科名一覧</h3>
-    <p>20学科まで追加可能です</p>
+    <%- include('./../../../components/headerTitle', {mes: '学科名一覧'}) %>
     <div class="insert-department-box">
+      <h2>学科の追加</h2>
       <form action="/admin/department/insert" method="post">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <div class="form-group">
