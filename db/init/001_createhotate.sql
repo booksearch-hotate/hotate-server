@@ -76,3 +76,23 @@ CREATE TABLE IF NOT EXISTS requests (
   PRIMARY KEY (id),
   FOREIGN KEY (department_id) REFERENCES departments(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS recommendations (
+  id varchar(255) NOT NULL,
+  title varchar(255) NOT NULL,
+  content text NOT NULL,
+  is_solid int NOT NULL,
+  index int NOT NULL,
+  created_at timestamp NOT NULL,
+  updated_at timestamp NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS using_recommendations (
+  id int NOT NULL AUTO_INCREMENT,
+  book_id varchar(255) NOT NULL,
+  recommendation_id varchar(255) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (book_id) REFERENCES books(id),
+  FOREIGN KEY (recommendation_id) REFERENCES recommendations(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
