@@ -6,7 +6,7 @@ export default class Recommendation extends Model {
   public title!: string;
   public content!: string;
   public is_solid!: number;
-  public index!: number;
+  public sort_index!: number;
 
   public static initialize(sequelize: Sequelize) {
     this.init({
@@ -26,7 +26,7 @@ export default class Recommendation extends Model {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      index: {
+      sort_index: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -34,6 +34,8 @@ export default class Recommendation extends Model {
       sequelize,
       tableName: 'recommendations',
       timestamps: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
     });
     return this;
   }

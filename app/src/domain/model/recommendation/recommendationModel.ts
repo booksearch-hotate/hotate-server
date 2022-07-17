@@ -3,7 +3,7 @@ export default class RecommendationModel {
   private title: string;
   private content: string;
   private isSolid: boolean;
-  private index: number;
+  private sortIndex: number;
   private createdAt: Date | null;
   private updatedAt: Date | null;
   private bookIds: string[];
@@ -13,7 +13,7 @@ export default class RecommendationModel {
       title: string,
       content: string,
       isSolid: boolean,
-      index: number,
+      sortIndex: number,
       createdAt: Date | null,
       updatedAt: Date | null,
       bookIds: string[],
@@ -22,13 +22,13 @@ export default class RecommendationModel {
     if (title.length === 0) throw new Error('Empty title.');
     if (content.length === 0) throw new Error('Empty content.');
     if (isSolid === null) throw new Error('The isSolid is null.');
-    if (index === null || index < 0) throw new Error('Incorrect id.');
+    if (sortIndex === null || sortIndex < 0) throw new Error('Incorrect id.');
 
     this.id = id;
     this.title = title;
     this.content = content;
     this.isSolid = isSolid;
-    this.index = index;
+    this.sortIndex = sortIndex;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.bookIds = bookIds;
@@ -47,7 +47,7 @@ export default class RecommendationModel {
     return this.isSolid;
   }
   get Index() {
-    return this.index;
+    return this.sortIndex;
   }
   get CreatedAt() {
     return this.createdAt;
