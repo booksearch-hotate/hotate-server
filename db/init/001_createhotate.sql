@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS recommendations (
   title varchar(255) NOT NULL,
   content text NOT NULL,
   is_solid int NOT NULL,
-  index int NOT NULL,
+  sort_index int NOT NULL,
   created_at timestamp NOT NULL,
   updated_at timestamp NOT NULL,
   PRIMARY KEY (id)
