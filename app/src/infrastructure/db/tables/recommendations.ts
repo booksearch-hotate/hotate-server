@@ -1,4 +1,5 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
+import UsingRecommendations from './usingRecommendations';
 
 export default class Recommendation extends Model {
   public id!: string;
@@ -35,5 +36,12 @@ export default class Recommendation extends Model {
       timestamps: true,
     });
     return this;
+  }
+
+  public static associate() {
+    this.hasMany(UsingRecommendations, {
+      sourceKey: 'id',
+      foreignKey: 'recommendation_id',
+    });
   }
 }

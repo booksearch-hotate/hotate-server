@@ -7,6 +7,8 @@ import Tag from './tables/tags';
 import UsingTag from './tables/usingTags';
 import Department from './tables/departments';
 import Request from './tables/requests';
+import UsingRecommendations from './tables/usingRecommendations';
+import Recommendation from './tables/recommendations';
 
 import {isLocal} from '../cli/cmdLine';
 
@@ -26,6 +28,8 @@ const db = {
   UsingTag: UsingTag.initialize(sequelize),
   Department: Department.initialize(sequelize),
   Request: Request.initialize(sequelize),
+  UsingRecommendations: UsingRecommendations.initialize(sequelize),
+  Recommendation: Recommendation.initialize(sequelize),
 };
 
 // テーブル同士の関係を作成
@@ -36,5 +40,7 @@ db.Tag.associate();
 db.UsingTag.associate();
 db.Department.associate();
 db.Request.associate();
+db.UsingRecommendations.associate();
+db.Recommendation.associate();
 
 export default db;
