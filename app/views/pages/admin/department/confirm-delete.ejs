@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+  </head>
+  <body>
+    <h3>学科の削除</h3>
+    <div class="text-center">
+      <h4>学科を削除してもよろしいですか？</h4>
+    </div>
+
+    <div class="department-box">
+      <h3><%= pageData.anyData.department.Name %></h3>
+    </div>
+
+    <div class="book-request-box">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>リクエストした本</th>
+            <th>リクエスト日時</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% for (let bookRequest of pageData.anyData.bookRequests) { %>
+          <tr>
+            <td><%= bookRequest.BookName %></td>
+            <td><%= bookRequest.CreatedAt %></td>
+          </tr>
+        <% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="confirm-box">
+      <div class="container">
+        <div class="row align-items-center text-center">
+          <div class="col">
+            <a href="/admin/department/" class="btn btn-primary">戻る</a>
+          </div>
+          <div class="col">
+            <form method="post" action="/admin/department/delete">
+              <input type="hidden" name="deleteId" value="<%= pageData.anyData.department.Id %>">
+              <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+              <button type="submit" class="btn btn-danger">削除</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('./../../../components/inputJs') %>
+  </body>
+</html>
