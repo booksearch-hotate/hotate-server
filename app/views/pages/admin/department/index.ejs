@@ -7,6 +7,7 @@
     <%- include('./../../../components/headerTitle', {mes: '学科名一覧'}) %>
     <div class="insert-department-box">
       <h2>学科の追加</h2>
+      <p><b>20</b>個まで</p>
       <form action="/admin/department/insert" method="post">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <div class="form-group">
