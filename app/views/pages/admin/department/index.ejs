@@ -8,6 +8,7 @@
     <p>20学科まで追加可能です</p>
     <div class="insert-department-box">
       <form action="/admin/department/insert" method="post">
+        <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <div class="form-group">
           <label for="insertName" class="form-label">追加する学科名</label>
           <input class="form-control" type="text" id="insertName" name="insertName">
