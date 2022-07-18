@@ -109,6 +109,12 @@ export default class RecommendationRepository implements IRecommendationReposito
       const beforeSortIndex = beforeData.sort_index;
       const updateSortIndex = recommendation.SortIndex;
 
+      // 固定化してるのにソート順が固定されている場合、無効化
+      if (recommendation.IsSolid && (beforeSortIndex !== updateSortIndex)) {
+        recommendation.changeSortIndex(beforeSortIndex);
+        return;
+      }
+
       if (beforeSortIndex > updateSortIndex) {
         await this.db.Recommendation.increment('sort_index', {
           where: {sort_index: {[sequelize.Op.between]: [updateSortIndex, beforeSortIndex - 1]}},
