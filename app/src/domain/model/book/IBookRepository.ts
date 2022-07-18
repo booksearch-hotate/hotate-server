@@ -1,4 +1,5 @@
 import BookModel from './bookModel';
+import bookIdModel from './bookIdModel';
 import TagModel from '../tag/tagModel';
 
 export interface IBookRepository {
@@ -6,7 +7,7 @@ export interface IBookRepository {
   deleteAll (): Promise<void>
   search (query: string, pageCount: number): Promise<BookModel[]>
   executeBulkApi (): Promise<void>
-  searchById (id: string): Promise<BookModel>
+  searchById (id: bookIdModel): Promise<BookModel>
   searchUsingLike (words: string, pageCount: number): Promise<BookModel[]>
   getTagsByBookId (bookId: string): Promise<TagModel[]>
   searchByTag (tagName: string, pageCount: number): Promise<BookModel[]>
