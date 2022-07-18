@@ -4,6 +4,7 @@
   <head>
     <%- include('./../../../components/head') %>
     <meta name="csrfToken" content="<%= pageData.csrfToken %>">
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/recommendation/edit.css" />
   </head>
   <body>
     <h3>セクションの編集</h3>
@@ -21,14 +22,15 @@
         <label for="content">内容</label>
       </div>
 
-      <div class="mb-3">
-        <input type="number" class="form-control" min="1" max="<%= pageData.anyData.maxSortIndex %>" required id="sortIndex" name="sortIndex" value="<%= recommendation.SortIndex %>">
-        <label for="sortIndex">順番</label>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" name="isSolid" onclick="toggleSortIndex()" value="solid" <% if(recommendation.IsSolid) { %>checked<% } %> id="isSolid">
+        <label class="form-check-label" for="isSolid">固定</label>
       </div>
 
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" name="isSolid" value="solid" <% if(recommendation.IsSolid) { %>checked<% } %> id="isSolid">
-        <label class="form-check-label" for="isSolid">固定</label>
+
+      <div class="mb-3 sort-index-box <% if (!recommendation.IsSolid) { %>view<% } %>" id="sort-index-box">
+        <input type="number" class="form-control" min="1" max="<%= pageData.anyData.maxSortIndex %>" required id="sortIndex" name="sortIndex" value="<%= recommendation.SortIndex %>">
+        <label for="sortIndex">順番</label>
       </div>
 
       <div class="mb-3">
