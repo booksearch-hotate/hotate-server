@@ -1,5 +1,5 @@
 import {Request, Response, Router} from 'express';
-import {IPage} from './../datas/IPage';
+import {IPage} from '../datas/IPage';
 import csurf from 'csurf';
 
 import Logger from '../../infrastructure/logger/logger';
