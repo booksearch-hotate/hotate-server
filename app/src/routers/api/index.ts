@@ -52,6 +52,8 @@ apiRouter.post('/recommendation/book/add', csrfProtection, async (req: Request, 
 
     const recommendation = await recommendationApplicationService.findById(recommendationId);
 
+    if (recommendationApplicationService.isOverNumberOfBooksWhenAdd(recommendation)) throw new Error('The number of books has been exceeded.');
+
     const book = await bookApplicationService.searchBookById(bookId);
 
     const isExist = recommendation.BookIds.some((itemBookId) => itemBookId === bookId);
