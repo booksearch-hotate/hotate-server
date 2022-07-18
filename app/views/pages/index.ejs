@@ -3,6 +3,8 @@
   <head>
     <%- include('./../components/head') %>
     <link rel="stylesheet" href="<%= pageData.origin %>/css/index.css" />
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/recommendation/recommendation.css" />
+    <meta name="csrfToken" content="<%= pageData.csrfToken %>">
   </head>
   <body>
     <%- include('./../components/navbar') %>
@@ -21,19 +23,25 @@
 
     <div class="recommendation-list-box">
       <% for (const item of pageData.anyData.recommendations) { %>
+        <% if (item.recommendation.IsSolid) { %>
+          <p class="recommendation-solid-text"><%- include('./../icons/pin-angle') %>固定済み</p>
+        <% } %>
         <div class="recommendation-box">
           <h1><%= item.recommendation.Title %></h1>
           <p><%= item.recommendation.Content %></p>
           <div class="recommendation-book-list-box">
-            <ul>
-              <% for (const book of item.books) { %>
-                <li><%= book.BookName %></li>
-              <% } %>
-            </ul>
+            <% for (const book of item.books) { %>
+              <div class="recommendation-book-item-box">
+                <img src="<%= book.ImgLink %>" data-isbn="<%= book.Isbn %>">
+                <h2><%= book.BookName %></h2>
+                <a href="/item/<%= book.Id %>">詳細</a>
+              </div>
+            <% } %>
           </div>
         </div>
       <% } %>
     </div>
     <%- include('./../components/inputJs') %>
+    <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
   </body>
 </html>
