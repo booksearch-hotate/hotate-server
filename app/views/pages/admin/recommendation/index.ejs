@@ -9,6 +9,26 @@
     <div class="text-center">
       <a href="/admin/recommendation/add" class="btn btn-primary">セクションを追加する</a>
     </div>
+
+    <div class="recommendation-list">
+      <div class="container-fluid">
+        <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+          <% for(recommendation of pageData.anyData.recommendations) { %>
+          <div class="col">
+            <div class="card p-3">
+              <div class="card-body">
+                <h5 class="card-title"><%= recommendation.Title %></h5>
+                <h6 class="card-subtitle mb-2 text-muted">作成日時 : <%= recommendation.CreatedAt %></h6>
+                <p class="card-text"><%= recommendation.Content %></p>
+                <a href="/admin/recommendation/edit?rid=<%= recommendation.Id %>" class="card-link">編集</a>
+              </div>
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
     <div class="text-center">
       <a href="/admin/">戻る</a>
     </div>
