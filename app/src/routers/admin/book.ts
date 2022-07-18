@@ -21,7 +21,6 @@ import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 import Logger from '../../infrastructure/logger/logger';
 
 import {IPage} from '../datas/IPage';
-import {IPaginationData} from '../datas/IPaginationData';
 
 import getPaginationInfo from '../../utils/getPaginationInfo';
 import conversionpageCounter from '../../utils/conversionPageCounter';
@@ -59,16 +58,7 @@ bookRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
 
   const total = await bookApplicationService.findAllCount();
 
-  const paginationInfo = getPaginationInfo(pageCount, total, books.length, 10);
-
-  const paginationData: IPaginationData = {
-    pageRange: {
-      min: paginationInfo.minPage,
-      max: paginationInfo.maxPage,
-    },
-    totalPage: paginationInfo.totalPage,
-    pageCount,
-  };
+  const paginationData = getPaginationInfo(pageCount, total, books.length, 10);
 
   pageData.headTitle = '本の管理';
   pageData.anyData = {
