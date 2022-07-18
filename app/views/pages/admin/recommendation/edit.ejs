@@ -27,7 +27,7 @@
       </div>
 
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" name="isSolid" value="<%= recommendation.IsSolid %>" id="isSolid">
+        <input class="form-check-input" type="checkbox" name="isSolid" value="solid" <% if(recommendation.IsSolid) { %>checked<% } %> id="isSolid">
         <label class="form-check-label" for="isSolid">固定</label>
       </div>
 

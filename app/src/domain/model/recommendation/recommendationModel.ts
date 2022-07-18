@@ -46,7 +46,7 @@ export default class RecommendationModel {
   get IsSolid() {
     return this.isSolid;
   }
-  get Index() {
+  get SortIndex() {
     return this.sortIndex;
   }
   get CreatedAt() {
@@ -57,5 +57,31 @@ export default class RecommendationModel {
   }
   get BookIds() {
     return this.bookIds;
+  }
+
+  public changeTitle(title: string) {
+    if (title.length === 0) throw new Error('Empty title.');
+
+    this.title = title;
+  }
+
+  public changeContent(content: string) {
+    if (content.length === 0) throw new Error('Empty content.');
+
+    this.content = content;
+  }
+
+  public changeSortIndex(sortIndex: number) {
+    if (sortIndex < 1) throw new Error('Invalid sort index.');
+
+    this.sortIndex = sortIndex;
+  }
+
+  public changeIsSolid(isSolid: boolean) {
+    this.isSolid = isSolid;
+  }
+
+  public replaceBookIds(bookIds: string[]) {
+    this.bookIds = bookIds;
   }
 }

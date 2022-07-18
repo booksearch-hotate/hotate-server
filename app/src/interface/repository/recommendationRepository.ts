@@ -6,6 +6,7 @@ import Book from '../../infrastructure/db/tables/books';
 
 import {IRecommendationRepository} from '../../domain/model/recommendation/IRecommendationRepository';
 import RecommendationModel from '../../domain/model/recommendation/recommendationModel';
+
 /* Sequelizeを想定 */
 interface sequelize {
   Recommendation: typeof Recommendation,
@@ -30,7 +31,7 @@ export default class RecommendationRepository implements IRecommendationReposito
       title: recommendationModel.Title,
       content: recommendationModel.Content,
       is_solid: recommendationModel.IsSolid ? 1 : 0,
-      sort_index: recommendationModel.Index,
+      sort_index: recommendationModel.SortIndex,
     });
   }
 
@@ -39,6 +40,7 @@ export default class RecommendationRepository implements IRecommendationReposito
     const fetchData = await this.db.Recommendation.findAll({
       limit: FETCH_DATA_NUM,
       offset: FETCH_DATA_NUM * pageCount,
+      order: [['is_solid', 'DESC'], ['sort_index', 'DESC']],
     });
 
     const res = fetchData.map(async (column) => {
@@ -84,5 +86,48 @@ export default class RecommendationRepository implements IRecommendationReposito
         fetchData.updated_at,
         bookIds,
     );
+  }
+
+  public async update(recommendation: RecommendationModel): Promise<void> {
+    const settingBooks = async () => {
+      await this.db.UsingRecommendations.destroy({where: {recommendation_id: recommendation.Id}});
+
+      await this.db.UsingRecommendations.bulkCreate(recommendation.BookIds.map((bookId) => {
+        return {
+          recommendation_id: recommendation.Id,
+          book_id: bookId,
+        };
+      }));
+    };
+
+    const settingSortIndex = async () => {
+      /* ソート順の調整 */
+      const beforeData = await this.db.Recommendation.findOne({where: {id: recommendation.Id}});
+
+      if (beforeData === null) throw new Error('Cannnot find recommendation section.');
+
+      const beforeSortIndex = beforeData.sort_index;
+      const updateSortIndex = recommendation.SortIndex;
+
+      if (beforeSortIndex > updateSortIndex) {
+        await this.db.Recommendation.increment('sort_index', {
+          where: {sort_index: {[sequelize.Op.between]: [updateSortIndex, beforeSortIndex - 1]}},
+        });
+      } else if (updateSortIndex > beforeSortIndex) {
+        console.log('hey');
+        await this.db.Recommendation.decrement('sort_index', {
+          where: {sort_index: {[sequelize.Op.between]: [beforeSortIndex + 1, updateSortIndex]}},
+        });
+      }
+    };
+
+    await Promise.all([settingBooks(), settingSortIndex()]);
+
+    await this.db.Recommendation.update({
+      title: recommendation.Title,
+      content: recommendation.Content,
+      sort_index: recommendation.SortIndex,
+      is_solid: recommendation.IsSolid ? 1 : 0,
+    }, {where: {id: recommendation.Id}});
   }
 }
