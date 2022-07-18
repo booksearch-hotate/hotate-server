@@ -114,7 +114,6 @@ export default class RecommendationRepository implements IRecommendationReposito
           where: {sort_index: {[sequelize.Op.between]: [updateSortIndex, beforeSortIndex - 1]}},
         });
       } else if (updateSortIndex > beforeSortIndex) {
-        console.log('hey');
         await this.db.Recommendation.decrement('sort_index', {
           where: {sort_index: {[sequelize.Op.between]: [beforeSortIndex + 1, updateSortIndex]}},
         });
