@@ -76,12 +76,11 @@ apiRouter.post('/recommendation/book/add', csrfProtection, async (req: Request, 
 
     const recommendation = await recommendationApplicationService.findById(recommendationId);
 
-    recommendation.BookIds.forEach((itemBookId) => {
-      if (itemBookId === bookId) throw new Error('Already exist book');
-    });
-
     const book = await bookApplicationService.searchBookById(bookId);
-    return res.json({book, status: 'Success'});
+
+    const isExist = recommendation.BookIds.some((itemBookId) => itemBookId === bookId);
+
+    return res.json({book, status: isExist ? 'Exist' : 'Success'});
   } catch (e: any) {
     logger.error(e);
     return res.json({book: {}, status: 'Failure'});
