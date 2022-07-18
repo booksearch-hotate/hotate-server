@@ -1,0 +1,57 @@
+<% const recommendation = pageData.anyData.recommendation; %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+  </head>
+  <body>
+    <h3>セクションの編集</h3>
+
+    <form method="post" action="/admin/recommendation/udpate">
+      <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+      <input type="hidden" name="id" value="<%= recommendation.Id %>">
+      <div class="mb-3">
+        <label for="title" class="form-label" required>タイトル</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="タイトルを入力" value="<%= recommendation.Title %>" required>
+      </div>
+
+      <div class="mb-3 form-floating">
+        <input type="text" class="form-control" placeholder="内容を追加" id="content" style="height: 200px" name="content" value="<%= recommendation.Content %>" required>
+        <label for="content">内容</label>
+      </div>
+
+      <div class="mb-3">
+        <input type="number" class="form-control" min="0" max="" required id="sortIndex" name="sortIndex" value="<%= recommendation.SortIndex %>">
+        <label for="sortIndex">順番</label>
+      </div>
+
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" name="isSolid" value="<%= recommendation.IsSolid %>" id="isSolid">
+        <label class="form-check-label" for="isSolid">固定</label>
+      </div>
+
+      <div class="mb-3">
+        <div class="book-title-list-box" id="book-title-list-box">
+          <% for (const book of pageData.anyData.books) { %>
+            <div class="book-item-box" id="book-item-<%= book.Id %>">
+              <p><%= book.BookName %></p>
+              <input type="hidden" value="<%= book.Id %>" name="books[]">
+              <button onclick="deleteBook('<%= book.Id %>')" class="btn btn-warning">削除</button>
+            </div>
+          <% } %>
+        </div>
+        <input class="form-control add-id-input" type="text" placeholder="urlを入力">
+        <button class="btn btn-primary" onclick="addBook()">追加</button>
+      </div>
+
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary">確定</button>
+      </div>
+    </form>
+
+    <div class="text-center">
+      <a href="/admin/recommendation">戻る</a>
+    </div>
+    <%- include('./../../../components/inputJs') %>
+  </body>
+</html>
