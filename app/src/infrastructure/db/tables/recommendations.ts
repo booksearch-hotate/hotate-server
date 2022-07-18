@@ -7,6 +7,8 @@ export default class Recommendation extends Model {
   public content!: string;
   public is_solid!: number;
   public sort_index!: number;
+  public created_at!: Date;
+  public updated_at!: Date;
 
   public static initialize(sequelize: Sequelize) {
     this.init({
