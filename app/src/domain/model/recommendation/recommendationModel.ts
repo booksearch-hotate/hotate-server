@@ -8,6 +8,8 @@ export default class RecommendationModel {
   private updatedAt: Date | null;
   private bookIds: string[];
 
+  private MAX_CONTENT_LEN = 20;
+
   constructor(
       id: string,
       title: string,
@@ -83,5 +85,9 @@ export default class RecommendationModel {
 
   public replaceBookIds(bookIds: string[]) {
     this.bookIds = bookIds;
+  }
+
+  public omitContent() {
+    if (this.content.length > this.MAX_CONTENT_LEN) this.content = `${this.content.substring(0, this.MAX_CONTENT_LEN)}.....`;
   }
 }
