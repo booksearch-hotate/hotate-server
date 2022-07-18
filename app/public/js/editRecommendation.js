@@ -49,3 +49,8 @@ function deleteBook(bookId) {
     }
   });
 }
+
+function toggleSortIndex() {
+  const tarEle = document.getElementById('sort-index-box');
+  tarEle.classList.toggle('view');
+}
