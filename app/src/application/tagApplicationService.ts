@@ -61,7 +61,6 @@ export default class TagApplicationService {
 
   public async findAll(): Promise<TagData[]> {
     const tags = await this.tagRepository.findAll();
-    console.log(tags);
     return tags.map((tag) => new TagData(tag));
   }
 
