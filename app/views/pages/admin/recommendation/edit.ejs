@@ -3,6 +3,7 @@
 <html>
   <head>
     <%- include('./../../../components/head') %>
+    <meta name="csrfToken" content="<%= pageData.csrfToken %>">
   </head>
   <body>
     <h3>セクションの編集</h3>
@@ -36,12 +37,12 @@
             <div class="book-item-box" id="book-item-<%= book.Id %>">
               <p><%= book.BookName %></p>
               <input type="hidden" value="<%= book.Id %>" name="books[]">
-              <button onclick="deleteBook('<%= book.Id %>')" class="btn btn-warning">削除</button>
+              <a onclick="deleteBook('<%= book.Id %>')" class="btn btn-warning">削除</a>
             </div>
           <% } %>
         </div>
-        <input class="form-control add-id-input" type="text" placeholder="urlを入力">
-        <button class="btn btn-primary" onclick="addBook()">追加</button>
+        <input class="form-control add-id-input" type="text" placeholder="urlを入力" id="url">
+        <a class="btn btn-primary" onclick="addBook()">追加</a>
       </div>
 
       <div class="mb-3">
@@ -53,5 +54,6 @@
       <a href="/admin/recommendation">戻る</a>
     </div>
     <%- include('./../../../components/inputJs') %>
+    <script src="<%= pageData.origin %>/js/editRecommendation.js"></script>
   </body>
 </html>
