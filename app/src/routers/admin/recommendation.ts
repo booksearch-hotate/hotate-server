@@ -34,7 +34,7 @@ const bookApplicationService = new BookApplicationService(new BookRepository(db,
 recommendationRouter.get('/', async (req: Request, res: Response) => {
   const pageCount = conversionpageCounter(req);
 
-  const recommendations = await recommendationApplicationService.fetch(pageCount);
+  const recommendations = await recommendationApplicationService.fetch(pageCount, 10);
   const total = await recommendationApplicationService.fetchAllCount();
 
   const paginationData = getPaginationInfo(pageCount, total, recommendations.length, 10);

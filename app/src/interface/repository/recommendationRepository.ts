@@ -35,8 +35,8 @@ export default class RecommendationRepository implements IRecommendationReposito
     });
   }
 
-  public async fetch(pageCount: number): Promise<RecommendationModel[]> {
-    const FETCH_DATA_NUM = 10;
+  public async fetch(pageCount: number, count: number): Promise<RecommendationModel[]> {
+    const FETCH_DATA_NUM = count;
     const fetchData = await this.db.Recommendation.findAll({
       limit: FETCH_DATA_NUM,
       offset: FETCH_DATA_NUM * pageCount,

@@ -33,8 +33,8 @@ export default class RecommendationApplicationService {
     await this.recommendationRepository.insert(recommendation);
   }
 
-  public async fetch(pageCount: number): Promise<RecommendationData[]> {
-    const fetchModels = await this.recommendationRepository.fetch(pageCount);
+  public async fetch(pageCount: number, count: number): Promise<RecommendationData[]> {
+    const fetchModels = await this.recommendationRepository.fetch(pageCount, count);
     return fetchModels.map((recommendation) => new RecommendationData(recommendation));
   }
 
