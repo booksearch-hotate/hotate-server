@@ -76,4 +76,23 @@ export default class RecommendationApplicationService {
 
     await this.recommendationRepository.delete(recommendation);
   }
+
+  public omitContent(recommendations: RecommendationData[]): RecommendationData[] {
+    const omitRecommendations = recommendations.map((recommendationData) => {
+      const recommendationModel = new RecommendationModel(
+          recommendationData.Id,
+          recommendationData.Title,
+          recommendationData.Content,
+          recommendationData.IsSolid,
+          recommendationData.SortIndex,
+          recommendationData.CreatedAt,
+          recommendationData.UpdatedAt,
+          recommendationData.BookIds,
+      );
+      recommendationModel.omitContent();
+      return recommendationModel;
+    });
+
+    return omitRecommendations.map((recommendationModel) => new RecommendationData(recommendationModel));
+  }
 }
