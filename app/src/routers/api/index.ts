@@ -2,14 +2,11 @@ import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 import Logger from '../../infrastructure/logger/logger';
 
-import TagService from '../../domain/service/tagService';
 import BookService from '../../domain/service/bookService';
 
-import TagApplicationService from '../../application/tagApplicationService';
 import BookApplicationService from '../../application/bookApplicationService';
 import RecommendationApplicationService from '../../application/recommendationApplicationService';
 
-import TagRepository from '../../interface/repository/tagRepository';
 import BookRepository from '../../interface/repository/bookRepository';
 
 import db from '../../infrastructure/db';
@@ -21,12 +18,6 @@ import RecommendationService from '../../domain/service/recommendationService';
 const apiRouter = Router();
 
 const logger = new Logger('api');
-
-const tagApplicationService = new TagApplicationService(
-    new TagRepository(db),
-    new BookRepository(db, new EsSearchBook('books')),
-    new TagService(new TagRepository(db)),
-);
 
 const bookApplicationService = new BookApplicationService(
     new BookRepository(db, new EsSearchBook('books')),
@@ -46,21 +37,6 @@ apiRouter.post('/:isbn/imgLink', csrfProtection, async (req: Request, res: Respo
   let imgLink = await bookApplicationService.getImgLink(isbn);
   if (imgLink === null) imgLink = '';
   res.json({imgLink});
-});
-
-/* 本IDに対応するタグを作成 */
-apiRouter.post('/:bookId/tag', async (req: Request, res: Response) => {
-  let status = '';
-  try {
-    const name: string = req.body.name;
-    const bookId = req.params.bookId;
-    const isExist = await tagApplicationService.create(name, bookId);
-    status = isExist ? 'duplicate' : 'success';
-    res.json({status});
-  } catch (e) {
-    status = 'error';
-    res.json({status});
-  }
 });
 
 apiRouter.post('/recommendation/book/add', csrfProtection, async (req: Request, res: Response) => {
