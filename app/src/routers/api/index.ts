@@ -7,12 +7,15 @@ import BookService from '../../domain/service/bookService';
 
 import TagApplicationService from '../../application/tagApplicationService';
 import BookApplicationService from '../../application/bookApplicationService';
+import RecommendationApplicationService from '../../application/recommendationApplicationService';
 
 import TagRepository from '../../interface/repository/tagRepository';
 import BookRepository from '../../interface/repository/bookRepository';
 
 import db from '../../infrastructure/db';
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
+import RecommendationRepository from '../../interface/repository/recommendationRepository';
+import RecommendationService from '../../domain/service/recommendationService';
 
 // eslint-disable-next-line new-cap
 const apiRouter = Router();
@@ -28,6 +31,11 @@ const tagApplicationService = new TagApplicationService(
 const bookApplicationService = new BookApplicationService(
     new BookRepository(db, new EsSearchBook('books')),
     new BookService(),
+);
+
+const recommendationApplicationService = new RecommendationApplicationService(
+    new RecommendationRepository(db),
+    new RecommendationService(),
 );
 
 const csrfProtection = csurf({cookie: false});
@@ -58,10 +66,19 @@ apiRouter.post('/:bookId/tag', async (req: Request, res: Response) => {
 apiRouter.post('/recommendation/book/add', csrfProtection, async (req: Request, res: Response) => {
   try {
     const bookIdUri = '/item/';
+
     const url = req.body.addUrl;
+    const recommendationId = req.body.recommendationId;
+
     if (typeof url !== 'string' || url.length === 0 || url.indexOf(bookIdUri) === -1) throw new Error('Invalid url.');
 
     const bookId = url.substring(url.indexOf(bookIdUri) + bookIdUri.length);
+
+    const recommendation = await recommendationApplicationService.findById(recommendationId);
+
+    recommendation.BookIds.forEach((itemBookId) => {
+      if (itemBookId === bookId) throw new Error('Already exist book');
+    });
 
     const book = await bookApplicationService.searchBookById(bookId);
     return res.json({book, status: 'Success'});
