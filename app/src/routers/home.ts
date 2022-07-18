@@ -12,6 +12,7 @@ import BookApplicationService from '../application/bookApplicationService';
 import BookRepository from '../interface/repository/bookRepository';
 import EsSearchBook from '../infrastructure/elasticsearch/esBook';
 import BookService from '../domain/service/bookService';
+import csurf from 'csurf';
 
 // eslint-disable-next-line new-cap
 const homeRouter = Router();
@@ -19,6 +20,8 @@ const homeRouter = Router();
 const pageData: IPage = {} as IPage;
 
 const logger = new Logger('home');
+
+const csrfProtection = csurf({cookie: false});
 
 const recommendationApplicationService = new RecommendationApplicationService(
     new RecommendationRepository(db),
@@ -30,7 +33,7 @@ const bookApplicationService = new BookApplicationService(
     new BookService(),
 );
 
-homeRouter.get('/', async (req: Request, res: Response) => {
+homeRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   try {
     const fetchDatas = recommendationApplicationService.omitContent(await recommendationApplicationService.fetch(0, 5));
 
@@ -42,6 +45,7 @@ homeRouter.get('/', async (req: Request, res: Response) => {
     pageData.anyData = {
       recommendations,
     };
+    pageData.csrfToken = req.csrfToken();
   } catch (e: any) {
     logger.error(e);
   } finally {
