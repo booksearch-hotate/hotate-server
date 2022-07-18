@@ -12,6 +12,7 @@ import TagModel from '../../domain/model/tag/tagModel';
 
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 import {IEsBook} from '../../infrastructure/elasticsearch/documents/IEsBook';
+import bookIdModel from '../../domain/model/book/bookIdModel';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -94,8 +95,8 @@ export default class BookRepository implements IBookRepository {
     return bookModels;
   }
 
-  public async searchById(id: string): Promise<BookModel> {
-    const book = await this.db.Book.findOne({where: {id: id}});
+  public async searchById(id: bookIdModel): Promise<BookModel> {
+    const book = await this.db.Book.findOne({where: {id: id.Id}});
     if (!book) throw new Error('book not found');
 
     const authorId = book.author_id;
