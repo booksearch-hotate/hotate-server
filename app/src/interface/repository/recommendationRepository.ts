@@ -52,7 +52,7 @@ export default class RecommendationRepository implements IRecommendationReposito
           column.id,
           column.title,
           column.content,
-          column.is_solid === 1 ? true : false,
+          column.is_solid === 1,
           column.sort_index,
           column.created_at,
           column.updated_at,
@@ -65,5 +65,26 @@ export default class RecommendationRepository implements IRecommendationReposito
 
   public async fetchAllCount(): Promise<number> {
     return await this.db.Recommendation.count();
+  }
+
+  public async findById(id: string): Promise<RecommendationModel | null> {
+    const fetchData = await this.db.Recommendation.findOne({where: {id}});
+
+    if (fetchData === null) return null;
+
+    const fetchBooks = await this.db.UsingRecommendations.findAll({where: {recommendation_id: id}});
+
+    const bookIds = fetchData === null ? [] : fetchBooks.map((column) => column.book_id);
+
+    return new RecommendationModel(
+        fetchData.id,
+        fetchData.title,
+        fetchData.content,
+        fetchData.is_solid === 1,
+        fetchData.sort_index,
+        fetchData.created_at,
+        fetchData.updated_at,
+        bookIds,
+    );
   }
 }
