@@ -18,6 +18,22 @@
         </a>
       </div>
     </div>
+
+    <div class="recommendation-list-box">
+      <% for (const item of pageData.anyData.recommendations) { %>
+        <div class="recommendation-box">
+          <h1><%= item.recommendation.Title %></h1>
+          <p><%= item.recommendation.Content %></p>
+          <div class="recommendation-book-list-box">
+            <ul>
+              <% for (const book of item.books) { %>
+                <li><%= book.BookName %></li>
+              <% } %>
+            </ul>
+          </div>
+        </div>
+      <% } %>
+    </div>
     <%- include('./../components/inputJs') %>
   </body>
 </html>
