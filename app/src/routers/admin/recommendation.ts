@@ -63,6 +63,7 @@ recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Resp
       recommendation,
       books,
     };
+    pageData.csrfToken = req.csrfToken();
     res.render('pages/admin/recommendation/edit', {pageData});
   } catch (e: any) {
     logger.error(e);
