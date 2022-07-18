@@ -58,9 +58,12 @@ recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Resp
     /* おすすめセクションに登録されている本の情報を取得 */
     const books = await Promise.all(recommendation.BookIds.map(async (bookId) => await bookApplicationService.searchBookById(bookId)));
 
+    const maxSortIndex = await recommendationApplicationService.findMaxIndex();
+
     pageData.headTitle = 'セクションの編集';
     pageData.anyData = {
       recommendation,
+      maxSortIndex,
       books,
     };
     pageData.csrfToken = req.csrfToken();
