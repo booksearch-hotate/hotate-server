@@ -8,9 +8,15 @@ import RecommendationApplicationService from '../../application/recommendationAp
 import RecommendationRepository from '../../interface/repository/recommendationRepository';
 import RecommendationService from '../../domain/service/recommendationService';
 
+import BookApplicationService from '../../application/bookApplicationService';
+import BookRepository from '../../interface/repository/bookRepository';
+
 import db from '../../infrastructure/db';
+import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
+
 import conversionpageCounter from '../../utils/conversionPageCounter';
 import getPaginationInfo from '../../utils/getPaginationInfo';
+import BookService from '../../domain/service/bookService';
 
 // eslint-disable-next-line new-cap
 const recommendationRouter = Router();
@@ -22,6 +28,8 @@ const csrfProtection = csurf({cookie: false});
 const logger = new Logger('recommendation');
 
 const recommendationApplicationService = new RecommendationApplicationService(new RecommendationRepository(db), new RecommendationService());
+
+const bookApplicationService = new BookApplicationService(new BookRepository(db, new EsSearchBook('books')), new BookService());
 
 recommendationRouter.get('/', async (req: Request, res: Response) => {
   const pageCount = conversionpageCounter(req);
@@ -37,6 +45,29 @@ recommendationRouter.get('/', async (req: Request, res: Response) => {
     paginationData,
   };
   res.render('pages/admin/recommendation/', {pageData});
+});
+
+recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    const id = req.query.rid;
+
+    if (typeof id !== 'string') throw new Error('Invalid value for id');
+
+    const recommendation = await recommendationApplicationService.findById(id);
+
+    /* おすすめセクションに登録されている本の情報を取得 */
+    const books = await Promise.all(recommendation.BookIds.map(async (bookId) => await bookApplicationService.searchBookById(bookId)));
+
+    pageData.headTitle = 'セクションの編集';
+    pageData.anyData = {
+      recommendation,
+      books,
+    };
+    res.render('pages/admin/recommendation/edit', {pageData});
+  } catch (e: any) {
+    logger.error(e);
+    res.redirect('/admin/recommendation/');
+  }
 });
 
 recommendationRouter.get('/add', csrfProtection, (req: Request, res: Response) => {

@@ -37,4 +37,10 @@ export default class RecommendationApplicationService {
   public async fetchAllCount(): Promise<number> {
     return this.recommendationRepository.fetchAllCount();
   }
+
+  public async findById(id: string): Promise<RecommendationData> {
+    const fetchModel = await this.recommendationRepository.findById(id);
+    if (fetchModel === null) throw new Error('Cannot find recommendation section.');
+    return new RecommendationData(fetchModel);
+  }
 }
