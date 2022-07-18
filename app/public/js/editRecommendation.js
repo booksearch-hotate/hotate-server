@@ -39,3 +39,13 @@ async function addBook(recommendationId) {
     parentElement.appendChild(tar);
   }
 }
+
+function deleteBook(bookId) {
+  const idElements = document.querySelectorAll('[data-bookid]');
+  idElements.forEach((el) => {
+    if (el.dataset.bookid === bookId) {
+      el.remove();
+      return;
+    }
+  });
+}
