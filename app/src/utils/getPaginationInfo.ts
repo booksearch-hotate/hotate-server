@@ -1,3 +1,5 @@
+import {IPaginationData} from '../routers/datas/IPaginationData';
+
 const MIN_ITEM_COUNT = 0;
 const MAX_ITEM_COUNT = 20;
 const MIN_PAGINATION_COUNT = 3;
@@ -9,7 +11,7 @@ export default function getPaginationInfo(
     total: number,
     itemCount: number,
     maxPaginationCount: number,
-): {pageCount: number, totalPage: number, minPage: number, maxPage: number} {
+): IPaginationData {
   /* ガード節 */
   if (itemCount < MIN_ITEM_COUNT || itemCount > MAX_ITEM_COUNT) throw new Error(`The number of items displayed is inappropriate. The range is from ${MIN_ITEM_COUNT} to 20 items.`);
   if (maxPaginationCount < MIN_PAGINATION_COUNT || maxPaginationCount > MAX_PAGINATION_COUNT) throw new Error(`The number of paginations to display is inappropriate. The range is from ${MIN_PAGINATION_COUNT} to ${MAX_PAGINATION_COUNT} items.`);
@@ -24,9 +26,11 @@ export default function getPaginationInfo(
   const maxPage = Math.min(Math.max(maxPaginationCount - minPage + 1, pageCount + paginationMargin + 1), totalPage);
 
   return {
+    pageRange: {
+      min: minPage,
+      max: maxPage,
+    },
+    totalPage: totalPage,
     pageCount,
-    totalPage,
-    minPage,
-    maxPage,
   };
 }
