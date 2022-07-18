@@ -124,4 +124,18 @@ recommendationRouter.post('/insert', csrfProtection, async (req: Request, res: R
   }
 });
 
+recommendationRouter.post('/delete', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    const id = req.body.id;
+
+    if (typeof id !== 'string') throw new Error('Invalid recommendation section id.');
+
+    await recommendationApplicationService.delete(id);
+  } catch (e: any) {
+    logger.error(e);
+  } finally {
+    res.redirect('/admin/recommendation/');
+  }
+});
+
 export default recommendationRouter;

@@ -6,4 +6,5 @@ export interface IRecommendationRepository {
   fetchAllCount(): Promise<number>
   findById(id: string): Promise<RecommendationModel | null>
   update(recommendation: RecommendationModel): Promise<void>
+  delete(recommendation: RecommendationModel): Promise<void>
 }
