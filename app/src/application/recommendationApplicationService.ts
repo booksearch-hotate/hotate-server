@@ -1,6 +1,8 @@
 import RecommendationModel from '../domain/model/recommendation/recommendationModel';
 import RecommendationService from '../domain/service/recommendationService';
 
+import RecommendationData from '../domain/model/recommendation/recommendationData';
+
 import {IRecommendationRepository} from '../domain/model/recommendation/IRecommendationRepository';
 
 export default class RecommendationApplicationService {
@@ -25,5 +27,14 @@ export default class RecommendationApplicationService {
     );
 
     await this.recommendationRepository.insert(recommendation);
+  }
+
+  public async fetch(pageCount: number): Promise<RecommendationData[]> {
+    const fetchModels = await this.recommendationRepository.fetch(pageCount);
+    return fetchModels.map((recommendation) => new RecommendationData(recommendation));
+  }
+
+  public async fetchAllCount(): Promise<number> {
+    return this.recommendationRepository.fetchAllCount();
   }
 }
