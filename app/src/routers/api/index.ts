@@ -1,5 +1,6 @@
 import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
+import Logger from '../../infrastructure/logger/logger';
 
 import TagService from '../../domain/service/tagService';
 import BookService from '../../domain/service/bookService';
@@ -15,6 +16,8 @@ import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 
 // eslint-disable-next-line new-cap
 const apiRouter = Router();
+
+const logger = new Logger('api');
 
 const tagApplicationService = new TagApplicationService(
     new TagRepository(db),
