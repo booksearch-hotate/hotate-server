@@ -34,7 +34,7 @@
       <div class="mb-3">
         <div class="book-title-list-box" id="book-title-list-box">
           <% for (const book of pageData.anyData.books) { %>
-            <div class="book-item-box" id="book-item-<%= book.Id %>">
+            <div class="book-item-box" id="book-item-<%= book.Id %>" data-bookid="<%= book.Id %>">
               <p><%= book.BookName %></p>
               <input type="hidden" value="<%= book.Id %>" name="books[]">
               <a onclick="deleteBook('<%= book.Id %>')" class="btn btn-warning">削除</a>
@@ -42,7 +42,7 @@
           <% } %>
         </div>
         <input class="form-control add-id-input" type="text" placeholder="urlを入力" id="url">
-        <a class="btn btn-primary" onclick="addBook()">追加</a>
+        <a class="btn btn-primary" onclick="addBook('<%= recommendation.Id %>')">追加</a>
       </div>
 
       <div class="mb-3">
