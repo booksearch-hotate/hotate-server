@@ -41,8 +41,6 @@ export default class RecommendationRepository implements IRecommendationReposito
       offset: FETCH_DATA_NUM * pageCount,
     });
 
-    console.log(fetchData);
-
     const res = fetchData.map(async (column) => {
       const fetchData = await this.db.UsingRecommendations.findAll({where: {recommendation_id: column.id}});
 
