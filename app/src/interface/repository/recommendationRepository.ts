@@ -126,7 +126,13 @@ export default class RecommendationRepository implements IRecommendationReposito
       }
     };
 
-    await Promise.all([settingBooks(), settingSortIndex()]);
+    const settingIsSolid = async () => {
+      if (!recommendation.IsSolid) return;
+
+      await this.db.Recommendation.update({is_solid: 0}, {where: {}});
+    };
+
+    await Promise.all([settingBooks(), settingSortIndex(), settingIsSolid()]);
 
     await this.db.Recommendation.update({
       title: recommendation.Title,
