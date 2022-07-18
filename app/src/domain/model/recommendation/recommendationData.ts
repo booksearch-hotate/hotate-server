@@ -15,7 +15,7 @@ export default class RecommendationData {
     this.title = recommendationModel.Title;
     this.content = recommendationModel.Content;
     this.isSolid = recommendationModel.IsSolid;
-    this.sortIndex = recommendationModel.Index;
+    this.sortIndex = recommendationModel.SortIndex;
     this.createdAt = recommendationModel.CreatedAt;
     this.updatedAt = recommendationModel.UpdatedAt;
     this.bookIds = recommendationModel.BookIds;

@@ -47,4 +47,25 @@ export default class RecommendationApplicationService {
     if (fetchModel === null) throw new Error('Cannot find recommendation section.');
     return new RecommendationData(fetchModel);
   }
+
+  public async update(
+      id: string,
+      title: string,
+      content: string,
+      sortIndex: number,
+      isSolid: boolean,
+      bookIds: string[],
+  ): Promise<void> {
+    const recommendation = await this.recommendationRepository.findById(id);
+
+    if (recommendation === null) throw new Error('Cannot find recommendation section.');
+
+    recommendation.changeTitle(title);
+    recommendation.changeContent(content);
+    recommendation.changeSortIndex(sortIndex);
+    recommendation.changeIsSolid(isSolid);
+    recommendation.replaceBookIds(bookIds);
+
+    await this.recommendationRepository.update(recommendation);
+  }
 }

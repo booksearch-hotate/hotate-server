@@ -74,6 +74,35 @@ recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Resp
   }
 });
 
+recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    const recommendationId = req.body.id;
+
+    const title = req.body.title;
+    const content = req.body.content;
+    const sortIndex = Number(req.body.sortIndex);
+    const bookIds = req.body.books === undefined ? [] : req.body.books;
+
+    let isSolid: boolean;
+    switch (req.body.isSolid) {
+      case 'solid':
+        isSolid = true;
+        break;
+      case undefined:
+        isSolid = false;
+        break;
+      default:
+        throw new Error('Invalid optional value; isSolid.');
+    }
+
+    await recommendationApplicationService.update(recommendationId, title, content, sortIndex, isSolid, bookIds);
+  } catch (e: any) {
+    logger.error(e);
+  } finally {
+    res.redirect('/admin/recommendation/');
+  }
+});
+
 recommendationRouter.get('/add', csrfProtection, (req: Request, res: Response) => {
   pageData.headTitle = 'セクションの追加';
   pageData.csrfToken = req.csrfToken();

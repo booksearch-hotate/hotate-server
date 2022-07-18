@@ -5,4 +5,5 @@ export interface IRecommendationRepository {
   fetch(pageCount: number): Promise<RecommendationModel[]>
   fetchAllCount(): Promise<number>
   findById(id: string): Promise<RecommendationModel | null>
+  update(recommendation: RecommendationModel): Promise<void>
 }
