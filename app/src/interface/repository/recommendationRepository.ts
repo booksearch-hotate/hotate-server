@@ -141,4 +141,14 @@ export default class RecommendationRepository implements IRecommendationReposito
       is_solid: recommendation.IsSolid ? 1 : 0,
     }, {where: {id: recommendation.Id}});
   }
+
+  public async delete(recommendation: RecommendationModel): Promise<void> {
+    await this.db.UsingRecommendations.destroy({where: {recommendation_id: recommendation.Id}});
+
+    await this.db.Recommendation.decrement('sort_index', {
+      where: {sort_index: {[sequelize.Op.gt]: recommendation.SortIndex}},
+    });
+
+    await this.db.Recommendation.destroy({where: {id: recommendation.Id}});
+  }
 }

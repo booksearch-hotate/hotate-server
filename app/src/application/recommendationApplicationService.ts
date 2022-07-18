@@ -68,4 +68,12 @@ export default class RecommendationApplicationService {
 
     await this.recommendationRepository.update(recommendation);
   }
+
+  public async delete(id: string): Promise<void> {
+    const recommendation = await this.recommendationRepository.findById(id);
+
+    if (recommendation === null) throw new Error('Cannot find recommendation section.');
+
+    await this.recommendationRepository.delete(recommendation);
+  }
 }

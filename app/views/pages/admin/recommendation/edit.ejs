@@ -52,6 +52,16 @@
       </div>
     </form>
 
+    <hr/>
+
+    <div class="text-center">
+      <form method="post" action="/admin/recommendation/delete">
+        <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+        <input type="hidden" name="id" value="<%= recommendation.Id %>">
+        <button type="submit" class="btn btn-danger">削除する</button>
+      </form>
+    </div>
+
     <div class="text-center">
       <a href="/admin/recommendation">戻る</a>
     </div>
