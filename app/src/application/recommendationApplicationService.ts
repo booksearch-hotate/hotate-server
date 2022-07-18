@@ -14,6 +14,10 @@ export default class RecommendationApplicationService {
     this.recommendationService = recommendationService;
   }
 
+  public async findMaxIndex(): Promise<number> {
+    return await this.recommendationRepository.findMaxIndex();
+  }
+
   public async insert(title: string, content: string) {
     const recommendation = new RecommendationModel(
         this.recommendationService.createUUID(),
