@@ -9,6 +9,8 @@ import RecommendationRepository from '../../interface/repository/recommendationR
 import RecommendationService from '../../domain/service/recommendationService';
 
 import db from '../../infrastructure/db';
+import conversionpageCounter from '../../utils/conversionPageCounter';
+import getPaginationInfo from '../../utils/getPaginationInfo';
 
 // eslint-disable-next-line new-cap
 const recommendationRouter = Router();
@@ -21,9 +23,19 @@ const logger = new Logger('recommendation');
 
 const recommendationApplicationService = new RecommendationApplicationService(new RecommendationRepository(db), new RecommendationService());
 
-recommendationRouter.get('/', (req: Request, res: Response) => {
-  pageData.headTitle = 'おすすめセクション一覧';
+recommendationRouter.get('/', async (req: Request, res: Response) => {
+  const pageCount = conversionpageCounter(req);
 
+  const recommendations = await recommendationApplicationService.fetch(pageCount);
+  const total = await recommendationApplicationService.fetchAllCount();
+
+  const paginationData = getPaginationInfo(pageCount, total, recommendations.length, 10);
+
+  pageData.headTitle = 'おすすめセクション一覧';
+  pageData.anyData = {
+    recommendations,
+    paginationData,
+  };
   res.render('pages/admin/recommendation/', {pageData});
 });
 

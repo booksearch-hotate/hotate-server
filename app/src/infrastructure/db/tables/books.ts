@@ -2,6 +2,8 @@ import {Sequelize, Model, DataTypes, ModelAttributes} from 'sequelize';
 
 import Publisher from './publishers';
 import Author from './authors';
+import UsingRecommendations from './usingRecommendations';
+
 
 interface IAttributeObj {
   type: DataTypes.DataType,
@@ -101,5 +103,10 @@ export default class Book extends Model {
   public static associate() {
     this.belongsTo(Publisher, {foreignKey: 'publisher_id', constraints: false});
     this.belongsTo(Author, {foreignKey: 'author_id', constraints: false});
+
+    this.hasMany(UsingRecommendations, {
+      sourceKey: 'id',
+      foreignKey: 'book_id',
+    });
   }
 }
