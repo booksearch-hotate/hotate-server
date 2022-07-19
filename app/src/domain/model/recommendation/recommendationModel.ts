@@ -8,7 +8,7 @@ export default class RecommendationModel {
   private updatedAt: Date | null;
   private bookIds: string[];
 
-  private MAX_CONTENT_LEN = 20;
+  private readonly MAX_CONTENT_LEN = 20;
 
   constructor(
       id: string,
