@@ -60,7 +60,7 @@ export default class RecommendationApplicationService {
 
     if (recommendation === null) throw new Error('Cannot find recommendation section.');
 
-    if (this.recommendationService.isOverNumberOfBooks(recommendation)) throw new Error('The number of books has been exceeded.');
+    if (recommendation.isOverNumberOfBooks()) throw new Error('The number of books has been exceeded.');
 
     recommendation.changeTitle(title);
     recommendation.changeContent(content);
@@ -91,7 +91,7 @@ export default class RecommendationApplicationService {
         recommendationData.UpdatedAt,
         recommendationData.BookIds,
     );
-    return this.recommendationService.isOverNumberOfBooks(recommendationModel);
+    return recommendationModel.isOverNumberOfBooks();
   }
 
   public omitContent(recommendations: RecommendationData[]): RecommendationData[] {

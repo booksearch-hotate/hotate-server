@@ -9,6 +9,7 @@ export default class RecommendationModel {
   private bookIds: string[];
 
   private readonly MAX_CONTENT_LEN = 20;
+  private readonly MAX_HAVING_BOOK_COUNT = 10;
 
   constructor(
       id: string,
@@ -89,5 +90,9 @@ export default class RecommendationModel {
 
   public omitContent() {
     if (this.content.length > this.MAX_CONTENT_LEN) this.content = `${this.content.substring(0, this.MAX_CONTENT_LEN)}.....`;
+  }
+
+  public isOverNumberOfBooks() {
+    return this.bookIds.length > this.MAX_HAVING_BOOK_COUNT;
   }
 }
