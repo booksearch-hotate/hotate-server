@@ -7,6 +7,9 @@ function makeBookItemNode(bookName, id) {
   div.innerHTML = `
   <td>${bookName}</td>
   <td>
+    <input type="text" placeholder="コメントを追加" name="bookComments[]">
+  </td>
+  <td>
     <a onclick="deleteBook('${id}')" class="btn btn-warning">削除</a>
   </td>
   <input type="hidden" value="${id}" name="books[]">
