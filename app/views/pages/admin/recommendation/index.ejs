@@ -2,6 +2,7 @@
 <html>
   <head>
     <%- include('./../../../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/recommendation/recommendation.css" />
   </head>
   <body>
     <h3>おすすめセクション一覧</h3>
@@ -10,23 +11,25 @@
       <a href="/admin/recommendation/add" class="btn btn-primary">セクションを追加する</a>
     </div>
 
-    <div class="recommendation-list">
-      <div class="container-fluid">
-        <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
-          <% for(recommendation of pageData.anyData.recommendations) { %>
-          <div class="col">
-            <div class="card p-3">
-              <div class="card-body">
-                <h5 class="card-title"><%= recommendation.Title %></h5>
-                <h6 class="card-subtitle mb-2 text-muted">作成日時 : <%= recommendation.CreatedAt %></h6>
-                <p class="card-text"><%= recommendation.Content %></p>
-                <a href="/admin/recommendation/edit?rid=<%= recommendation.Id %>" class="card-link">編集</a>
+    <div class="recommendation-list-box">
+      <% for (const item of pageData.anyData.recommendations) { %>
+        <% if (item.recommendation.IsSolid) { %>
+          <p class="recommendation-solid-text"><%- include('./../../../icons/pin-angle') %>固定済み</p>
+        <% } %>
+        <div class="recommendation-box">
+          <h1><%= item.recommendation.Title %></h1>
+          <p><%= item.recommendation.Content %></p>
+          <div class="recommendation-book-list-box">
+            <% for (const book of item.books) { %>
+              <div class="recommendation-book-item-box">
+                <img src="<%= book.ImgLink %>" data-isbn="<%= book.Isbn %>">
+                <h2><%= book.BookName %></h2>
+                <a href="/item/<%= book.Id %>">詳細</a>
               </div>
-            </div>
+            <% } %>
           </div>
-          <% } %>
         </div>
-      </div>
+      <% } %>
     </div>
 
 
