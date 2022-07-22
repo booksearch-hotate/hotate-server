@@ -24,6 +24,7 @@
 .recommendation-book-list-box {
   display: flex;
   align-items: flex-start;
+  gap: 10px;
   overflow-x: auto;
 }
 
