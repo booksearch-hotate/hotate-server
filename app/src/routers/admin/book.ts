@@ -94,6 +94,8 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
   try {
     const bookId = req.body.id;
 
+    if (typeof bookId !== 'string') throw new Error('Invalid request id.');
+
     const book = await bookApplicationService.searchBookById(bookId);
     /* 変更前のauthorId、publisherIdを取得 */
     const beforeAuthorId = book.AuthorId;
@@ -190,6 +192,7 @@ bookRouter.post('/add', csrfProtection, async (req: Request, res: Response) => {
 bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) => {
   try {
     const id = req.body.id;
+    if (typeof id !== 'string') throw new Error('Invalid request id');
     await bookApplicationService.deleteBook(id);
     req.session.status = {type: 'Success', mes: '本の削除が完了しました'};
   } catch (e: any) {
