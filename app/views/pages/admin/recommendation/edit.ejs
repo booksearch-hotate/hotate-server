@@ -9,7 +9,7 @@
   <body>
     <h3>セクションの編集</h3>
 
-    <form method="post" action="/admin/recommendation/udpate">
+    <form method="post" action="/admin/recommendation/udpate" class="mb-3">
       <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
       <input type="hidden" name="id" value="<%= recommendation.Id %>">
       <div class="mb-3">
@@ -22,39 +22,72 @@
         <label for="content">内容</label>
       </div>
 
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" name="isSolid" onclick="toggleSortIndex()" value="solid" <% if(recommendation.IsSolid) { %>checked<% } %> id="isSolid">
-        <label class="form-check-label" for="isSolid">固定</label>
-      </div>
-
-
-      <div class="mb-3 sort-index-box <% if (!recommendation.IsSolid) { %>view<% } %>" id="sort-index-box">
-        <input type="number" class="form-control" min="1" max="<%= pageData.anyData.maxSortIndex %>" required id="sortIndex" name="sortIndex" value="<%= recommendation.SortIndex %>">
-        <label for="sortIndex">順番</label>
-      </div>
-
-      <div class="mb-3">
-        <div class="book-title-list-box" id="book-title-list-box">
-          <% for (const book of pageData.anyData.books) { %>
-            <div class="book-item-box" id="book-item-<%= book.Id %>" data-bookid="<%= book.Id %>">
-              <p><%= book.BookName %></p>
-              <input type="hidden" value="<%= book.Id %>" name="books[]">
-              <a onclick="deleteBook('<%= book.Id %>')" class="btn btn-warning">削除</a>
-            </div>
-          <% } %>
+      <div class="container">
+        <div class="row">
+          <h4 class="text-center">順番</h4>
         </div>
-        <input class="form-control add-id-input" type="text" placeholder="urlを入力" id="url">
-        <a class="btn btn-primary" onclick="addBook('<%= recommendation.Id %>')">追加</a>
+        <div class="row">
+          <div class="col">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" name="isSolid" onclick="toggleSortIndex()" value="solid" <% if(recommendation.IsSolid) { %>checked<% } %> id="isSolid">
+              <label class="form-check-label" for="isSolid">固定</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="sort-index-box <% if (!recommendation.IsSolid) { %>view<% } %>" id="sort-index-box">
+              <input type="number" class="form-control" min="1" max="<%= pageData.anyData.maxSortIndex %>" required id="sortIndex" name="sortIndex" value="<%= pageData.anyData.maxSortIndex - recommendation.SortIndex + 1 %>">
+              <label for="sortIndex">順番</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <p class="m-0 text-center text-danger">固定を選択すると、現在固定されている投稿の固定が解除されます。</p>
+        </div>
       </div>
 
-      <div class="mb-3">
+      <div class="my-3">
+        <h4 class="text-center">追加する本</h3>
+        <table class="table table-striped">
+          <thead>
+            <thead>
+              <th>書名</th>
+              <th>削除</th>
+            </thead>
+            <tbody id="book-title-list-box">
+              <% for (const book of pageData.anyData.books) { %>
+                <tr class="book-item-box" id="book-item-<%= book.Id %>" data-bookid="<%= book.Id %>">
+                  <td><%= book.BookName %></td>
+                  <td>
+                    <a onclick="deleteBook('<%= book.Id %>')" class="btn btn-warning">削除</a>
+                  </td>
+                  <input type="hidden" value="<%= book.Id %>" name="books[]">
+                </tr>
+              <% } %>
+            </tbody>
+          </thead>
+        </table>
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <input class="form-control add-id-input" type="text" placeholder="urlを入力" id="url">
+              <div id="urlHelp" class="form-text">本詳細画面のURLを入力してください</div>
+            </div>
+            <div class="col">
+              <div class="text-center">
+                <a class="btn btn-outline-success mt-3" onclick="addBook('<%= recommendation.Id %>')">追加</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mb-3">
         <button type="button" onclick="submit();" class="btn btn-primary">確定</button>
+
       </div>
     </form>
 
-    <hr/>
-
-    <div class="text-center">
+    <div class="text-center my-4">
       <form method="post" action="/admin/recommendation/delete">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <input type="hidden" name="id" value="<%= recommendation.Id %>">
