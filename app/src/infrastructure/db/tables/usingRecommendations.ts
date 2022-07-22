@@ -6,6 +6,7 @@ export default class UsingRecommendations extends Model {
   public id!: number;
   public recommendation_id!: string;
   public book_id!: string;
+  public comment!: string;
 
   public static initialize(sequelize: Sequelize) {
     this.init({
@@ -21,6 +22,10 @@ export default class UsingRecommendations extends Model {
       book_id: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      comment: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
     }, {
       sequelize,

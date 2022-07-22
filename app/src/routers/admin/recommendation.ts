@@ -18,6 +18,8 @@ import conversionpageCounter from '../../utils/conversionPageCounter';
 import getPaginationInfo from '../../utils/getPaginationInfo';
 import BookService from '../../domain/service/bookService';
 
+import {IRecommendationObj} from '../../domain/model/recommendation/IRecommendationObj';
+
 // eslint-disable-next-line new-cap
 const recommendationRouter = Router();
 
@@ -36,9 +38,16 @@ recommendationRouter.get('/', async (req: Request, res: Response) => {
 
   const fetchDatas = await recommendationApplicationService.fetch(pageCount, 10);
 
-  const recommendations = await Promise.all(fetchDatas.map(async (recommendation) => {
-    const books = await Promise.all(recommendation.BookIds.map(async (bookId) => await bookApplicationService.searchBookById(bookId)));
-    return {recommendation, books};
+  const recommendations: IRecommendationObj[] = await Promise.all(fetchDatas.map(async (recommendation) => {
+    const items = await Promise.all(recommendation.RecommendationItems.map(async (item) => {
+      return {
+        book: await bookApplicationService.searchBookById(item.BookId),
+        comment: item.Comment,
+      };
+    }));
+    const item: IRecommendationObj = {recommendation, items};
+
+    return item;
   }));
 
   const total = await recommendationApplicationService.fetchAllCount();
@@ -62,7 +71,12 @@ recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Resp
     const recommendation = await recommendationApplicationService.findById(id);
 
     /* おすすめセクションに登録されている本の情報を取得 */
-    const books = await Promise.all(recommendation.BookIds.map(async (bookId) => await bookApplicationService.searchBookById(bookId)));
+    const items = await Promise.all(recommendation.RecommendationItems.map(async (item) => {
+      return {
+        book: await bookApplicationService.searchBookById(item.BookId),
+        comment: item.Comment,
+      };
+    }));
 
     const maxSortIndex = await recommendationApplicationService.findMaxIndex();
 
@@ -70,7 +84,7 @@ recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Resp
     pageData.anyData = {
       recommendation,
       maxSortIndex,
-      books,
+      items,
     };
     pageData.csrfToken = req.csrfToken();
     res.render('pages/admin/recommendation/edit', {pageData});
@@ -88,6 +102,7 @@ recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: R
     const content = req.body.content;
     const formSortIndex = Number(req.body.sortIndex);
     const bookIds = req.body.books === undefined ? [] : req.body.books;
+    const bookComments = req.body.bookComments === undefined ? [] : req.body.bookComments;
 
     let isSolid: boolean;
     switch (req.body.isSolid) {
@@ -105,7 +120,7 @@ recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: R
 
     const sortIndex = allCount - (formSortIndex - 1);
 
-    await recommendationApplicationService.update(recommendationId, title, content, sortIndex, isSolid, bookIds);
+    await recommendationApplicationService.update(recommendationId, title, content, sortIndex, isSolid, bookIds, bookComments);
   } catch (e: any) {
     logger.error(e);
   } finally {
