@@ -2,7 +2,6 @@ export default class BookIdModel {
   private id: string;
 
   constructor(id: string) {
-    console.log(`id: ${id}`);
     if (typeof id !== 'string' || id.length === 0 || id.length > 36) throw new Error('Invalid book id.');
 
     this.id = id;
