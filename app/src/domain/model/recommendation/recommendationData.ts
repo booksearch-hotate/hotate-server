@@ -1,4 +1,5 @@
 import RecommendationModel from './recommendationModel';
+import RecommendationItemData from './recommendationItemData';
 
 export default class RecommendationData {
   private id: string;
@@ -8,7 +9,7 @@ export default class RecommendationData {
   private sortIndex: number;
   private createdAt: Date | null;
   private updatedAt: Date | null;
-  private bookIds: string[];
+  private recommendationItems: RecommendationItemData[];
 
   public constructor(recommendationModel: RecommendationModel) {
     this.id = recommendationModel.Id;
@@ -18,7 +19,7 @@ export default class RecommendationData {
     this.sortIndex = recommendationModel.SortIndex;
     this.createdAt = recommendationModel.CreatedAt;
     this.updatedAt = recommendationModel.UpdatedAt;
-    this.bookIds = recommendationModel.BookIds;
+    this.recommendationItems = recommendationModel.RecommendationItems.map((item) => new RecommendationItemData(item));
   }
 
   get Id() {
@@ -49,7 +50,7 @@ export default class RecommendationData {
     return this.updatedAt;
   }
 
-  get BookIds() {
-    return this.bookIds;
+  get RecommendationItems() {
+    return this.recommendationItems;
   }
 }

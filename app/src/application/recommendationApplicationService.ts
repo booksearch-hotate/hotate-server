@@ -5,6 +5,10 @@ import RecommendationData from '../domain/model/recommendation/recommendationDat
 
 import {IRecommendationRepository} from '../domain/model/recommendation/IRecommendationRepository';
 
+import isSameLenAllArray from '../utils/isSameLenAllArray';
+import RecommendationItemModel from '../domain/model/recommendation/recommendationItemModel';
+import BookIdModel from '../domain/model/book/bookIdModel';
+
 export default class RecommendationApplicationService {
   private readonly recommendationRepository: IRecommendationRepository;
   private readonly recommendationService: RecommendationService;
@@ -55,6 +59,7 @@ export default class RecommendationApplicationService {
       sortIndex: number,
       isSolid: boolean,
       bookIds: string[],
+      bookComments: string[],
   ): Promise<void> {
     const recommendation = await this.recommendationRepository.findById(id);
 
@@ -62,11 +67,19 @@ export default class RecommendationApplicationService {
 
     if (recommendation.isOverNumberOfBooks()) throw new Error('The number of books has been exceeded.');
 
+    if (!isSameLenAllArray([bookIds, bookComments])) throw new Error('Invalid recommendation data.');
+
+    const items: RecommendationItemModel[] = [];
+
+    for (let i = 0; i < bookIds.length; i++) {
+      items.push(new RecommendationItemModel(new BookIdModel(bookIds[i]), bookComments[i]));
+    }
+
     recommendation.changeTitle(title);
     recommendation.changeContent(content);
     recommendation.changeSortIndex(sortIndex);
     recommendation.changeIsSolid(isSolid);
-    recommendation.replaceBookIds(bookIds);
+    recommendation.replaceItems(items);
 
     await this.recommendationRepository.update(recommendation);
   }
@@ -80,7 +93,10 @@ export default class RecommendationApplicationService {
   }
 
   public isOverNumberOfBooksWhenAdd(recommendationData: RecommendationData): boolean {
-    recommendationData.BookIds.push('');
+    const recommendationItemModel = recommendationData.RecommendationItems.map((item) => new RecommendationItemModel(new BookIdModel(item.BookId), item.Comment));
+
+    /* ダミーデータの追加 */
+    recommendationItemModel.push(new RecommendationItemModel(new BookIdModel('dummy'), ''));
     const recommendationModel = new RecommendationModel(
         recommendationData.Id,
         recommendationData.Title,
@@ -89,13 +105,15 @@ export default class RecommendationApplicationService {
         recommendationData.SortIndex,
         recommendationData.CreatedAt,
         recommendationData.UpdatedAt,
-        recommendationData.BookIds,
+        recommendationItemModel,
     );
     return recommendationModel.isOverNumberOfBooks();
   }
 
   public omitContent(recommendations: RecommendationData[]): RecommendationData[] {
     const omitRecommendations = recommendations.map((recommendationData) => {
+      const recommendationItemModel = recommendationData.RecommendationItems.map((item) => new RecommendationItemModel(new BookIdModel(item.BookId), item.Comment));
+
       const recommendationModel = new RecommendationModel(
           recommendationData.Id,
           recommendationData.Title,
@@ -104,7 +122,7 @@ export default class RecommendationApplicationService {
           recommendationData.SortIndex,
           recommendationData.CreatedAt,
           recommendationData.UpdatedAt,
-          recommendationData.BookIds,
+          recommendationItemModel,
       );
       recommendationModel.omitContent();
       return recommendationModel;
