@@ -56,7 +56,7 @@ apiRouter.post('/recommendation/book/add', csrfProtection, async (req: Request, 
 
     const book = await bookApplicationService.searchBookById(bookId);
 
-    const isExist = recommendation.BookIds.some((itemBookId) => itemBookId === bookId);
+    const isExist = recommendation.RecommendationItems.some((item) => item.BookId === bookId);
 
     return res.json({book, status: isExist ? 'Exist' : 'Success'});
   } catch (e: any) {

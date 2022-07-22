@@ -92,6 +92,7 @@ CREATE TABLE IF NOT EXISTS using_recommendations (
   id int NOT NULL AUTO_INCREMENT,
   book_id varchar(255) NOT NULL,
   recommendation_id varchar(255) NOT NULL,
+  comment varchar(250) NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (book_id) REFERENCES books(id),
   FOREIGN KEY (recommendation_id) REFERENCES recommendations(id)

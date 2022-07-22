@@ -1,3 +1,5 @@
+import RecommendationItemModel from './recommendationItemModel';
+
 export default class RecommendationModel {
   private id: string;
   private title: string;
@@ -6,7 +8,7 @@ export default class RecommendationModel {
   private sortIndex: number;
   private createdAt: Date | null;
   private updatedAt: Date | null;
-  private bookIds: string[];
+  private recommendationItems: RecommendationItemModel[];
 
   private readonly MAX_CONTENT_LEN = 20;
   private readonly MAX_HAVING_BOOK_COUNT = 10;
@@ -19,13 +21,14 @@ export default class RecommendationModel {
       sortIndex: number,
       createdAt: Date | null,
       updatedAt: Date | null,
-      bookIds: string[],
+      recommendationItems: RecommendationItemModel[],
   ) {
     if (id === null) throw new Error('The id is null.');
     if (title.length === 0) throw new Error('Empty title.');
     if (content.length === 0) throw new Error('Empty content.');
     if (isSolid === null) throw new Error('The isSolid is null.');
     if (sortIndex === null || sortIndex < 0) throw new Error('Incorrect id.');
+    if (recommendationItems.length > this.MAX_HAVING_BOOK_COUNT) throw new Error('The maximum number of units held has been exceeded.');
 
     this.id = id;
     this.title = title;
@@ -34,7 +37,7 @@ export default class RecommendationModel {
     this.sortIndex = sortIndex;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.bookIds = bookIds;
+    this.recommendationItems = recommendationItems;
   }
 
   get Id() {
@@ -58,8 +61,8 @@ export default class RecommendationModel {
   get UpdatedAt() {
     return this.updatedAt;
   }
-  get BookIds() {
-    return this.bookIds;
+  get RecommendationItems() {
+    return this.recommendationItems;
   }
 
   public changeTitle(title: string) {
@@ -84,8 +87,9 @@ export default class RecommendationModel {
     this.isSolid = isSolid;
   }
 
-  public replaceBookIds(bookIds: string[]) {
-    this.bookIds = bookIds;
+  public replaceItems(bookIds: RecommendationItemModel[]) {
+    if (bookIds.length > this.MAX_HAVING_BOOK_COUNT) throw new Error('The maximum number of units held has been exceeded.');
+    this.recommendationItems = bookIds;
   }
 
   public omitContent() {
@@ -93,6 +97,6 @@ export default class RecommendationModel {
   }
 
   public isOverNumberOfBooks() {
-    return this.bookIds.length > this.MAX_HAVING_BOOK_COUNT;
+    return this.recommendationItems.length > this.MAX_HAVING_BOOK_COUNT;
   }
 }

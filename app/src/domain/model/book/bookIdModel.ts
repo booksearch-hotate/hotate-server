@@ -1,4 +1,4 @@
-export default class bookIdModel {
+export default class BookIdModel {
   private id: string;
 
   constructor(id: string) {

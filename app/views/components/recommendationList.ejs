@@ -1,0 +1,31 @@
+<% pageData.anyData.recommendations = typeof pageData.anyData.recommendations === 'undefined' ? [] : pageData.anyData.recommendations%>
+<% editMode = typeof editMode === 'undefined' ? false : editMode %>
+
+<div class="recommendation-list-box">
+  <% for (const section of pageData.anyData.recommendations) { %>
+    <% if (section.recommendation.IsSolid) { %>
+      <p class="recommendation-solid-text"><%- include('./../icons/pin-angle') %>固定済み</p>
+    <% } %>
+    <div class="recommendation-box">
+      <h1><%= section.recommendation.Title %></h1>
+      <p><%= section.recommendation.Content %></p>
+      <div class="recommendation-book-list-box">
+        <% for (const item of section.items) { %>
+          <div class="recommendation-book-item-box">
+            <img src="<%= item.book.ImgLink %>" data-isbn="<%= item.book.Isbn %>">
+            <h2><%= item.book.BookName %></h2>
+            <a href="/item/<%= item.book.Id %>">詳細</a>
+            <% if (item.comment !== null) { %>
+              <p class="m-0"><%= item.comment %></p>
+            <% } %>
+          </div>
+        <% } %>
+      </div>
+      <% if (editMode) { %>
+        <div class="recommendation-edit-button mt-3 text-center">
+          <a href="/admin/recommendation/edit?rid=<%= section.recommendation.Id %>" class="btn btn-outline-success">編集する</a>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
+</div>

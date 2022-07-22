@@ -13,6 +13,7 @@ import BookRepository from '../interface/repository/bookRepository';
 import EsSearchBook from '../infrastructure/elasticsearch/esBook';
 import BookService from '../domain/service/bookService';
 import csurf from 'csurf';
+import {IRecommendationObj} from '../domain/model/recommendation/IRecommendationObj';
 
 // eslint-disable-next-line new-cap
 const homeRouter = Router();
@@ -37,9 +38,16 @@ homeRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   try {
     const fetchDatas = recommendationApplicationService.omitContent(await recommendationApplicationService.fetch(0, 5));
 
-    const recommendations = await Promise.all(fetchDatas.map(async (recommendation) => {
-      const books = await Promise.all(recommendation.BookIds.map(async (bookId) => await bookApplicationService.searchBookById(bookId)));
-      return {recommendation, books};
+    const recommendations: IRecommendationObj[] = await Promise.all(fetchDatas.map(async (recommendation) => {
+      const items = await Promise.all(recommendation.RecommendationItems.map(async (item) => {
+        return {
+          book: await bookApplicationService.searchBookById(item.BookId),
+          comment: item.Comment,
+        };
+      }));
+      const item: IRecommendationObj = {recommendation, items};
+
+      return item;
     }));
 
     pageData.anyData = {
