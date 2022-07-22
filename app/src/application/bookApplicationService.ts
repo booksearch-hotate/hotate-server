@@ -126,6 +126,7 @@ export default class BookApplicationService {
    * @returns 本IDに対応した本データ
    */
   public async searchBookById(id: string): Promise<BookData> {
+    if (typeof id !== 'string') throw new Error('Invaild type of id.');
     const bookId = new BookIdModel(id);
     const book = await this.bookRepository.searchById(bookId);
 
