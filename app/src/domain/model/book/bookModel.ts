@@ -20,7 +20,7 @@ export default class BookModel {
 
   private readonly MAX_NUMBER_OF_TAGS = 10;
 
-  public constructor(
+  constructor(
       id: string,
       name: string,
       subName: string | null,
