@@ -86,7 +86,7 @@ recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: R
 
     const title = req.body.title;
     const content = req.body.content;
-    const sortIndex = Number(req.body.sortIndex);
+    const formSortIndex = Number(req.body.sortIndex);
     const bookIds = req.body.books === undefined ? [] : req.body.books;
 
     let isSolid: boolean;
@@ -100,6 +100,10 @@ recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: R
       default:
         throw new Error('Invalid optional value; isSolid.');
     }
+
+    const allCount = await recommendationApplicationService.fetchAllCount();
+
+    const sortIndex = allCount - (formSortIndex - 1);
 
     await recommendationApplicationService.update(recommendationId, title, content, sortIndex, isSolid, bookIds);
   } catch (e: any) {
