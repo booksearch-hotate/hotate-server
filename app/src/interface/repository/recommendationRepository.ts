@@ -74,7 +74,7 @@ export default class RecommendationRepository implements IRecommendationReposito
 
     const fetchBooks = await this.db.UsingRecommendations.findAll({where: {recommendation_id: id}});
 
-    const bookIds = fetchData === null ? [] : fetchBooks.map((column) => column.book_id);
+    const bookIds = fetchBooks.map((column) => column.book_id);
 
     return new RecommendationModel(
         fetchData.id,
