@@ -71,6 +71,8 @@ export default class RecommendationApplicationService {
 
     const items: RecommendationItemModel[] = [];
 
+    if (!(bookIds instanceof Array)) return;
+
     for (let i = 0; i < bookIds.length; i++) {
       items.push(new RecommendationItemModel(new BookIdModel(bookIds[i]), bookComments[i]));
     }
