@@ -58,6 +58,9 @@
                 <tr class="book-item-box" id="book-item-<%= book.Id %>" data-bookid="<%= book.Id %>">
                   <td><%= book.BookName %></td>
                   <td>
+                    <input type="text" placeholder="コメントを追加" name="bookComments[]">
+                  </td>
+                  <td>
                     <a onclick="deleteBook('<%= book.Id %>')" class="btn btn-warning">削除</a>
                   </td>
                   <input type="hidden" value="<%= book.Id %>" name="books[]">
