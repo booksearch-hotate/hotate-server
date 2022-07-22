@@ -86,7 +86,7 @@ bookRouter.get('/edit', csrfProtection, async (req: Request, res: Response) => {
   pageData.headTitle = '本編集';
   pageData.anyData = {book};
   pageData.csrfToken = req.csrfToken();
-  res.render('pages/admin/book/edit', {pageData});
+  return res.render('pages/admin/book/edit', {pageData});
 });
 
 /* 本の更新処理 */
