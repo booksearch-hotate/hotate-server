@@ -6,6 +6,8 @@ import Book from '../../infrastructure/db/tables/books';
 
 import {IRecommendationRepository} from '../../domain/model/recommendation/IRecommendationRepository';
 import RecommendationModel from '../../domain/model/recommendation/recommendationModel';
+import RecommendationItemModel from '../../domain/model/recommendation/recommendationItemModel';
+import BookIdModel from '../../domain/model/book/bookIdModel';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -46,7 +48,7 @@ export default class RecommendationRepository implements IRecommendationReposito
     const res = fetchData.map(async (column) => {
       const fetchData = await this.db.UsingRecommendations.findAll({where: {recommendation_id: column.id}});
 
-      const bookIds = fetchData === null ? [] : fetchData.map((column) => column.book_id);
+      const items = fetchData === null ? [] : fetchData.map((column) => new RecommendationItemModel(new BookIdModel(column.book_id), column.comment));
 
       return new RecommendationModel(
           column.id,
@@ -56,7 +58,7 @@ export default class RecommendationRepository implements IRecommendationReposito
           column.sort_index,
           column.created_at,
           column.updated_at,
-          bookIds,
+          items,
       );
     });
 
@@ -74,7 +76,7 @@ export default class RecommendationRepository implements IRecommendationReposito
 
     const fetchBooks = await this.db.UsingRecommendations.findAll({where: {recommendation_id: id}});
 
-    const bookIds = fetchBooks.map((column) => column.book_id);
+    const items = fetchBooks.map((column) => new RecommendationItemModel(new BookIdModel(column.book_id), column.comment));
 
     return new RecommendationModel(
         fetchData.id,
@@ -84,7 +86,7 @@ export default class RecommendationRepository implements IRecommendationReposito
         fetchData.sort_index,
         fetchData.created_at,
         fetchData.updated_at,
-        bookIds,
+        items,
     );
   }
 
@@ -92,10 +94,11 @@ export default class RecommendationRepository implements IRecommendationReposito
     const settingBooks = async () => {
       await this.db.UsingRecommendations.destroy({where: {recommendation_id: recommendation.Id}});
 
-      await this.db.UsingRecommendations.bulkCreate(recommendation.BookIds.map((bookId) => {
+      await this.db.UsingRecommendations.bulkCreate(recommendation.RecommendationItems.map((item) => {
         return {
           recommendation_id: recommendation.Id,
-          book_id: bookId,
+          book_id: item.BookId.Id,
+          comment: item.Comment,
         };
       }));
     };
