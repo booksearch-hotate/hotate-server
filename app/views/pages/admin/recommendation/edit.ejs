@@ -54,16 +54,16 @@
               <th>削除</th>
             </thead>
             <tbody id="book-title-list-box">
-              <% for (const book of pageData.anyData.books) { %>
-                <tr class="book-item-box" id="book-item-<%= book.Id %>" data-bookid="<%= book.Id %>">
-                  <td><%= book.BookName %></td>
+              <% for (const item of pageData.anyData.items) { %>
+                <tr class="book-item-box" id="book-item-<%= item.book.Id %>" data-bookid="<%= item.book.Id %>">
+                  <td><%= item.book.BookName %></td>
                   <td>
-                    <input type="text" placeholder="コメントを追加" name="bookComments[]">
+                    <input type="text" placeholder="コメントを追加" name="bookComments[]" value="<%= item.comment %>">
                   </td>
                   <td>
-                    <a onclick="deleteBook('<%= book.Id %>')" class="btn btn-warning">削除</a>
+                    <a onclick="deleteBook('<%= item.book.Id %>')" class="btn btn-warning">削除</a>
                   </td>
-                  <input type="hidden" value="<%= book.Id %>" name="books[]">
+                  <input type="hidden" value="<%= item.book.Id %>" name="books[]">
                 </tr>
               <% } %>
             </tbody>
