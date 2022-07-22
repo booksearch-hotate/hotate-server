@@ -21,7 +21,6 @@ import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 import Logger from '../../infrastructure/logger/logger';
 
 import {IPage} from '../datas/IPage';
-import {IPaginationData} from '../datas/IPaginationData';
 
 import getPaginationInfo from '../../utils/getPaginationInfo';
 import conversionpageCounter from '../../utils/conversionPageCounter';
@@ -59,16 +58,7 @@ bookRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
 
   const total = await bookApplicationService.findAllCount();
 
-  const paginationInfo = getPaginationInfo(pageCount, total, books.length, 10);
-
-  const paginationData: IPaginationData = {
-    pageRange: {
-      min: paginationInfo.minPage,
-      max: paginationInfo.maxPage,
-    },
-    totalPage: paginationInfo.totalPage,
-    pageCount,
-  };
+  const paginationData = getPaginationInfo(pageCount, total, books.length, 10);
 
   pageData.headTitle = '本の管理';
   pageData.anyData = {
@@ -96,13 +86,15 @@ bookRouter.get('/edit', csrfProtection, async (req: Request, res: Response) => {
   pageData.headTitle = '本編集';
   pageData.anyData = {book};
   pageData.csrfToken = req.csrfToken();
-  res.render('pages/admin/book/edit', {pageData});
+  return res.render('pages/admin/book/edit', {pageData});
 });
 
 /* 本の更新処理 */
 bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) => {
   try {
     const bookId = req.body.id;
+
+    if (typeof bookId !== 'string') throw new Error('Invalid request id.');
 
     const book = await bookApplicationService.searchBookById(bookId);
     /* 変更前のauthorId、publisherIdを取得 */
@@ -200,6 +192,7 @@ bookRouter.post('/add', csrfProtection, async (req: Request, res: Response) => {
 bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) => {
   try {
     const id = req.body.id;
+    if (typeof id !== 'string') throw new Error('Invalid request id');
     await bookApplicationService.deleteBook(id);
     req.session.status = {type: 'Success', mes: '本の削除が完了しました'};
   } catch (e: any) {

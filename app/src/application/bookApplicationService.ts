@@ -12,6 +12,7 @@ import searchMode from '../routers/datas/searchModeType';
 import {getImgLink} from '../infrastructure/api/openbd';
 
 import Logger from '../infrastructure/logger/logger';
+import BookIdModel from '../domain/model/book/bookIdModel';
 
 const logger = new Logger('bookApplicationService');
 
@@ -125,7 +126,8 @@ export default class BookApplicationService {
    * @returns 本IDに対応した本データ
    */
   public async searchBookById(id: string): Promise<BookData> {
-    const book = await this.bookRepository.searchById(id);
+    const bookId = new BookIdModel(id);
+    const book = await this.bookRepository.searchById(bookId);
 
     const bookData = new BookData(book);
 
@@ -182,7 +184,7 @@ export default class BookApplicationService {
       ndc: number | null,
       year: number | null,
   ) {
-    const book = await this.bookRepository.searchById(id);
+    const book = await this.bookRepository.searchById(new BookIdModel(id));
 
     book.changeName(bookName);
     book.changeSubName(subName);
@@ -221,7 +223,7 @@ export default class BookApplicationService {
    * @param id 本ID
    */
   public async deleteBook(id: string): Promise<void> {
-    const book = await this.bookRepository.searchById(id);
+    const book = await this.bookRepository.searchById(new BookIdModel(id));
 
     if (book === null) return;
 

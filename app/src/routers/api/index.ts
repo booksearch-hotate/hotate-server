@@ -1,30 +1,32 @@
 import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
+import Logger from '../../infrastructure/logger/logger';
 
-import TagService from '../../domain/service/tagService';
 import BookService from '../../domain/service/bookService';
 
-import TagApplicationService from '../../application/tagApplicationService';
 import BookApplicationService from '../../application/bookApplicationService';
+import RecommendationApplicationService from '../../application/recommendationApplicationService';
 
-import TagRepository from '../../interface/repository/tagRepository';
 import BookRepository from '../../interface/repository/bookRepository';
 
 import db from '../../infrastructure/db';
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
+import RecommendationRepository from '../../interface/repository/recommendationRepository';
+import RecommendationService from '../../domain/service/recommendationService';
 
 // eslint-disable-next-line new-cap
 const apiRouter = Router();
 
-const tagApplicationService = new TagApplicationService(
-    new TagRepository(db),
-    new BookRepository(db, new EsSearchBook('books')),
-    new TagService(new TagRepository(db)),
-);
+const logger = new Logger('api');
 
 const bookApplicationService = new BookApplicationService(
     new BookRepository(db, new EsSearchBook('books')),
     new BookService(),
+);
+
+const recommendationApplicationService = new RecommendationApplicationService(
+    new RecommendationRepository(db),
+    new RecommendationService(),
 );
 
 const csrfProtection = csurf({cookie: false});
@@ -37,18 +39,29 @@ apiRouter.post('/:isbn/imgLink', csrfProtection, async (req: Request, res: Respo
   res.json({imgLink});
 });
 
-/* 本IDに対応するタグを作成 */
-apiRouter.post('/:bookId/tag', async (req: Request, res: Response) => {
-  let status = '';
+apiRouter.post('/recommendation/book/add', csrfProtection, async (req: Request, res: Response) => {
   try {
-    const name: string = req.body.name;
-    const bookId = req.params.bookId;
-    const isExist = await tagApplicationService.create(name, bookId);
-    status = isExist ? 'duplicate' : 'success';
-    res.json({status});
-  } catch (e) {
-    status = 'error';
-    res.json({status});
+    const bookIdUri = '/item/';
+
+    const url = req.body.addUrl;
+    const recommendationId = req.body.recommendationId;
+
+    if (typeof url !== 'string' || url.length === 0 || url.indexOf(bookIdUri) === -1) throw new Error('Invalid url.');
+
+    const bookId = url.substring(url.indexOf(bookIdUri) + bookIdUri.length);
+
+    const recommendation = await recommendationApplicationService.findById(recommendationId);
+
+    if (recommendationApplicationService.isOverNumberOfBooksWhenAdd(recommendation)) throw new Error('The number of books has been exceeded.');
+
+    const book = await bookApplicationService.searchBookById(bookId);
+
+    const isExist = recommendation.BookIds.some((itemBookId) => itemBookId === bookId);
+
+    return res.json({book, status: isExist ? 'Exist' : 'Success'});
+  } catch (e: any) {
+    logger.error(e);
+    return res.json({book: {}, status: 'Failure'});
   }
 });
 
