@@ -56,9 +56,15 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
   if (isTag && isStrict) searchMode = 'none';
 
   const pageCount = conversionpageCounter(req);
-  let totalPage = 0;
-  let minPage = 0;
-  let maxPage = 0;
+
+  let paginationData: IPaginationData = {
+    pageRange: {
+      min: 0,
+      max: 0,
+    },
+    totalPage: 0,
+    pageCount,
+  };
 
   let resDatas: BookData[] = [];
   let searchHisDatas: SearchHistoryData[] = [];
@@ -73,21 +79,8 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
 
     const total = await bookApplicationService.getTotalResults(searchWord, searchMode);
 
-    const paginationInfo = getPaginationInfo(pageCount, total, 10, 7);
-
-    totalPage = paginationInfo.totalPage;
-    minPage = paginationInfo.minPage;
-    maxPage = paginationInfo.maxPage;
+    paginationData = getPaginationInfo(pageCount, total, 10, 7);
   }
-
-  const paginationData: IPaginationData = {
-    pageRange: {
-      min: minPage,
-      max: maxPage,
-    },
-    totalPage,
-    pageCount,
-  };
 
   pageData.headTitle = '検索結果 | HOTATE';
   pageData.anyData = {

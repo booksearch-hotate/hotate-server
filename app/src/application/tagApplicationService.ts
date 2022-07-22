@@ -8,6 +8,7 @@ import {IBookRepository} from '../domain/model/book/IBookRepository';
 import TagData from '../domain/model/tag/tagData';
 
 import Logger from '../infrastructure/logger/logger';
+import BookIdModel from '../domain/model/book/bookIdModel';
 
 const logger = new Logger('TagApplicationService');
 
@@ -31,7 +32,7 @@ export default class TagApplicationService {
   public async create(name: string, bookId: string): Promise<boolean> {
     let tag = new TagModel(this.tagService.createUUID(), name, null, [bookId]);
 
-    const book = await this.bookRepository.searchById(bookId);
+    const book = await this.bookRepository.searchById(new BookIdModel(bookId));
 
     if (book.isOverNumberOfTags()) throw new Error('The maximum number of tags that can be added to a tag has been exceeded.');
 
@@ -61,7 +62,6 @@ export default class TagApplicationService {
 
   public async findAll(): Promise<TagData[]> {
     const tags = await this.tagRepository.findAll();
-    console.log(tags);
     return tags.map((tag) => new TagData(tag));
   }
 

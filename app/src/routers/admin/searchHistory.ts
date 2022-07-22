@@ -11,7 +11,6 @@ import SearchHistoryRepository from '../../interface/repository/searchHistoryRep
 import EsSearchHistory from '../../infrastructure/elasticsearch/esSearchHistory';
 
 import {IPage} from '../datas/IPage';
-import {IPaginationData} from '../datas/IPaginationData';
 
 import getPaginationInfo from '../../utils/getPaginationInfo';
 
@@ -36,16 +35,7 @@ searchHistoryRouter.get('/', csrfProtection, async (req: Request, res: Response)
   const searchHistory = await searchHistoryApplicationService.find(pageCount);
   const total = await searchHistoryApplicationService.findAllCount();
 
-  const paginationInfo = getPaginationInfo(pageCount, total, searchHistory.length, 5);
-
-  const paginationData: IPaginationData = {
-    pageRange: {
-      min: paginationInfo.minPage,
-      max: paginationInfo.maxPage,
-    },
-    totalPage: paginationInfo.totalPage,
-    pageCount,
-  };
+  const paginationData = getPaginationInfo(pageCount, total, searchHistory.length, 5);
 
   pageData.headTitle = '検索履歴';
   pageData.anyData = {
