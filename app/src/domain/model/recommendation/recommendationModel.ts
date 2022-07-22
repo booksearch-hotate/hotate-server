@@ -28,6 +28,7 @@ export default class RecommendationModel {
     if (content.length === 0) throw new Error('Empty content.');
     if (isSolid === null) throw new Error('The isSolid is null.');
     if (sortIndex === null || sortIndex < 0) throw new Error('Incorrect id.');
+    if (recommendationItems.length > this.MAX_HAVING_BOOK_COUNT) throw new Error('The maximum number of units held has been exceeded.');
 
     this.id = id;
     this.title = title;
@@ -87,6 +88,7 @@ export default class RecommendationModel {
   }
 
   public replaceItems(bookIds: RecommendationItemModel[]) {
+    if (bookIds.length > this.MAX_HAVING_BOOK_COUNT) throw new Error('The maximum number of units held has been exceeded.');
     this.recommendationItems = bookIds;
   }
 
