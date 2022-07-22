@@ -21,26 +21,7 @@
       </div>
     </div>
 
-    <div class="recommendation-list-box">
-      <% for (const item of pageData.anyData.recommendations) { %>
-        <% if (item.recommendation.IsSolid) { %>
-          <p class="recommendation-solid-text"><%- include('./../icons/pin-angle') %>固定済み</p>
-        <% } %>
-        <div class="recommendation-box">
-          <h1><%= item.recommendation.Title %></h1>
-          <p><%= item.recommendation.Content %></p>
-          <div class="recommendation-book-list-box">
-            <% for (const book of item.books) { %>
-              <div class="recommendation-book-item-box">
-                <img src="<%= book.ImgLink %>" data-isbn="<%= book.Isbn %>">
-                <h2><%= book.BookName %></h2>
-                <a href="/item/<%= book.Id %>">詳細</a>
-              </div>
-            <% } %>
-          </div>
-        </div>
-      <% } %>
-    </div>
+    <%- include('./../components/recommendationList') %>
     <%- include('./../components/inputJs') %>
     <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
   </body>
