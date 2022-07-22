@@ -1,13 +1,15 @@
 function makeBookItemNode(bookName, id) {
-  const div = document.createElement('div');
+  const div = document.createElement('tr');
   div.classList.add('book-item-box');
   div.setAttribute('id', `book-item-${id}`);
   div.setAttribute('data-bookid', id);
 
   div.innerHTML = `
-    <p>${bookName}</p>
-    <input type="hidden" value="${id}" name="books[]">
+  <td>${bookName}</td>
+  <td>
     <a onclick="deleteBook('${id}')" class="btn btn-warning">削除</a>
+  </td>
+  <input type="hidden" value="${id}" name="books[]">
   `;
   return div;
 }
