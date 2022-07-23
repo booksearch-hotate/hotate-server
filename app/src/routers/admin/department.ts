@@ -50,7 +50,7 @@ departmentRouter.get('/', csrfProtection, async (req: Request, res: Response) =>
 
   pageData.csrfToken = req.csrfToken();
 
-  res.render('pages/admin/department/index', {pageData});
+  res.render('pages/admin/school-info/index', {pageData});
 });
 
 departmentRouter.post('/grade-info/update', csrfProtection, async (req: Request, res: Response) => {
@@ -61,7 +61,7 @@ departmentRouter.post('/grade-info/update', csrfProtection, async (req: Request,
   } catch (e: any) {
     logger.error(e);
   } finally {
-    res.redirect('/admin/department');
+    res.redirect('/admin/school-info');
   }
 });
 
@@ -77,7 +77,7 @@ departmentRouter.post('/insert', csrfProtection, async (req: Request, res: Respo
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '学科の追加に失敗しました'};
   } finally {
-    res.redirect('/admin/department/');
+    res.redirect('/admin/school-info/');
   }
 });
 
@@ -102,11 +102,11 @@ departmentRouter.get('/confirm-delete', csrfProtection, async (req: Request, res
 
     pageData.csrfToken = req.csrfToken();
 
-    return res.render('pages/admin/department/confirm-delete', {pageData});
+    return res.render('pages/admin/school-info/confirm-delete', {pageData});
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '学科の情報の取得に失敗しました。'};
-    res.redirect('/admin/department/');
+    res.redirect('/admin/school-info/');
   }
 });
 
@@ -121,7 +121,7 @@ departmentRouter.post('/delete', csrfProtection, async (req: Request, res: Respo
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '学科の削除に失敗しました'};
   } finally {
-    res.redirect('/admin/department/');
+    res.redirect('/admin/school-info/');
   }
 });
 
@@ -145,11 +145,11 @@ departmentRouter.get('/edit', csrfProtection, async (req: Request, res: Response
 
     req.session.keepValue = id;
 
-    res.render('pages/admin/department/edit', {pageData});
+    res.render('pages/admin/school-info/edit', {pageData});
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '編集に必要な情報が正常に取得できませんでした。'};
-    res.redirect('/admin/department/');
+    res.redirect('/admin/school-info/');
   }
 });
 
@@ -167,7 +167,7 @@ departmentRouter.post('/update', csrfProtection, async (req: Request, res: Respo
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '変更中にエラーが発生しました。'};
   } finally {
-    res.redirect('/admin/department');
+    res.redirect('/admin/school-info');
   }
 });
 

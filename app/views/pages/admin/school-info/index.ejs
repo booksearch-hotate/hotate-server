@@ -6,7 +6,7 @@
   <body>
     <%- include('./../../../components/headerTitle', {mes: '学科名一覧'}) %>
     <div class="grade-info-box">
-      <form action="/admin/department/grade-info/update" method="post">
+      <form action="/admin/school-info/grade-info/update" method="post">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <input type="number" name="year" value="<%= pageData.anyData.schoolGradeInfo.Year %>" min="1" max="10">
         <input type="number" name="schoolClass" value="<%= pageData.anyData.schoolGradeInfo.SchoolClass %>" min="1" max="10">
@@ -16,7 +16,7 @@
     <div class="insert-department-box">
       <h2>学科の追加</h2>
       <p><b>20</b>個まで</p>
-      <form action="/admin/department/insert" method="post">
+      <form action="/admin/school-info/insert" method="post">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <div class="form-group">
           <label for="insertName" class="form-label">追加する学科名</label>
@@ -38,13 +38,13 @@
           <tr>
             <td><%= department.Name %></td>
             <td>
-              <form action="/admin/department/edit" method="get">
+              <form action="/admin/school-info/edit" method="get">
                 <input type="hidden" name="id" value="<%= department.Id %>">
                 <button type="submit" class="btn btn-outline-success">変更</button>
               </form>
             </td>
             <td>
-              <form action="/admin/department/confirm-delete" method="get">
+              <form action="/admin/school-info/confirm-delete" method="get">
                 <input type="hidden" name="did" value="<%= department.Id %>">
                 <button type="submit" class="btn btn-danger">削除</button>
               </form>
