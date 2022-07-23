@@ -46,9 +46,9 @@
           </div>
           <div class="col-auto">
             <select class="form-select" name="schoolYear">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              <% for (let i = 1; i <= pageData.anyData.schoolGradeInfo.Year; i++) { %>
+                <option value="<%= i %>"><%= i %></option>
+              <% } %>
             </select>
           </div>
           <div class="col-auto">
@@ -56,9 +56,9 @@
           </div>
           <div class="col-auto">
             <select class="form-select" name="class">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              <% for (let i = 1; i <= pageData.anyData.schoolGradeInfo.SchoolClass; i++) { %>
+                <option value="<%= i %>"><%= i %></option>
+              <% } %>
             </select>
           </div>
           <div class="col-auto">
