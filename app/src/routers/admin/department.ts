@@ -58,8 +58,11 @@ departmentRouter.post('/grade-info/update', csrfProtection, async (req: Request,
     const year = Number(req.body.year);
     const schoolClass = Number(req.body.schoolClass);
     await schoolGradeInfoApplicationService.update(year, schoolClass);
+
+    req.session.status = {type: 'Success', mes: '学年・クラスの変更に成功しました。'};
   } catch (e: any) {
     logger.error(e);
+    req.session.status = {type: 'Failure', error: e, mes: '学年・クラスの変更に失敗しました。'};
   } finally {
     res.redirect('/admin/school-info');
   }
