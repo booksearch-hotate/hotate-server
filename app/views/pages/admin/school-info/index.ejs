@@ -4,7 +4,7 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <%- include('./../../../components/headerTitle', {mes: '学科名一覧'}) %>
+    <%- include('./../../../components/headerTitle', {mes: '学校情報の管理'}) %>
     <div class="grade-info-box">
       <form action="/admin/school-info/grade-info/update" method="post">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
