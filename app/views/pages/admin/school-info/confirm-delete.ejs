@@ -41,10 +41,10 @@
       <div class="container">
         <div class="row align-items-center text-center">
           <div class="col">
-            <a href="/admin/department/" class="btn btn-primary">戻る</a>
+            <a href="/admin/school-info/" class="btn btn-primary">戻る</a>
           </div>
           <div class="col">
-            <form method="post" action="/admin/department/delete">
+            <form method="post" action="/admin/school-info/delete">
               <input type="hidden" name="deleteId" value="<%= pageData.anyData.department.Id %>">
               <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
               <button type="submit" class="btn btn-danger">削除</button>

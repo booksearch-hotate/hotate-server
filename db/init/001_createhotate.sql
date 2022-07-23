@@ -97,3 +97,10 @@ CREATE TABLE IF NOT EXISTS using_recommendations (
   FOREIGN KEY (book_id) REFERENCES books(id),
   FOREIGN KEY (recommendation_id) REFERENCES recommendations(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS school_grage_info (
+  id int NOT NULL AUTO_INCREMENT,
+  year int NOT NULL,
+  school_class int NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

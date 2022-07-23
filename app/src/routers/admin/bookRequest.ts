@@ -68,7 +68,8 @@ bookRequestRouter.post('/delete', csrfProtection, async (req: Request, res: Resp
     const id = req.body.deleteId;
 
     await requestApplicationService.delete(id);
-    logger.info(`Request deleted. id : ${id}`);
+    req.session.status = {type: 'Success', mes: '削除に成功しました。'};
+    logger.info(`Request is deleted. id : ${id}`);
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '削除に失敗しました。'};
