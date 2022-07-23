@@ -5,6 +5,14 @@
   </head>
   <body>
     <%- include('./../../../components/headerTitle', {mes: '学科名一覧'}) %>
+    <div class="grade-info-box">
+      <form action="/admin/department/grade-info/update" method="post">
+        <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+        <input type="number" name="year" value="<%= pageData.anyData.schoolGradeInfo.Year %>" min="1" max="10">
+        <input type="number" name="schoolClass" value="<%= pageData.anyData.schoolGradeInfo.SchoolClass %>" min="1" max="10">
+        <button type="submit" class="btn btn-primary">確定</button>
+      </form>
+    </div>
     <div class="insert-department-box">
       <h2>学科の追加</h2>
       <p><b>20</b>個まで</p>
