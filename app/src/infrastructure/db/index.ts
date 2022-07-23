@@ -9,6 +9,7 @@ import Department from './tables/departments';
 import Request from './tables/requests';
 import UsingRecommendations from './tables/usingRecommendations';
 import Recommendation from './tables/recommendations';
+import SchoolGradeInfo from './tables/schoolGradeInfo';
 
 import {isLocal} from '../cli/cmdLine';
 
@@ -30,6 +31,7 @@ const db = {
   Request: Request.initialize(sequelize),
   UsingRecommendations: UsingRecommendations.initialize(sequelize),
   Recommendation: Recommendation.initialize(sequelize),
+  SchoolGradeInfo: SchoolGradeInfo.initialize(sequelize),
 };
 
 // テーブル同士の関係を作成
