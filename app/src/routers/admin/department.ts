@@ -12,6 +12,8 @@ import DepartmentApplicationService from '../../application/departmentApplicatio
 import db from '../../infrastructure/db';
 import Logger from '../../infrastructure/logger/logger';
 import conversionpageStatus from '../../utils/conversionPageStatus';
+import SchoolGradeInfoApplicationService from '../../application/schoolGradeInfoApplication';
+import SchoolYearRepository from '../../interface/repository/schoolYearRepository';
 
 // eslint-disable-next-line new-cap
 const departmentRouter = Router();
@@ -28,12 +30,17 @@ const departmentApplicationService = new DepartmentApplicationService(
     new DepartmentService(new DepartmentRepository(db)),
 );
 
+const schoolGradeInfoApplicationService = new SchoolGradeInfoApplicationService(
+    new SchoolYearRepository(db),
+);
+
 departmentRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   pageData.headTitle = '学科名一覧';
 
   pageData.anyData = {
     departmentList: await departmentApplicationService.findAllDepartment(),
     isMax: await departmentApplicationService.isMax(),
+    schoolGradeInfo: await schoolGradeInfoApplicationService.find(),
   };
 
   pageData.status = conversionpageStatus(req.session.status);
@@ -44,6 +51,18 @@ departmentRouter.get('/', csrfProtection, async (req: Request, res: Response) =>
   pageData.csrfToken = req.csrfToken();
 
   res.render('pages/admin/department/index', {pageData});
+});
+
+departmentRouter.post('/grade-info/update', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    const year = Number(req.body.year);
+    const schoolClass = Number(req.body.schoolClass);
+    await schoolGradeInfoApplicationService.update(year, schoolClass);
+  } catch (e: any) {
+    logger.error(e);
+  } finally {
+    res.redirect('/admin/department');
+  }
 });
 
 departmentRouter.post('/insert', csrfProtection, async (req: Request, res: Response) => {
