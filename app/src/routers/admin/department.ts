@@ -60,6 +60,7 @@ departmentRouter.post('/grade-info/update', csrfProtection, async (req: Request,
     await schoolGradeInfoApplicationService.update(year, schoolClass);
 
     req.session.status = {type: 'Success', mes: '学年・クラスの変更に成功しました。'};
+    logger.info('Grade or class are updated.');
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '学年・クラスの変更に失敗しました。'};
@@ -74,8 +75,12 @@ departmentRouter.post('/insert', csrfProtection, async (req: Request, res: Respo
 
     const isSucceed = await departmentApplicationService.insertDepartment(departmentName); // insertできたか
 
-    if (isSucceed) req.session.status = {type: 'Success', mes: '学科の追加に成功しました'};
-    else req.session.status = {type: 'Warning', mes: '学科名が重複しています'};
+    if (isSucceed) {
+      req.session.status = {type: 'Success', mes: '学科の追加に成功しました'};
+      logger.info(`Department is added. Name: ${departmentName}`);
+    } else {
+      req.session.status = {type: 'Warning', mes: '学科名が重複しています'};
+    }
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '学科の追加に失敗しました'};
@@ -120,6 +125,7 @@ departmentRouter.post('/delete', csrfProtection, async (req: Request, res: Respo
     await departmentApplicationService.deleteDepartment(departmentId);
 
     req.session.status = {type: 'Success', mes: '学科の削除に成功しました'};
+    logger.info('Department is deleted.');
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '学科の削除に失敗しました'};
@@ -166,6 +172,7 @@ departmentRouter.post('/update', csrfProtection, async (req: Request, res: Respo
     await departmentApplicationService.update(id, name);
 
     req.session.status = {type: 'Success', mes: '変更に成功しました'};
+    logger.info('Deparment is updated.');
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '変更中にエラーが発生しました。'};
