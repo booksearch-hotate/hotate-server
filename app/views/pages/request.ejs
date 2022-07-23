@@ -13,7 +13,7 @@
       <form method="POST" action="/confirm" class="px-4">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <div class="mb-3">
-          <label for="bookName" class="form-label" required>書名</label>
+          <label for="bookName" class="form-label" required>書名(<span class="text-danger">必須</span>)</label>
           <input type="text" class="form-control" id="bookName" name="bookName" placeholder="例) 余命3000文字" value="<%= pageData.anyData.saveVal.bookName %>" required>
         </div>
         <div class="mb-3">
@@ -67,7 +67,7 @@
         </div>
 
         <div class="mb-3">
-          <label for="userName" class="form-label">名前(必須)</label>
+          <label for="userName" class="form-label">名前(<span class="text-danger">必須</span>)</label>
           <input type="text" class="form-control" id="userName" name="userName" placeholder="例) 大淡路 不知火" required value="<%= pageData.anyData.saveVal.userName %>">
         </div>
 
