@@ -17,6 +17,8 @@ import db from '../infrastructure/db';
 import Logger from '../infrastructure/logger/logger';
 
 import conversionpageStatus from '../utils/conversionPageStatus';
+import SchoolGradeInfoApplicationService from '../application/schoolGradeInfoApplication';
+import SchoolYearRepository from '../interface/repository/schoolYearRepository';
 
 // eslint-disable-next-line new-cap
 const requestRouter = Router();
@@ -39,6 +41,10 @@ const requestApplicationService = new BookRequestApplicationService(
     new BookRequestService,
 );
 
+const schoolGradeInfoApplicationService = new SchoolGradeInfoApplicationService(
+    new SchoolYearRepository(db),
+);
+
 requestRouter.get('/request', csrfProtection, async (req: Request, res: Response) => {
   pageData.headTitle = '本のリクエスト | HOTATE';
 
@@ -47,6 +53,7 @@ requestRouter.get('/request', csrfProtection, async (req: Request, res: Response
   pageData.anyData = {
     departmentList: await departmentApplicationService.findAllDepartment(),
     saveVal: keepReqObj,
+    schoolGradeInfo: await schoolGradeInfoApplicationService.find(),
   };
 
   pageData.status = conversionpageStatus(req.session.status);
