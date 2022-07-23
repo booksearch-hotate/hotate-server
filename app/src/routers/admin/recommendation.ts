@@ -19,6 +19,7 @@ import getPaginationInfo from '../../utils/getPaginationInfo';
 import BookService from '../../domain/service/bookService';
 
 import {IRecommendationObj} from '../../domain/model/recommendation/IRecommendationObj';
+import conversionpageStatus from '../../utils/conversionPageStatus';
 
 // eslint-disable-next-line new-cap
 const recommendationRouter = Router();
@@ -53,6 +54,11 @@ recommendationRouter.get('/', async (req: Request, res: Response) => {
   const total = await recommendationApplicationService.fetchAllCount();
 
   const paginationData = getPaginationInfo(pageCount, total, recommendations.length, 10);
+
+  pageData.status = conversionpageStatus(req.session.status);
+  req.session.status = undefined;
+
+  req.session.keepValue = undefined;
 
   pageData.headTitle = 'おすすめセクション一覧';
   pageData.anyData = {
@@ -121,8 +127,12 @@ recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: R
     const sortIndex = allCount - (formSortIndex - 1);
 
     await recommendationApplicationService.update(recommendationId, title, content, sortIndex, isSolid, bookIds, bookComments);
+
+    req.session.status = {type: 'Success', mes: '投稿の変更に成功しました。'};
+    logger.info('Posting is updated.');
   } catch (e: any) {
     logger.error(e);
+    req.session.status = {type: 'Failure', error: e, mes: '投稿の変更に失敗しました。'};
   } finally {
     res.redirect('/admin/recommendation/');
   }
@@ -142,8 +152,10 @@ recommendationRouter.post('/insert', csrfProtection, async (req: Request, res: R
 
     await recommendationApplicationService.insert(title, content);
     logger.info(`Add new recommendation section. title: ${title}`);
+    req.session.status = {type: 'Success', mes: '投稿の追加が完了しました。'};
   } catch (e: any) {
     logger.error(e);
+    req.session.status = {type: 'Failure', error: e, mes: '投稿の追加に失敗しました。'};
   } finally {
     res.redirect('/admin/recommendation/');
   }
@@ -156,8 +168,11 @@ recommendationRouter.post('/delete', csrfProtection, async (req: Request, res: R
     if (typeof id !== 'string') throw new Error('Invalid recommendation section id.');
 
     await recommendationApplicationService.delete(id);
+    logger.info('Posting is deleted.');
+    req.session.status = {type: 'Success', mes: '投稿の削除に成功しました。'};
   } catch (e: any) {
     logger.error(e);
+    req.session.status = {type: 'Failure', error: e, mes: '投稿の削除に失敗しました。'};
   } finally {
     res.redirect('/admin/recommendation/');
   }

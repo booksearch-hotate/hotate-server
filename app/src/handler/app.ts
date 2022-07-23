@@ -108,7 +108,7 @@ app.use('/admin/search-history', searchHistoryRouter);
 app.use('/admin/csv', csvRouter);
 app.use('/admin/tags', tagsRouter);
 app.use('/admin/setting', settingRouter);
-app.use('/admin/department', departmentRouter);
+app.use('/admin/school-info', departmentRouter);
 app.use('/admin/book-request', bookRequestRouter);
 app.use('/admin/recommendation/', recommendationRouter);
 app.use('/api', apiRouter);
