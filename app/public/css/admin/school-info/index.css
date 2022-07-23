@@ -1,5 +1,5 @@
-.insert-department-box {
-  background-color: #ffe0c1;
+.insert-department-box, .grade-info-box {
+  background-color: #e5eeff;
   padding: 10px;
   margin: 10px;
   border: solid 2px #644d46;
