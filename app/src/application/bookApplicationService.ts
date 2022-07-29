@@ -13,6 +13,7 @@ import {getImgLink} from '../infrastructure/api/openbd';
 
 import Logger from '../infrastructure/logger/logger';
 import BookIdModel from '../domain/model/book/bookIdModel';
+import PaginationMarginModel from '../domain/model/pagination/paginationMarginModel';
 
 const logger = new Logger('bookApplicationService');
 
@@ -211,8 +212,9 @@ export default class BookApplicationService {
    * @param pageCount ページ数
    * @returns 本データ
    */
-  public async findAll(pageCount: number): Promise<BookData[]> {
-    const books = await this.bookRepository.findAll(pageCount);
+  public async findAll(pageCount: number, reqMargin: number): Promise<BookData[]> {
+    const margin = new PaginationMarginModel(reqMargin);
+    const books = await this.bookRepository.findAll(pageCount, margin);
     const bookDatas: BookData[] = [];
 
     for (const book of books) bookDatas.push(new BookData(book));
