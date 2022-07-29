@@ -24,6 +24,12 @@
         <label for="formAuthorName" class="form-label">著者名</label>
         <input class="form-control" type="text" id="formAuthorName" name="authorName" value="<%= pageData.anyData.book.AuthorName %>">
       </div>
+
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="changeAuthorApply" value="true">
+        <label class="form-check-label" for="changeAuthorApply">全ての本に適用する</label>
+      </div>
+
       <div class="form-group">
         <label for="formPublisherName" class="form-label">出版社名</label>
         <input class="form-control" type="text" id="formPublisherName" name="publisherName" value="<%= pageData.anyData.book.PublisherName %>">
