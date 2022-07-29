@@ -16,6 +16,8 @@ export default class AuthorModel {
   get Name(): string | null {
     return this.name;
   }
+
+  changeName(name: string) {
     this.name = name;
   }
 }
