@@ -31,4 +31,20 @@ export default class EsPublisher extends EsCsv {
   public async create(doc: IEsPublisher) {
     await axios.post(`${this.uri}/_doc`, doc);
   }
+
+  /**
+   * 本のデータを更新します。
+   * @param publisher 本のドキュメント
+   */
+  public async update(publisher: IEsPublisher): Promise<void> {
+    await axios.post(`${this.uri}/_delete_by_query?conflicts=proceed&pretty`, {
+      query: {
+        term: {
+          'db_id.keyword': publisher.db_id,
+        },
+      },
+    });
+
+    await axios.post(`${this.uri}/_doc`, publisher);
+  }
 }

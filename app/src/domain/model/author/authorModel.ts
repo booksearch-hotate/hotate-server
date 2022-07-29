@@ -6,7 +6,7 @@ export default class AuthorModel {
     if (id === null) throw new Error('idがnullです');
 
     this.id = id;
-    this.Name = name;
+    this.name = name;
   }
 
   get Id(): string {
@@ -16,7 +16,8 @@ export default class AuthorModel {
   get Name(): string | null {
     return this.name;
   }
-  set Name(name: string | null) {
+
+  changeName(name: string) {
     this.name = name;
   }
 }
