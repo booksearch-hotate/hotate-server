@@ -16,6 +16,8 @@ export default class PublisherModel {
   get Name(): string | null {
     return this.name;
   }
+
+  public changeName(name: string) {
     this.name = name;
   }
 }
