@@ -66,11 +66,13 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
     pageCount,
   };
 
+  const FETCH_MARGIN = 9;
+
   let resDatas: BookData[] = [];
   let searchHisDatas: SearchHistoryData[] = [];
   if (searchWord !== '') {
     const promissList = [
-      bookApplicationService.searchBooks(searchWord, searchMode, pageCount),
+      bookApplicationService.searchBooks(searchWord, searchMode, pageCount, FETCH_MARGIN),
       searchHistoryApplicationService.search(searchWord),
     ];
     const [books, searchHis] = await Promise.all(promissList);
@@ -79,7 +81,7 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
 
     const total = await bookApplicationService.getTotalResults(searchWord, searchMode);
 
-    paginationData = getPaginationInfo(pageCount, total, 10, 7);
+    paginationData = getPaginationInfo(pageCount, total, FETCH_MARGIN, 7);
   }
 
   pageData.headTitle = '検索結果 | HOTATE';

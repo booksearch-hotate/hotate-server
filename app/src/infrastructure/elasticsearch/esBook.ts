@@ -4,6 +4,7 @@ import axios from 'axios';
 import {IEsBook} from './documents/IEsBook';
 
 import esDocuments from './documents/documentType';
+import PaginationMarginModel from '../../domain/model/pagination/paginationMarginModel';
 
 export default class EsSearchBook extends EsCsv {
   private total = 0; // 検索結果の総数
@@ -19,7 +20,8 @@ export default class EsSearchBook extends EsCsv {
    * @param pageCount ページ数
    * @returns {string[]} 検索結果のID
    */
-  public async searchBooks(searchWords: string, pageCount: number): Promise<string[]> {
+  public async searchBooks(searchWords: string, pageCount: number, margin: PaginationMarginModel): Promise<string[]> {
+    const FETCH_COUNT = margin.Margin;
     const res = await axios.get(`${this.uri}/_search`, {
       headers: {
         'Content-Type': 'application/json',
@@ -33,8 +35,8 @@ export default class EsSearchBook extends EsCsv {
             ],
           },
         },
-        from: pageCount * 10,
-        size: 10,
+        from: pageCount * FETCH_COUNT,
+        size: FETCH_COUNT,
         sort: {
           '_score': {
             order: 'desc',
@@ -82,7 +84,9 @@ export default class EsSearchBook extends EsCsv {
     });
   }
 
-  public async searchUsingLike(word: string, pageCount: number) {
+  public async searchUsingLike(word: string, pageCount: number, margin: PaginationMarginModel) {
+    const FETCH_COUNT = margin.Margin;
+
     const res = await axios.get(`${this.uri}/_search`, {
       headers: {
         'Content-Type': 'application/json',
@@ -97,8 +101,8 @@ export default class EsSearchBook extends EsCsv {
             }],
           },
         },
-        from: pageCount * 10,
-        size: 10,
+        from: pageCount * FETCH_COUNT,
+        size: FETCH_COUNT,
         sort: {
           '_score': {
             order: 'desc',

@@ -59,8 +59,8 @@ export default class BookRepository implements IBookRepository {
     await Promise.all(deletes);
   }
 
-  public async search(query: string, pageCount: number): Promise<BookModel[]> {
-    const bookIds = await this.esSearchBook.searchBooks(query, pageCount); // 検索にヒットしたidの配列
+  public async search(query: string, pageCount: number, margin: PaginationMarginModel): Promise<BookModel[]> {
+    const bookIds = await this.esSearchBook.searchBooks(query, pageCount, margin); // 検索にヒットしたidの配列
     // bookIdsからbooksを取得する
     const books = await this.db.Book.findAll({where: {id: bookIds}});
 
@@ -133,9 +133,9 @@ export default class BookRepository implements IBookRepository {
    * @param word 検索対象
    * @param pageCount ページ数
    */
-  public async searchUsingLike(word: string, pageCount: number): Promise<BookModel[]> {
+  public async searchUsingLike(word: string, pageCount: number, margin: PaginationMarginModel): Promise<BookModel[]> {
     // book_nameのLIKE検索
-    const bookIds = await this.esSearchBook.searchUsingLike(word, pageCount); // 検索にヒットしたidの配列
+    const bookIds = await this.esSearchBook.searchUsingLike(word, pageCount, margin); // 検索にヒットしたidの配列
     // bookIdsからbooksを取得する
     const books = await this.db.Book.findAll({where: {id: bookIds}});
 
@@ -191,11 +191,12 @@ export default class BookRepository implements IBookRepository {
     return tagModels;
   }
 
-  public async searchByTag(tagName: string, pageCount: number): Promise<BookModel[]> {
+  public async searchByTag(tagName: string, pageCount: number, margin: PaginationMarginModel): Promise<BookModel[]> {
+    const FETCH_COUNT = margin.Margin;
     const tag = await this.db.Tag.findOne({
       where: {name: tagName},
-      limit: 10,
-      offset: pageCount * 10,
+      limit: FETCH_COUNT,
+      offset: pageCount * FETCH_COUNT,
     });
     if (!tag) return [];
 

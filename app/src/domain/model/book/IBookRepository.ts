@@ -6,12 +6,12 @@ import PaginationMarginModel from '../pagination/paginationMarginModel';
 export interface IBookRepository {
   save (book: BookModel): Promise<void>
   deleteAll (): Promise<void>
-  search (query: string, pageCount: number): Promise<BookModel[]>
+  search (query: string, pageCount: number, margin: PaginationMarginModel): Promise<BookModel[]>
   executeBulkApi (): Promise<void>
   searchById (id: BookIdModel): Promise<BookModel>
-  searchUsingLike (words: string, pageCount: number): Promise<BookModel[]>
+  searchUsingLike (words: string, pageCount: number, margin: PaginationMarginModel): Promise<BookModel[]>
   getTagsByBookId (bookId: string): Promise<TagModel[]>
-  searchByTag (tagName: string, pageCount: number): Promise<BookModel[]>
+  searchByTag (tagName: string, pageCount: number, margin: PaginationMarginModel): Promise<BookModel[]>
   latestEsTotalCount (): number
   getCountUsingTag (searchWord: string): Promise<number>
   update (bookModel: BookModel): Promise<void>
