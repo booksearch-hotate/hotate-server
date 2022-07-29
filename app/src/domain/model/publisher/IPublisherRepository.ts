@@ -6,4 +6,6 @@ export interface IPublisherRepository {
   deleteAll (): Promise<void>
   executeBulkApi (): Promise<void>
   deleteNoUsed(publisherId: string): Promise<void>
+  findById(publisherId: string): Promise<PublisherModel>
+  update(publisher: PublisherModel): Promise<void>
 }
