@@ -104,11 +104,14 @@ requestRouter.get('/confirm-request', csrfProtection, async (req: Request, res: 
 
     return res.render('pages/confirm-request', {pageData});
   } catch (e: any) {
+    logger.error(e);
+
     if (e instanceof FormInvalidError) {
       req.session.status = {type: 'Failure', error: e, mes: '必須項目が入力されていません'};
       return res.redirect('/request');
     }
-    logger.error(e);
+
+    req.session.status = {type: 'Failure', error: e, mes: 'リクエスト内容の取得に失敗しました。'};
     return res.redirect('/');
   }
 });
