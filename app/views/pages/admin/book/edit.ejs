@@ -30,7 +30,7 @@
       </div>
 
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="changeAuthorApply" value="true">
+        <input class="form-check-input" type="checkbox" id="changeAuthorApply" name="changeAuthorApply" value="true">
         <label class="form-check-label" for="changeAuthorApply">全ての本に適用する</label>
       </div>
 
@@ -53,7 +53,7 @@
         <label for="formContent" class="form-label">内容</label>
         <input class="form-control" type="text" id="formContent" name="bookContent" value="<%= pageData.anyData.book.BookContent %>">
       </div>
-      
+
       <button type="submit" class="btn btn-primary">更新</button>
     </form>
     <div class="text-center">
