@@ -51,11 +51,14 @@ homeRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
     }));
 
     pageData.anyData = {
-      recommendations,
+      recommendations: recommendations === undefined ? [] : recommendations,
     };
     pageData.csrfToken = req.csrfToken();
   } catch (e: any) {
     logger.error(e);
+    pageData.anyData = {
+      recommendations: [],
+    };
   } finally {
     pageData.headTitle = 'ホーム | HOTATE';
 
