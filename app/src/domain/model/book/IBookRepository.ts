@@ -1,6 +1,7 @@
 import BookModel from './bookModel';
 import BookIdModel from './bookIdModel';
 import TagModel from '../tag/tagModel';
+import PaginationMarginModel from '../pagination/paginationMarginModel';
 
 export interface IBookRepository {
   save (book: BookModel): Promise<void>
@@ -14,7 +15,7 @@ export interface IBookRepository {
   latestEsTotalCount (): number
   getCountUsingTag (searchWord: string): Promise<number>
   update (bookModel: BookModel): Promise<void>
-  findAll (pageCount: number): Promise<BookModel[]>
+  findAll (pageCount: number, marign: PaginationMarginModel): Promise<BookModel[]>
   findAllCount (): Promise<number>
   deleteBook (book: BookModel): Promise<void>
 }

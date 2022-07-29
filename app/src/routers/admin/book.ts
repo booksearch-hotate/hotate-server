@@ -54,11 +54,13 @@ const publisherApplicationService = new PublisherApplicationService(
 bookRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   const pageCount = conversionpageCounter(req);
 
-  const books = await bookApplicationService.findAll(pageCount);
+  const FETCH_MARGIN = 10; // 一度に取得する本の個数
+
+  const books = await bookApplicationService.findAll(pageCount, FETCH_MARGIN);
 
   const total = await bookApplicationService.findAllCount();
 
-  const paginationData = getPaginationInfo(pageCount, total, books.length, 10);
+  const paginationData = getPaginationInfo(pageCount, total, FETCH_MARGIN, 10);
 
   pageData.headTitle = '本の管理';
   pageData.anyData = {

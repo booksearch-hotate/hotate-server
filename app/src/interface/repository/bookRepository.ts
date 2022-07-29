@@ -13,6 +13,7 @@ import TagModel from '../../domain/model/tag/tagModel';
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 import {IEsBook} from '../../infrastructure/elasticsearch/documents/IEsBook';
 import BookIdModel from '../../domain/model/book/bookIdModel';
+import PaginationMarginModel from '../../domain/model/pagination/paginationMarginModel';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -266,8 +267,8 @@ export default class BookRepository implements IBookRepository {
     this.esSearchBook.update(doc);
   }
 
-  public async findAll(pageCount: number): Promise<BookModel[]> {
-    const FETCH_DATA_NUM = 20;
+  public async findAll(pageCount: number, margin: PaginationMarginModel): Promise<BookModel[]> {
+    const FETCH_DATA_NUM = margin.Margin;
     const books = await this.db.Book.findAll({
       limit: FETCH_DATA_NUM,
       offset: pageCount * FETCH_DATA_NUM,
