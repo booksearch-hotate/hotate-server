@@ -6,7 +6,7 @@ export default class PublisherModel {
     if (id === null) throw new Error('idがnullです');
 
     this.id = id;
-    this.Name = name;
+    this.name = name;
   }
 
   get Id(): string {
@@ -16,7 +16,6 @@ export default class PublisherModel {
   get Name(): string | null {
     return this.name;
   }
-  set Name(name: string | null) {
     this.name = name;
   }
 }
