@@ -160,4 +160,8 @@ export default class BookModel {
   public isOverNumberOfTags() {
     return this.tags.length > this.MAX_NUMBER_OF_TAGS;
   }
+
+  public changeAuthor(author: AuthorModel) {
+    this.author = author;
+  }
 }
