@@ -84,4 +84,18 @@ export default class AuthorRepository implements IAuthorRepository {
       await Promise.all(list);
     }
   }
+
+  public async update(author: AuthorModel): Promise<void> {
+    const updateDB = async (a: AuthorModel) => {
+      await this.db.Author.update({
+        name: a.Name,
+      }, {where: {id: a.Id}});
+    };
+
+    const updateES = async (a: AuthorModel) => {
+      await this.esAuthor.update({db_id: a.Id, name: a.Name});
+    };
+
+    await Promise.all([updateDB(author), updateES(author)]);
+  }
 }

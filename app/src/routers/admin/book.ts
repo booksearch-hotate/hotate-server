@@ -101,6 +101,17 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
     const beforeAuthorId = book.AuthorId;
     const beforePublisherId = book.PublisherId;
 
+    let afterAuthorId = beforeAuthorId;
+
+    const authorName = req.body.authorName;
+
+    // 著者名の変更を全ての本に適用する場合
+    if (req.body.changeAuthorApply === 'true') {
+      await authorApplicationService.update(beforeAuthorId, authorName);
+    } else {
+      afterAuthorId = await authorApplicationService.createAuthor(authorName, false);
+    }
+
     await bookApplicationService.update(
         bookId,
         req.body.title,
@@ -109,6 +120,8 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
         req.body.isbn,
         req.body.ndc,
         req.body.year,
+        afterAuthorId,
+        authorName,
     );
 
     /* 使用されていない著者(出版社)を削除 */
