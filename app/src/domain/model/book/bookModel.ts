@@ -164,4 +164,8 @@ export default class BookModel {
   public changeAuthor(author: AuthorModel) {
     this.author = author;
   }
+
+  public changePublisher(publisher: PublisherModel) {
+    this.publisher = publisher;
+  }
 }
