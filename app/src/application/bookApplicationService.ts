@@ -183,8 +183,16 @@ export default class BookApplicationService {
       isbn: string | null,
       ndc: number | null,
       year: number | null,
+      authorId: string,
+      authorName: string | null,
+      publisherId: string,
+      publisherName: string | null,
   ) {
     const book = await this.bookRepository.searchById(new BookIdModel(id));
+
+    const author = new AuthorModel(authorId, authorName);
+
+    const publisher = new PublisherModel(publisherId, publisherName);
 
     book.changeName(bookName);
     book.changeSubName(subName);
@@ -192,6 +200,8 @@ export default class BookApplicationService {
     book.changeIsbn(isbn);
     book.changeNdc(ndc);
     book.changeYear(year);
+    book.changeAuthor(author);
+    book.changePublisher(publisher);
 
     await this.bookRepository.update(book);
   }

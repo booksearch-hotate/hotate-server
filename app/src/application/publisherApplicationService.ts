@@ -36,4 +36,12 @@ export default class PublisherApplicationService {
   public async deleteNotUsed(publisherId: string): Promise<void> {
     await this.publisherRepository.deleteNoUsed(publisherId);
   }
+
+  public async update(publisherId: string, publisherName: string): Promise<void> {
+    const publisher = await this.publisherRepository.findById(publisherId);
+
+    publisher.changeName(publisherName);
+
+    await this.publisherRepository.update(publisher);
+  }
 }

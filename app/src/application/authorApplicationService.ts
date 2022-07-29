@@ -43,4 +43,12 @@ export default class AuthorApplicationService {
   public async deleteNotUsed(authorId: string): Promise<void> {
     await this.authorRepository.deleteNoUsed(authorId);
   }
+
+  public async update(authorId: string, name: string): Promise<void> {
+    const author = await this.authorRepository.findById(authorId);
+
+    author.changeName(name);
+
+    await this.authorRepository.update(author);
+  }
 }

@@ -7,4 +7,5 @@ export interface IAuthorRepository {
   executeBulkApi (): Promise<void>
   findById(bookId: string): Promise<AuthorModel>
   deleteNoUsed(authorId: string): Promise<void>
+  update(author: AuthorModel): Promise<void>
 }
