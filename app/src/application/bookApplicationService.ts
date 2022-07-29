@@ -92,17 +92,19 @@ export default class BookApplicationService {
       query: string,
       searchMode: searchMode,
       pageCount: number,
+      reqMargin: number,
   ): Promise<BookData[]> {
     // 検索から得られたbookModelの配列
     let books: BookModel[] = [];
+    const margin = new PaginationMarginModel(reqMargin);
     if (searchMode === 'tag') {
       try {
-        books = await this.bookRepository.searchByTag(query, pageCount);
+        books = await this.bookRepository.searchByTag(query, pageCount, margin);
       } catch (e) {
         books = [];
       }
     } else {
-      books = searchMode === 'strict' ? await this.bookRepository.searchUsingLike(query, pageCount) : await this.bookRepository.search(query, pageCount);
+      books = searchMode === 'strict' ? await this.bookRepository.searchUsingLike(query, pageCount, margin) : await this.bookRepository.search(query, pageCount, margin);
     }
     /* DTOに変換 */
     const bookDatas: BookData[] = [];
