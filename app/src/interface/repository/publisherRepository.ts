@@ -75,4 +75,27 @@ export default class PublisherRepository implements IPublisherRepository {
       await Promise.all(list);
     }
   }
+
+  public async findById(publisherId: string): Promise<PublisherModel> {
+    const publisher = await this.db.Publisher.findOne({
+      attributes: ['id', 'name'],
+      where: {id: publisherId},
+    });
+    if (publisher) return new PublisherModel(publisher.id, publisher.name);
+    throw new Error('Author not found');
+  }
+
+  public async update(publisher: PublisherModel): Promise<void> {
+    const updateDB = async (p: PublisherModel) => {
+      await this.db.Publisher.update({
+        name: p.Name,
+      }, {where: {id: p.Id}});
+    };
+
+    const updateES = async (p: PublisherModel) => {
+      await this.esPublisher.update({db_id: p.Id, name: p.Name});
+    };
+
+    await Promise.all([updateDB(publisher), updateES(publisher)]);
+  }
 }
