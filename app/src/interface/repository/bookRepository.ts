@@ -61,8 +61,13 @@ export default class BookRepository implements IBookRepository {
     await Promise.all(deletes);
   }
 
-  public async search(query: string, pageCount: number, margin: PaginationMarginModel): Promise<BookModel[]> {
-    const bookIds = await this.esSearchBook.searchBooks(query, pageCount, margin); // 検索にヒットしたidの配列
+  public async search(query: string, pageCount: number, margin: PaginationMarginModel): Promise<{books: BookModel[], count: number}> {
+    const searchResult = await this.esSearchBook.searchBooks(query, pageCount, margin); // 検索にヒットしたidの配列
+
+    const bookIds = searchResult.ids;
+
+    const count = searchResult.total;
+
     // bookIdsからbooksを取得する
     const books = await this.db.Book.findAll({where: {id: bookIds}});
 
@@ -95,7 +100,7 @@ export default class BookRepository implements IBookRepository {
       );
       bookModels.push(bookModel);
     }
-    return bookModels;
+    return {books: bookModels, count};
   }
 
   public async searchById(id: BookIdModel): Promise<BookModel> {
@@ -130,10 +135,12 @@ export default class BookRepository implements IBookRepository {
     return bookModel;
   }
 
-  public async searchByForeignId(foreignModel: AuthorModel[] | PublisherModel[], pageCount: number, margin: PaginationMarginModel): Promise<BookModel[]> {
-    if (foreignModel.length === 0) return [];
+  public async searchByForeignId(foreignModel: AuthorModel[] | PublisherModel[], pageCount: number, margin: PaginationMarginModel): Promise<{books: BookModel[], count: number}> {
+    if (foreignModel.length === 0) return {books: [], count: 0};
 
     let books: Book[] = [];
+
+    let count = 0;
 
     const FETCH_COUNT = margin.Margin;
 
@@ -143,15 +150,23 @@ export default class BookRepository implements IBookRepository {
         limit: FETCH_COUNT,
         offset: pageCount * FETCH_COUNT,
       });
+
+      count = await this.db.Book.count({
+        where: {author_id: {[sequelize.Op.in]: foreignModel.map((item) => item.Id)}},
+      });
     } else if (foreignModel[0] instanceof PublisherModel) {
       books = await this.db.Book.findAll({
         where: {publisher_id: {[sequelize.Op.in]: foreignModel.map((item) => item.Id)}},
         limit: FETCH_COUNT,
         offset: pageCount * FETCH_COUNT,
       });
+
+      count = await this.db.Book.count({
+        where: {publisher_id: {[sequelize.Op.in]: foreignModel.map((item) => item.Id)}},
+      });
     }
 
-    if (books === null) return [];
+    if (books === null) return {books: [], count: 0};
 
     const res = books.map(async (column) => {
       const author = await this.db.Author.findOne({where: {id: column.author_id}}); // authorを取得
@@ -178,7 +193,7 @@ export default class BookRepository implements IBookRepository {
       );
     });
 
-    return await Promise.all(res);
+    return {books: await Promise.all(res), count};
   }
 
   /**
@@ -186,9 +201,13 @@ export default class BookRepository implements IBookRepository {
    * @param word 検索対象
    * @param pageCount ページ数
    */
-  public async searchUsingLike(word: string, pageCount: number, margin: PaginationMarginModel): Promise<BookModel[]> {
+  public async searchUsingLike(word: string, pageCount: number, margin: PaginationMarginModel): Promise<{books: BookModel[], count: number}> {
     // book_nameのLIKE検索
-    const bookIds = await this.esSearchBook.searchUsingLike(word, pageCount, margin); // 検索にヒットしたidの配列
+    const searchResult = await this.esSearchBook.searchUsingLike(word, pageCount, margin); // 検索にヒットしたidの配列
+
+    const bookIds = searchResult.ids;
+    const count = searchResult.total;
+
     // bookIdsからbooksを取得する
     const books = await this.db.Book.findAll({where: {id: bookIds}});
 
@@ -225,7 +244,7 @@ export default class BookRepository implements IBookRepository {
       bookModels.push(bookModel);
     }
 
-    return bookModels;
+    return {books: bookModels, count};
   }
 
   public async executeBulkApi(): Promise<void> {
@@ -244,16 +263,22 @@ export default class BookRepository implements IBookRepository {
     return tagModels;
   }
 
-  public async searchByTag(tagName: string, pageCount: number, margin: PaginationMarginModel): Promise<BookModel[]> {
+  public async searchByTag(tagName: string, pageCount: number, margin: PaginationMarginModel): Promise<{books: BookModel[], count: number}> {
     const FETCH_COUNT = margin.Margin;
+
     const tag = await this.db.Tag.findOne({
       where: {name: tagName},
+    });
+
+    if (!tag) return {books: [], count: 0};
+
+    const books = await this.db.UsingTag.findAll({
+      where: {tag_id: tag.id},
       limit: FETCH_COUNT,
       offset: pageCount * FETCH_COUNT,
     });
-    if (!tag) return [];
 
-    const books = await this.db.UsingTag.findAll({where: {tag_id: tag.id}});
+    const count = await this.db.UsingTag.count({where: {tag_id: tag.id}});
     const bookModels: BookModel[] = [];
 
     for (const book of books) {
@@ -286,7 +311,7 @@ export default class BookRepository implements IBookRepository {
       );
       bookModels.push(bookModel);
     }
-    return bookModels;
+    return {books: bookModels, count};
   }
 
   public async getCountUsingTag(tagName: string): Promise<number> {

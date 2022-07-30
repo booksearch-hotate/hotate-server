@@ -113,4 +113,19 @@ export default class AuthorRepository implements IAuthorRepository {
 
     return fetchData.map((column) => new AuthorModel(column.id, column.name));
   }
+
+  public async searchUsingLike(name: string): Promise<AuthorModel[]> {
+    const ids = await this.esAuthor.searchUsingLike(name);
+    const fetchData = await this.db.Author.findAll({
+      where: {
+        id: {
+          [sequelize.Op.in]: ids,
+        },
+      },
+    });
+
+    if (fetchData === null) return [];
+
+    return fetchData.map((column) => new AuthorModel(column.id, column.name));
+  }
 }
