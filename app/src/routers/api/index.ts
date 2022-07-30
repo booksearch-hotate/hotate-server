@@ -13,6 +13,8 @@ import db from '../../infrastructure/db';
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 import RecommendationRepository from '../../interface/repository/recommendationRepository';
 import RecommendationService from '../../domain/service/recommendationService';
+import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
+import AuthorRepository from '../../interface/repository/authorRepository';
 
 // eslint-disable-next-line new-cap
 const apiRouter = Router();
@@ -21,6 +23,7 @@ const logger = new Logger('api');
 
 const bookApplicationService = new BookApplicationService(
     new BookRepository(db, new EsSearchBook('books')),
+    new AuthorRepository(db, new EsAuthor('authors')),
     new BookService(),
 );
 

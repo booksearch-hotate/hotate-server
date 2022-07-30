@@ -15,6 +15,8 @@ import {IEsBook} from '../../infrastructure/elasticsearch/documents/IEsBook';
 import BookIdModel from '../../domain/model/book/bookIdModel';
 import PaginationMarginModel from '../../domain/model/pagination/paginationMarginModel';
 
+import sequelize from 'sequelize';
+
 /* Sequelizeを想定 */
 interface sequelize {
   Book: typeof Book
@@ -126,6 +128,57 @@ export default class BookRepository implements IBookRepository {
         tags,
     );
     return bookModel;
+  }
+
+  public async searchByForeignId(foreignModel: AuthorModel[] | PublisherModel[], pageCount: number, margin: PaginationMarginModel): Promise<BookModel[]> {
+    if (foreignModel.length === 0) return [];
+
+    let books: Book[] = [];
+
+    const FETCH_COUNT = margin.Margin;
+
+    if (foreignModel[0] instanceof AuthorModel) {
+      books = await this.db.Book.findAll({
+        where: {author_id: {[sequelize.Op.in]: foreignModel.map((item) => item.Id)}},
+        limit: FETCH_COUNT,
+        offset: pageCount * FETCH_COUNT,
+      });
+    } else if (foreignModel[0] instanceof PublisherModel) {
+      books = await this.db.Book.findAll({
+        where: {publisher_id: {[sequelize.Op.in]: foreignModel.map((item) => item.Id)}},
+        limit: FETCH_COUNT,
+        offset: pageCount * FETCH_COUNT,
+      });
+    }
+
+    if (books === null) return [];
+
+    const res = books.map(async (column) => {
+      const author = await this.db.Author.findOne({where: {id: column.author_id}}); // authorを取得
+      const publisher = await this.db.Publisher.findOne({where: {id: column.publisher_id}}); // publisherを取得
+
+      if (!(author && publisher)) throw new Error('author or publisher not found');
+
+      const authorModel = new AuthorModel(author.id, author.name);
+      const publisherModel = new PublisherModel(publisher.id, publisher.name);
+
+      const tags = await this.getTagsByBookId(column.id);
+
+      return new BookModel(
+          column.id,
+          column.book_name,
+          column.book_sub_name,
+          column.book_content,
+          column.isbn,
+          column.ndc,
+          column.year,
+          authorModel,
+          publisherModel,
+          tags,
+      );
+    });
+
+    return await Promise.all(res);
   }
 
   /**

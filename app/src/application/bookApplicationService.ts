@@ -14,15 +14,18 @@ import {getImgLink} from '../infrastructure/api/openbd';
 import Logger from '../infrastructure/logger/logger';
 import BookIdModel from '../domain/model/book/bookIdModel';
 import PaginationMarginModel from '../domain/model/pagination/paginationMarginModel';
+import {IAuthorRepository} from '../domain/model/author/IAuthorRepository';
 
 const logger = new Logger('bookApplicationService');
 
 export default class BookApplicationService {
   private readonly bookRepository: IBookRepository;
+  private readonly authorRepository: IAuthorRepository;
   private readonly bookService: BookService;
 
-  public constructor(bookRepository: IBookRepository, bookService: BookService) {
+  public constructor(bookRepository: IBookRepository, authorRepository: IAuthorRepository, bookService: BookService) {
     this.bookRepository = bookRepository;
+    this.authorRepository = authorRepository;
     this.bookService = bookService;
   }
 
@@ -91,20 +94,30 @@ export default class BookApplicationService {
   public async searchBooks(
       query: string,
       searchMode: searchMode,
+      searchCategory: 'book' | 'author' | 'publisher',
       pageCount: number,
       reqMargin: number,
   ): Promise<BookData[]> {
     // 検索から得られたbookModelの配列
     let books: BookModel[] = [];
+
     const margin = new PaginationMarginModel(reqMargin);
-    if (searchMode === 'tag') {
+
+    if (searchMode === 'tag' && searchCategory === 'book') {
       try {
         books = await this.bookRepository.searchByTag(query, pageCount, margin);
       } catch (e) {
         books = [];
       }
     } else {
-      books = searchMode === 'strict' ? await this.bookRepository.searchUsingLike(query, pageCount, margin) : await this.bookRepository.search(query, pageCount, margin);
+      if (searchCategory === 'author') {
+        const authorModels = await this.authorRepository.search(query);
+        books = await this.bookRepository.searchByForeignId(authorModels, pageCount, margin);
+      } else if (searchCategory === 'publisher') {
+        // Todo
+      } else {
+        books = searchMode === 'strict' ? await this.bookRepository.searchUsingLike(query, pageCount, margin) : await this.bookRepository.search(query, pageCount, margin);
+      }
     }
     /* DTOに変換 */
     const bookDatas: BookData[] = [];
