@@ -91,12 +91,8 @@ export default class EsSearchBook extends EsCsv {
       },
       data: {
         query: {
-          bool: {
-            must: [{
-              wildcard: {
-                book_name: `*${word}*`,
-              },
-            }],
+          wildcard: {
+            'book_name.keyword': `*${word}*`,
           },
         },
         from: pageCount * FETCH_COUNT,
