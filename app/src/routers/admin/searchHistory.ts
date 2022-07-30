@@ -32,10 +32,11 @@ const searchHistoryApplicationService = new SearchHistoryApplicationService(
 searchHistoryRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   const pageCount = conversionpageCounter(req);
 
-  const searchHistory = await searchHistoryApplicationService.find(pageCount);
+  const fetchMargin = 15;
+  const searchHistory = await searchHistoryApplicationService.find(pageCount, fetchMargin);
   const total = await searchHistoryApplicationService.findAllCount();
 
-  const paginationData = getPaginationInfo(pageCount, total, searchHistory.length, 5);
+  const paginationData = getPaginationInfo(pageCount, total, fetchMargin, 5);
 
   pageData.headTitle = '検索履歴';
   pageData.anyData = {

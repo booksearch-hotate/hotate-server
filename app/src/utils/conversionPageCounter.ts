@@ -12,7 +12,7 @@ export default function conversionpageCounter(req: Request, pageKey: string = 'p
   if (isNaN(pageCount)) pageCount = 0;
   else pageCount--;
 
-  if (pageCount <= 0) pageCount = 0;
+  if (pageCount < 0) pageCount = 0;
 
   return pageCount;
 }

@@ -2,6 +2,7 @@ import EsSearchHistory from '../../infrastructure/elasticsearch/esSearchHistory'
 import SearchHistoryModel from '../../domain/model/searchHistory/searchHistoryModel';
 
 import {ISearchHistoryRepository} from '../../domain/model/searchHistory/ISearchHistoryRepository';
+import PaginationMarginModel from '../../domain/model/pagination/paginationMarginModel';
 
 export default class SearchHistoryRepository implements ISearchHistoryRepository {
   private readonly esSearchHistory: EsSearchHistory;
@@ -18,8 +19,8 @@ export default class SearchHistoryRepository implements ISearchHistoryRepository
     return await this.esSearchHistory.search(words);
   }
 
-  public async find(count: number): Promise<SearchHistoryModel[]> {
-    return await this.esSearchHistory.find(count);
+  public async find(count: number, margin: PaginationMarginModel): Promise<SearchHistoryModel[]> {
+    return await this.esSearchHistory.find(count, margin);
   }
 
   public async findAllCount(): Promise<number> {
