@@ -8,6 +8,7 @@ import {IRecommendationRepository} from '../../domain/model/recommendation/IReco
 import RecommendationModel from '../../domain/model/recommendation/recommendationModel';
 import RecommendationItemModel from '../../domain/model/recommendation/recommendationItemModel';
 import BookIdModel from '../../domain/model/book/bookIdModel';
+import PaginationMarginModel from '../../domain/model/pagination/paginationMarginModel';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -37,8 +38,8 @@ export default class RecommendationRepository implements IRecommendationReposito
     });
   }
 
-  public async fetch(pageCount: number, count: number): Promise<RecommendationModel[]> {
-    const FETCH_DATA_NUM = count;
+  public async fetch(pageCount: number, margin: PaginationMarginModel): Promise<RecommendationModel[]> {
+    const FETCH_DATA_NUM = margin.Margin;
     const fetchData = await this.db.Recommendation.findAll({
       limit: FETCH_DATA_NUM,
       offset: FETCH_DATA_NUM * pageCount,
