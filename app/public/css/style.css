@@ -126,6 +126,35 @@ body {
   transform: scale(.98);
 }
 
+.search-type-icon-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+
+.search-type-icon-box svg {
+  height: 20rem;
+  width: 20rem;
+}
+
+.search-type-icon-item-box {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  opacity: 0;
+  filter: blur(1px);
+  visibility: hidden;
+  transition: all .5s;
+}
+
+.search-type-icon-active {
+  visibility: visible;
+  opacity: .9;
+}
+
 .is-active {
   visibility: visible;
   opacity: 1;
