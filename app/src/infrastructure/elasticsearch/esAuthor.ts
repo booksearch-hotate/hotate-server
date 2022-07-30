@@ -76,12 +76,8 @@ export default class EsAuthor extends EsCsv {
       },
       data: {
         query: {
-          bool: {
-            must: [{
-              wildcard: {
-                book_name: `*${word}*`,
-              },
-            }],
+          wildcard: {
+            'name.keyword': `*${word}*`,
           },
         },
         sort: {
