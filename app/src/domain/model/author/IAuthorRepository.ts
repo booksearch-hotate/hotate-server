@@ -9,4 +9,5 @@ export interface IAuthorRepository {
   deleteNoUsed(authorId: string): Promise<void>
   update(author: AuthorModel): Promise<void>
   search(name: string): Promise<AuthorModel[]>
+  searchUsingLike(name: string): Promise<AuthorModel[]>
 }

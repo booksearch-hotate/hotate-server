@@ -111,7 +111,7 @@ export default class BookApplicationService {
       }
     } else {
       if (searchCategory === 'author') {
-        const authorModels = await this.authorRepository.search(query);
+        const authorModels = searchMode === 'strict' ? await this.authorRepository.searchUsingLike(query) : await this.authorRepository.search(query);
         books = await this.bookRepository.searchByForeignId(authorModels, pageCount, margin);
       } else if (searchCategory === 'publisher') {
         // Todo
