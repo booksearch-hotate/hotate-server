@@ -15,6 +15,7 @@ import Logger from '../infrastructure/logger/logger';
 import BookIdModel from '../domain/model/book/bookIdModel';
 import PaginationMarginModel from '../domain/model/pagination/paginationMarginModel';
 import {IAuthorRepository} from '../domain/model/author/IAuthorRepository';
+import searchCategory from '../routers/datas/searchCategoryType';
 
 const logger = new Logger('bookApplicationService');
 
@@ -94,7 +95,7 @@ export default class BookApplicationService {
   public async searchBooks(
       query: string,
       searchMode: searchMode,
-      searchCategory: 'book' | 'author' | 'publisher',
+      searchCategory: searchCategory,
       pageCount: number,
       reqMargin: number,
   ): Promise<{books: BookData[], count: number}> {
