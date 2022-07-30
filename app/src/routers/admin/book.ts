@@ -38,6 +38,7 @@ const logger = new Logger('admin-book');
 
 const bookApplicationService = new BookApplicationService(
     new BookRepository(db, new EsSearchBook('books')),
+    new AuthorRepository(db, new EsAuthor('authors')),
     new BookService(),
 );
 

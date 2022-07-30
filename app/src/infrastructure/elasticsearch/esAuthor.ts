@@ -47,4 +47,25 @@ export default class EsAuthor extends EsCsv {
 
     await axios.post(`${this.uri}/_doc`, author);
   }
+
+  public async search(name: string): Promise<string[]> {
+    const res = await axios.get(`${this.uri}/_search`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        query: {
+          match: {
+            name,
+          },
+        },
+      },
+    });
+    const hits = res.data.hits.hits;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ids = hits.map((hit: any) => hit._source.db_id);
+
+    return ids;
+  }
 }

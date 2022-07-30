@@ -24,6 +24,8 @@ import searchMode from './datas/searchModeType';
 
 import getPaginationInfo from '../utils/getPaginationInfo';
 import conversionpageCounter from '../utils/conversionPageCounter';
+import EsAuthor from '../infrastructure/elasticsearch/esAuthor';
+import AuthorRepository from '../interface/repository/authorRepository';
 
 // eslint-disable-next-line new-cap
 const searchRouter = Router();
@@ -34,6 +36,7 @@ const csrfProtection = csurf({cookie: false});
 
 const bookApplicationService = new BookApplicationService(
     new BookRepository(db, new EsSearchBook('books')),
+    new AuthorRepository(db, new EsAuthor('authors')),
     new BookService(),
 );
 
@@ -46,14 +49,23 @@ const searchHistoryApplicationService = new SearchHistoryApplicationService(
 searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
   let searchMode: searchMode = 'none';
+  let searchCategory: 'book' | 'author' | 'publisher' = 'book';
 
   const isStrict = req.query.strict === 'true';
   const isTag = req.query.tag == 'true';
+  const formSearchCategory = req.query.type;
 
   if (isStrict) searchMode = 'strict';
   if (isTag) searchMode = 'tag';
   /* タグ検索とぜったい検索が両方とも選択されている場合、両方とも無効化 */
   if (isTag && isStrict) searchMode = 'none';
+
+  if (typeof formSearchCategory !== 'string') throw new Error('Invalid search category');
+
+  if (formSearchCategory === 'author') searchCategory = 'author';
+  else if (formSearchCategory === 'publisher') searchCategory = 'publisher';
+
+  if (searchCategory !== 'book' && searchMode === 'tag') searchMode = 'none';
 
   const pageCount = conversionpageCounter(req);
 
@@ -72,7 +84,7 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
   let searchHisDatas: SearchHistoryData[] = [];
   if (searchWord !== '') {
     const promissList = [
-      bookApplicationService.searchBooks(searchWord, searchMode, pageCount, FETCH_MARGIN),
+      bookApplicationService.searchBooks(searchWord, searchMode, searchCategory, pageCount, FETCH_MARGIN),
       searchHistoryApplicationService.search(searchWord),
     ];
     const [books, searchHis] = await Promise.all(promissList);

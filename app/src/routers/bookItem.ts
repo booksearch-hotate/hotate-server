@@ -20,6 +20,8 @@ import BookData from '../domain/model/book/bookData';
 import {IPage} from './datas/IPage';
 
 import conversionpageStatus from '../utils/conversionPageStatus';
+import EsAuthor from '../infrastructure/elasticsearch/esAuthor';
+import AuthorRepository from '../interface/repository/authorRepository';
 
 // eslint-disable-next-line new-cap
 const bookItemRouter = Router();
@@ -34,6 +36,7 @@ const logger = new Logger('home');
 
 const bookApplicationService = new BookApplicationService(
     new BookRepository(db, new EsSearchBook('books')),
+    new AuthorRepository(db, new EsAuthor('authors')),
     new BookService(),
 );
 

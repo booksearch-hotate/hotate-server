@@ -2,6 +2,8 @@ import BookModel from './bookModel';
 import BookIdModel from './bookIdModel';
 import TagModel from '../tag/tagModel';
 import PaginationMarginModel from '../pagination/paginationMarginModel';
+import AuthorModel from '../author/authorModel';
+import PublisherModel from '../publisher/publisherModel';
 
 export interface IBookRepository {
   save (book: BookModel): Promise<void>
@@ -18,4 +20,5 @@ export interface IBookRepository {
   findAll (pageCount: number, marign: PaginationMarginModel): Promise<BookModel[]>
   findAllCount (): Promise<number>
   deleteBook (book: BookModel): Promise<void>
+  searchByForeignId(foreignModel: AuthorModel[] | PublisherModel[], pageCount: number, margin: PaginationMarginModel): Promise<BookModel[]>
 }
