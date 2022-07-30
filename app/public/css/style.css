@@ -98,6 +98,63 @@ body {
   border-bottom: 2px solid #fff;
 }
 
+.search-type-box h2 {
+  text-align: center;
+}
+
+.search-type-item {
+  text-align: center;
+  transition: .2s;
+  cursor: pointer;
+  border: solid 1px rgb(110, 72, 72);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.search-type-item p {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.search-type-item svg {
+  height: 2rem;
+  width: 2rem;
+}
+
+.search-type-item:hover {
+  color: rgb(110, 72, 72);
+  transform: scale(.98);
+}
+
+.search-type-icon-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+
+.search-type-icon-box svg {
+  height: 20rem;
+  width: 20rem;
+}
+
+.search-type-icon-item-box {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  opacity: 0;
+  filter: blur(1px);
+  visibility: hidden;
+  transition: all .5s;
+}
+
+.search-type-icon-active {
+  visibility: visible;
+  opacity: .9;
+}
+
 .is-active {
   visibility: visible;
   opacity: 1;

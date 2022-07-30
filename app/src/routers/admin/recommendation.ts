@@ -20,6 +20,8 @@ import BookService from '../../domain/service/bookService';
 
 import {IRecommendationObj} from '../../domain/model/recommendation/IRecommendationObj';
 import conversionpageStatus from '../../utils/conversionPageStatus';
+import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
+import AuthorRepository from '../../interface/repository/authorRepository';
 
 // eslint-disable-next-line new-cap
 const recommendationRouter = Router();
@@ -32,7 +34,11 @@ const logger = new Logger('recommendation');
 
 const recommendationApplicationService = new RecommendationApplicationService(new RecommendationRepository(db), new RecommendationService());
 
-const bookApplicationService = new BookApplicationService(new BookRepository(db, new EsSearchBook('books')), new BookService());
+const bookApplicationService = new BookApplicationService(
+    new BookRepository(db, new EsSearchBook('books')),
+    new AuthorRepository(db, new EsAuthor('authors')),
+    new BookService(),
+);
 
 recommendationRouter.get('/', async (req: Request, res: Response) => {
   const pageCount = conversionpageCounter(req);

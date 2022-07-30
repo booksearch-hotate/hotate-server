@@ -36,3 +36,27 @@ function viewSearchBox () {
 function hideSearchBox () {
   searchBox.classList.remove('is-active')
 }
+
+async function changeSearchType(type) {
+  // typeに指定されるべき値
+  const searchTypeList = ['book', 'author', 'publisher'];
+
+  if (searchTypeList.indexOf(type) === -1) throw new Error('Invalid search type.');
+
+  const tagButton = document.getElementById('tagSearchButton');
+
+  if (type !== 'book') {
+    tagButton.style.opacity = 0;
+  } else {
+    tagButton.style.opacity = 1;
+  }
+
+  /* 背景のロゴのアニメーション処理 */
+  searchTypeList.forEach((item) => {
+    document.getElementById(`${item}BgIcon`).classList.remove('search-type-icon-active');
+  });
+
+  await new Promise(resolve => setTimeout(resolve, 500));
+
+  document.getElementById(`${type}BgIcon`).classList.add('search-type-icon-active');
+}
