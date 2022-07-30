@@ -26,6 +26,7 @@ import getPaginationInfo from '../utils/getPaginationInfo';
 import conversionpageCounter from '../utils/conversionPageCounter';
 import EsAuthor from '../infrastructure/elasticsearch/esAuthor';
 import AuthorRepository from '../interface/repository/authorRepository';
+import searchCategory from './datas/searchCategoryType';
 
 // eslint-disable-next-line new-cap
 const searchRouter = Router();
@@ -49,7 +50,7 @@ const searchHistoryApplicationService = new SearchHistoryApplicationService(
 searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
   let searchMode: searchMode = 'none';
-  let searchCategory: 'book' | 'author' | 'publisher' = 'book';
+  let searchCategory: searchCategory = 'book';
 
   const isStrict = req.query.strict === 'true';
   const isTag = req.query.tag == 'true';
