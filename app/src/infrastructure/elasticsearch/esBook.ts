@@ -20,7 +20,7 @@ export default class EsSearchBook extends EsCsv {
    * @param pageCount ページ数
    * @returns {string[]} 検索結果のID
    */
-  public async searchBooks(searchWords: string, pageCount: number, margin: PaginationMarginModel): Promise<string[]> {
+  public async searchBooks(searchWords: string, pageCount: number, margin: PaginationMarginModel): Promise<{ids: string[], total: number}> {
     const FETCH_COUNT = margin.Margin;
     const res = await axios.get(`${this.uri}/_search`, {
       headers: {
@@ -46,12 +46,10 @@ export default class EsSearchBook extends EsCsv {
     });
     const hits = res.data.hits.hits;
 
-    this.total = res.data.hits.total.value;
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ids = hits.map((hit: any) => hit._source.db_id);
 
-    return ids;
+    return {ids, total: res.data.hits.total.value};
   }
 
   /**
@@ -84,7 +82,7 @@ export default class EsSearchBook extends EsCsv {
     });
   }
 
-  public async searchUsingLike(word: string, pageCount: number, margin: PaginationMarginModel) {
+  public async searchUsingLike(word: string, pageCount: number, margin: PaginationMarginModel): Promise<{ids: string[], total: number}> {
     const FETCH_COUNT = margin.Margin;
 
     const res = await axios.get(`${this.uri}/_search`, {
@@ -112,12 +110,10 @@ export default class EsSearchBook extends EsCsv {
     });
     const hits = res.data.hits.hits;
 
-    this.total = res.data.hits.total.value;
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ids = hits.map((hit: any) => hit._source.db_id);
 
-    return ids;
+    return {ids, total: res.data.hits.total.value};
   }
 
   get Total(): number {

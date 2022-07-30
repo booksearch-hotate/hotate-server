@@ -68,4 +68,34 @@ export default class EsAuthor extends EsCsv {
 
     return ids;
   }
+
+  public async searchUsingLike(word: string): Promise<string[]> {
+    const res = await axios.get(`${this.uri}/_search`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        query: {
+          bool: {
+            must: [{
+              wildcard: {
+                book_name: `*${word}*`,
+              },
+            }],
+          },
+        },
+        sort: {
+          '_score': {
+            order: 'desc',
+          },
+        },
+      },
+    });
+    const hits = res.data.hits.hits;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ids = hits.map((hit: any) => hit._source.db_id);
+
+    return ids;
+  }
 }

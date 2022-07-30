@@ -97,9 +97,9 @@ export default class BookApplicationService {
       searchCategory: 'book' | 'author' | 'publisher',
       pageCount: number,
       reqMargin: number,
-  ): Promise<BookData[]> {
+  ): Promise<{books: BookData[], count: number}> {
     // 検索から得られたbookModelの配列
-    let books: BookModel[] = [];
+    let books: {books: BookModel[], count: number} = {books: [], count: 0};
 
     const margin = new PaginationMarginModel(reqMargin);
 
@@ -107,7 +107,7 @@ export default class BookApplicationService {
       try {
         books = await this.bookRepository.searchByTag(query, pageCount, margin);
       } catch (e) {
-        books = [];
+        books = {books: [], count: 0};
       }
     } else {
       if (searchCategory === 'author') {
@@ -119,10 +119,11 @@ export default class BookApplicationService {
         books = searchMode === 'strict' ? await this.bookRepository.searchUsingLike(query, pageCount, margin) : await this.bookRepository.search(query, pageCount, margin);
       }
     }
+
     /* DTOに変換 */
     const bookDatas: BookData[] = [];
 
-    for (const book of books) {
+    for (const book of books.books) {
       const SLICE_STR_LENGTH = 50; // 紹介文を区切る文字数
       const bookContent = book.Content;
       if (bookContent !== null && bookContent.length > SLICE_STR_LENGTH) {
@@ -133,7 +134,7 @@ export default class BookApplicationService {
       bookDatas.push(bookData);
     }
 
-    return bookDatas;
+    return {books: bookDatas, count: books.count};
   }
 
   /**
@@ -166,18 +167,6 @@ export default class BookApplicationService {
    */
   public async executeBulkApi(): Promise<void> {
     await this.bookRepository.executeBulkApi();
-  }
-
-  /**
-   * 検索結果から総数を取得します。
-   * @param searchWords 検索ワード
-   * @param searchMode 検索のモード
-   * @returns 本の総数
-   */
-  public async getTotalResults(searchWords: string, searchMode: searchMode): Promise<number> {
-    if (searchMode === 'tag') return await this.bookRepository.getCountUsingTag(searchWords);
-
-    return this.bookRepository.latestEsTotalCount();
   }
 
   /**

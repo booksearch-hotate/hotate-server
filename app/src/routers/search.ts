@@ -88,12 +88,11 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
       searchHistoryApplicationService.search(searchWord),
     ];
     const [books, searchHis] = await Promise.all(promissList);
-    resDatas = books as BookData[];
+    const bookRes = books as {books: BookData[], count: number};
+    resDatas = bookRes.books;
     searchHisDatas = searchHis as SearchHistoryData[];
 
-    const total = await bookApplicationService.getTotalResults(searchWord, searchMode);
-
-    paginationData = getPaginationInfo(pageCount, total, FETCH_MARGIN, 7);
+    paginationData = getPaginationInfo(pageCount, bookRes.count, FETCH_MARGIN, 7);
   }
 
   pageData.headTitle = '検索結果 | HOTATE';
