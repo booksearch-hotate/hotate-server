@@ -8,4 +8,6 @@ export interface IAuthorRepository {
   findById(bookId: string): Promise<AuthorModel>
   deleteNoUsed(authorId: string): Promise<void>
   update(author: AuthorModel): Promise<void>
+  search(name: string): Promise<AuthorModel[]>
+  searchUsingLike(name: string): Promise<AuthorModel[]>
 }

@@ -14,15 +14,19 @@ import {getImgLink} from '../infrastructure/api/openbd';
 import Logger from '../infrastructure/logger/logger';
 import BookIdModel from '../domain/model/book/bookIdModel';
 import PaginationMarginModel from '../domain/model/pagination/paginationMarginModel';
+import {IAuthorRepository} from '../domain/model/author/IAuthorRepository';
+import searchCategory from '../routers/datas/searchCategoryType';
 
 const logger = new Logger('bookApplicationService');
 
 export default class BookApplicationService {
   private readonly bookRepository: IBookRepository;
+  private readonly authorRepository: IAuthorRepository;
   private readonly bookService: BookService;
 
-  public constructor(bookRepository: IBookRepository, bookService: BookService) {
+  public constructor(bookRepository: IBookRepository, authorRepository: IAuthorRepository, bookService: BookService) {
     this.bookRepository = bookRepository;
+    this.authorRepository = authorRepository;
     this.bookService = bookService;
   }
 
@@ -91,25 +95,36 @@ export default class BookApplicationService {
   public async searchBooks(
       query: string,
       searchMode: searchMode,
+      searchCategory: searchCategory,
       pageCount: number,
       reqMargin: number,
-  ): Promise<BookData[]> {
+  ): Promise<{books: BookData[], count: number}> {
     // 検索から得られたbookModelの配列
-    let books: BookModel[] = [];
+    let books: {books: BookModel[], count: number} = {books: [], count: 0};
+
     const margin = new PaginationMarginModel(reqMargin);
-    if (searchMode === 'tag') {
+
+    if (searchMode === 'tag' && searchCategory === 'book') {
       try {
         books = await this.bookRepository.searchByTag(query, pageCount, margin);
       } catch (e) {
-        books = [];
+        books = {books: [], count: 0};
       }
     } else {
-      books = searchMode === 'strict' ? await this.bookRepository.searchUsingLike(query, pageCount, margin) : await this.bookRepository.search(query, pageCount, margin);
+      if (searchCategory === 'author') {
+        const authorModels = searchMode === 'strict' ? await this.authorRepository.searchUsingLike(query) : await this.authorRepository.search(query);
+        books = await this.bookRepository.searchByForeignId(authorModels, pageCount, margin);
+      } else if (searchCategory === 'publisher') {
+        // Todo
+      } else {
+        books = searchMode === 'strict' ? await this.bookRepository.searchUsingLike(query, pageCount, margin) : await this.bookRepository.search(query, pageCount, margin);
+      }
     }
+
     /* DTOに変換 */
     const bookDatas: BookData[] = [];
 
-    for (const book of books) {
+    for (const book of books.books) {
       const SLICE_STR_LENGTH = 50; // 紹介文を区切る文字数
       const bookContent = book.Content;
       if (bookContent !== null && bookContent.length > SLICE_STR_LENGTH) {
@@ -120,7 +135,7 @@ export default class BookApplicationService {
       bookDatas.push(bookData);
     }
 
-    return bookDatas;
+    return {books: bookDatas, count: books.count};
   }
 
   /**
@@ -153,18 +168,6 @@ export default class BookApplicationService {
    */
   public async executeBulkApi(): Promise<void> {
     await this.bookRepository.executeBulkApi();
-  }
-
-  /**
-   * 検索結果から総数を取得します。
-   * @param searchWords 検索ワード
-   * @param searchMode 検索のモード
-   * @returns 本の総数
-   */
-  public async getTotalResults(searchWords: string, searchMode: searchMode): Promise<number> {
-    if (searchMode === 'tag') return await this.bookRepository.getCountUsingTag(searchWords);
-
-    return this.bookRepository.latestEsTotalCount();
   }
 
   /**
