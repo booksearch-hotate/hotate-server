@@ -3,6 +3,7 @@ import axios from 'axios';
 import SearchHistoryModel from '../../domain/model/searchHistory/searchHistoryModel';
 
 import esDocuments from './documents/documentType';
+import PaginationMarginModel from '../../domain/model/pagination/paginationMarginModel';
 
 export default class EsSearchHistory extends ElasticSearch {
   private total = 0;
@@ -84,8 +85,8 @@ export default class EsSearchHistory extends ElasticSearch {
    * @param count ページ数
    * @returns 検索履歴のモデル
    */
-  public async find(count: number): Promise<SearchHistoryModel[]> {
-    const FETCH_DATA_NUM = 20;
+  public async find(count: number, margin: PaginationMarginModel): Promise<SearchHistoryModel[]> {
+    const FETCH_DATA_NUM = margin.Margin;
     const fromVal = count * FETCH_DATA_NUM;
     const res = await axios.get(`${this.uri}/_search`, {
       headers: {
