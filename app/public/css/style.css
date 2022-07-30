@@ -98,6 +98,34 @@ body {
   border-bottom: 2px solid #fff;
 }
 
+.search-type-box h2 {
+  text-align: center;
+}
+
+.search-type-item {
+  text-align: center;
+  transition: .2s;
+  cursor: pointer;
+  border: solid 1px rgb(110, 72, 72);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.search-type-item p {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.search-type-item svg {
+  height: 2rem;
+  width: 2rem;
+}
+
+.search-type-item:hover {
+  color: rgb(110, 72, 72);
+  transform: scale(.98);
+}
+
 .is-active {
   visibility: visible;
   opacity: 1;
