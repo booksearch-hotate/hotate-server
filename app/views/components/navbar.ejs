@@ -70,17 +70,17 @@
           <div class="row">
             <div class="col">
               <div onclick="changeSearchType('author')">
-                <%- include('./navTypeItem', {icon: 'person', text: '著者'}) %>
+                <%- include('./navTypeItem', {icon: 'person', text: '著者', value: 'author'}) %>
               </div>
             </div>
             <div class="col">
               <div onclick="changeSearchType('book')">
-                <%- include('./navTypeItem', {icon: 'book', text: '本'}) %>
+                <%- include('./navTypeItem', {icon: 'book', text: '本', value: 'book'}) %>
               </div>
             </div>
             <div class="col">
               <div onclick="changeSearchType('publisher')">
-                <%- include('./navTypeItem', {icon: 'building', text: '出版社'}) %>
+                <%- include('./navTypeItem', {icon: 'building', text: '出版社', value: 'publisher'}) %>
               </div>
             </div>
           </div>
