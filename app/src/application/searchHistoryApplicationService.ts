@@ -2,6 +2,7 @@ import SearchHistoryModel from '../domain/model/searchHistory/searchHistoryModel
 import {ISearchHistoryRepository} from '../domain/model/searchHistory/ISearchHistoryRepository';
 import SearchHistoryService from '../domain/service/searchHistoryService';
 import SearchHistoryData from '../domain/model/searchHistory/searchHistoryData';
+import PaginationMarginModel from '../domain/model/pagination/paginationMarginModel';
 
 export default class SearchHistoryApplicationService {
   private readonly searchHistoryApplicationRepository: ISearchHistoryRepository;
@@ -22,8 +23,8 @@ export default class SearchHistoryApplicationService {
     return res.map((tar) => new SearchHistoryData(tar));
   }
 
-  public async find(count: number): Promise<SearchHistoryData[]> {
-    const res = await this.searchHistoryApplicationRepository.find(count);
+  public async find(count: number, margin: number): Promise<SearchHistoryData[]> {
+    const res = await this.searchHistoryApplicationRepository.find(count, new PaginationMarginModel(margin));
     return res.map((tar) => new SearchHistoryData(tar));
   }
 
