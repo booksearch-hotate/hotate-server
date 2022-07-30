@@ -37,7 +37,9 @@ const bookApplicationService = new BookApplicationService(new BookRepository(db,
 recommendationRouter.get('/', async (req: Request, res: Response) => {
   const pageCount = conversionpageCounter(req);
 
-  const fetchDatas = await recommendationApplicationService.fetch(pageCount, 10);
+  const fetchMargin = 10;
+
+  const fetchDatas = await recommendationApplicationService.fetch(pageCount, fetchMargin);
 
   const recommendations: IRecommendationObj[] = await Promise.all(fetchDatas.map(async (recommendation) => {
     const items = await Promise.all(recommendation.RecommendationItems.map(async (item) => {
@@ -53,7 +55,7 @@ recommendationRouter.get('/', async (req: Request, res: Response) => {
 
   const total = await recommendationApplicationService.fetchAllCount();
 
-  const paginationData = getPaginationInfo(pageCount, total, recommendations.length, 10);
+  const paginationData = getPaginationInfo(pageCount, total, fetchMargin, 10);
 
   pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;

@@ -8,6 +8,7 @@ import {IRecommendationRepository} from '../domain/model/recommendation/IRecomme
 import isSameLenAllArray from '../utils/isSameLenAllArray';
 import RecommendationItemModel from '../domain/model/recommendation/recommendationItemModel';
 import BookIdModel from '../domain/model/book/bookIdModel';
+import PaginationMarginModel from '../domain/model/pagination/paginationMarginModel';
 
 export default class RecommendationApplicationService {
   private readonly recommendationRepository: IRecommendationRepository;
@@ -38,7 +39,7 @@ export default class RecommendationApplicationService {
   }
 
   public async fetch(pageCount: number, count: number): Promise<RecommendationData[]> {
-    const fetchModels = await this.recommendationRepository.fetch(pageCount, count);
+    const fetchModels = await this.recommendationRepository.fetch(pageCount, new PaginationMarginModel(count));
     return fetchModels.map((recommendation) => new RecommendationData(recommendation));
   }
 
