@@ -27,6 +27,8 @@ import conversionpageCounter from '../utils/conversionPageCounter';
 import EsAuthor from '../infrastructure/elasticsearch/esAuthor';
 import AuthorRepository from '../interface/repository/authorRepository';
 import searchCategory from './datas/searchCategoryType';
+import EsPublisher from '../infrastructure/elasticsearch/esPublisher';
+import PublisherRepository from '../interface/repository/publisherRepository';
 
 // eslint-disable-next-line new-cap
 const searchRouter = Router();
@@ -38,6 +40,7 @@ const csrfProtection = csurf({cookie: false});
 const bookApplicationService = new BookApplicationService(
     new BookRepository(db, new EsSearchBook('books')),
     new AuthorRepository(db, new EsAuthor('authors')),
+    new PublisherRepository(db, new EsPublisher('publishers')),
     new BookService(),
 );
 
