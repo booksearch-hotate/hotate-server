@@ -211,14 +211,9 @@ export default class BookRepository implements IBookRepository {
     // bookIdsからbooksを取得する
     const books = await this.db.Book.findAll({where: {id: bookIds}});
 
-    const bookModels: BookModel[] = [];
-
-    for (const book of books) {
-      const bookByDb = await this.db.Book.findOne({where: {id: book.id}});
-      if (!bookByDb) throw new Error('book not found');
-
-      const authorId = bookByDb.author_id;
-      const publisherId = bookByDb.publisher_id;
+    const bookModels = books.map(async (book) => {
+      const authorId = book.author_id;
+      const publisherId = book.publisher_id;
 
       const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
@@ -229,22 +224,21 @@ export default class BookRepository implements IBookRepository {
       const authorModel = new AuthorModel(author.id, author.name);
       const publisherModel = new PublisherModel(publisher.id, publisher.name);
 
-      const bookModel = new BookModel(
-          bookByDb.id,
-          bookByDb.book_name,
-          bookByDb.book_sub_name,
-          bookByDb.book_content,
-          bookByDb.isbn,
-          bookByDb.ndc,
-          bookByDb.year,
+      return new BookModel(
+          book.id,
+          book.book_name,
+          book.book_sub_name,
+          book.book_content,
+          book.isbn,
+          book.ndc,
+          book.year,
           authorModel,
           publisherModel,
           tags,
       );
-      bookModels.push(bookModel);
-    }
+    });
 
-    return {books: bookModels, count};
+    return {books: await Promise.all(bookModels), count};
   }
 
   public async executeBulkApi(): Promise<void> {
@@ -272,46 +266,45 @@ export default class BookRepository implements IBookRepository {
 
     if (!tag) return {books: [], count: 0};
 
-    const books = await this.db.UsingTag.findAll({
+    const tagIds = await this.db.UsingTag.findAll({
       where: {tag_id: tag.id},
       limit: FETCH_COUNT,
       offset: pageCount * FETCH_COUNT,
     });
 
     const count = await this.db.UsingTag.count({where: {tag_id: tag.id}});
-    const bookModels: BookModel[] = [];
 
-    for (const book of books) {
-      const bookByDb = await this.db.Book.findOne({where: {id: book.book_id}});
-      if (!bookByDb) throw new Error('book not found');
+    const bookModels = tagIds.map(async (column) => {
+      const book = await this.db.Book.findOne({where: {id: column.book_id}});
 
-      const authorId = bookByDb.author_id;
-      const publisherId = bookByDb.publisher_id;
+      if (!book) throw new Error('book not found');
+
+      const authorId = book.author_id;
+      const publisherId = book.publisher_id;
 
       const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
-      const tags = await this.getTagsByBookId(book.book_id);
+      const tags = await this.getTagsByBookId(column.book_id);
 
       if (!(author && publisher)) throw new Error('author or publisher not found');
 
       const authorModel = new AuthorModel(author.id, author.name);
       const publisherModel = new PublisherModel(publisher.id, publisher.name);
 
-      const bookModel = new BookModel(
-          bookByDb.id,
-          bookByDb.book_name,
-          bookByDb.book_sub_name,
-          bookByDb.book_content,
-          bookByDb.isbn,
-          bookByDb.ndc,
-          bookByDb.year,
+      return new BookModel(
+          book.id,
+          book.book_name,
+          book.book_sub_name,
+          book.book_content,
+          book.isbn,
+          book.ndc,
+          book.year,
           authorModel,
           publisherModel,
           tags,
       );
-      bookModels.push(bookModel);
-    }
-    return {books: bookModels, count};
+    });
+    return {books: await Promise.all(bookModels), count};
   }
 
   public async getCountUsingTag(tagName: string): Promise<number> {
