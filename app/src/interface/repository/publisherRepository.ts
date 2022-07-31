@@ -98,4 +98,34 @@ export default class PublisherRepository implements IPublisherRepository {
 
     await Promise.all([updateDB(publisher), updateES(publisher)]);
   }
+
+  public async search(name: string): Promise<PublisherModel[]> {
+    const ids = await this.esPublisher.search(name);
+    const fetchData = await this.db.Publisher.findAll({
+      where: {
+        id: {
+          [sequelize.Op.in]: ids,
+        },
+      },
+    });
+
+    if (fetchData === null) return [];
+
+    return fetchData.map((column) => new PublisherModel(column.id, column.name));
+  }
+
+  public async searchUsingLike(name: string): Promise<PublisherModel[]> {
+    const ids = await this.esPublisher.searchUsingLike(name);
+    const fetchData = await this.db.Publisher.findAll({
+      where: {
+        id: {
+          [sequelize.Op.in]: ids,
+        },
+      },
+    });
+
+    if (fetchData === null) return [];
+
+    return fetchData.map((column) => new PublisherModel(column.id, column.name));
+  }
 }
