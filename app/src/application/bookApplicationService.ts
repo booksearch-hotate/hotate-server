@@ -108,7 +108,7 @@ export default class BookApplicationService {
       reqMargin: number,
   ): Promise<{books: BookData[], count: number}> {
     // 検索から得られたbookModelの配列
-    let books: {books: BookModel[], count: number} = {books: [], count: 0};
+    let books: {books: BookModel[], count: number};
 
     const margin = new PaginationMarginModel(reqMargin);
 
