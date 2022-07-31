@@ -104,6 +104,7 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
     paginationData,
     isStrict,
     isTag,
+    searchCategory,
   };
   pageData.csrfToken = req.csrfToken();
 

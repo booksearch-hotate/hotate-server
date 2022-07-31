@@ -63,7 +63,7 @@ if (pageData.anyData.isTag) queryLink += '&tag=true';
           <% } %>
         </div>
       </div>
-      <%- include('../components/navigation', {paginationData: pageData.anyData.paginationData, url: `/search?search=${pageData.anyData.searchWord}${queryLink}&`}) %>
+      <%- include('../components/navigation', {paginationData: pageData.anyData.paginationData, url: `/search?search=${pageData.anyData.searchWord}${queryLink}&type=${pageData.anyData.searchCategory}&`}) %>
     </main>
     <%- include('./../components/inputJs') %>
     <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
