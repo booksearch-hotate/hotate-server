@@ -16,6 +16,8 @@ import csurf from 'csurf';
 import {IRecommendationObj} from '../domain/model/recommendation/IRecommendationObj';
 import AuthorRepository from '../interface/repository/authorRepository';
 import EsAuthor from '../infrastructure/elasticsearch/esAuthor';
+import EsPublisher from '../infrastructure/elasticsearch/esPublisher';
+import PublisherRepository from '../interface/repository/publisherRepository';
 
 // eslint-disable-next-line new-cap
 const homeRouter = Router();
@@ -34,6 +36,7 @@ const recommendationApplicationService = new RecommendationApplicationService(
 const bookApplicationService = new BookApplicationService(
     new BookRepository(db, new EsSearchBook('books')),
     new AuthorRepository(db, new EsAuthor('authors')),
+    new PublisherRepository(db, new EsPublisher('publishers')),
     new BookService(),
 );
 
