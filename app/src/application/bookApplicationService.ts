@@ -16,17 +16,25 @@ import BookIdModel from '../domain/model/book/bookIdModel';
 import PaginationMarginModel from '../domain/model/pagination/paginationMarginModel';
 import {IAuthorRepository} from '../domain/model/author/IAuthorRepository';
 import searchCategory from '../routers/datas/searchCategoryType';
+import {IPublisherRepository} from '../domain/model/publisher/IPublisherRepository';
 
 const logger = new Logger('bookApplicationService');
 
 export default class BookApplicationService {
   private readonly bookRepository: IBookRepository;
   private readonly authorRepository: IAuthorRepository;
+  private readonly publisherRepository: IPublisherRepository;
   private readonly bookService: BookService;
 
-  public constructor(bookRepository: IBookRepository, authorRepository: IAuthorRepository, bookService: BookService) {
+  public constructor(
+      bookRepository: IBookRepository,
+      authorRepository: IAuthorRepository,
+      publisherRepository: IPublisherRepository,
+      bookService: BookService,
+  ) {
     this.bookRepository = bookRepository;
     this.authorRepository = authorRepository;
+    this.publisherRepository = publisherRepository;
     this.bookService = bookService;
   }
 
@@ -115,7 +123,8 @@ export default class BookApplicationService {
         const authorModels = searchMode === 'strict' ? await this.authorRepository.searchUsingLike(query) : await this.authorRepository.search(query);
         books = await this.bookRepository.searchByForeignId(authorModels, pageCount, margin);
       } else if (searchCategory === 'publisher') {
-        // Todo
+        const publisherModels = searchMode === 'strict' ? await this.publisherRepository.searchUsingLike(query) : await this.publisherRepository.search(query);
+        books = await this.bookRepository.searchByForeignId(publisherModels, pageCount, margin);
       } else {
         books = searchMode === 'strict' ? await this.bookRepository.searchUsingLike(query, pageCount, margin) : await this.bookRepository.search(query, pageCount, margin);
       }

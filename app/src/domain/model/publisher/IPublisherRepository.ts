@@ -8,4 +8,6 @@ export interface IPublisherRepository {
   deleteNoUsed(publisherId: string): Promise<void>
   findById(publisherId: string): Promise<PublisherModel>
   update(publisher: PublisherModel): Promise<void>
+  search(name: string): Promise<PublisherModel[]>
+  searchUsingLike(name: string): Promise<PublisherModel[]>
 }
