@@ -97,8 +97,10 @@ export default class BookApplicationService {
    *
    * @param query 検索ワード
    * @param searchMode 検索モード
+   * @param searchCategory 検索カテゴリ
    * @param pageCount ページ数
-   * @returns {Promise<BookData[]>} 検索にヒットした本データ
+   * @param reqMargin 1ページあたりのデータ数
+   * @returns {Promise<{books: BookData[], count: number}>} 検索にヒットした本データ(books)とヒットした合計件数(count)
    */
   public async searchBooks(
       query: string,
