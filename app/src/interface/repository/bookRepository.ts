@@ -1,8 +1,8 @@
-import Book from '../../infrastructure/db/tables/books'; // ここのBookはドメインオブジェクトではない！
-import Author from '../../infrastructure/db/tables/authors';
-import Publisher from '../../infrastructure/db/tables/publishers';
-import UsingTag from '../../infrastructure/db/tables/usingTags';
-import Tag from '../../infrastructure/db/tables/tags';
+import BookTable from '../../infrastructure/db/tables/books'; // ここのBookはドメインオブジェクトではない！
+import AuthorTable from '../../infrastructure/db/tables/authors';
+import PublisherTable from '../../infrastructure/db/tables/publishers';
+import UsingTagTable from '../../infrastructure/db/tables/usingTags';
+import TagTable from '../../infrastructure/db/tables/tags';
 
 import {IBookRepository} from '../../domain/model/book/IBookRepository';
 import BookModel from '../../domain/model/book/bookModel';
@@ -19,11 +19,11 @@ import sequelize from 'sequelize';
 
 /* Sequelizeを想定 */
 interface sequelize {
-  Book: typeof Book
-  Author: typeof Author
-  Publisher: typeof Publisher
-  UsingTag: typeof UsingTag
-  Tag: typeof Tag
+  Book: typeof BookTable
+  Author: typeof AuthorTable
+  Publisher: typeof PublisherTable
+  UsingTag: typeof UsingTagTable
+  Tag: typeof TagTable
 }
 
 export default class BookRepository implements IBookRepository {
@@ -138,7 +138,7 @@ export default class BookRepository implements IBookRepository {
   public async searchByForeignId(foreignModel: AuthorModel[] | PublisherModel[], pageCount: number, margin: PaginationMarginModel): Promise<{books: BookModel[], count: number}> {
     if (foreignModel.length === 0) return {books: [], count: 0};
 
-    let books: Book[] = [];
+    let books: BookTable[] = [];
 
     let count = 0;
 

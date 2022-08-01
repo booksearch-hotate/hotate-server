@@ -1,8 +1,8 @@
 import sequelize from 'sequelize';
 
-import Recommendation from '../../infrastructure/db/tables/recommendations';
-import UsingRecommendations from '../../infrastructure/db/tables/usingRecommendations';
-import Book from '../../infrastructure/db/tables/books';
+import RecommendationTable from '../../infrastructure/db/tables/recommendations';
+import UsingRecommendationsTable from '../../infrastructure/db/tables/usingRecommendations';
+import BookTable from '../../infrastructure/db/tables/books';
 
 import {IRecommendationRepository} from '../../domain/model/recommendation/IRecommendationRepository';
 import RecommendationModel from '../../domain/model/recommendation/recommendationModel';
@@ -12,9 +12,9 @@ import PaginationMarginModel from '../../domain/model/pagination/paginationMargi
 
 /* Sequelizeを想定 */
 interface sequelize {
-  Recommendation: typeof Recommendation,
-  UsingRecommendations: typeof UsingRecommendations,
-  Book: typeof Book,
+  Recommendation: typeof RecommendationTable,
+  UsingRecommendations: typeof UsingRecommendationsTable,
+  Book: typeof BookTable,
 }
 
 export default class RecommendationRepository implements IRecommendationRepository {

@@ -1,7 +1,7 @@
 import sequelize from 'sequelize';
 
-import Publisher from '../../infrastructure/db/tables/publishers';
-import Book from '../../infrastructure/db/tables/books';
+import PublisherTable from '../../infrastructure/db/tables/publishers';
+import BookTable from '../../infrastructure/db/tables/books';
 
 import {IPublisherRepository} from '../../domain/model/publisher/IPublisherRepository';
 import PublisherModel from '../../domain/model/publisher/publisherModel';
@@ -12,8 +12,8 @@ import {IEsPublisher} from '../../infrastructure/elasticsearch/documents/IEsPubl
 
 /* Sequelizeを想定 */
 interface sequelize {
-  Publisher: typeof Publisher,
-  Book: typeof Book,
+  Publisher: typeof PublisherTable,
+  Book: typeof BookTable,
 }
 
 export default class PublisherRepository implements IPublisherRepository {
