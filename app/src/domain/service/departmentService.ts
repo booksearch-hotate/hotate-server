@@ -1,6 +1,6 @@
 import {v4 as uuidv4} from 'uuid';
 
-import DepartmentModel from '../model/department/departmentModel';
+import Department from '../model/department/departmentModel';
 
 import {IDepartmentRepository} from '../model/department/IDepartmentRepository';
 
@@ -22,7 +22,7 @@ export default class DepartmentService {
    * @param department 学科オブジェクト
    * @returns 存在するか
    */
-  public async isExist(department: DepartmentModel): Promise<boolean> {
+  public async isExist(department: Department): Promise<boolean> {
     const found = await this.departmentRepository.findByName(department.Name);
 
     return found !== null;

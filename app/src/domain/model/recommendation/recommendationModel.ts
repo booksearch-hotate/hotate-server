@@ -1,6 +1,6 @@
-import RecommendationItemModel from './recommendationItemModel';
+import RecommendationItem from './recommendationItemModel';
 
-export default class RecommendationModel {
+export default class Recommendation {
   private id: string;
   private title: string;
   private content: string;
@@ -8,7 +8,7 @@ export default class RecommendationModel {
   private sortIndex: number;
   private createdAt: Date | null;
   private updatedAt: Date | null;
-  private recommendationItems: RecommendationItemModel[];
+  private recommendationItems: RecommendationItem[];
 
   private readonly MAX_CONTENT_LEN = 20;
   private readonly MAX_HAVING_BOOK_COUNT = 10;
@@ -21,7 +21,7 @@ export default class RecommendationModel {
       sortIndex: number,
       createdAt: Date | null,
       updatedAt: Date | null,
-      recommendationItems: RecommendationItemModel[],
+      recommendationItems: RecommendationItem[],
   ) {
     if (id === null) throw new Error('The id is null.');
     if (title.length === 0) throw new Error('Empty title.');
@@ -87,7 +87,7 @@ export default class RecommendationModel {
     this.isSolid = isSolid;
   }
 
-  public replaceItems(bookIds: RecommendationItemModel[]) {
+  public replaceItems(bookIds: RecommendationItem[]) {
     if (bookIds.length > this.MAX_HAVING_BOOK_COUNT) throw new Error('The maximum number of units held has been exceeded.');
     this.recommendationItems = bookIds;
   }

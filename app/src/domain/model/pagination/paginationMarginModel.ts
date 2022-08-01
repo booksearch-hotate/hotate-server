@@ -1,4 +1,4 @@
-export default class PaginationMarginModel {
+export default class PaginationMargin {
   private margin: number;
 
   private readonly MAX_MARGIN_COUNT = 50; // データを1度に取得できる最大の個数

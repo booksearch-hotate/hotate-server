@@ -1,12 +1,12 @@
-import AuthorModel from '../author/authorModel';
-import PublisherModel from '../publisher/publisherModel';
-import TagModel from '../tag/tagModel';
+import Author from '../author/authorModel';
+import Publisher from '../publisher/publisherModel';
+import Tag from '../tag/tagModel';
 
 import Logger from '../../../infrastructure/logger/logger';
 
 const logger = new Logger('BookModel');
 
-export default class BookModel {
+export default class Book {
   private id: string;
   private name!: string;
   private subName!: string | null;
@@ -14,9 +14,9 @@ export default class BookModel {
   private isbn!: string | null;
   private ndc!: number | null;
   private year!: number | null;
-  private author!: AuthorModel;
-  private publisher!: PublisherModel;
-  private tags!: TagModel[];
+  private author!: Author;
+  private publisher!: Publisher;
+  private tags!: Tag[];
 
   private readonly MAX_NUMBER_OF_TAGS = 10;
 
@@ -28,9 +28,9 @@ export default class BookModel {
       isbn: string | null,
       ndc: number | null,
       year: number | null,
-      author: AuthorModel,
-      publisher: PublisherModel,
-      tags: TagModel[],
+      author: Author,
+      publisher: Publisher,
+      tags: Tag[],
   ) {
     if (id === null) throw new Error('Id is null.');
     if (name === null) throw new Error('The title of the book is null.');
@@ -119,15 +119,15 @@ export default class BookModel {
     this.year = year;
   }
 
-  get Author(): AuthorModel {
+  get Author(): Author {
     return this.author;
   }
 
-  get Publisher(): PublisherModel {
+  get Publisher(): Publisher {
     return this.publisher;
   }
 
-  get Tags(): TagModel[] {
+  get Tags(): Tag[] {
     return this.tags;
   }
 
@@ -161,11 +161,11 @@ export default class BookModel {
     return this.tags.length > this.MAX_NUMBER_OF_TAGS;
   }
 
-  public changeAuthor(author: AuthorModel) {
+  public changeAuthor(author: Author) {
     this.author = author;
   }
 
-  public changePublisher(publisher: PublisherModel) {
+  public changePublisher(publisher: Publisher) {
     this.publisher = publisher;
   }
 }

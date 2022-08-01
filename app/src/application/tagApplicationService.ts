@@ -1,4 +1,4 @@
-import TagModel from '../domain/model/tag/tagModel';
+import Tag from '../domain/model/tag/tagModel';
 
 import TagService from '../domain/service/tagService';
 
@@ -30,7 +30,7 @@ export default class TagApplicationService {
    * @returns 重複した組み合わせがあったか
    */
   public async create(name: string, bookId: string): Promise<boolean> {
-    let tag = new TagModel(this.tagService.createUUID(), name, null, [bookId]);
+    let tag = new Tag(this.tagService.createUUID(), name, null, [bookId]);
 
     const book = await this.bookRepository.searchById(new BookIdModel(bookId));
 

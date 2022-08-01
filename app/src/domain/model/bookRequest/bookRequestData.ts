@@ -1,5 +1,5 @@
-import BookRequestModel from './bookRequestModel';
-import DepartmentModel from '../department/departmentModel';
+import BookRequest from './bookRequestModel';
+import Department from '../department/departmentModel';
 
 export default class BookRequestData {
   private id: string;
@@ -8,14 +8,14 @@ export default class BookRequestData {
   private publisherName: string;
   private isbn: string;
   private message: string;
-  private department: DepartmentModel;
+  private department: Department;
   private schoolYear: string;
   private schoolClass: string;
   private userName: string;
   private createAt: Date;
   private studentInfo: string;
 
-  public constructor(requestModel: BookRequestModel) {
+  public constructor(requestModel: BookRequest) {
     this.id = requestModel.Id;
     this.bookName = requestModel.BookName;
     this.authorName = requestModel.AuthorName;
@@ -48,7 +48,7 @@ export default class BookRequestData {
   get Message(): string {
     return this.message;
   }
-  get Department(): DepartmentModel {
+  get Department(): Department {
     return this.department;
   }
   get SchoolYear(): string {

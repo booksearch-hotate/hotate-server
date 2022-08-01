@@ -1,7 +1,7 @@
-import AdminModel from './adminModel';
+import Admin from './adminModel';
 
 export interface IAdminApplicationRepository {
-  getAdmin (): Promise<AdminModel>
-  insertAdmin(admin: AdminModel): Promise<void>
-  updateAdmin(admin: AdminModel): Promise<void>
+  getAdmin (): Promise<Admin>
+  insertAdmin(admin: Admin): Promise<void>
+  updateAdmin(admin: Admin): Promise<void>
 }

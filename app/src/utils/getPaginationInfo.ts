@@ -1,4 +1,4 @@
-import PaginationMarginModel from '../domain/model/pagination/paginationMarginModel';
+import PaginationMargin from '../domain/model/pagination/paginationMarginModel';
 import {IPaginationData} from '../routers/datas/IPaginationData';
 
 
@@ -17,7 +17,7 @@ export default function getPaginationInfo(
   if (pageCount < 0) throw new Error('The pageCount is incorrect.');
   if (total < 0) throw new Error('The totalPage is incorrect.');
 
-  const itemMargin = new PaginationMarginModel(itemCount);
+  const itemMargin = new PaginationMargin(itemCount);
 
   // ページネーションの幅を最低最小値に設定
   const paginationMargin = Math.max(maxPaginationCount / 2, MIN_PAGIATION_MARGIN);

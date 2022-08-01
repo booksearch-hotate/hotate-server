@@ -1,8 +1,8 @@
 import {IBookRequestRepository} from '../domain/model/bookRequest/IBookRequestRepository';
 import {IDepartmentRepository} from '../domain/model/department/IDepartmentRepository';
 
-import BookRequestModel from '../domain/model/bookRequest/bookRequestModel';
-import DepartmentModel from '../domain/model/department/departmentModel';
+import BookRequest from '../domain/model/bookRequest/bookRequestModel';
+import Department from '../domain/model/department/departmentModel';
 
 import BookRequestData from '../domain/model/bookRequest/bookRequestData';
 
@@ -36,9 +36,9 @@ export default class BookRequestApplicationService {
       schoolClass: string,
       userName: string,
   ) {
-    const department = new DepartmentModel(departmentId, departmentName);
+    const department = new Department(departmentId, departmentName);
 
-    const requestModel = new BookRequestModel(
+    const requestModel = new BookRequest(
         id,
         bookName,
         authorName,
@@ -79,7 +79,7 @@ export default class BookRequestApplicationService {
 
     if (departmentModel === null) throw new Error('The name of the department could not be obtained.');
 
-    const requestModel = new BookRequestModel(
+    const requestModel = new BookRequest(
         this.requestService.createUUID(),
         keepReqObj.bookName,
         keepReqObj.authorName,

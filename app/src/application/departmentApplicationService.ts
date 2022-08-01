@@ -1,4 +1,4 @@
-import DepartmentModel from '../domain/model/department/departmentModel';
+import Department from '../domain/model/department/departmentModel';
 
 import DepartmentService from '../domain/service/departmentService';
 
@@ -25,7 +25,7 @@ export default class DepartmentApplicationService {
 
   /**
    * 登録されている学科をすべて取得します
-   * @returns {Promise<DepartmentModel[]>} 登録されている全学科の項目
+   * @returns {Promise<Department[]>} 登録されている全学科の項目
    */
   public async findAllDepartment(): Promise<DepartmentData[]> {
     const fetchModel = await this.departmentRepository.findAllDepartment();
@@ -51,7 +51,7 @@ export default class DepartmentApplicationService {
    * @returns 追加できたか
    */
   public async insertDepartment(name: string): Promise<boolean> {
-    const department = new DepartmentModel(this.departmentService.createUUID(), name);
+    const department = new Department(this.departmentService.createUUID(), name);
     const isExist = await this.departmentService.isExist(department);
 
     if (isExist) return false;
@@ -83,7 +83,7 @@ export default class DepartmentApplicationService {
   }
 
   public async update(id: string, name: string): Promise<void> {
-    const updateModel = new DepartmentModel(id, name);
+    const updateModel = new Department(id, name);
     await this.departmentRepository.update(updateModel);
   }
 

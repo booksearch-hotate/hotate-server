@@ -1,13 +1,13 @@
-import AuthorModel from './authorModel';
+import Author from './authorModel';
 
 export interface IAuthorRepository {
-  save (author: AuthorModel, isBulk: boolean): Promise<void>
-  findByName (name: string | null): Promise<AuthorModel | null>
+  save (author: Author, isBulk: boolean): Promise<void>
+  findByName (name: string | null): Promise<Author | null>
   deleteAll (): Promise<void>
   executeBulkApi (): Promise<void>
-  findById(bookId: string): Promise<AuthorModel>
+  findById(bookId: string): Promise<Author>
   deleteNoUsed(authorId: string): Promise<void>
-  update(author: AuthorModel): Promise<void>
-  search(name: string): Promise<AuthorModel[]>
-  searchUsingLike(name: string): Promise<AuthorModel[]>
+  update(author: Author): Promise<void>
+  search(name: string): Promise<Author[]>
+  searchUsingLike(name: string): Promise<Author[]>
 }
