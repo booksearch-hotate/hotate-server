@@ -1,8 +1,8 @@
-import SearchHistory from '../domain/model/searchHistory/searchHistoryModel';
+import SearchHistory from '../domain/model/searchHistory/searchHistory';
 import {ISearchHistoryRepository} from '../domain/model/searchHistory/ISearchHistoryRepository';
 import SearchHistoryService from '../domain/service/searchHistoryService';
 import SearchHistoryData from '../domain/model/searchHistory/searchHistoryData';
-import PaginationMargin from '../domain/model/pagination/paginationMarginModel';
+import PaginationMargin from '../domain/model/pagination/paginationMargin';
 
 export default class SearchHistoryApplicationService {
   private readonly searchHistoryApplicationRepository: ISearchHistoryRepository;

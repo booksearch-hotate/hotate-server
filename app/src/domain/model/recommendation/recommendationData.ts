@@ -1,4 +1,4 @@
-import Recommendation from './recommendationModel';
+import Recommendation from './recommendation';
 import RecommendationItemData from './recommendationItemData';
 
 export default class RecommendationData {

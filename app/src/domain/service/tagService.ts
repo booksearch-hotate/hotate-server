@@ -1,4 +1,4 @@
-import Tag from '../model/tag/tagModel';
+import Tag from '../model/tag/tag';
 import {ITagRepository} from '../model/tag/ITagRepository';
 
 import {v4 as uuidv4} from 'uuid';

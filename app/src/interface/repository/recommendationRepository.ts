@@ -5,10 +5,10 @@ import UsingRecommendationsTable from '../../infrastructure/db/tables/usingRecom
 import BookTable from '../../infrastructure/db/tables/books';
 
 import {IRecommendationRepository} from '../../domain/model/recommendation/IRecommendationRepository';
-import Recommendation from '../../domain/model/recommendation/recommendationModel';
-import RecommendationItem from '../../domain/model/recommendation/recommendationItemModel';
-import BookIdModel from '../../domain/model/book/bookIdModel';
-import PaginationMargin from '../../domain/model/pagination/paginationMarginModel';
+import Recommendation from '../../domain/model/recommendation/recommendation';
+import RecommendationItem from '../../domain/model/recommendation/recommendationItem';
+import BookId from '../../domain/model/book/bookId';
+import PaginationMargin from '../../domain/model/pagination/paginationMargin';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -49,7 +49,7 @@ export default class RecommendationRepository implements IRecommendationReposito
     const res = fetchData.map(async (column) => {
       const fetchData = await this.db.UsingRecommendations.findAll({where: {recommendation_id: column.id}});
 
-      const items = fetchData === null ? [] : fetchData.map((column) => new RecommendationItem(new BookIdModel(column.book_id), column.comment));
+      const items = fetchData === null ? [] : fetchData.map((column) => new RecommendationItem(new BookId(column.book_id), column.comment));
 
       return new Recommendation(
           column.id,
@@ -77,7 +77,7 @@ export default class RecommendationRepository implements IRecommendationReposito
 
     const fetchBooks = await this.db.UsingRecommendations.findAll({where: {recommendation_id: id}});
 
-    const items = fetchBooks.map((column) => new RecommendationItem(new BookIdModel(column.book_id), column.comment));
+    const items = fetchBooks.map((column) => new RecommendationItem(new BookId(column.book_id), column.comment));
 
     return new Recommendation(
         fetchData.id,

@@ -4,7 +4,7 @@ import UsingTagTable from '../../infrastructure/db/tables/usingTags';
 
 import {ITagRepository} from '../../domain/model/tag/ITagRepository';
 
-import Tag from '../../domain/model/tag/tagModel';
+import Tag from '../../domain/model/tag/tag';
 import sequelize from 'sequelize';
 
 /* Sequelizeを想定 */

@@ -4,7 +4,7 @@ import PublisherTable from '../../infrastructure/db/tables/publishers';
 import BookTable from '../../infrastructure/db/tables/books';
 
 import {IPublisherRepository} from '../../domain/model/publisher/IPublisherRepository';
-import Publisher from '../../domain/model/publisher/publisherModel';
+import Publisher from '../../domain/model/publisher/publisher';
 
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 

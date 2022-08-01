@@ -1,6 +1,6 @@
-import Author from '../author/authorModel';
-import Publisher from '../publisher/publisherModel';
-import Tag from '../tag/tagModel';
+import Author from '../author/author';
+import Publisher from '../publisher/publisher';
+import Tag from '../tag/tag';
 
 import Logger from '../../../infrastructure/logger/logger';
 

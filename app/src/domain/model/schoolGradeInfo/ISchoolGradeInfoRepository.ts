@@ -1,4 +1,4 @@
-import SchoolGradeInfo from './schoolGradeInfoModel';
+import SchoolGradeInfo from './schoolGradeInfo';
 
 export interface ISchoolGradeInfoRepository {
   find (): Promise<SchoolGradeInfo>

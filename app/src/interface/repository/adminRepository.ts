@@ -4,7 +4,7 @@ import Logger from '../../infrastructure/logger/logger';
 
 import {IAdminApplicationRepository}
   from '../../domain/model/admin/IAdminRepository';
-import Admin from '../../domain/model/admin/adminModel';
+import Admin from '../../domain/model/admin/admin';
 
 /* Sequelizeを想定 */
 interface sequelize {

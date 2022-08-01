@@ -1,4 +1,4 @@
-import Admin from '../domain/model/admin/adminModel';
+import Admin from '../domain/model/admin/admin';
 import {IAdminApplicationRepository} from '../domain/model/admin/IAdminRepository';
 import AdminData from '../domain/model/admin/adminData';
 import AdminService from '../domain/service/adminService';

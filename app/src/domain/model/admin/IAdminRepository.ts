@@ -1,4 +1,4 @@
-import Admin from './adminModel';
+import Admin from './admin';
 
 export interface IAdminApplicationRepository {
   getAdmin (): Promise<Admin>

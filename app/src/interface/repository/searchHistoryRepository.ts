@@ -1,8 +1,8 @@
 import EsSearchHistory from '../../infrastructure/elasticsearch/esSearchHistory';
-import SearchHistory from '../../domain/model/searchHistory/searchHistoryModel';
+import SearchHistory from '../../domain/model/searchHistory/searchHistory';
 
 import {ISearchHistoryRepository} from '../../domain/model/searchHistory/ISearchHistoryRepository';
-import PaginationMargin from '../../domain/model/pagination/paginationMarginModel';
+import PaginationMargin from '../../domain/model/pagination/paginationMargin';
 
 export default class SearchHistoryRepository implements ISearchHistoryRepository {
   private readonly esSearchHistory: EsSearchHistory;

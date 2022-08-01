@@ -1,5 +1,5 @@
-import BookRequest from '../bookRequest/bookRequestModel';
-import Department from './departmentModel';
+import BookRequest from '../bookRequest/bookRequest';
+import Department from './department';
 
 export interface IDepartmentRepository {
   findAllDepartment(): Promise<Department[]>,

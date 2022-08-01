@@ -1,4 +1,4 @@
-import Department from '../department/departmentModel';
+import Department from '../department/department';
 
 export class FormInvalidError extends Error {};
 

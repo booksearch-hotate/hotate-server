@@ -1,4 +1,4 @@
-import PaginationMargin from '../domain/model/pagination/paginationMarginModel';
+import PaginationMargin from '../domain/model/pagination/paginationMargin';
 import {IPaginationData} from '../routers/datas/IPaginationData';
 
 

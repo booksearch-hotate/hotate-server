@@ -1,5 +1,5 @@
-import BookRequest from './bookRequestModel';
-import Department from '../department/departmentModel';
+import BookRequest from './bookRequest';
+import Department from '../department/department';
 
 export default class BookRequestData {
   private id: string;

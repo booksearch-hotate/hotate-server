@@ -1,4 +1,4 @@
-import RecommendationItem from './recommendationItemModel';
+import RecommendationItem from './recommendationItem';
 
 export default class RecommendationItemData {
   private bookId: string;

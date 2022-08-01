@@ -1,11 +1,11 @@
 import {IDepartmentRepository} from '../../domain/model/department/IDepartmentRepository';
 
-import Department from '../../domain/model/department/departmentModel';
+import Department from '../../domain/model/department/department';
 
 import DepartmentTable from '../../infrastructure/db/tables/departments';
 import RequestTable from '../../infrastructure/db/tables/requests';
 
-import BookRequest from '../../domain/model/bookRequest/bookRequestModel';
+import BookRequest from '../../domain/model/bookRequest/bookRequest';
 
 interface sequelize {
   Department: typeof DepartmentTable,

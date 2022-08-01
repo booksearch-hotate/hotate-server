@@ -1,5 +1,5 @@
 import {IPublisherRepository} from '../domain/model/publisher/IPublisherRepository';
-import Publisher from '../domain/model/publisher/publisherModel';
+import Publisher from '../domain/model/publisher/publisher';
 import PublisherService from '../domain/service/publisherService';
 
 export default class PublisherApplicationService {

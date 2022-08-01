@@ -1,4 +1,4 @@
-import Tag from './tagModel';
+import Tag from './tag';
 
 export interface ITagRepository {
   createTag (tagModel: Tag): Promise<void>

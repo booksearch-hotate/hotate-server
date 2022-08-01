@@ -1,4 +1,4 @@
-import Publisher from '../model/publisher/publisherModel';
+import Publisher from '../model/publisher/publisher';
 
 import {IPublisherRepository} from '../model/publisher/IPublisherRepository';
 

@@ -1,4 +1,4 @@
-import Department from '../domain/model/department/departmentModel';
+import Department from '../domain/model/department/department';
 
 import DepartmentService from '../domain/service/departmentService';
 

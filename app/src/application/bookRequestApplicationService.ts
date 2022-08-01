@@ -1,8 +1,8 @@
 import {IBookRequestRepository} from '../domain/model/bookRequest/IBookRequestRepository';
 import {IDepartmentRepository} from '../domain/model/department/IDepartmentRepository';
 
-import BookRequest from '../domain/model/bookRequest/bookRequestModel';
-import Department from '../domain/model/department/departmentModel';
+import BookRequest from '../domain/model/bookRequest/bookRequest';
+import Department from '../domain/model/department/department';
 
 import BookRequestData from '../domain/model/bookRequest/bookRequestData';
 

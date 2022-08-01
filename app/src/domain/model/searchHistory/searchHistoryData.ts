@@ -1,4 +1,4 @@
-import SearchHistory from './searchHistoryModel';
+import SearchHistory from './searchHistory';
 
 export default class SearchHistoryData {
   private words: string;

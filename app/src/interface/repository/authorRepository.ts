@@ -2,7 +2,7 @@ import AuthorTable from '../../infrastructure/db/tables/authors';
 import BookTable from '../../infrastructure/db/tables/books';
 
 import {IAuthorRepository} from '../../domain/model/author/IAuthorRepository';
-import Author from '../../domain/model/author/authorModel';
+import Author from '../../domain/model/author/author';
 import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 
 import {IEsAuthor} from '../../infrastructure/elasticsearch/documents/IEsAuthor';
