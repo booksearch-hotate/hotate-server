@@ -1,15 +1,15 @@
-import DepartmentModel from '../department/departmentModel';
+import Department from '../department/department';
 
 export class FormInvalidError extends Error {};
 
-export default class BookRequestModel {
+export default class BookRequest {
   private id: string;
   private bookName: string;
   private authorName: string;
   private publisherName: string;
   private isbn: string;
   private message: string;
-  private department: DepartmentModel;
+  private department: Department;
   private schoolYear: string;
   private schoolClass: string;
   private userName: string;
@@ -22,7 +22,7 @@ export default class BookRequestModel {
       publisherName: string,
       isbn: string,
       message: string,
-      department: DepartmentModel,
+      department: Department,
       schoolYear: string,
       schoolClass: string,
       userName: string,
@@ -69,7 +69,7 @@ export default class BookRequestModel {
   get Message(): string {
     return this.message;
   }
-  get Department(): DepartmentModel {
+  get Department(): Department {
     return this.department;
   }
   get SchoolYear(): string {

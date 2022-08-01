@@ -1,14 +1,14 @@
-import Admin from '../../infrastructure/db/tables/admin';
+import AdminTable from '../../infrastructure/db/tables/admin';
 import dotenv from 'dotenv';
 import Logger from '../../infrastructure/logger/logger';
 
 import {IAdminApplicationRepository}
   from '../../domain/model/admin/IAdminRepository';
-import AdminModel from '../../domain/model/admin/adminModel';
+import Admin from '../../domain/model/admin/admin';
 
 /* Sequelizeを想定 */
 interface sequelize {
-  Admin: typeof Admin,
+  Admin: typeof AdminTable,
 }
 
 export default class AdminRepository implements IAdminApplicationRepository {
@@ -21,7 +21,7 @@ export default class AdminRepository implements IAdminApplicationRepository {
     this.logger = new Logger('AdminRepository');
   }
 
-  public async getAdmin(): Promise<AdminModel> {
+  public async getAdmin(): Promise<Admin> {
     try {
       const admin = await this.db.Admin.sequelize?.query(
 
@@ -34,13 +34,13 @@ export default class AdminRepository implements IAdminApplicationRepository {
       // eslint-disable-next-line no-magic-numbers
       const res = admin[0][0] as { id: string, pw: string };
 
-      return new AdminModel(res.id, res.pw);
+      return new Admin(res.id, res.pw);
     } catch (e) {
       throw new Error(`Could not obtain the administrator's id or pw.\n Error: ${e as string}`);
     }
   }
 
-  public async insertAdmin(admin: AdminModel): Promise<void> {
+  public async insertAdmin(admin: Admin): Promise<void> {
     try {
       await this.db.Admin.sequelize?.query(
           `INSERT INTO admin VALUES ('${admin.Id}', HEX(AES_ENCRYPT('${admin.Pw}', '${process.env.DB_PW_KEY}')))`,
@@ -50,7 +50,7 @@ export default class AdminRepository implements IAdminApplicationRepository {
     }
   }
 
-  public async updateAdmin(admin: AdminModel): Promise<void> {
+  public async updateAdmin(admin: Admin): Promise<void> {
     try {
       await this.db.Admin.sequelize?.query(
           `UPDATE admin SET id = '${admin.Id}', pw = HEX(AES_ENCRYPT('${admin.Pw}', '${process.env.DB_PW_KEY}'))`,

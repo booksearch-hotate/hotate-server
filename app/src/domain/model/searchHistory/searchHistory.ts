@@ -1,4 +1,4 @@
-export default class SearchHistoryModel {
+export default class SearchHistory {
   private words: string;
   private id: string;
   private createdAt: Date;

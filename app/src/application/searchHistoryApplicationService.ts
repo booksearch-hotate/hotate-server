@@ -1,8 +1,8 @@
-import SearchHistoryModel from '../domain/model/searchHistory/searchHistoryModel';
+import SearchHistory from '../domain/model/searchHistory/searchHistory';
 import {ISearchHistoryRepository} from '../domain/model/searchHistory/ISearchHistoryRepository';
 import SearchHistoryService from '../domain/service/searchHistoryService';
 import SearchHistoryData from '../domain/model/searchHistory/searchHistoryData';
-import PaginationMarginModel from '../domain/model/pagination/paginationMarginModel';
+import PaginationMargin from '../domain/model/pagination/paginationMargin';
 
 export default class SearchHistoryApplicationService {
   private readonly searchHistoryApplicationRepository: ISearchHistoryRepository;
@@ -15,7 +15,7 @@ export default class SearchHistoryApplicationService {
 
   public async add(words: string) {
     const id = this.searchHistoryService.createUUID();
-    await this.searchHistoryApplicationRepository.add(new SearchHistoryModel(id, words, new Date()));
+    await this.searchHistoryApplicationRepository.add(new SearchHistory(id, words, new Date()));
   }
 
   public async search(words: string): Promise<SearchHistoryData[]> {
@@ -24,7 +24,7 @@ export default class SearchHistoryApplicationService {
   }
 
   public async find(count: number, margin: number): Promise<SearchHistoryData[]> {
-    const res = await this.searchHistoryApplicationRepository.find(count, new PaginationMarginModel(margin));
+    const res = await this.searchHistoryApplicationRepository.find(count, new PaginationMargin(margin));
     return res.map((tar) => new SearchHistoryData(tar));
   }
 

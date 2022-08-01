@@ -1,10 +1,10 @@
-import DepartmentModel from './departmentModel';
+import Department from './department';
 
 export default class DepartmentData {
   private id: string;
   private name: string;
 
-  public constructor(department: DepartmentModel) {
+  public constructor(department: Department) {
     this.id = department.Id;
     this.name = department.Name;
   }

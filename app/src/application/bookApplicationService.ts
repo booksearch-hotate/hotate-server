@@ -1,9 +1,9 @@
 import {IBookRepository}
   from '../domain/model/book/IBookRepository';
 
-import BookModel from '../domain/model/book/bookModel';
-import AuthorModel from '../domain/model/author/authorModel';
-import PublisherModel from '../domain/model/publisher/publisherModel';
+import Book from '../domain/model/book/book';
+import Author from '../domain/model/author/author';
+import Publisher from '../domain/model/publisher/publisher';
 import BookService from '../domain/service/bookService';
 import BookData from '../domain/model/book/bookData';
 
@@ -12,8 +12,8 @@ import searchMode from '../routers/datas/searchModeType';
 import {getImgLink} from '../infrastructure/api/openbd';
 
 import Logger from '../infrastructure/logger/logger';
-import BookIdModel from '../domain/model/book/bookIdModel';
-import PaginationMarginModel from '../domain/model/pagination/paginationMarginModel';
+import BookId from '../domain/model/book/bookId';
+import PaginationMargin from '../domain/model/pagination/paginationMargin';
 import {IAuthorRepository} from '../domain/model/author/IAuthorRepository';
 import searchCategory from '../routers/datas/searchCategoryType';
 import {IPublisherRepository} from '../domain/model/publisher/IPublisherRepository';
@@ -64,10 +64,10 @@ export default class BookApplicationService {
       publisherId: string,
       publisherName: string,
   ): Promise<void> {
-    const author = new AuthorModel(authorId, authorName);
-    const publisher = new PublisherModel(publisherId, publisherName);
+    const author = new Author(authorId, authorName);
+    const publisher = new Publisher(publisherId, publisherName);
     try {
-      const book = new BookModel(
+      const book = new Book(
           this.bookService.createUUID(),
           bookName,
           subName === undefined ? null : subName,
@@ -110,9 +110,9 @@ export default class BookApplicationService {
       reqMargin: number,
   ): Promise<{books: BookData[], count: number}> {
     // 検索から得られたbookModelの配列
-    let books: {books: BookModel[], count: number};
+    let books: {books: Book[], count: number};
 
-    const margin = new PaginationMarginModel(reqMargin);
+    const margin = new PaginationMargin(reqMargin);
 
     if (searchMode === 'tag' && searchCategory === 'book') {
       try {
@@ -155,7 +155,7 @@ export default class BookApplicationService {
    * @returns 本IDに対応した本データ
    */
   public async searchBookById(id: string): Promise<BookData> {
-    const bookId = new BookIdModel(id);
+    const bookId = new BookId(id);
     const book = await this.bookRepository.searchById(bookId);
 
     const bookData = new BookData(book);
@@ -205,11 +205,11 @@ export default class BookApplicationService {
       publisherId: string,
       publisherName: string | null,
   ) {
-    const book = await this.bookRepository.searchById(new BookIdModel(id));
+    const book = await this.bookRepository.searchById(new BookId(id));
 
-    const author = new AuthorModel(authorId, authorName);
+    const author = new Author(authorId, authorName);
 
-    const publisher = new PublisherModel(publisherId, publisherName);
+    const publisher = new Publisher(publisherId, publisherName);
 
     book.changeName(bookName);
     book.changeSubName(subName);
@@ -229,7 +229,7 @@ export default class BookApplicationService {
    * @returns 本データ
    */
   public async findAll(pageCount: number, reqMargin: number): Promise<BookData[]> {
-    const margin = new PaginationMarginModel(reqMargin);
+    const margin = new PaginationMargin(reqMargin);
     const books = await this.bookRepository.findAll(pageCount, margin);
     const bookDatas: BookData[] = [];
 
@@ -251,7 +251,7 @@ export default class BookApplicationService {
    * @param id 本ID
    */
   public async deleteBook(id: string): Promise<void> {
-    const book = await this.bookRepository.searchById(new BookIdModel(id));
+    const book = await this.bookRepository.searchById(new BookId(id));
 
     if (book === null) return;
 

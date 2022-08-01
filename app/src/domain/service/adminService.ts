@@ -1,7 +1,7 @@
-import AdminModel from '../model/admin/adminModel';
+import Admin from '../model/admin/admin';
 
 export default class AdminService {
-  public isValid(to: AdminModel, from: AdminModel): boolean {
+  public isValid(to: Admin, from: Admin): boolean {
     // Object.equalsがないのでその代用
     // https://www.deep-rain.com/programming/javascript/755#ObjectentriesJSONstringify
 

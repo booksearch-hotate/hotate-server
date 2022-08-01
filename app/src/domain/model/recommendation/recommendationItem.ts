@@ -1,12 +1,12 @@
-import BookIdModel from '../book/bookIdModel';
+import BookId from '../book/bookId';
 
-export default class RecommendationItemModel {
-  private bookId: BookIdModel;
+export default class RecommendationItem {
+  private bookId: BookId;
   private comment: string | null;
 
   private readonly MAX_COMMENT_LEN = 100;
 
-  constructor(bookId: BookIdModel, comment: string | null) {
+  constructor(bookId: BookId, comment: string | null) {
     if (comment !== null && comment.length > this.MAX_COMMENT_LEN) throw new Error('Have exceeded the number of characters you can enter.');
 
     this.bookId = bookId;

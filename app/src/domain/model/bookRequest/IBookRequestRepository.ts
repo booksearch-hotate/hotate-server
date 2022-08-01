@@ -1,8 +1,8 @@
-import BookRequestModel from './bookRequestModel';
+import BookRequest from './bookRequest';
 
 export interface IBookRequestRepository {
-  register(request: BookRequestModel): Promise<void>
+  register(request: BookRequest): Promise<void>
   delete(id: string): Promise<void>
-  findAll(): Promise<BookRequestModel[] | null>
-  findById(requestId: string): Promise<BookRequestModel | null>
+  findAll(): Promise<BookRequest[] | null>
+  findById(requestId: string): Promise<BookRequest | null>
 }

@@ -1,4 +1,4 @@
-import TagModel from './tagModel';
+import Tag from './tag';
 
 export default class TagData {
   private id: string;
@@ -6,7 +6,7 @@ export default class TagData {
   private createdAt: Date | null;
   private bookIds: string[];
 
-  public constructor(tagModel: TagModel) {
+  public constructor(tagModel: Tag) {
     this.id = tagModel.Id;
     this.name = tagModel.Name;
     this.createdAt = tagModel.CreatedAt;

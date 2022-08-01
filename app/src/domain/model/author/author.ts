@@ -1,4 +1,4 @@
-export default class AuthorModel {
+export default class Author {
   private id: string;
   private name!: string | null;
 

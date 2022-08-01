@@ -1,8 +1,8 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
-import Recommendation from './recommendations';
-import Book from './books';
+import RecommendationTable from './recommendations';
+import BookTable from './books';
 
-export default class UsingRecommendations extends Model {
+export default class UsingRecommendationsTable extends Model {
   public id!: number;
   public recommendation_id!: string;
   public book_id!: string;
@@ -36,7 +36,7 @@ export default class UsingRecommendations extends Model {
   }
 
   public static associate() {
-    this.belongsTo(Recommendation, {foreignKey: 'recommendation_id', constraints: false});
-    this.belongsTo(Book, {foreignKey: 'book_id', constraints: false});
+    this.belongsTo(RecommendationTable, {foreignKey: 'recommendation_id', constraints: false});
+    this.belongsTo(BookTable, {foreignKey: 'book_id', constraints: false});
   }
 }

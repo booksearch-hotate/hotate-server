@@ -1,15 +1,15 @@
 import {Sequelize} from 'sequelize';
-import Book from './tables/books';
-import Author from './tables/authors';
-import Publisher from './tables/publishers';
-import Admin from './tables/admin';
-import Tag from './tables/tags';
-import UsingTag from './tables/usingTags';
-import Department from './tables/departments';
-import Request from './tables/requests';
-import UsingRecommendations from './tables/usingRecommendations';
-import Recommendation from './tables/recommendations';
-import SchoolGradeInfo from './tables/schoolGradeInfo';
+import BookTable from './tables/books';
+import AuthorTable from './tables/authors';
+import PublisherTable from './tables/publishers';
+import AdminTable from './tables/admin';
+import TagTable from './tables/tags';
+import UsingTagTable from './tables/usingTags';
+import DepartmentTable from './tables/departments';
+import RequestTable from './tables/requests';
+import UsingRecommendationsTable from './tables/usingRecommendations';
+import RecommendationTable from './tables/recommendations';
+import SchoolGradeInfoTable from './tables/schoolGradeInfo';
 
 import {isLocal} from '../cli/cmdLine';
 
@@ -21,17 +21,17 @@ const sequelize = new Sequelize('hotate', 'root', 'root', {
 
 
 const db = {
-  Book: Book.initialize(sequelize),
-  Author: Author.initialize(sequelize),
-  Publisher: Publisher.initialize(sequelize),
-  Admin: Admin.initialize(sequelize),
-  Tag: Tag.initialize(sequelize),
-  UsingTag: UsingTag.initialize(sequelize),
-  Department: Department.initialize(sequelize),
-  Request: Request.initialize(sequelize),
-  UsingRecommendations: UsingRecommendations.initialize(sequelize),
-  Recommendation: Recommendation.initialize(sequelize),
-  SchoolGradeInfo: SchoolGradeInfo.initialize(sequelize),
+  Book: BookTable.initialize(sequelize),
+  Author: AuthorTable.initialize(sequelize),
+  Publisher: PublisherTable.initialize(sequelize),
+  Admin: AdminTable.initialize(sequelize),
+  Tag: TagTable.initialize(sequelize),
+  UsingTag: UsingTagTable.initialize(sequelize),
+  Department: DepartmentTable.initialize(sequelize),
+  Request: RequestTable.initialize(sequelize),
+  UsingRecommendations: UsingRecommendationsTable.initialize(sequelize),
+  Recommendation: RecommendationTable.initialize(sequelize),
+  SchoolGradeInfo: SchoolGradeInfoTable.initialize(sequelize),
 };
 
 // テーブル同士の関係を作成

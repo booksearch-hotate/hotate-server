@@ -1,4 +1,4 @@
-import TagModel from '../model/tag/tagModel';
+import Tag from '../model/tag/tag';
 import {ITagRepository} from '../model/tag/ITagRepository';
 
 import {v4 as uuidv4} from 'uuid';
@@ -10,7 +10,7 @@ export default class TagService {
     this.tagRepository = tagRepository;
   }
 
-  public async isExist(tag: TagModel): Promise<boolean> {
+  public async isExist(tag: Tag): Promise<boolean> {
     const found = await this.tagRepository.findByName(tag.Name);
 
     return found !== null;
@@ -20,7 +20,7 @@ export default class TagService {
     return uuidv4();
   }
 
-  public async getCount(tag: TagModel): Promise<number> {
+  public async getCount(tag: Tag): Promise<number> {
     const count = await this.tagRepository.getCount(tag.Id);
 
     return count;
