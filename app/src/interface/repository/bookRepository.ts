@@ -5,15 +5,15 @@ import UsingTagTable from '../../infrastructure/db/tables/usingTags';
 import TagTable from '../../infrastructure/db/tables/tags';
 
 import {IBookRepository} from '../../domain/model/book/IBookRepository';
-import Book from '../../domain/model/book/bookModel';
-import Author from '../../domain/model/author/authorModel';
-import Publisher from '../../domain/model/publisher/publisherModel';
-import Tag from '../../domain/model/tag/tagModel';
+import Book from '../../domain/model/book/book';
+import Author from '../../domain/model/author/author';
+import Publisher from '../../domain/model/publisher/publisher';
+import Tag from '../../domain/model/tag/tag';
 
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 import {IEsBook} from '../../infrastructure/elasticsearch/documents/IEsBook';
-import BookIdModel from '../../domain/model/book/bookIdModel';
-import PaginationMargin from '../../domain/model/pagination/paginationMarginModel';
+import BookId from '../../domain/model/book/bookId';
+import PaginationMargin from '../../domain/model/pagination/paginationMargin';
 
 import sequelize from 'sequelize';
 
@@ -103,7 +103,7 @@ export default class BookRepository implements IBookRepository {
     return {books: bookModels, count};
   }
 
-  public async searchById(id: BookIdModel): Promise<Book> {
+  public async searchById(id: BookId): Promise<Book> {
     const book = await this.db.Book.findOne({where: {id: id.Id}});
     if (!book) throw new Error('book not found');
 

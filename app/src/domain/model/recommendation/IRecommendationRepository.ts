@@ -1,5 +1,5 @@
-import PaginationMargin from '../pagination/paginationMarginModel';
-import Recommendation from './recommendationModel';
+import PaginationMargin from '../pagination/paginationMargin';
+import Recommendation from './recommendation';
 export interface IRecommendationRepository {
   insert(recommendationModel: Recommendation): Promise<void>
   findMaxIndex(): Promise<number>

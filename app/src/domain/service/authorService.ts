@@ -1,4 +1,4 @@
-import Author from '../model/author/authorModel';
+import Author from '../model/author/author';
 import {IAuthorRepository} from '../model/author/IAuthorRepository';
 
 import {v4 as uuidv4} from 'uuid';

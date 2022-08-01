@@ -1,4 +1,4 @@
-import Book from './bookModel';
+import Book from './book';
 
 export default class BookData {
   private id: string;

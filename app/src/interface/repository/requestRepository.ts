@@ -1,9 +1,9 @@
 import {IBookRequestRepository} from '../../domain/model/bookRequest/IBookRequestRepository';
-import BookRequest from '../../domain/model/bookRequest/bookRequestModel';
+import BookRequest from '../../domain/model/bookRequest/bookRequest';
 
 import RequestTable from '../../infrastructure/db/tables/requests';
 import DepartmentTable from '../../infrastructure/db/tables/departments';
-import Department from '../../domain/model/department/departmentModel';
+import Department from '../../domain/model/department/department';
 
 interface sequelize {
   Request: typeof RequestTable,

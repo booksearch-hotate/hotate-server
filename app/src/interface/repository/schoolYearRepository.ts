@@ -1,7 +1,7 @@
 import {ISchoolGradeInfoRepository} from '../../domain/model/schoolGradeInfo/ISchoolGradeInfoRepository';
-import SchoolClass from '../../domain/model/schoolGradeInfo/schoolClassModel';
-import SchoolGradeInfo from '../../domain/model/schoolGradeInfo/schoolGradeInfoModel';
-import SchoolYear from '../../domain/model/schoolGradeInfo/schoolYearModel';
+import SchoolClass from '../../domain/model/schoolGradeInfo/schoolClass';
+import SchoolGradeInfo from '../../domain/model/schoolGradeInfo/schoolGradeInfo';
+import SchoolYear from '../../domain/model/schoolGradeInfo/schoolYear';
 import SchoolGradeInfoTable from '../../infrastructure/db/tables/schoolGradeInfo';
 
 interface sequelize {

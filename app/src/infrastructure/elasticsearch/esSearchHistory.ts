@@ -1,9 +1,9 @@
 import ElasticSearch from './elasticsearch';
 import axios from 'axios';
-import SearchHistory from '../../domain/model/searchHistory/searchHistoryModel';
+import SearchHistory from '../../domain/model/searchHistory/searchHistory';
 
 import esDocuments from './documents/documentType';
-import PaginationMargin from '../../domain/model/pagination/paginationMarginModel';
+import PaginationMargin from '../../domain/model/pagination/paginationMargin';
 
 export default class EsSearchHistory extends ElasticSearch {
   private total = 0;

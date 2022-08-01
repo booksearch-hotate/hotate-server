@@ -1,4 +1,4 @@
-import BookRequest from './bookRequestModel';
+import BookRequest from './bookRequest';
 
 export interface IBookRequestRepository {
   register(request: BookRequest): Promise<void>

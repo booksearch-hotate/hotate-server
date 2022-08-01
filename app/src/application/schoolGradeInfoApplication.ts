@@ -1,8 +1,8 @@
 import {ISchoolGradeInfoRepository} from '../domain/model/schoolGradeInfo/ISchoolGradeInfoRepository';
-import SchoolClass from '../domain/model/schoolGradeInfo/schoolClassModel';
+import SchoolClass from '../domain/model/schoolGradeInfo/schoolClass';
 import SchoolGradeInfoData from '../domain/model/schoolGradeInfo/schoolGradeInfoData';
-import SchoolGradeInfo from '../domain/model/schoolGradeInfo/schoolGradeInfoModel';
-import SchoolYear from '../domain/model/schoolGradeInfo/schoolYearModel';
+import SchoolGradeInfo from '../domain/model/schoolGradeInfo/schoolGradeInfo';
+import SchoolYear from '../domain/model/schoolGradeInfo/schoolYear';
 
 export default class SchoolGradeInfoApplicationService {
   private readonly schoolGradeInfoRepository: ISchoolGradeInfoRepository;

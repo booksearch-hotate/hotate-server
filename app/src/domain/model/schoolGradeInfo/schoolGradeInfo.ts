@@ -1,5 +1,5 @@
-import SchoolClass from './schoolClassModel';
-import SchoolYear from './schoolYearModel';
+import SchoolClass from './schoolClass';
+import SchoolYear from './schoolYear';
 
 export default class SchoolGradeInfo {
   private year: SchoolYear;

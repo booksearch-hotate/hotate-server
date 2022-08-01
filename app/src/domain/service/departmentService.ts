@@ -1,6 +1,6 @@
 import {v4 as uuidv4} from 'uuid';
 
-import Department from '../model/department/departmentModel';
+import Department from '../model/department/department';
 
 import {IDepartmentRepository} from '../model/department/IDepartmentRepository';
 

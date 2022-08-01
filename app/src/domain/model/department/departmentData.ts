@@ -1,4 +1,4 @@
-import Department from './departmentModel';
+import Department from './department';
 
 export default class DepartmentData {
   private id: string;
