@@ -5,15 +5,15 @@ import UsingTagTable from '../../infrastructure/db/tables/usingTags';
 import TagTable from '../../infrastructure/db/tables/tags';
 
 import {IBookRepository} from '../../domain/model/book/IBookRepository';
-import BookModel from '../../domain/model/book/bookModel';
-import AuthorModel from '../../domain/model/author/authorModel';
-import PublisherModel from '../../domain/model/publisher/publisherModel';
-import TagModel from '../../domain/model/tag/tagModel';
+import Book from '../../domain/model/book/bookModel';
+import Author from '../../domain/model/author/authorModel';
+import Publisher from '../../domain/model/publisher/publisherModel';
+import Tag from '../../domain/model/tag/tagModel';
 
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 import {IEsBook} from '../../infrastructure/elasticsearch/documents/IEsBook';
 import BookIdModel from '../../domain/model/book/bookIdModel';
-import PaginationMarginModel from '../../domain/model/pagination/paginationMarginModel';
+import PaginationMargin from '../../domain/model/pagination/paginationMarginModel';
 
 import sequelize from 'sequelize';
 
@@ -35,7 +35,7 @@ export default class BookRepository implements IBookRepository {
     this.esSearchBook = EsSearchBook;
   }
 
-  public async save(book: BookModel): Promise<void> {
+  public async save(book: Book): Promise<void> {
     await this.db.Book.create({
       id: book.Id,
       book_name: book.Name,
@@ -61,7 +61,7 @@ export default class BookRepository implements IBookRepository {
     await Promise.all(deletes);
   }
 
-  public async search(query: string, pageCount: number, margin: PaginationMarginModel): Promise<{books: BookModel[], count: number}> {
+  public async search(query: string, pageCount: number, margin: PaginationMargin): Promise<{books: Book[], count: number}> {
     const searchResult = await this.esSearchBook.searchBooks(query, pageCount, margin); // 検索にヒットしたidの配列
 
     const bookIds = searchResult.ids;
@@ -71,7 +71,7 @@ export default class BookRepository implements IBookRepository {
     // bookIdsからbooksを取得する
     const books = await this.db.Book.findAll({where: {id: bookIds}});
 
-    const bookModels: BookModel[] = [];
+    const bookModels: Book[] = [];
 
     for (const fetchBook of books) {
       const authorId = fetchBook.author_id;
@@ -83,10 +83,10 @@ export default class BookRepository implements IBookRepository {
 
       if (!(author && publisher)) throw new Error('author or publisher not found');
 
-      const authorModel = new AuthorModel(author.id, author.name);
-      const publisherModel = new PublisherModel(publisher.id, publisher.name);
+      const authorModel = new Author(author.id, author.name);
+      const publisherModel = new Publisher(publisher.id, publisher.name);
 
-      const bookModel = new BookModel(
+      const bookModel = new Book(
           fetchBook.id,
           fetchBook.book_name,
           fetchBook.book_sub_name,
@@ -103,7 +103,7 @@ export default class BookRepository implements IBookRepository {
     return {books: bookModels, count};
   }
 
-  public async searchById(id: BookIdModel): Promise<BookModel> {
+  public async searchById(id: BookIdModel): Promise<Book> {
     const book = await this.db.Book.findOne({where: {id: id.Id}});
     if (!book) throw new Error('book not found');
 
@@ -117,10 +117,10 @@ export default class BookRepository implements IBookRepository {
 
     if (!(author && publisher)) throw new Error('author or publisher not found');
 
-    const authorModel = new AuthorModel(author.id, author.name);
-    const publisherModel = new PublisherModel(publisher.id, publisher.name);
+    const authorModel = new Author(author.id, author.name);
+    const publisherModel = new Publisher(publisher.id, publisher.name);
 
-    const bookModel = new BookModel(
+    const bookModel = new Book(
         book.id,
         book.book_name,
         book.book_sub_name,
@@ -135,7 +135,7 @@ export default class BookRepository implements IBookRepository {
     return bookModel;
   }
 
-  public async searchByForeignId(foreignModel: AuthorModel[] | PublisherModel[], pageCount: number, margin: PaginationMarginModel): Promise<{books: BookModel[], count: number}> {
+  public async searchByForeignId(foreignModel: Author[] | Publisher[], pageCount: number, margin: PaginationMargin): Promise<{books: Book[], count: number}> {
     if (foreignModel.length === 0) return {books: [], count: 0};
 
     let books: BookTable[] = [];
@@ -144,7 +144,7 @@ export default class BookRepository implements IBookRepository {
 
     const FETCH_COUNT = margin.Margin;
 
-    if (foreignModel[0] instanceof AuthorModel) {
+    if (foreignModel[0] instanceof Author) {
       books = await this.db.Book.findAll({
         where: {author_id: {[sequelize.Op.in]: foreignModel.map((item) => item.Id)}},
         limit: FETCH_COUNT,
@@ -154,7 +154,7 @@ export default class BookRepository implements IBookRepository {
       count = await this.db.Book.count({
         where: {author_id: {[sequelize.Op.in]: foreignModel.map((item) => item.Id)}},
       });
-    } else if (foreignModel[0] instanceof PublisherModel) {
+    } else if (foreignModel[0] instanceof Publisher) {
       books = await this.db.Book.findAll({
         where: {publisher_id: {[sequelize.Op.in]: foreignModel.map((item) => item.Id)}},
         limit: FETCH_COUNT,
@@ -174,12 +174,12 @@ export default class BookRepository implements IBookRepository {
 
       if (!(author && publisher)) throw new Error('author or publisher not found');
 
-      const authorModel = new AuthorModel(author.id, author.name);
-      const publisherModel = new PublisherModel(publisher.id, publisher.name);
+      const authorModel = new Author(author.id, author.name);
+      const publisherModel = new Publisher(publisher.id, publisher.name);
 
       const tags = await this.getTagsByBookId(column.id);
 
-      return new BookModel(
+      return new Book(
           column.id,
           column.book_name,
           column.book_sub_name,
@@ -201,7 +201,7 @@ export default class BookRepository implements IBookRepository {
    * @param word 検索対象
    * @param pageCount ページ数
    */
-  public async searchUsingLike(word: string, pageCount: number, margin: PaginationMarginModel): Promise<{books: BookModel[], count: number}> {
+  public async searchUsingLike(word: string, pageCount: number, margin: PaginationMargin): Promise<{books: Book[], count: number}> {
     // book_nameのLIKE検索
     const searchResult = await this.esSearchBook.searchUsingLike(word, pageCount, margin); // 検索にヒットしたidの配列
 
@@ -221,10 +221,10 @@ export default class BookRepository implements IBookRepository {
 
       if (!(author && publisher)) throw new Error('author or publisher not found');
 
-      const authorModel = new AuthorModel(author.id, author.name);
-      const publisherModel = new PublisherModel(publisher.id, publisher.name);
+      const authorModel = new Author(author.id, author.name);
+      const publisherModel = new Publisher(publisher.id, publisher.name);
 
-      return new BookModel(
+      return new Book(
           book.id,
           book.book_name,
           book.book_sub_name,
@@ -245,19 +245,19 @@ export default class BookRepository implements IBookRepository {
     await this.esSearchBook.executeBulkApi();
   }
 
-  public async getTagsByBookId(bookId: string): Promise<TagModel[]> {
+  public async getTagsByBookId(bookId: string): Promise<Tag[]> {
     const tags = await this.db.UsingTag.findAll({where: {book_id: bookId}});
-    const tagModels: TagModel[] = [];
+    const tagModels: Tag[] = [];
     for (const tag of tags) {
       const tagByDb = await this.db.Tag.findOne({where: {id: tag.tag_id}});
       if (!tagByDb) throw new Error('tag not found');
-      const tagModel = new TagModel(tagByDb.id, tagByDb.name, tagByDb.created_at, []);
+      const tagModel = new Tag(tagByDb.id, tagByDb.name, tagByDb.created_at, []);
       tagModels.push(tagModel);
     }
     return tagModels;
   }
 
-  public async searchByTag(tagName: string, pageCount: number, margin: PaginationMarginModel): Promise<{books: BookModel[], count: number}> {
+  public async searchByTag(tagName: string, pageCount: number, margin: PaginationMargin): Promise<{books: Book[], count: number}> {
     const FETCH_COUNT = margin.Margin;
 
     const tag = await this.db.Tag.findOne({
@@ -288,10 +288,10 @@ export default class BookRepository implements IBookRepository {
 
       if (!(author && publisher)) throw new Error('author or publisher not found');
 
-      const authorModel = new AuthorModel(author.id, author.name);
-      const publisherModel = new PublisherModel(publisher.id, publisher.name);
+      const authorModel = new Author(author.id, author.name);
+      const publisherModel = new Publisher(publisher.id, publisher.name);
 
-      return new BookModel(
+      return new Book(
           book.id,
           book.book_name,
           book.book_sub_name,
@@ -319,7 +319,7 @@ export default class BookRepository implements IBookRepository {
     return this.esSearchBook.Total;
   }
 
-  public async update(book: BookModel): Promise<void> {
+  public async update(book: Book): Promise<void> {
     await this.db.Book.update({
       book_name: book.Name,
       book_sub_name: book.SubName,
@@ -339,14 +339,14 @@ export default class BookRepository implements IBookRepository {
     this.esSearchBook.update(doc);
   }
 
-  public async findAll(pageCount: number, margin: PaginationMarginModel): Promise<BookModel[]> {
+  public async findAll(pageCount: number, margin: PaginationMargin): Promise<Book[]> {
     const FETCH_DATA_NUM = margin.Margin;
     const books = await this.db.Book.findAll({
       limit: FETCH_DATA_NUM,
       offset: pageCount * FETCH_DATA_NUM,
     });
 
-    const bookModels: BookModel[] = [];
+    const bookModels: Book[] = [];
 
     for (const book of books) {
       const authorId = book.author_id;
@@ -359,10 +359,10 @@ export default class BookRepository implements IBookRepository {
 
       if (!(author && publisher)) throw new Error('author or publisher not found');
 
-      const authorModel = new AuthorModel(author.id, author.name);
-      const publisherModel = new PublisherModel(publisher.id, publisher.name);
+      const authorModel = new Author(author.id, author.name);
+      const publisherModel = new Publisher(publisher.id, publisher.name);
 
-      const bookModel = new BookModel(
+      const bookModel = new Book(
           book.id,
           book.book_name,
           book.book_sub_name,
@@ -383,7 +383,7 @@ export default class BookRepository implements IBookRepository {
     return await this.db.Book.count();
   }
 
-  public async deleteBook(book: BookModel): Promise<void> {
+  public async deleteBook(book: Book): Promise<void> {
     const list = [
       this.db.Book.destroy({where: {id: book.Id}}),
       this.esSearchBook.delete(book.Id),

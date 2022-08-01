@@ -1,4 +1,4 @@
-import AdminModel from '../domain/model/admin/adminModel';
+import Admin from '../domain/model/admin/adminModel';
 import {IAdminApplicationRepository} from '../domain/model/admin/IAdminRepository';
 import AdminData from '../domain/model/admin/adminData';
 import AdminService from '../domain/service/adminService';
@@ -13,7 +13,7 @@ export default class AdminApplicationService {
   }
 
   public async isValid(adminData: AdminData): Promise<boolean> {
-    const target = new AdminModel(adminData.Id, adminData.Pw);
+    const target = new Admin(adminData.Id, adminData.Pw);
     const admin = await this.adminRepository.getAdmin();
     return this.adminService.isValid(target, admin);
   }
@@ -31,13 +31,13 @@ export default class AdminApplicationService {
   }
 
   public async insertAdmin(id: string, pw: string): Promise<void> {
-    const admin = new AdminModel(id, pw);
+    const admin = new Admin(id, pw);
 
     await this.adminRepository.insertAdmin(admin);
   }
 
   public async updateAdmin(id: string, pw: string): Promise<void> {
-    const admin = new AdminModel(id, pw);
+    const admin = new Admin(id, pw);
 
     await this.adminRepository.updateAdmin(admin);
   }

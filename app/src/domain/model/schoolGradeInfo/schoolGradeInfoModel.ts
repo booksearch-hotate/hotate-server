@@ -1,11 +1,11 @@
-import SchoolClassModel from './schoolClassModel';
-import SchoolYearModel from './schoolYearModel';
+import SchoolClass from './schoolClassModel';
+import SchoolYear from './schoolYearModel';
 
-export default class SchoolGradeInfoModel {
-  private year: SchoolYearModel;
-  private schoolClass: SchoolClassModel;
+export default class SchoolGradeInfo {
+  private year: SchoolYear;
+  private schoolClass: SchoolClass;
 
-  constructor(year: SchoolYearModel, schoolClass: SchoolClassModel) {
+  constructor(year: SchoolYear, schoolClass: SchoolClass) {
     this.year = year;
     this.schoolClass = schoolClass;
   }

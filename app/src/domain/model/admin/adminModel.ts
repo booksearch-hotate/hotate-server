@@ -1,4 +1,4 @@
-export default class AdminModel {
+export default class Admin {
   private id: string;
   private pw: string;
 

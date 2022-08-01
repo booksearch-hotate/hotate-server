@@ -1,15 +1,15 @@
-import TagModel from './tagModel';
+import Tag from './tagModel';
 
 export interface ITagRepository {
-  createTag (tagModel: TagModel): Promise<void>
-  findByName (name: string): Promise<TagModel | null>
-  saveCombination(tagModel: TagModel, bookId: string): Promise<void>
+  createTag (tagModel: Tag): Promise<void>
+  findByName (name: string): Promise<Tag | null>
+  saveCombination(tagModel: Tag, bookId: string): Promise<void>
   isExistCombination(tagId: string, bookId: string): Promise<boolean>
-  findAll (): Promise<TagModel[]>
-  delete(tag: TagModel): Promise<void>
+  findAll (): Promise<Tag[]>
+  delete(tag: Tag): Promise<void>
   isExistTable(): Promise<boolean>
   deleteAll(): Promise<void>
-  findById(id: string): Promise<TagModel | null>
-  update(tag: TagModel): Promise<void>
+  findById(id: string): Promise<Tag | null>
+  update(tag: Tag): Promise<void>
   getCount (tagId: string): Promise<number>
 }

@@ -1,11 +1,11 @@
-import PaginationMarginModel from '../pagination/paginationMarginModel';
-import RecommendationModel from './recommendationModel';
+import PaginationMargin from '../pagination/paginationMarginModel';
+import Recommendation from './recommendationModel';
 export interface IRecommendationRepository {
-  insert(recommendationModel: RecommendationModel): Promise<void>
+  insert(recommendationModel: Recommendation): Promise<void>
   findMaxIndex(): Promise<number>
-  fetch(pageCount: number, margin: PaginationMarginModel): Promise<RecommendationModel[]>
+  fetch(pageCount: number, margin: PaginationMargin): Promise<Recommendation[]>
   fetchAllCount(): Promise<number>
-  findById(id: string): Promise<RecommendationModel | null>
-  update(recommendation: RecommendationModel): Promise<void>
-  delete(recommendation: RecommendationModel): Promise<void>
+  findById(id: string): Promise<Recommendation | null>
+  update(recommendation: Recommendation): Promise<void>
+  delete(recommendation: Recommendation): Promise<void>
 }

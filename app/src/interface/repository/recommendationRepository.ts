@@ -5,10 +5,10 @@ import UsingRecommendationsTable from '../../infrastructure/db/tables/usingRecom
 import BookTable from '../../infrastructure/db/tables/books';
 
 import {IRecommendationRepository} from '../../domain/model/recommendation/IRecommendationRepository';
-import RecommendationModel from '../../domain/model/recommendation/recommendationModel';
-import RecommendationItemModel from '../../domain/model/recommendation/recommendationItemModel';
+import Recommendation from '../../domain/model/recommendation/recommendationModel';
+import RecommendationItem from '../../domain/model/recommendation/recommendationItemModel';
 import BookIdModel from '../../domain/model/book/bookIdModel';
-import PaginationMarginModel from '../../domain/model/pagination/paginationMarginModel';
+import PaginationMargin from '../../domain/model/pagination/paginationMarginModel';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -28,7 +28,7 @@ export default class RecommendationRepository implements IRecommendationReposito
     return await this.db.Recommendation.max('sort_index');
   }
 
-  public async insert(recommendationModel: RecommendationModel): Promise<void> {
+  public async insert(recommendationModel: Recommendation): Promise<void> {
     await this.db.Recommendation.create({
       id: recommendationModel.Id,
       title: recommendationModel.Title,
@@ -38,7 +38,7 @@ export default class RecommendationRepository implements IRecommendationReposito
     });
   }
 
-  public async fetch(pageCount: number, margin: PaginationMarginModel): Promise<RecommendationModel[]> {
+  public async fetch(pageCount: number, margin: PaginationMargin): Promise<Recommendation[]> {
     const FETCH_DATA_NUM = margin.Margin;
     const fetchData = await this.db.Recommendation.findAll({
       limit: FETCH_DATA_NUM,
@@ -49,9 +49,9 @@ export default class RecommendationRepository implements IRecommendationReposito
     const res = fetchData.map(async (column) => {
       const fetchData = await this.db.UsingRecommendations.findAll({where: {recommendation_id: column.id}});
 
-      const items = fetchData === null ? [] : fetchData.map((column) => new RecommendationItemModel(new BookIdModel(column.book_id), column.comment));
+      const items = fetchData === null ? [] : fetchData.map((column) => new RecommendationItem(new BookIdModel(column.book_id), column.comment));
 
-      return new RecommendationModel(
+      return new Recommendation(
           column.id,
           column.title,
           column.content,
@@ -70,16 +70,16 @@ export default class RecommendationRepository implements IRecommendationReposito
     return await this.db.Recommendation.count();
   }
 
-  public async findById(id: string): Promise<RecommendationModel | null> {
+  public async findById(id: string): Promise<Recommendation | null> {
     const fetchData = await this.db.Recommendation.findOne({where: {id}});
 
     if (fetchData === null) return null;
 
     const fetchBooks = await this.db.UsingRecommendations.findAll({where: {recommendation_id: id}});
 
-    const items = fetchBooks.map((column) => new RecommendationItemModel(new BookIdModel(column.book_id), column.comment));
+    const items = fetchBooks.map((column) => new RecommendationItem(new BookIdModel(column.book_id), column.comment));
 
-    return new RecommendationModel(
+    return new Recommendation(
         fetchData.id,
         fetchData.title,
         fetchData.content,
@@ -91,7 +91,7 @@ export default class RecommendationRepository implements IRecommendationReposito
     );
   }
 
-  public async update(recommendation: RecommendationModel): Promise<void> {
+  public async update(recommendation: Recommendation): Promise<void> {
     const settingBooks = async () => {
       await this.db.UsingRecommendations.destroy({where: {recommendation_id: recommendation.Id}});
 
@@ -146,7 +146,7 @@ export default class RecommendationRepository implements IRecommendationReposito
     }, {where: {id: recommendation.Id}});
   }
 
-  public async delete(recommendation: RecommendationModel): Promise<void> {
+  public async delete(recommendation: Recommendation): Promise<void> {
     await this.db.UsingRecommendations.destroy({where: {recommendation_id: recommendation.Id}});
 
     await this.db.Recommendation.decrement('sort_index', {

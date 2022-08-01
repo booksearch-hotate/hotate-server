@@ -4,7 +4,7 @@ import UsingTagTable from '../../infrastructure/db/tables/usingTags';
 
 import {ITagRepository} from '../../domain/model/tag/ITagRepository';
 
-import TagModel from '../../domain/model/tag/tagModel';
+import Tag from '../../domain/model/tag/tagModel';
 import sequelize from 'sequelize';
 
 /* Sequelizeを想定 */
@@ -21,7 +21,7 @@ export default class TagRepository implements ITagRepository {
     this.db = db;
   }
 
-  public async findByName(name: string | null): Promise<TagModel | null> {
+  public async findByName(name: string | null): Promise<Tag | null> {
     const tag = await this.db.Tag.findOne({
       where: {name},
     });
@@ -32,17 +32,17 @@ export default class TagRepository implements ITagRepository {
 
     const bookIds = fetchHavingBooks === null ? [] : fetchHavingBooks.map((column) => column.book_id);
 
-    return new TagModel(tag.id, tag.name, tag.created_at, bookIds);
+    return new Tag(tag.id, tag.name, tag.created_at, bookIds);
   }
 
-  public async createTag(tagModel: TagModel): Promise<void> {
+  public async createTag(tagModel: Tag): Promise<void> {
     await this.db.Tag.create({
       id: tagModel.Id,
       name: tagModel.Name,
     });
   }
 
-  public async saveCombination(tagModel: TagModel, bookId: string): Promise<void> {
+  public async saveCombination(tagModel: Tag, bookId: string): Promise<void> {
     await this.db.UsingTag.create({
       tag_id: tagModel.Id,
       book_id: bookId,
@@ -57,7 +57,7 @@ export default class TagRepository implements ITagRepository {
     return false;
   }
 
-  public async findAll(): Promise<TagModel[]> {
+  public async findAll(): Promise<Tag[]> {
     const tags = await this.db.Tag.findAll({
       attributes: [
         'id',
@@ -83,13 +83,13 @@ export default class TagRepository implements ITagRepository {
 
       const bookIds = fetchBookIds === null ? [] : fetchBookIds.map((column) => column.book_id);
 
-      return new TagModel(tag.id, tag.name, tag.created_at, bookIds);
+      return new Tag(tag.id, tag.name, tag.created_at, bookIds);
     });
 
     return await Promise.all(promiseTags);
   }
 
-  public async delete(tag: TagModel): Promise<void> {
+  public async delete(tag: Tag): Promise<void> {
     await this.db.UsingTag.destroy({where: {tag_id: tag.Id}});
     await this.db.Tag.destroy({where: {id: tag.Id}});
   }
@@ -106,7 +106,7 @@ export default class TagRepository implements ITagRepository {
     await this.db.Tag.destroy({where: {}});
   }
 
-  public async findById(id: string): Promise<TagModel | null> {
+  public async findById(id: string): Promise<Tag | null> {
     const tag = await this.db.Tag.findOne({
       where: {id},
     });
@@ -115,10 +115,10 @@ export default class TagRepository implements ITagRepository {
 
     const fetchBookIds = await this.db.UsingTag.findAll({where: {tag_id: tag.id}});
 
-    return new TagModel(tag.id, tag.name, tag.created_at, fetchBookIds.map((column) => column.book_id));
+    return new Tag(tag.id, tag.name, tag.created_at, fetchBookIds.map((column) => column.book_id));
   }
 
-  public async update(tag: TagModel): Promise<void> {
+  public async update(tag: Tag): Promise<void> {
     await this.db.Tag.update({name: tag.Name}, {where: {id: tag.Id}});
   }
 

@@ -1,6 +1,6 @@
 import BookIdModel from '../book/bookIdModel';
 
-export default class RecommendationItemModel {
+export default class RecommendationItem {
   private bookId: BookIdModel;
   private comment: string | null;
 

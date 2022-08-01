@@ -1,9 +1,9 @@
 import {IBookRequestRepository} from '../../domain/model/bookRequest/IBookRequestRepository';
-import BookRequestModel from '../../domain/model/bookRequest/bookRequestModel';
+import BookRequest from '../../domain/model/bookRequest/bookRequestModel';
 
 import RequestTable from '../../infrastructure/db/tables/requests';
 import DepartmentTable from '../../infrastructure/db/tables/departments';
-import DepartmentModel from '../../domain/model/department/departmentModel';
+import Department from '../../domain/model/department/departmentModel';
 
 interface sequelize {
   Request: typeof RequestTable,
@@ -17,7 +17,7 @@ export default class RequestRepository implements IBookRequestRepository {
     this.db = db;
   }
 
-  public async register(request: BookRequestModel): Promise<void> {
+  public async register(request: BookRequest): Promise<void> {
     await this.db.Request.create({
       id: request.Id,
       book_name: request.BookName,
@@ -36,7 +36,7 @@ export default class RequestRepository implements IBookRequestRepository {
     await this.db.Request.destroy({where: {id: id}});
   }
 
-  public async findAll(): Promise<BookRequestModel[] | null> {
+  public async findAll(): Promise<BookRequest[] | null> {
     const fetchData = await this.db.Request.findAll({order: [['created_at', 'DESC']]});
     if (fetchData === null) return null;
 
@@ -48,12 +48,12 @@ export default class RequestRepository implements IBookRequestRepository {
 
         if (fetchDepartmentData === null) continue;
 
-        const departmentModel = new DepartmentModel(
+        const departmentModel = new Department(
             fetchDepartmentData.id,
             fetchDepartmentData.name,
         );
 
-        res.push(new BookRequestModel(
+        res.push(new BookRequest(
             item.id,
             item.book_name,
             item.author_name,
@@ -74,7 +74,7 @@ export default class RequestRepository implements IBookRequestRepository {
     return res;
   }
 
-  public async findById(requestId: string): Promise<BookRequestModel | null> {
+  public async findById(requestId: string): Promise<BookRequest | null> {
     const fetchData = await this.db.Request.findOne({where: {id: requestId}});
 
     if (fetchData === null) return null;
@@ -83,12 +83,12 @@ export default class RequestRepository implements IBookRequestRepository {
 
     if (fetchDepartmentData === null) throw new Error(`Request data existed, but departmental data did not.  requestId: ${fetchData.id}`);
 
-    const departmentModel = new DepartmentModel(
+    const departmentModel = new Department(
         fetchDepartmentData.id,
         fetchDepartmentData.name,
     );
 
-    return new BookRequestModel(
+    return new BookRequest(
         fetchData.id,
         fetchData.book_name,
         fetchData.author_name,

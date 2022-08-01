@@ -1,9 +1,9 @@
 import ElasticSearch from './elasticsearch';
 import axios from 'axios';
-import SearchHistoryModel from '../../domain/model/searchHistory/searchHistoryModel';
+import SearchHistory from '../../domain/model/searchHistory/searchHistoryModel';
 
 import esDocuments from './documents/documentType';
-import PaginationMarginModel from '../../domain/model/pagination/paginationMarginModel';
+import PaginationMargin from '../../domain/model/pagination/paginationMarginModel';
 
 export default class EsSearchHistory extends ElasticSearch {
   private total = 0;
@@ -16,7 +16,7 @@ export default class EsSearchHistory extends ElasticSearch {
    * 検索ワードを新規に登録します。
    * @param searchWords 検索ワード
    */
-  public async add(searchWords: SearchHistoryModel): Promise<void> {
+  public async add(searchWords: SearchHistory): Promise<void> {
     // もしも同じ検索ワードがすでに登録されていたらスルー
     const res = await axios.get(`${this.uri}/_search`, {
       headers: {
@@ -45,7 +45,7 @@ export default class EsSearchHistory extends ElasticSearch {
    * @param searchWords 検索ワード
    * @returns 検索履歴のモデル
    */
-  public async search(searchWords: string): Promise<SearchHistoryModel[]> {
+  public async search(searchWords: string): Promise<SearchHistory[]> {
     const res = await axios.get(`${this.uri}/_search`, {
       headers: {
         'Content-Type': 'application/json',
@@ -71,9 +71,9 @@ export default class EsSearchHistory extends ElasticSearch {
     ids.splice(ids.indexOf(searchWords), 1);
     createdAts.splice(createdAts.indexOf(searchWords), 1);
 
-    const tagModels: SearchHistoryModel[] = [];
+    const tagModels: SearchHistory[] = [];
     for (let i = 0; i < ids.length; i++) {
-      const tagModel = new SearchHistoryModel(ids[i], words[i], createdAts[i]);
+      const tagModel = new SearchHistory(ids[i], words[i], createdAts[i]);
       tagModels.push(tagModel);
     }
 
@@ -85,7 +85,7 @@ export default class EsSearchHistory extends ElasticSearch {
    * @param count ページ数
    * @returns 検索履歴のモデル
    */
-  public async find(count: number, margin: PaginationMarginModel): Promise<SearchHistoryModel[]> {
+  public async find(count: number, margin: PaginationMargin): Promise<SearchHistory[]> {
     const FETCH_DATA_NUM = margin.Margin;
     const fromVal = count * FETCH_DATA_NUM;
     const res = await axios.get(`${this.uri}/_search`, {
@@ -117,9 +117,9 @@ export default class EsSearchHistory extends ElasticSearch {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const createdAts = hits.map((hit: any) => hit._source.created_at);
 
-    const tagModels: SearchHistoryModel[] = [];
+    const tagModels: SearchHistory[] = [];
     for (let i = 0; i < ids.length; i++) {
-      const tagModel = new SearchHistoryModel(ids[i], words[i], createdAts[i]);
+      const tagModel = new SearchHistory(ids[i], words[i], createdAts[i]);
       tagModels.push(tagModel);
     }
 
