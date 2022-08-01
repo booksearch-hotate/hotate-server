@@ -1,4 +1,4 @@
-import TagModel from '../domain/model/tag/tagModel';
+import Tag from '../domain/model/tag/tag';
 
 import TagService from '../domain/service/tagService';
 
@@ -8,7 +8,7 @@ import {IBookRepository} from '../domain/model/book/IBookRepository';
 import TagData from '../domain/model/tag/tagData';
 
 import Logger from '../infrastructure/logger/logger';
-import BookIdModel from '../domain/model/book/bookIdModel';
+import BookId from '../domain/model/book/bookId';
 
 const logger = new Logger('TagApplicationService');
 
@@ -30,9 +30,9 @@ export default class TagApplicationService {
    * @returns 重複した組み合わせがあったか
    */
   public async create(name: string, bookId: string): Promise<boolean> {
-    let tag = new TagModel(this.tagService.createUUID(), name, null, [bookId]);
+    let tag = new Tag(this.tagService.createUUID(), name, null, [bookId]);
 
-    const book = await this.bookRepository.searchById(new BookIdModel(bookId));
+    const book = await this.bookRepository.searchById(new BookId(bookId));
 
     if (book.isOverNumberOfTags()) throw new Error('The maximum number of tags that can be added to a tag has been exceeded.');
 

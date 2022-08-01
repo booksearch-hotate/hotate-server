@@ -1,4 +1,4 @@
-import AuthorModel from '../model/author/authorModel';
+import Author from '../model/author/author';
 import {IAuthorRepository} from '../model/author/IAuthorRepository';
 
 import {v4 as uuidv4} from 'uuid';
@@ -15,7 +15,7 @@ export default class AuthorService {
    * @param author 著者オブジェクト
    * @returns 存在するか
    */
-  public async isExist(author: AuthorModel): Promise<boolean> {
+  public async isExist(author: Author): Promise<boolean> {
     const found = await this.authorRepository.findByName(author.Name);
 
     return found !== null;

@@ -1,11 +1,11 @@
-import SearchHistoryModel from './searchHistoryModel';
+import SearchHistory from './searchHistory';
 
 export default class SearchHistoryData {
   private words: string;
   private id: string;
   private createdAt: Date;
 
-  public constructor(tar: SearchHistoryModel) {
+  public constructor(tar: SearchHistory) {
     this.words = tar.Words;
     this.id = tar.Id;
     this.createdAt = tar.CreatedAt;

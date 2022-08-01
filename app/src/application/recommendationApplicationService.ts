@@ -1,4 +1,4 @@
-import RecommendationModel from '../domain/model/recommendation/recommendationModel';
+import Recommendation from '../domain/model/recommendation/recommendation';
 import RecommendationService from '../domain/service/recommendationService';
 
 import RecommendationData from '../domain/model/recommendation/recommendationData';
@@ -6,9 +6,9 @@ import RecommendationData from '../domain/model/recommendation/recommendationDat
 import {IRecommendationRepository} from '../domain/model/recommendation/IRecommendationRepository';
 
 import isSameLenAllArray from '../utils/isSameLenAllArray';
-import RecommendationItemModel from '../domain/model/recommendation/recommendationItemModel';
-import BookIdModel from '../domain/model/book/bookIdModel';
-import PaginationMarginModel from '../domain/model/pagination/paginationMarginModel';
+import RecommendationItem from '../domain/model/recommendation/recommendationItem';
+import BookId from '../domain/model/book/bookId';
+import PaginationMargin from '../domain/model/pagination/paginationMargin';
 
 export default class RecommendationApplicationService {
   private readonly recommendationRepository: IRecommendationRepository;
@@ -24,7 +24,7 @@ export default class RecommendationApplicationService {
   }
 
   public async insert(title: string, content: string) {
-    const recommendation = new RecommendationModel(
+    const recommendation = new Recommendation(
         this.recommendationService.createUUID(),
         title,
         content,
@@ -39,7 +39,7 @@ export default class RecommendationApplicationService {
   }
 
   public async fetch(pageCount: number, count: number): Promise<RecommendationData[]> {
-    const fetchModels = await this.recommendationRepository.fetch(pageCount, new PaginationMarginModel(count));
+    const fetchModels = await this.recommendationRepository.fetch(pageCount, new PaginationMargin(count));
     return fetchModels.map((recommendation) => new RecommendationData(recommendation));
   }
 
@@ -70,12 +70,12 @@ export default class RecommendationApplicationService {
 
     if (!isSameLenAllArray([bookIds, bookComments])) throw new Error('Invalid recommendation data.');
 
-    const items: RecommendationItemModel[] = [];
+    const items: RecommendationItem[] = [];
 
     if (!(bookIds instanceof Array)) return;
 
     for (let i = 0; i < bookIds.length; i++) {
-      items.push(new RecommendationItemModel(new BookIdModel(bookIds[i]), bookComments[i]));
+      items.push(new RecommendationItem(new BookId(bookIds[i]), bookComments[i]));
     }
 
     recommendation.changeTitle(title);
@@ -96,11 +96,11 @@ export default class RecommendationApplicationService {
   }
 
   public isOverNumberOfBooksWhenAdd(recommendationData: RecommendationData): boolean {
-    const recommendationItemModel = recommendationData.RecommendationItems.map((item) => new RecommendationItemModel(new BookIdModel(item.BookId), item.Comment));
+    const recommendationItemModel = recommendationData.RecommendationItems.map((item) => new RecommendationItem(new BookId(item.BookId), item.Comment));
 
     /* ダミーデータの追加 */
-    recommendationItemModel.push(new RecommendationItemModel(new BookIdModel('dummy'), ''));
-    const recommendationModel = new RecommendationModel(
+    recommendationItemModel.push(new RecommendationItem(new BookId('dummy'), ''));
+    const recommendationModel = new Recommendation(
         recommendationData.Id,
         recommendationData.Title,
         recommendationData.Content,
@@ -115,9 +115,9 @@ export default class RecommendationApplicationService {
 
   public omitContent(recommendations: RecommendationData[]): RecommendationData[] {
     const omitRecommendations = recommendations.map((recommendationData) => {
-      const recommendationItemModel = recommendationData.RecommendationItems.map((item) => new RecommendationItemModel(new BookIdModel(item.BookId), item.Comment));
+      const recommendationItemModel = recommendationData.RecommendationItems.map((item) => new RecommendationItem(new BookId(item.BookId), item.Comment));
 
-      const recommendationModel = new RecommendationModel(
+      const recommendationModel = new Recommendation(
           recommendationData.Id,
           recommendationData.Title,
           recommendationData.Content,

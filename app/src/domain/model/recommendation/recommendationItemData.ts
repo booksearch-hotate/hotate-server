@@ -1,10 +1,10 @@
-import RecommendationItemModel from './recommendationItemModel';
+import RecommendationItem from './recommendationItem';
 
 export default class RecommendationItemData {
   private bookId: string;
   private comment: string | null;
 
-  constructor(recommendationItemModel: RecommendationItemModel) {
+  constructor(recommendationItemModel: RecommendationItem) {
     this.bookId = recommendationItemModel.BookId.Id;
     this.comment = recommendationItemModel.Comment;
   }

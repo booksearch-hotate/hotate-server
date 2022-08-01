@@ -1,24 +1,24 @@
-import BookModel from './bookModel';
-import BookIdModel from './bookIdModel';
-import TagModel from '../tag/tagModel';
-import PaginationMarginModel from '../pagination/paginationMarginModel';
-import AuthorModel from '../author/authorModel';
-import PublisherModel from '../publisher/publisherModel';
+import Book from './book';
+import BookId from './bookId';
+import Tag from '../tag/tag';
+import PaginationMargin from '../pagination/paginationMargin';
+import Author from '../author/author';
+import Publisher from '../publisher/publisher';
 
 export interface IBookRepository {
-  save (book: BookModel): Promise<void>
+  save (book: Book): Promise<void>
   deleteAll (): Promise<void>
-  search (query: string, pageCount: number, margin: PaginationMarginModel): Promise<{books: BookModel[], count: number}>
+  search (query: string, pageCount: number, margin: PaginationMargin): Promise<{books: Book[], count: number}>
   executeBulkApi (): Promise<void>
-  searchById (id: BookIdModel): Promise<BookModel>
-  searchUsingLike (words: string, pageCount: number, margin: PaginationMarginModel): Promise<{books: BookModel[], count: number}>
-  getTagsByBookId (bookId: string): Promise<TagModel[]>
-  searchByTag (tagName: string, pageCount: number, margin: PaginationMarginModel): Promise<{books: BookModel[], count: number}>
+  searchById (id: BookId): Promise<Book>
+  searchUsingLike (words: string, pageCount: number, margin: PaginationMargin): Promise<{books: Book[], count: number}>
+  getTagsByBookId (bookId: string): Promise<Tag[]>
+  searchByTag (tagName: string, pageCount: number, margin: PaginationMargin): Promise<{books: Book[], count: number}>
   latestEsTotalCount (): number
   getCountUsingTag (searchWord: string): Promise<number>
-  update (bookModel: BookModel): Promise<void>
-  findAll (pageCount: number, marign: PaginationMarginModel): Promise<BookModel[]>
+  update (bookModel: Book): Promise<void>
+  findAll (pageCount: number, marign: PaginationMargin): Promise<Book[]>
   findAllCount (): Promise<number>
-  deleteBook (book: BookModel): Promise<void>
-  searchByForeignId(foreignModel: AuthorModel[] | PublisherModel[], pageCount: number, margin: PaginationMarginModel): Promise<{books: BookModel[], count: number}>
+  deleteBook (book: Book): Promise<void>
+  searchByForeignId(foreignModel: Author[] | Publisher[], pageCount: number, margin: PaginationMargin): Promise<{books: Book[], count: number}>
 }

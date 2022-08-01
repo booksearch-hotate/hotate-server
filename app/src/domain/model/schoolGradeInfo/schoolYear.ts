@@ -1,4 +1,4 @@
-export default class SchoolYearModel {
+export default class SchoolYear {
   private year: number;
 
   private readonly MAX_SCHOOLYEAR_NUM = 10;

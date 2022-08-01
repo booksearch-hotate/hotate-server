@@ -1,10 +1,10 @@
-import AuthorModel from './authorModel';
+import Author from './author';
 
 export default class AuthorData {
   private id: string;
   private name!: string | null;
 
-  public constructor(authorModel: AuthorModel) {
+  public constructor(authorModel: Author) {
     this.id = authorModel.Id;
     this.name = authorModel.Name;
   }

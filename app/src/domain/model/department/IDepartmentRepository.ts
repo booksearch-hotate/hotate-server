@@ -1,13 +1,13 @@
-import BookRequestModel from '../bookRequest/bookRequestModel';
-import DepartmentModel from './departmentModel';
+import BookRequest from '../bookRequest/bookRequest';
+import Department from './department';
 
 export interface IDepartmentRepository {
-  findAllDepartment(): Promise<DepartmentModel[]>,
-  insertDepartment(department: DepartmentModel): Promise<void>,
+  findAllDepartment(): Promise<Department[]>,
+  insertDepartment(department: Department): Promise<void>,
   count(): Promise<number>,
   deleteDepartment(id: string): Promise<void>,
-  findById(id: string): Promise<DepartmentModel | null>,
-  update(department: DepartmentModel): Promise<void>,
-  findByName (name: string | null): Promise<DepartmentModel | null>,
-  findBookRequestById(departmentId: string): Promise<BookRequestModel[]>
+  findById(id: string): Promise<Department | null>,
+  update(department: Department): Promise<void>,
+  findByName (name: string | null): Promise<Department | null>,
+  findBookRequestById(departmentId: string): Promise<BookRequest[]>
 }

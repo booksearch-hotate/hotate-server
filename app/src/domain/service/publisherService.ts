@@ -1,4 +1,4 @@
-import PublisherModel from '../model/publisher/publisherModel';
+import Publisher from '../model/publisher/publisher';
 
 import {IPublisherRepository} from '../model/publisher/IPublisherRepository';
 
@@ -11,7 +11,7 @@ export default class PublisherService {
     this.publisherRepository = publisherRepository;
   }
 
-  public async isExist(publisher: PublisherModel): Promise<boolean> {
+  public async isExist(publisher: Publisher): Promise<boolean> {
     const found = await this.publisherRepository.findByName(publisher.Name);
 
     return found !== null;

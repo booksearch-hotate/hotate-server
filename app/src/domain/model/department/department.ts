@@ -1,4 +1,4 @@
-export default class DepartmentModel {
+export default class Department {
   private id: string;
   private name: string;
 

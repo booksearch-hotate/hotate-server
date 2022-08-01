@@ -1,5 +1,5 @@
 import {IPublisherRepository} from '../domain/model/publisher/IPublisherRepository';
-import PublisherModel from '../domain/model/publisher/publisherModel';
+import Publisher from '../domain/model/publisher/publisher';
 import PublisherService from '../domain/service/publisherService';
 
 export default class PublisherApplicationService {
@@ -12,7 +12,7 @@ export default class PublisherApplicationService {
   }
 
   public async createPublisher(name: string, isBulk: boolean): Promise<string> {
-    const publisher = new PublisherModel(this.publisherService.createUUID(), name);
+    const publisher = new Publisher(this.publisherService.createUUID(), name);
     let id;
     if (await this.publisherService.isExist(publisher)) {
       const found = await this.publisherRepository.findByName(publisher.Name);

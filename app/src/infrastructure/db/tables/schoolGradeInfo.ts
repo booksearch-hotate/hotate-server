@@ -1,6 +1,6 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
 
-export default class SchoolGradeInfo extends Model {
+export default class SchoolGradeInfoTable extends Model {
   public id!: number;
   public year!: number;
   public school_class!: number;

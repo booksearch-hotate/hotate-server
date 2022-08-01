@@ -1,4 +1,4 @@
-import BookModel from './bookModel';
+import Book from './book';
 
 export default class BookData {
   private id: string;
@@ -15,7 +15,7 @@ export default class BookData {
   private ndc: number | null;
   private tags: string[] = [];
 
-  public constructor(book: BookModel) {
+  public constructor(book: Book) {
     this.id = book.Id;
     this.bookName = book.Name;
     this.authorName = book.Author.Name === null ? '' : book.Author.Name;

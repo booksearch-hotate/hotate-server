@@ -1,6 +1,6 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
 
-export default class Admin extends Model {
+export default class AdminTable extends Model {
   public id!: string;
   public pw!: string;
 

@@ -1,4 +1,4 @@
-import RecommendationModel from './recommendationModel';
+import Recommendation from './recommendation';
 import RecommendationItemData from './recommendationItemData';
 
 export default class RecommendationData {
@@ -11,7 +11,7 @@ export default class RecommendationData {
   private updatedAt: Date | null;
   private recommendationItems: RecommendationItemData[];
 
-  public constructor(recommendationModel: RecommendationModel) {
+  public constructor(recommendationModel: Recommendation) {
     this.id = recommendationModel.Id;
     this.title = recommendationModel.Title;
     this.content = recommendationModel.Content;

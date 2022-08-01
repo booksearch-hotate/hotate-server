@@ -1,4 +1,4 @@
-export default class TagModel {
+export default class Tag {
   private id: string;
   private name: string;
   private createdAt: Date | null;

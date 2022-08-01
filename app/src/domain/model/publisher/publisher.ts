@@ -1,4 +1,4 @@
-export default class PublisherModel {
+export default class Publisher {
   private id: string;
   private name!: string | null;
 

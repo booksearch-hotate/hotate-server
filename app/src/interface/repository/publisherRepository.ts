@@ -1,10 +1,10 @@
 import sequelize from 'sequelize';
 
-import Publisher from '../../infrastructure/db/tables/publishers';
-import Book from '../../infrastructure/db/tables/books';
+import PublisherTable from '../../infrastructure/db/tables/publishers';
+import BookTable from '../../infrastructure/db/tables/books';
 
 import {IPublisherRepository} from '../../domain/model/publisher/IPublisherRepository';
-import PublisherModel from '../../domain/model/publisher/publisherModel';
+import Publisher from '../../domain/model/publisher/publisher';
 
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 
@@ -12,8 +12,8 @@ import {IEsPublisher} from '../../infrastructure/elasticsearch/documents/IEsPubl
 
 /* Sequelizeを想定 */
 interface sequelize {
-  Publisher: typeof Publisher,
-  Book: typeof Book,
+  Publisher: typeof PublisherTable,
+  Book: typeof BookTable,
 }
 
 export default class PublisherRepository implements IPublisherRepository {
@@ -25,7 +25,7 @@ export default class PublisherRepository implements IPublisherRepository {
     this.esPublisher = esPublisher;
   }
 
-  public async save(publisher: PublisherModel, isBulk: boolean = false): Promise<void> {
+  public async save(publisher: Publisher, isBulk: boolean = false): Promise<void> {
     await this.db.Publisher.create({
       id: publisher.Id,
       name: publisher.Name,
@@ -39,12 +39,12 @@ export default class PublisherRepository implements IPublisherRepository {
     else await this.esPublisher.create(doc);
   }
 
-  public async findByName(name: string | null): Promise<PublisherModel | null> {
+  public async findByName(name: string | null): Promise<Publisher | null> {
     const publisher = await this.db.Publisher.findOne({
       attributes: ['id'],
       where: {name},
     });
-    if (publisher) return new PublisherModel(publisher.id, publisher.name);
+    if (publisher) return new Publisher(publisher.id, publisher.name);
     return null;
   }
   public async deleteAll(): Promise<void> {
@@ -76,30 +76,30 @@ export default class PublisherRepository implements IPublisherRepository {
     }
   }
 
-  public async findById(publisherId: string): Promise<PublisherModel> {
+  public async findById(publisherId: string): Promise<Publisher> {
     const publisher = await this.db.Publisher.findOne({
       attributes: ['id', 'name'],
       where: {id: publisherId},
     });
-    if (publisher) return new PublisherModel(publisher.id, publisher.name);
+    if (publisher) return new Publisher(publisher.id, publisher.name);
     throw new Error('Author not found');
   }
 
-  public async update(publisher: PublisherModel): Promise<void> {
-    const updateDB = async (p: PublisherModel) => {
+  public async update(publisher: Publisher): Promise<void> {
+    const updateDB = async (p: Publisher) => {
       await this.db.Publisher.update({
         name: p.Name,
       }, {where: {id: p.Id}});
     };
 
-    const updateES = async (p: PublisherModel) => {
+    const updateES = async (p: Publisher) => {
       await this.esPublisher.update({db_id: p.Id, name: p.Name});
     };
 
     await Promise.all([updateDB(publisher), updateES(publisher)]);
   }
 
-  public async search(name: string): Promise<PublisherModel[]> {
+  public async search(name: string): Promise<Publisher[]> {
     const ids = await this.esPublisher.search(name);
     const fetchData = await this.db.Publisher.findAll({
       where: {
@@ -111,10 +111,10 @@ export default class PublisherRepository implements IPublisherRepository {
 
     if (fetchData === null) return [];
 
-    return fetchData.map((column) => new PublisherModel(column.id, column.name));
+    return fetchData.map((column) => new Publisher(column.id, column.name));
   }
 
-  public async searchUsingLike(name: string): Promise<PublisherModel[]> {
+  public async searchUsingLike(name: string): Promise<Publisher[]> {
     const ids = await this.esPublisher.searchUsingLike(name);
     const fetchData = await this.db.Publisher.findAll({
       where: {
@@ -126,6 +126,6 @@ export default class PublisherRepository implements IPublisherRepository {
 
     if (fetchData === null) return [];
 
-    return fetchData.map((column) => new PublisherModel(column.id, column.name));
+    return fetchData.map((column) => new Publisher(column.id, column.name));
   }
 }

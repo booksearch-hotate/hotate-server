@@ -1,5 +1,5 @@
 import {IAuthorRepository} from '../domain/model/author/IAuthorRepository';
-import AuthorModel from '../domain/model/author/authorModel';
+import Author from '../domain/model/author/author';
 import AuthorService from '../domain/service/authorService';
 
 import AuthorData from '../domain/model/author/authorData';
@@ -14,7 +14,7 @@ export default class AuthorApplicationService {
   }
 
   public async createAuthor(name: string, isBulk: boolean): Promise<string> {
-    const author = new AuthorModel(this.authorService.createUUID(), name);
+    const author = new Author(this.authorService.createUUID(), name);
     let id;
     if (await this.authorService.isExist(author)) {
       const found = await this.authorRepository.findByName(author.Name);
