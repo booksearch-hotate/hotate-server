@@ -1,7 +1,7 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
-import UsingTag from './usingTags';
+import UsingTagTable from './usingTags';
 
-export default class Tag extends Model {
+export default class TagTable extends Model {
   public id!: string;
   public name!: string;
   public created_at!: Date;
@@ -27,7 +27,7 @@ export default class Tag extends Model {
   }
 
   public static associate() {
-    this.hasMany(UsingTag, {
+    this.hasMany(UsingTagTable, {
       sourceKey: 'id',
       foreignKey: 'tag_id',
     });

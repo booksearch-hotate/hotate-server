@@ -1,6 +1,6 @@
-import Book from '../../infrastructure/db/tables/books';
-import Tag from '../../infrastructure/db/tables/tags';
-import UsingTag from '../../infrastructure/db/tables/usingTags';
+import BookTable from '../../infrastructure/db/tables/books';
+import TagTable from '../../infrastructure/db/tables/tags';
+import UsingTagTable from '../../infrastructure/db/tables/usingTags';
 
 import {ITagRepository} from '../../domain/model/tag/ITagRepository';
 
@@ -9,9 +9,9 @@ import sequelize from 'sequelize';
 
 /* Sequelizeを想定 */
 interface sequelize {
-  Book: typeof Book,
-  Tag: typeof Tag,
-  UsingTag: typeof UsingTag,
+  Book: typeof BookTable,
+  Tag: typeof TagTable,
+  UsingTag: typeof UsingTagTable,
 }
 
 export default class TagRepository implements ITagRepository {

@@ -1,8 +1,8 @@
 import {Sequelize, Model, DataTypes, ModelAttributes} from 'sequelize';
 
-import Publisher from './publishers';
-import Author from './authors';
-import UsingRecommendations from './usingRecommendations';
+import PublisherTable from './publishers';
+import AuthorTable from './authors';
+import UsingRecommendationsTable from './usingRecommendations';
 
 
 interface IAttributeObj {
@@ -77,7 +77,7 @@ const initColumn: IRequiredKeys & IOptionalKeys = {
   },
 };
 
-export default class Book extends Model {
+export default class BookTable extends Model {
   public id!: string;
   public isbn!: string;
   public book_name!: string;
@@ -101,10 +101,10 @@ export default class Book extends Model {
   }
 
   public static associate() {
-    this.belongsTo(Publisher, {foreignKey: 'publisher_id', constraints: false});
-    this.belongsTo(Author, {foreignKey: 'author_id', constraints: false});
+    this.belongsTo(PublisherTable, {foreignKey: 'publisher_id', constraints: false});
+    this.belongsTo(AuthorTable, {foreignKey: 'author_id', constraints: false});
 
-    this.hasMany(UsingRecommendations, {
+    this.hasMany(UsingRecommendationsTable, {
       sourceKey: 'id',
       foreignKey: 'book_id',
     });

@@ -1,8 +1,8 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
 
-import Department from './departments';
+import DepartmentTable from './departments';
 
-export default class Request extends Model {
+export default class RequestTable extends Model {
   public id!: string;
   public isbn!: string;
   public book_name!: string;
@@ -71,6 +71,6 @@ export default class Request extends Model {
     return this;
   }
   public static associate() {
-    this.belongsTo(Department, {foreignKey: 'department_id', constraints: false});
+    this.belongsTo(DepartmentTable, {foreignKey: 'department_id', constraints: false});
   }
 }

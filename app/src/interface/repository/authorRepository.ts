@@ -1,5 +1,5 @@
-import Author from '../../infrastructure/db/tables/authors';
-import Book from '../../infrastructure/db/tables/books';
+import AuthorTable from '../../infrastructure/db/tables/authors';
+import BookTable from '../../infrastructure/db/tables/books';
 
 import {IAuthorRepository} from '../../domain/model/author/IAuthorRepository';
 import AuthorModel from '../../domain/model/author/authorModel';
@@ -11,8 +11,8 @@ import sequelize from 'sequelize';
 
 /* Sequelizeを想定 */
 interface sequelize {
-  Author: typeof Author,
-  Book: typeof Book
+  Author: typeof AuthorTable,
+  Book: typeof BookTable
 }
 
 export default class AuthorRepository implements IAuthorRepository {

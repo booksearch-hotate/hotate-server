@@ -1,13 +1,13 @@
 import {IBookRequestRepository} from '../../domain/model/bookRequest/IBookRequestRepository';
 import BookRequestModel from '../../domain/model/bookRequest/bookRequestModel';
 
-import Request from '../../infrastructure/db/tables/requests';
-import Department from '../../infrastructure/db/tables/departments';
+import RequestTable from '../../infrastructure/db/tables/requests';
+import DepartmentTable from '../../infrastructure/db/tables/departments';
 import DepartmentModel from '../../domain/model/department/departmentModel';
 
 interface sequelize {
-  Request: typeof Request,
-  Department: typeof Department,
+  Request: typeof RequestTable,
+  Department: typeof DepartmentTable,
 }
 
 export default class RequestRepository implements IBookRequestRepository {

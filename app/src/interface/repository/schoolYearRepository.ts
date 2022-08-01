@@ -2,10 +2,10 @@ import {ISchoolGradeInfoRepository} from '../../domain/model/schoolGradeInfo/ISc
 import SchoolClassModel from '../../domain/model/schoolGradeInfo/schoolClassModel';
 import SchoolGradeInfoModel from '../../domain/model/schoolGradeInfo/schoolGradeInfoModel';
 import SchoolYearModel from '../../domain/model/schoolGradeInfo/schoolYearModel';
-import SchoolGradeInfo from '../../infrastructure/db/tables/schoolGradeInfo';
+import SchoolGradeInfoTable from '../../infrastructure/db/tables/schoolGradeInfo';
 
 interface sequelize {
-  SchoolGradeInfo: typeof SchoolGradeInfo,
+  SchoolGradeInfo: typeof SchoolGradeInfoTable,
 }
 
 export default class SchoolYearRepository implements ISchoolGradeInfoRepository {

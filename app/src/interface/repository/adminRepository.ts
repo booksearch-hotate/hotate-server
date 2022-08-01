@@ -1,4 +1,4 @@
-import Admin from '../../infrastructure/db/tables/admin';
+import AdminTable from '../../infrastructure/db/tables/admin';
 import dotenv from 'dotenv';
 import Logger from '../../infrastructure/logger/logger';
 
@@ -8,7 +8,7 @@ import AdminModel from '../../domain/model/admin/adminModel';
 
 /* Sequelizeを想定 */
 interface sequelize {
-  Admin: typeof Admin,
+  Admin: typeof AdminTable,
 }
 
 export default class AdminRepository implements IAdminApplicationRepository {

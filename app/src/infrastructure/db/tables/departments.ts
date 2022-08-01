@@ -1,13 +1,13 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
 import {HasManyCreateAssociationMixin} from 'sequelize';
 
-import Request from './requests';
+import RequestTable from './requests';
 
-export default class Department extends Model {
+export default class DepartmentTable extends Model {
   public id!: string;
   public name!: string;
 
-  public createBook!: HasManyCreateAssociationMixin<Request>;
+  public createBook!: HasManyCreateAssociationMixin<RequestTable>;
 
   public static initialize(sequelize: Sequelize) {
     this.init({
@@ -30,7 +30,7 @@ export default class Department extends Model {
   }
 
   public static associate() {
-    this.hasMany(Request, {
+    this.hasMany(RequestTable, {
       sourceKey: 'id',
       foreignKey: 'department_id',
     });

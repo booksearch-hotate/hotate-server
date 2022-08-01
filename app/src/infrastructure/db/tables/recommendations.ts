@@ -1,7 +1,7 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
-import UsingRecommendations from './usingRecommendations';
+import UsingRecommendationsTable from './usingRecommendations';
 
-export default class Recommendation extends Model {
+export default class RecommendationTable extends Model {
   public id!: string;
   public title!: string;
   public content!: string;
@@ -43,7 +43,7 @@ export default class Recommendation extends Model {
   }
 
   public static associate() {
-    this.hasMany(UsingRecommendations, {
+    this.hasMany(UsingRecommendationsTable, {
       sourceKey: 'id',
       foreignKey: 'recommendation_id',
     });
