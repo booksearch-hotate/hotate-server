@@ -19,6 +19,7 @@
 
 .recommendation-box p {
   color: #444;
+  white-space: pre-wrap;
 }
 
 .recommendation-book-list-box {
