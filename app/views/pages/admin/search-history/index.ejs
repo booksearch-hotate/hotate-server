@@ -4,7 +4,10 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <h3>検索履歴一覧</h3>
+    <%- include('./../../../components/headerTitle', {mes: '検索履歴一覧'}) %>
+    <% if (pageData.anyData.searchHistory.length === 0) { %>
+      <%- include('../../../components/noItem', {title: "検索履歴がありません", mes: ""}) %>
+    <% } else { %>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -29,6 +32,7 @@
         <% } %>
       </tbody>
     </table>
+    <% } %>
     <%- include('./../../../components/navigation', {paginationData: pageData.anyData.paginationData, url: '/admin/search-history/?'}) %>
     <div class="text-center">
       <a href="/admin/">戻る</a>
