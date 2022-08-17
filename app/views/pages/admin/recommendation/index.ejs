@@ -5,13 +5,17 @@
     <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/recommendation/recommendation.css" />
   </head>
   <body>
-    <h3>おすすめセクション一覧</h3>
+    <%- include('./../../../components/headerTitle', {mes: 'おすすめセクション一覧'}) %>
 
     <div class="text-center">
       <a href="/admin/recommendation/add" class="btn btn-primary">セクションを追加する</a>
     </div>
 
-    <%- include('./../../../components/recommendationList', {editMode: true}) %>
+    <% if (pageData.anyData.recommendations.length === 0) { %>
+      <%- include('../../../components/noItem', {title: "セクションがありません", mes:"お知らせやおすすめの本を皆さんに紹介しましょう！"}) %>
+    <% } else { %>
+      <%- include('./../../../components/recommendationList', {editMode: true}) %>
+    <% } %>
 
     <%- include('./../../../components/navigation', {paginationData: pageData.anyData.paginationData, url: '/admin/recommendation/?'}) %>
 

@@ -236,3 +236,18 @@ body {
   font-size: 1rem;
   margin: 0;
 }
+
+/* アイテムが見つからなかった時のUI */
+.no-item-box {
+  text-align: center;
+}
+
+.no-item-box svg {
+  height: 6rem;
+  width: auto;
+}
+
+svg {
+  height: 100%;
+  width: auto;
+}
