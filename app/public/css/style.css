@@ -246,4 +246,8 @@ body {
   height: 6rem;
   width: auto;
 }
+
+svg {
+  height: 100%;
+  width: auto;
 }
