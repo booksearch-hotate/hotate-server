@@ -5,6 +5,9 @@
   </head>
   <body>
     <%- include('./../../../components/headerTitle', {mes: 'リクエスト一覧'}) %>
+    <% if (pageData.anyData.requests.length === 0) { %>
+      <%- include('../../../components/noItem', {title: "リクエスト情報はありません", mes:""}) %>
+    <% } else { %>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -33,6 +36,7 @@
         <% } %>
       </tbody>
     </table>
+    <% } %>
     <div class="text-center">
       <a href="/admin/">戻る</a>
     </div>
