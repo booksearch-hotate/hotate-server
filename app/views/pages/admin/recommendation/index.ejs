@@ -11,7 +11,11 @@
       <a href="/admin/recommendation/add" class="btn btn-primary">セクションを追加する</a>
     </div>
 
-    <%- include('./../../../components/recommendationList', {editMode: true}) %>
+    <% if (pageData.anyData.recommendations.length === 0) { %>
+      <%- include('../../../components/noItem', {title: "セクションがありません", mes:"お知らせやおすすめの本を皆さんに紹介しましょう！"}) %>
+    <% } else { %>
+      <%- include('./../../../components/recommendationList', {editMode: true}) %>
+    <% } %>
 
     <%- include('./../../../components/navigation', {paginationData: pageData.anyData.paginationData, url: '/admin/recommendation/?'}) %>
 
