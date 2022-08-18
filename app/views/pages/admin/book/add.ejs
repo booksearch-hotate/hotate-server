@@ -6,20 +6,31 @@
   </head>
   <body>
     <header>
-      <div class="text-center">
-        <h2>本の追加</h2>
-      </div>
+      <%- include('./../../../components/headerTitle', {mes: '本の追加'}) %>
     </header>
+
     <main>
-      <% if (pageData.anyData.count < 10) { %>
-        <a href="/admin/book/add?c=<%=pageData.anyData.count + 1 %>">1冊増やす</a>
-      <% } %>
-      <% if (pageData.anyData.count > 1) { %>
-        <a href="/admin/book/add?c=<%=pageData.anyData.count - 1 %>">1冊減らす</a>
-      <% } %>
-        <div class="form-box">
+
+      <h4 class="text-center my-4">数を変更すると入力されたデータは<span class="text-danger">リセット</span>されます。</h4>
+
+      <div class="d-flex justify-content-evenly my-4">
+        <% if (pageData.anyData.count > 1) { %>
+          <a href="/admin/book/add?c=<%=pageData.anyData.count - 1 %>" class="decrease-count">1冊減らす</a>
+        <% } %>
+        <% if (pageData.anyData.count < 10) { %>
+          <a href="/admin/book/add?c=<%=pageData.anyData.count + 1 %>" class="increase-count">1冊増やす</a>
+        <% } %>
+      </div>
+
+        <div class="form-box mb-4">
           <form action="/admin/book/add" method="post">
             <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+
+            <div class="d-flex justify-content-evenly my-4">
+              <a href="/admin/book/" class="btn btn-outline-success">戻る</a>
+              <button type="submit" class="btn btn-outline-primary">追加</button>
+            </div>
+
             <div class="container">
               <div class="row row-cols-2">
                 <% for (let i = 0; i < pageData.anyData.count; i++) { %>
@@ -29,7 +40,6 @@
                 <% } %>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary">追加</button>
           </form>
         </div>
     </main>
