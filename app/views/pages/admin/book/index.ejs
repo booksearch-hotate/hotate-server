@@ -10,6 +10,9 @@
     <div class="add-book-box text-center">
       <a href="/admin/book/add"><h3>本を追加する</h3></a>
     </div>
+    <% if (pageData.anyData.bookCount === 0) { %>
+      <%- include('../../../components/noItem', {title: "本が登録されていません", mes:"上の「本を追加する」から本を追加しましょう！"}) %>
+    <% } else { %>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -43,6 +46,7 @@
         <% } %>
       </tbody>
     </table>
+    <% } %>
     <%- include('./../../../components/navigation', {paginationData: pageData.anyData.paginationData, url: '/admin/book/?'}) %>
     <div class="text-center">
       <a href="/admin/">戻る</a>
