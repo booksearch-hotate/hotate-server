@@ -1,0 +1,12 @@
+.book-card-box {
+  background-color: #fff6f0;
+  padding: 10px;
+  border: solid 1px #666;
+  border-radius: 10px;
+}
+
+.book-card-box h3 {
+  text-align: center;
+  font-size: 2rem;
+  border-bottom: 1px #666 solid;
+}
