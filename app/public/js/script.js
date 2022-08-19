@@ -82,7 +82,7 @@ function admitConfirm (confirmId) {
   removeConfirmBox(confirmId);
 }
 
-function createConfirmBox(formName, message) {
+function createConfirmBox(formName, message = '') {
   // 既に表示されていたら
   if (document.getElementById(CONFIRM_ID_PHRASE) !== null) {
     if (typeof CONFIRM_TARGET_INFO.id === 'undefined') document.getElementById(CONFIRM_ID_PHRASE).remove();
