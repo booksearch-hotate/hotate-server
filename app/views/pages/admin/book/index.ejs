@@ -6,10 +6,13 @@
   <body>
     <%- include('./../../../components/headerTitle', {mes: '本一覧', logo: 'book'}) %>
     <h5>ログイン状態で本の詳細ページを閲覧すると、その本を編集することが可能です</h5>
+  
     <h5>合計 : <%= pageData.anyData.bookCount %>冊</h5>
+
     <div class="add-book-box text-center">
       <a href="/admin/book/add"><h3>本を追加する</h3></a>
     </div>
+
     <% if (pageData.anyData.bookCount === 0) { %>
       <%- include('../../../components/noItem', {title: "本が登録されていません", mes:"上の「本を追加する」から本を追加しましょう！"}) %>
     <% } else { %>
@@ -17,8 +20,10 @@
       <form action="/admin/book/delete-all" method="post" name="deleteAll">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
       </form>
-      <button class="btn btn-primary" onclick="createConfirmBox('deleteAll', '本データを全て削除します。よろしいですか？')">本データを一括削除</button>
+  
+      <button class="btn btn-danger" onclick="createConfirmBox('deleteAll', '本データを全て削除します。よろしいですか？')">本データを一括削除</button>
     </div>
+
     <table class="table table-striped">
       <thead>
         <tr>
