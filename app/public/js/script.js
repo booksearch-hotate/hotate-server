@@ -67,26 +67,31 @@ async function changeSearchType(type) {
   document.getElementById(`${type}BgIcon`).classList.add('search-type-icon-active');
 }
 
-function removeConfirmBox (confirmId) {
+async function removeConfirmBox (confirmId) {
   if (confirmId !== CONFIRM_TARGET_INFO.id) throw new Error('Invalid id of confirm.');
 
   CONFIRM_TARGET_INFO = {};
+
+  document.getElementById(CONFIRM_ID_PHRASE).classList.remove('is-active');
+
+  await new Promise(resolve => setTimeout(resolve, 500));
+
   document.getElementById(CONFIRM_ID_PHRASE).remove();
 }
 
-function admitConfirm (confirmId) {
+async function admitConfirm (confirmId) {
   if (confirmId !== CONFIRM_TARGET_INFO.id) throw new Error('Invalid id of confirm.');
   
   document[CONFIRM_TARGET_INFO.formName].submit();
 
-  removeConfirmBox(confirmId);
+  await removeConfirmBox(confirmId);
 }
 
-function createConfirmBox(formName, message = '') {
+async function createConfirmBox(formName, message = '') {
   // 既に表示されていたら
   if (document.getElementById(CONFIRM_ID_PHRASE) !== null) {
     if (typeof CONFIRM_TARGET_INFO.id === 'undefined') document.getElementById(CONFIRM_ID_PHRASE).remove();
-    else removeConfirmBox(CONFIRM_TARGET_INFO.id);
+    else await removeConfirmBox(CONFIRM_TARGET_INFO.id);
   }
 
   const div = document.createElement('div');
@@ -101,11 +106,17 @@ function createConfirmBox(formName, message = '') {
   div.innerHTML = `
   <h3>確認</h3>
   <p>${message}</p>
-  <button class="btn btn-outline-success" onclick="removeConfirmBox('${id}')">戻る</button>
-  <button class="btn btn-outline-danger" onclick="admitConfirm('${id}')">確認</button>
+  <div class="confirm-button-box">
+    <button class="btn btn-outline-success" onclick="removeConfirmBox('${id}')">戻る</button>
+    <button class="btn btn-outline-danger" onclick="admitConfirm('${id}')">確認</button>
+  </div>
   `;
 
   const bodyEle = document.getElementsByTagName('body')[0];
 
   bodyEle.appendChild(div);
+
+  await new Promise(resolve => setTimeout(resolve, 100));
+
+  document.getElementById(CONFIRM_ID_PHRASE).classList.add('is-active');
 }
