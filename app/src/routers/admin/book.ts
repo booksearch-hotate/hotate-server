@@ -230,4 +230,10 @@ bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) =
   }
 });
 
+/* 本を全て削除 */
+bookRouter.post('/delete-all', csrfProtection, (req: Request, res: Response) => {
+  console.log('done!');
+  res.json({status: 'done'});
+});
+
 export default bookRouter;
