@@ -99,4 +99,23 @@ export default class TagApplicationService {
 
     await this.tagRepository.update(tag);
   }
+
+  /**
+   * 本IDからタグの情報を取得します
+   */
+  public async findByBookId(bookId: string): Promise<TagData[]> {
+    const bookIdModel = new BookId(bookId);
+
+    const tagModels = await this.tagRepository.findByBookId(bookIdModel);
+
+    return tagModels.map((item) => new TagData(item));
+  }
+
+  public async deleteByBookId(bookId: string): Promise<void> {
+    const bookIdModel = new BookId(bookId);
+
+    const tagModels = await this.tagRepository.findByBookId(bookIdModel);
+
+    await Promise.all(tagModels.map(async (element) => await this.tagRepository.delete(element)));
+  }
 }
