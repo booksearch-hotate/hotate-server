@@ -248,8 +248,11 @@ bookRouter.post('/delete-all', csrfProtection, async (req: Request, res: Respons
     await authorApplicationService.deleteAuthors();
 
     req.session.status = {type: 'Success', mes: '本の全削除に成功しました。'};
+    logger.info('Succeeded in deleting all the books.');
   } catch (e: any) {
     req.session.status = {type: 'Failure', error: e, mes: '本の全削除に失敗しました。'};
+    logger.error(e as string);
+    logger.error('Failed to delete all books.');
   } finally {
     res.redirect('/admin/book');
   }
