@@ -212,6 +212,7 @@ bookRouter.post('/add', csrfProtection, async (req: Request, res: Response) => {
           authorName,
           publisherId,
           publisherName,
+          false,
       );
     }
 

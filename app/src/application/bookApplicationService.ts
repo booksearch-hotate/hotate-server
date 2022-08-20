@@ -63,6 +63,7 @@ export default class BookApplicationService {
       authorName: string,
       publisherId: string,
       publisherName: string,
+      isBulk: boolean = true,
   ): Promise<void> {
     const author = new Author(authorId, authorName);
     const publisher = new Publisher(publisherId, publisherName);
@@ -80,7 +81,8 @@ export default class BookApplicationService {
           [],
       );
       await this.bookRepository.save(book);
-      await this.bookRepository.executeBulkApi();
+
+      if (isBulk === false) await this.bookRepository.executeBulkApi();
     } catch (e: any) {
       logger.error(e);
     }
