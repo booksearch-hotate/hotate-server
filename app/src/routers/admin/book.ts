@@ -8,6 +8,7 @@ import PublisherService from '../../domain/service/publisherService';
 import BookApplicationService from '../../application/bookApplicationService';
 import AuthorApplicationService from '../../application/authorApplicationService';
 import PublisherApplicationService from '../../application/publisherApplicationService';
+import TagApplicationService from '../../application/tagApplicationService';
 
 import BookRepository from '../../interface/repository/bookRepository';
 import AuthorRepository from '../../interface/repository/authorRepository';
@@ -26,6 +27,8 @@ import getPaginationInfo from '../../utils/getPaginationInfo';
 import conversionpageCounter from '../../utils/conversionPageCounter';
 import isSameLenAllArray from '../../utils/isSameLenAllArray';
 import conversionpageStatus from '../../utils/conversionPageStatus';
+import TagRepository from '../../interface/repository/tagRepository';
+import TagService from '../../domain/service/tagService';
 
 // eslint-disable-next-line new-cap
 const bookRouter = Router();
@@ -51,6 +54,12 @@ const authorApplicationService = new AuthorApplicationService(
 const publisherApplicationService = new PublisherApplicationService(
     new PublisherRepository(db, new EsPublisher('publishers')),
     new PublisherService(new PublisherRepository(db, new EsPublisher('publishers'))),
+);
+
+const tagApplicationService = new TagApplicationService(
+    new TagRepository(db),
+    new BookRepository(db, new EsSearchBook('books')),
+    new TagService(new TagRepository(db)),
 );
 
 bookRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
@@ -231,9 +240,19 @@ bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) =
 });
 
 /* 本を全て削除 */
-bookRouter.post('/delete-all', csrfProtection, (req: Request, res: Response) => {
-  console.log('done!');
-  res.json({status: 'done'});
+bookRouter.post('/delete-all', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    if (await tagApplicationService.isExistTable()) await tagApplicationService.deleteAll();
+    await bookApplicationService.deleteBooks();
+    await publisherApplicationService.deletePublishers();
+    await authorApplicationService.deleteAuthors();
+
+    req.session.status = {type: 'Success', mes: '本の全削除に成功しました。'};
+  } catch (e: any) {
+    req.session.status = {type: 'Failure', error: e, mes: '本の全削除に失敗しました。'};
+  } finally {
+    res.redirect('/admin/book');
+  }
 });
 
 export default bookRouter;
