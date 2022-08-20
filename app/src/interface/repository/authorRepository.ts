@@ -72,7 +72,7 @@ export default class AuthorRepository implements IAuthorRepository {
       },
     });
 
-    if (Number(count) === 0) {
+    if (count === 0) {
       const list =[
         this.db.Author.destroy({
           where: {
