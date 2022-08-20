@@ -233,7 +233,12 @@ bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) =
 
     if ((await tagApplicationService.findByBookId(id)).length > 0) await tagApplicationService.deleteByBookId(id);
 
+    const book = await bookApplicationService.searchBookById(id);
+
     await bookApplicationService.deleteBook(id);
+
+    await Promise.all([authorApplicationService.deleteNotUsed(book.AuthorId), publisherApplicationService.deleteNotUsed(book.PublisherId)]);
+
     req.session.status = {type: 'Success', mes: '本の削除が完了しました'};
   } catch (e: any) {
     logger.error(e as string);
