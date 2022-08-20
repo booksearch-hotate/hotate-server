@@ -33,6 +33,10 @@ export default class PublisherApplicationService {
     await this.publisherRepository.executeBulkApi();
   }
 
+  /**
+   * 出版社IDに対応する本データが見つからない場合、出版社データを削除します。
+   * @param publisherId 出版社ID
+   */
   public async deleteNotUsed(publisherId: string): Promise<void> {
     await this.publisherRepository.deleteNoUsed(publisherId);
   }
