@@ -6,6 +6,7 @@ import {ITagRepository} from '../../domain/model/tag/ITagRepository';
 
 import Tag from '../../domain/model/tag/tag';
 import sequelize from 'sequelize';
+import BookId from '../../domain/model/book/bookId';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -127,5 +128,17 @@ export default class TagRepository implements ITagRepository {
       where: {tag_id: tagId},
     });
     return count;
+  }
+
+  public async findByBookId(bookId: BookId): Promise<Tag[]> {
+    const tags = await this.db.UsingTag.findAll({where: {book_id: bookId.Id}});
+    const tagModels: Tag[] = [];
+    for (const tag of tags) {
+      const tagByDb = await this.db.Tag.findOne({where: {id: tag.tag_id}});
+      if (!tagByDb) throw new Error('tag not found');
+      const tagModel = new Tag(tagByDb.id, tagByDb.name, tagByDb.created_at, []);
+      tagModels.push(tagModel);
+    }
+    return tagModels;
   }
 }
