@@ -80,6 +80,7 @@ export default class BookApplicationService {
           [],
       );
       await this.bookRepository.save(book);
+      await this.bookRepository.executeBulkApi();
     } catch (e: any) {
       logger.error(e);
     }
