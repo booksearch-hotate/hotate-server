@@ -229,6 +229,9 @@ bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) =
   try {
     const id = req.body.id;
     if (typeof id !== 'string') throw new Error('Invalid request id');
+
+    if ((await tagApplicationService.findByBookId(id)).length > 0) await tagApplicationService.deleteByBookId(id);
+
     await bookApplicationService.deleteBook(id);
     req.session.status = {type: 'Success', mes: '本の削除が完了しました'};
   } catch (e: any) {
