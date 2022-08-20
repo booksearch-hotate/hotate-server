@@ -104,11 +104,13 @@ async function createConfirmBox(formName, message = '') {
   CONFIRM_TARGET_INFO.formName = formName;
 
   div.innerHTML = `
-  <h3>確認</h3>
-  <p>${message}</p>
-  <div class="confirm-button-box">
-    <button class="btn btn-outline-success" onclick="removeConfirmBox('${id}')">戻る</button>
-    <button class="btn btn-outline-danger" onclick="admitConfirm('${id}')">確認</button>
+  <div class="confirm-content-box">
+    <h3>確認</h3>
+    <p>${message}</p>
+    <div class="confirm-button-box">
+      <button class="btn btn-outline-success" onclick="removeConfirmBox('${id}')">戻る</button>
+      <button class="btn btn-outline-danger" onclick="admitConfirm('${id}')">確認</button>
+    </div>
   </div>
   `;
 
