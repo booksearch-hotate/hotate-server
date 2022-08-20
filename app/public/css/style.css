@@ -148,6 +148,7 @@ body {
   filter: blur(1px);
   visibility: hidden;
   transition: all .5s;
+  pointer-events: none;
 }
 
 .search-type-icon-active {
