@@ -15,7 +15,6 @@ export interface IBookRepository {
   getTagsByBookId (bookId: string): Promise<Tag[]>
   searchByTag (tagName: string, pageCount: number, margin: PaginationMargin): Promise<{books: Book[], count: number}>
   latestEsTotalCount (): number
-  getCountUsingTag (searchWord: string): Promise<number>
   update (bookModel: Book): Promise<void>
   findAll (pageCount: number, marign: PaginationMargin): Promise<Book[]>
   findAllCount (): Promise<number>
