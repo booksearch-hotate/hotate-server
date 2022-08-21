@@ -245,7 +245,7 @@ export default class BookRepository implements IBookRepository {
     await this.esSearchBook.executeBulkApi();
   }
 
-  public async getTagsByBookId(bookId: string): Promise<Tag[]> {
+  private async getTagsByBookId(bookId: string): Promise<Tag[]> {
     const tags = await this.db.UsingTag.findAll({where: {book_id: bookId}});
     const tagModels: Tag[] = [];
     for (const tag of tags) {
