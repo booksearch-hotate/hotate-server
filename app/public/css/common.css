@@ -294,3 +294,14 @@ svg {
   justify-content: space-evenly;
   width: 100%;
 }
+
+.auto-fade {
+  animation: cssAnimation .2s ease-in 10s forwards;
+  animation-fill-mode: forwards;
+}
+
+@keyframes cssAnimation {
+  to {
+    opacity: 0;
+  }
+}

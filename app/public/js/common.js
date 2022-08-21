@@ -122,3 +122,8 @@ async function createConfirmBox(formName, message = '') {
 
   document.getElementById(CONFIRM_ID_PHRASE).classList.add('is-active');
 }
+
+
+document.addEventListener('animationend', ele => {
+  ele.target.remove();
+})
