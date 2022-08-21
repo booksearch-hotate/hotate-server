@@ -307,10 +307,6 @@ export default class BookRepository implements IBookRepository {
     return {books: await Promise.all(bookModels), count};
   }
 
-  public latestEsTotalCount(): number {
-    return this.esSearchBook.Total;
-  }
-
   public async update(book: Book): Promise<void> {
     await this.db.Book.update({
       book_name: book.Name,
