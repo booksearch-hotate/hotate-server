@@ -245,7 +245,7 @@ export default class BookRepository implements IBookRepository {
     await this.esSearchBook.executeBulkApi();
   }
 
-  public async getTagsByBookId(bookId: string): Promise<Tag[]> {
+  private async getTagsByBookId(bookId: string): Promise<Tag[]> {
     const tags = await this.db.UsingTag.findAll({where: {book_id: bookId}});
     const tagModels: Tag[] = [];
     for (const tag of tags) {
@@ -305,18 +305,6 @@ export default class BookRepository implements IBookRepository {
       );
     });
     return {books: await Promise.all(bookModels), count};
-  }
-
-  public async getCountUsingTag(tagName: string): Promise<number> {
-    const tag = await this.db.Tag.findOne({where: {name: tagName}});
-    if (tag === null) return 0;
-
-    const books = await this.db.UsingTag.findAll({where: {tag_id: tag.id}});
-    return books.length;
-  }
-
-  public latestEsTotalCount(): number {
-    return this.esSearchBook.Total;
   }
 
   public async update(book: Book): Promise<void> {
