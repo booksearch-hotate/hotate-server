@@ -86,16 +86,15 @@
 
       <div class="text-center mb-3">
         <button type="button" onclick="submit();" class="btn btn-primary">確定</button>
-
       </div>
     </form>
 
     <div class="text-center my-4">
-      <form method="post" action="/admin/recommendation/delete">
+      <form method="post" action="/admin/recommendation/delete" name="delete">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <input type="hidden" name="id" value="<%= recommendation.Id %>">
-        <button type="submit" class="btn btn-danger">削除する</button>
       </form>
+      <button class="btn btn-danger" onclick="createConfirmBox('delete', 'セクションを削除します。よろしいですか？<br>登録されている本は削除されません。')">削除する</button>
     </div>
 
     <div class="text-center">

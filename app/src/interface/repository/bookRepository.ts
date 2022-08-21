@@ -344,6 +344,7 @@ export default class BookRepository implements IBookRepository {
     const books = await this.db.Book.findAll({
       limit: FETCH_DATA_NUM,
       offset: pageCount * FETCH_DATA_NUM,
+      order: [['updated_at', 'DESC']],
     });
 
     const bookModels: Book[] = [];

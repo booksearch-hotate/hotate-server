@@ -40,6 +40,10 @@ export default class AuthorApplicationService {
     return new AuthorData(author);
   }
 
+  /**
+   * 著者IDに対応する本が見つからない場合、その著者データを削除します
+   * @param authorId 著者ID
+   */
   public async deleteNotUsed(authorId: string): Promise<void> {
     await this.authorRepository.deleteNoUsed(authorId);
   }
