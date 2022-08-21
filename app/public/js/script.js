@@ -4,6 +4,12 @@
  *
 */
 
+const CONFIRM_ID_PHRASE = 'confirm-box' // 確認画面で用いるidの固定値
+let CONFIRM_TARGET_INFO = {
+  id: '',
+  formName: ''
+}
+
 function makePhrase () {
   const phrases = ['少女', '工業高校', '冒険', '歴史']
   const randomNum = Math.floor(Math.random() * 3) + 1
@@ -59,4 +65,60 @@ async function changeSearchType(type) {
   await new Promise(resolve => setTimeout(resolve, 500));
 
   document.getElementById(`${type}BgIcon`).classList.add('search-type-icon-active');
+}
+
+async function removeConfirmBox (confirmId) {
+  if (confirmId !== CONFIRM_TARGET_INFO.id) throw new Error('Invalid id of confirm.');
+
+  CONFIRM_TARGET_INFO = {};
+
+  document.getElementById(CONFIRM_ID_PHRASE).classList.remove('is-active');
+
+  await new Promise(resolve => setTimeout(resolve, 500));
+
+  document.getElementById(CONFIRM_ID_PHRASE).remove();
+}
+
+async function admitConfirm (confirmId) {
+  if (confirmId !== CONFIRM_TARGET_INFO.id) throw new Error('Invalid id of confirm.');
+  
+  document[CONFIRM_TARGET_INFO.formName].submit();
+
+  await removeConfirmBox(confirmId);
+}
+
+async function createConfirmBox(formName, message = '') {
+  // 既に表示されていたら
+  if (document.getElementById(CONFIRM_ID_PHRASE) !== null) {
+    if (typeof CONFIRM_TARGET_INFO.id === 'undefined') document.getElementById(CONFIRM_ID_PHRASE).remove();
+    else await removeConfirmBox(CONFIRM_TARGET_INFO.id);
+  }
+
+  const div = document.createElement('div');
+  div.classList.add('confirm-box');
+  div.setAttribute('id', 'confirm-box');
+
+  const id = Math.random().toString(32).substring(2);
+
+  CONFIRM_TARGET_INFO.id = id;
+  CONFIRM_TARGET_INFO.formName = formName;
+
+  div.innerHTML = `
+  <div class="confirm-content-box">
+    <h3>確認</h3>
+    <p>${message}</p>
+    <div class="confirm-button-box">
+      <button class="btn btn-outline-success" onclick="removeConfirmBox('${id}')">戻る</button>
+      <button class="btn btn-outline-danger" onclick="admitConfirm('${id}')">確認</button>
+    </div>
+  </div>
+  `;
+
+  const bodyEle = document.getElementsByTagName('body')[0];
+
+  bodyEle.appendChild(div);
+
+  await new Promise(resolve => setTimeout(resolve, 100));
+
+  document.getElementById(CONFIRM_ID_PHRASE).classList.add('is-active');
 }

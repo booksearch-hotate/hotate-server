@@ -1,3 +1,4 @@
+import BookId from '../book/bookId';
 import Tag from './tag';
 
 export interface ITagRepository {
@@ -12,4 +13,5 @@ export interface ITagRepository {
   findById(id: string): Promise<Tag | null>
   update(tag: Tag): Promise<void>
   getCount (tagId: string): Promise<number>
+  findByBookId(bookId: BookId): Promise<Tag[]>
 }

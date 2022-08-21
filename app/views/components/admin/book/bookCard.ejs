@@ -1,0 +1,51 @@
+<div class="book-card-box">
+  <div class="form-header">
+    <h3><%= bookCount %>冊目</h3>
+  </div>
+  <div class="mb-3">
+    <label for="addIsbn" class="form-label">ISBN</label>
+    <input type="text" class="form-control" id="addIsbn" aria-describedby="isbnHelp" name="isbn[]">
+    <div id="isbnHelp" class="form-text">
+      ISBNは本の画像データなどを取得する際に必要となります。
+      13桁のハイフンありの形式で入力してください。
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="addBookName" class="form-label">題名</label>
+    <input type="text" class="form-control" id="addBookName" aria-describedby="bookNameHelp" name="bookName[]" required>
+    <div id="bookNameHelp" class="form-text">
+      必須項目です
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="addBookSubName" class="form-label">副題</label>
+    <input type="text" class="form-control" id="addBookSubName" name="bookSubName[]">
+  </div>
+
+  <div class="mb-3">
+    <label for="addAuthor" class="form-label">著者名</label>
+    <input type="text" class="form-control" id="addAuthor" name="authorName[]">
+  </div>
+
+  <div class="mb-3">
+    <label for="addPublisher" class="form-label">出版社名</label>
+    <input type="text" class="form-control" id="addPublisher" name="publisherName[]">
+  </div>
+
+  <div class="mb-3">
+    <label for="addNdc" class="form-label">日本十進分類法</label>
+    <input type="text" class="form-control" id="addNdc" name="ndc[]">
+  </div>
+
+  <div class="mb-3">
+    <label for="addYear" class="form-label">出版年</label>
+    <input type="number" class="form-control" id="addYear" name="year[]" min="1000">
+  </div>
+
+  <div class="mb-3 form-floating">
+    <textarea class="form-control" placeholder="本の内容を追加" id="addBookContent" style="height: 100px" name="content[]"></textarea>
+    <label for="addBookContent">本の内容</label>
+  </div>
+</div>

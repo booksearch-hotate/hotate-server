@@ -8,6 +8,7 @@ import PublisherService from '../../domain/service/publisherService';
 import BookApplicationService from '../../application/bookApplicationService';
 import AuthorApplicationService from '../../application/authorApplicationService';
 import PublisherApplicationService from '../../application/publisherApplicationService';
+import TagApplicationService from '../../application/tagApplicationService';
 
 import BookRepository from '../../interface/repository/bookRepository';
 import AuthorRepository from '../../interface/repository/authorRepository';
@@ -26,6 +27,8 @@ import getPaginationInfo from '../../utils/getPaginationInfo';
 import conversionpageCounter from '../../utils/conversionPageCounter';
 import isSameLenAllArray from '../../utils/isSameLenAllArray';
 import conversionpageStatus from '../../utils/conversionPageStatus';
+import TagRepository from '../../interface/repository/tagRepository';
+import TagService from '../../domain/service/tagService';
 
 // eslint-disable-next-line new-cap
 const bookRouter = Router();
@@ -51,6 +54,12 @@ const authorApplicationService = new AuthorApplicationService(
 const publisherApplicationService = new PublisherApplicationService(
     new PublisherRepository(db, new EsPublisher('publishers')),
     new PublisherService(new PublisherRepository(db, new EsPublisher('publishers'))),
+);
+
+const tagApplicationService = new TagApplicationService(
+    new TagRepository(db),
+    new BookRepository(db, new EsSearchBook('books')),
+    new TagService(new TagRepository(db)),
 );
 
 bookRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
@@ -203,6 +212,7 @@ bookRouter.post('/add', csrfProtection, async (req: Request, res: Response) => {
           authorName,
           publisherId,
           publisherName,
+          false,
       );
     }
 
@@ -220,11 +230,38 @@ bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) =
   try {
     const id = req.body.id;
     if (typeof id !== 'string') throw new Error('Invalid request id');
+
+    if ((await tagApplicationService.findByBookId(id)).length > 0) await tagApplicationService.deleteByBookId(id);
+
+    const book = await bookApplicationService.searchBookById(id);
+
     await bookApplicationService.deleteBook(id);
+
+    await Promise.all([authorApplicationService.deleteNotUsed(book.AuthorId), publisherApplicationService.deleteNotUsed(book.PublisherId)]);
+
     req.session.status = {type: 'Success', mes: '本の削除が完了しました'};
   } catch (e: any) {
     logger.error(e as string);
     req.session.status = {type: 'Failure', error: e, mes: '本の削除に失敗しました'};
+  } finally {
+    res.redirect('/admin/book');
+  }
+});
+
+/* 本を全て削除 */
+bookRouter.post('/delete-all', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    if (await tagApplicationService.isExistTable()) await tagApplicationService.deleteAll();
+    await bookApplicationService.deleteBooks();
+    await publisherApplicationService.deletePublishers();
+    await authorApplicationService.deleteAuthors();
+
+    req.session.status = {type: 'Success', mes: '本の全削除に成功しました。'};
+    logger.info('Succeeded in deleting all the books.');
+  } catch (e: any) {
+    req.session.status = {type: 'Failure', error: e, mes: '本の全削除に失敗しました。'};
+    logger.error(e as string);
+    logger.error('Failed to delete all books.');
   } finally {
     res.redirect('/admin/book');
   }
