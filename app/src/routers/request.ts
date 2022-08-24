@@ -2,7 +2,7 @@ import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 import {IPage} from './datas/IPage';
 
-import {FormInvalidError} from '../domain/model/bookRequest/bookRequest';
+import {FormInvalidError} from '../presentation/error';
 
 import DepartmentRepository from '../interface/repository/departmentRepository';
 import RequestRepository from '../interface/repository/requestRepository';
