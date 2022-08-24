@@ -18,6 +18,7 @@ import AuthorRepository from '../interface/repository/authorRepository';
 import EsAuthor from '../infrastructure/elasticsearch/esAuthor';
 import EsPublisher from '../infrastructure/elasticsearch/esPublisher';
 import PublisherRepository from '../interface/repository/publisherRepository';
+import conversionpageStatus from '../utils/conversionPageStatus';
 
 // eslint-disable-next-line new-cap
 const homeRouter = Router();
@@ -67,6 +68,9 @@ homeRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
     };
   } finally {
     pageData.headTitle = 'ホーム | HOTATE';
+
+    pageData.status = conversionpageStatus(req.session.status);
+    req.session.status = undefined;
 
     res.render('pages/index', {pageData});
   }

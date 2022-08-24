@@ -1,6 +1,5 @@
 import Department from '../department/department';
-
-export class FormInvalidError extends Error {};
+import {FormInvalidError} from '../../../presentation/error';
 
 export default class BookRequest {
   private id: string;
