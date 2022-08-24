@@ -50,8 +50,16 @@ requestRouter.get('/request', csrfProtection, async (req: Request, res: Response
 
   const keepReqObj = typeof req.session.keepValue === 'object' ? req.session.keepValue.keepReqObj : {};
 
+  const departmentList = await departmentApplicationService.findAllDepartment();
+
+  if (departmentList.length === 0) {
+    logger.error('The book request service is not available because the department is not set up.');
+    req.session.status = {type: 'Warning', mes: '現在本リクエスト機能は使用できません。'};
+    return res.redirect('/');
+  }
+
   pageData.anyData = {
-    departmentList: await departmentApplicationService.findAllDepartment(),
+    departmentList,
     saveVal: keepReqObj,
     schoolGradeInfo: await schoolGradeInfoApplicationService.find(),
   };
@@ -61,7 +69,7 @@ requestRouter.get('/request', csrfProtection, async (req: Request, res: Response
 
   pageData.csrfToken = req.csrfToken();
 
-  res.render('pages/request', {pageData});
+  return res.render('pages/request', {pageData});
 });
 
 requestRouter.post('/confirm', csrfProtection, async (req: Request, res: Response) => {
