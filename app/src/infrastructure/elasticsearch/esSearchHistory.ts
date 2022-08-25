@@ -5,6 +5,10 @@ import SearchHistory from '../../domain/model/searchHistory/searchHistory';
 import esDocuments from './documents/documentType';
 import PaginationMargin from '../../domain/model/pagination/paginationMargin';
 
+import Logger from '../logger/logger';
+
+const logger = new Logger('esSearchHistory');
+
 export default class EsSearchHistory extends ElasticSearch {
   private total = 0;
 
@@ -38,6 +42,8 @@ export default class EsSearchHistory extends ElasticSearch {
       id: searchWords.Id,
       created_at: searchWords.CreatedAt,
     });
+
+    logger.info(`Added new search words: ${searchWords}`);
   }
 
   /**
