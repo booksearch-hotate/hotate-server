@@ -137,6 +137,8 @@ export default class EsSearchHistory extends ElasticSearch {
    * @param id 検索履歴のid
    */
   public async delete(id: string): Promise<void> {
+    const startTimer = performance.now();
+
     await axios.post(`${this.uri}/_delete_by_query?conflicts=proceed&pretty`, {
       query: {
         term: {
@@ -145,8 +147,11 @@ export default class EsSearchHistory extends ElasticSearch {
       },
     });
 
+    const endTimer = performance.now();
+
     // データが即時に反映されるわけではないのでそのクールタイムを追加
-    const coolTime = 500;
+    const coolTime = 500 - (endTimer - startTimer);
+    console.log(`coolTime: ${coolTime}`);
     await new Promise((resolve) => setTimeout(resolve, coolTime));
 
     logger.info(`Succeed delete search history. id: ${id}`);
