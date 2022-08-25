@@ -43,7 +43,7 @@ export default class EsSearchHistory extends ElasticSearch {
       created_at: searchWords.CreatedAt,
     });
 
-    logger.info(`Added new search words: ${searchWords}`);
+    logger.info(`Added new search words: ${searchWords.Words}`);
   }
 
   /**
