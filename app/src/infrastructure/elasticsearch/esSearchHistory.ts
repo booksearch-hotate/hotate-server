@@ -145,6 +145,9 @@ export default class EsSearchHistory extends ElasticSearch {
       },
     });
 
+    const coolTime = 500;
+    await new Promise((resolve) => setTimeout(resolve, coolTime));
+
     logger.info(`Succeed delete search history. id: ${id}`);
   }
 
