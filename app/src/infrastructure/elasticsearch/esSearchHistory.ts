@@ -151,7 +151,6 @@ export default class EsSearchHistory extends ElasticSearch {
 
     // データが即時に反映されるわけではないのでそのクールタイムを追加
     const coolTime = 500 - (endTimer - startTimer);
-    console.log(`coolTime: ${coolTime}`);
     await new Promise((resolve) => setTimeout(resolve, coolTime));
 
     logger.info(`Succeed delete search history. id: ${id}`);
