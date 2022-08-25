@@ -144,6 +144,8 @@ export default class EsSearchHistory extends ElasticSearch {
         },
       },
     });
+
+    logger.info(`Succeed delete search history. id: ${id}`);
   }
 
   get Total(): number {
