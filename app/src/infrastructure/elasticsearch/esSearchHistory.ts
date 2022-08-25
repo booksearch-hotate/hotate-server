@@ -145,6 +145,7 @@ export default class EsSearchHistory extends ElasticSearch {
       },
     });
 
+    // データが即時に反映されるわけではないのでそのクールタイムを追加
     const coolTime = 500;
     await new Promise((resolve) => setTimeout(resolve, coolTime));
 
