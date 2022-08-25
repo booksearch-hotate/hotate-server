@@ -72,10 +72,13 @@ export default class EsSearchHistory extends ElasticSearch {
     const ids = hits.map((hit: any) => hit._source.id);
 
     const createdAts = hits.map((hit: any) => hit._source.created_at);
+
     // searchWordsは除外
-    words.splice(words.indexOf(searchWords), 1);
-    ids.splice(ids.indexOf(searchWords), 1);
-    createdAts.splice(createdAts.indexOf(searchWords), 1);
+    if (words.indexOf(searchWords) !== -1) {
+      words.splice(words.indexOf(searchWords), 1);
+      ids.splice(ids.indexOf(searchWords), 1);
+      createdAts.splice(createdAts.indexOf(searchWords), 1);
+    }
 
     const tagModels: SearchHistory[] = [];
     for (let i = 0; i < ids.length; i++) {
