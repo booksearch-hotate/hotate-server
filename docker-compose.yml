@@ -11,8 +11,10 @@ services:
       - ./app/public:/public/
       - ./app/log/:/log/
     depends_on:
-      - mysql
-      - es
+      mysql:
+        condition: service_healthy
+      es:
+        condition: service_healthy
     networks:
       - esnet
 
@@ -30,6 +32,10 @@ services:
       - 3306:3306
     networks:
       - esnet
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
   es:
     build:
@@ -50,6 +56,12 @@ services:
       - "9200:9200"
     networks:
       - esnet
+    healthcheck:
+      test: curl -s http://es:9200/dev/null || exit 1
+      interval: 10s
+      timeout: 30s
+      retries: 6
+      start_period: 30s
   
 volumes:
   esdata:
