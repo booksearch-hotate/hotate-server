@@ -1,3 +1,8 @@
+<%#
+各ページの共通のヘッダ
+
+@params {mes: string, logo: string}
+%>
 <div class="header-title my-3">
   <h2><%= mes %></h2>
   <% if (typeof logo !== 'undefined' && logo.length !== 0) { %>

@@ -1,3 +1,8 @@
+<%#
+本のタグのUI
+
+@params {tag: string}
+%>
 <a class="book-tag-box px-2" href="/search?search=<%= tag %>&tag=true">
   <%- include('./../icons/hash') %><p class="book-tag-text"><%= tag %></p>
 </a>
