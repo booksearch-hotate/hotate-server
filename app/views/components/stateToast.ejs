@@ -1,3 +1,7 @@
+<%#
+メッセージなどを表示するアラート
+%>
+
 <% if (pageData.status !== undefined) {%>
 <div class="alert alert-<%= pageData.status.buttonType %> alert-dismissible fade show state-info-toast auto-fade" role="alert">
   <%= pageData.status.mes %>
