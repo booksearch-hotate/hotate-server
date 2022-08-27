@@ -1,5 +1,12 @@
 # 使い方
 
+## 事前導入
+
+このアプリを起動するにあたり、必要なソフトをインストール、設定してください。
+
+- [Docker](https://www.docker.com/)
+- [Git](https://git-scm.com/)
+
 ## アプリのソースコード取得方法
 
 ※本来は導入時に行うものですので、既にエンジニアによって導入手続きが終わっている場合は省略してください。
@@ -10,7 +17,7 @@
 ## アプリの起動方法
 
 1. docker Desktopを起動し、docker Engineを起動する
-2. コマンドプロンプト（ターミナル）を開く
+2. コマンドプロンプト（macの場合はターミナル）を開く
 3. hotate-serverフォルダまで移動
 4. `docker-compose up app`と入力
 5. webブラウザで[http://localhost:8080](http://localhost:8080)を開く
