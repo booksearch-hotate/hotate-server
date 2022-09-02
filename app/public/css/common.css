@@ -305,3 +305,72 @@ svg {
     opacity: 0;
   }
 }
+
+.recommendation-box {
+  width: 50%;
+  margin: 0 auto;
+  background-color: rgb(250, 243, 243);
+  padding: 16px;
+  border-radius: 10px;
+  border: solid 2px #666;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.recommendation-box h1 {
+  text-align: center;
+  font-size: 2.2rem;
+  border-bottom: solid 1px #ddd;
+  color: #222;
+  letter-spacing: 4px;
+}
+
+.recommendation-box p {
+  color: #444;
+  white-space: pre-wrap;
+}
+
+.recommendation-book-list-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.recommendation-book-list-box::-webkit-scrollbar {
+  height: 10px;
+}
+ 
+.recommendation-book-list-box::-webkit-scrollbar-track {
+  background-color: #e4e4e4;
+  border-radius: 100px;
+}
+ 
+.recommendation-book-list-box::-webkit-scrollbar-thumb {
+  background-color: #e2bd89;
+  border-radius: 100px;
+}
+
+.recommendation-book-item-box {
+  text-align: center;
+  width: 100%;
+}
+
+.recommendation-book-item-box img {
+  height: 300px;
+  width: auto;
+}
+
+.recommendation-book-item-box h2 {
+  font-size: 1.4rem;
+}
+
+.recommendation-solid-text {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin: 0;
+  font-size: 1.4rem;
+  color: #333;
+}
+
