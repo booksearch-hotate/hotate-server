@@ -44,42 +44,20 @@
 
         <div class="recommend-other-books">
           <div class="near-category-books">
-            <div class="recommendation-box">
-              <h1><%= data.BookName %>に類似している本</h1>
-              <div class="recommendation-book-list-box">
-                <% for (const item of pageData.anyData.nearCategoryBookDatas) { %>
-                  <div class="recommendation-book-item-box">
-                    <img src="<%= item.ImgLink %>" data-isbn="<%= item.Isbn %>">
-                    <h2><%= item.BookName %></h2>
-                    <a href="/item/<%= item.Id %>">詳細</a>
-                    <% if (item.comment !== null) { %>
-                      <p class="m-0"><%= item.comment %></p>
-                    <% } %>
-                  </div>
-                <% } %>
-              </div>
+            <div class="recommendation-book-list-box">
+              <% for (const item of pageData.anyData.nearCategoryBookDatas) { %>
+                <div class="recommendation-book-item-box">
+                  <img src="<%= item.ImgLink %>" data-isbn="<%= item.Isbn %>">
+                  <h2><%= item.BookName %></h2>
+                  <a href="/item/<%= item.Id %>">詳細</a>
+                </div>
+              <% } %>
             </div>
           </div>
 
           <div class="exist-recommendation">
-            <% if (pageData.anyData.recommendation !== null) { %>
-            <div class="recommendation-box">
-              <h1><%= pageData.anyData.recommendation.recommendation.Title %></h1>
-              <p><%= pageData.anyData.recommendation.recommendation.Content %></p>
-              <div class="recommendation-book-list-box">
-                <% for (const item of pageData.anyData.recommendation.items) { %>
-                  <div class="recommendation-book-item-box">
-                    <img src="<%= item.book.ImgLink %>" data-isbn="<%= item.book.Isbn %>">
-                    <h2><%= item.book.BookName %></h2>
-                    <a href="/item/<%= item.book.Id %>">詳細</a>
-                    <% if (item.comment !== null) { %>
-                      <p class="m-0"><%= item.comment %></p>
-                    <% } %>
-                  </div>
-                <% } %>
-              </div>
-            </div>
-            <% } %>
+            <h2><%= data.BookName %>が紹介されているセクション</h2>
+            <%- include('../components/recommendationBox', {recommendation: pageData.anyData.recommendation}) %>
           </div>
         </div>
 

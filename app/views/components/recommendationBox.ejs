@@ -1,0 +1,23 @@
+<% editMode = typeof editMode === 'undefined' ? false : editMode %>
+
+<div class="recommendation-box">
+  <h1><%= recommendation.recommendation.Title %></h1>
+  <p><%= recommendation.recommendation.Content %></p>
+  <div class="recommendation-book-list-box">
+    <% for (const item of recommendation.items) { %>
+      <div class="recommendation-book-item-box">
+        <img src="<%= item.book.ImgLink %>" data-isbn="<%= item.book.Isbn %>">
+        <h2><%= item.book.BookName %></h2>
+        <a href="/item/<%= item.book.Id %>">詳細</a>
+        <% if (item.comment !== null) { %>
+          <p class="m-0"><%= item.comment %></p>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+  <% if (editMode) { %>
+    <div class="recommendation-edit-button mt-3 text-center">
+      <a href="/admin/recommendation/edit?rid=<%= recommendation.recommendation.Id %>" class="btn btn-outline-success">編集する</a>
+    </div>
+  <% } %>
+</div>
