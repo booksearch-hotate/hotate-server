@@ -1,3 +1,4 @@
+import BookId from '../book/bookId';
 import PaginationMargin from '../pagination/paginationMargin';
 import Recommendation from './recommendation';
 export interface IRecommendationRepository {
@@ -8,4 +9,5 @@ export interface IRecommendationRepository {
   findById(id: string): Promise<Recommendation | null>
   update(recommendation: Recommendation): Promise<void>
   delete(recommendation: Recommendation): Promise<void>
+  findByBookId(bookId: BookId): Promise<string | null>
 }

@@ -155,4 +155,15 @@ export default class RecommendationRepository implements IRecommendationReposito
 
     await this.db.Recommendation.destroy({where: {id: recommendation.Id}});
   }
+
+  public async findByBookId(bookId: BookId): Promise<string | null> {
+    const recommendationId = await this.db.UsingRecommendations.findOne({
+      where: {book_id: bookId.Id},
+      order: [['id', 'DESC']],
+    });
+
+    if (recommendationId === null) return null;
+
+    return recommendationId.recommendation_id;
+  }
 }
