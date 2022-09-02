@@ -56,6 +56,8 @@ bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Re
   const isLogin = admin.verifyToken(req.session.token);
   try {
     bookData = await bookApplicationService.searchBookById(id);
+
+    // 本の題名に近い題名の本を検索
     const nearCategoryBookDatas = await bookApplicationService.searchBooks(
         bookData.BookName,
         'none',
