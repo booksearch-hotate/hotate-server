@@ -6,6 +6,7 @@ import TagService from '../domain/service/tagService';
 
 import BookApplicationService from '../application/bookApplicationService';
 import TagApplicationService from '../application/tagApplicationService';
+import RecommendationApplicationService from '../application/recommendationApplicationService';
 
 import BookRepository from '../interface/repository/bookRepository';
 import TagRepository from '../interface/repository/tagRepository';
@@ -24,6 +25,9 @@ import EsAuthor from '../infrastructure/elasticsearch/esAuthor';
 import AuthorRepository from '../interface/repository/authorRepository';
 import EsPublisher from '../infrastructure/elasticsearch/esPublisher';
 import PublisherRepository from '../interface/repository/publisherRepository';
+import RecommendationRepository from '../interface/repository/recommendationRepository';
+import RecommendationService from '../domain/service/recommendationService';
+import {IRecommendationObj} from '../domain/model/recommendation/IRecommendationObj';
 
 // eslint-disable-next-line new-cap
 const bookItemRouter = Router();
@@ -49,6 +53,11 @@ const tagApplicationService = new TagApplicationService(
     new TagService(new TagRepository(db)),
 );
 
+const recommendationApplicationService = new RecommendationApplicationService(
+    new RecommendationRepository(db),
+    new RecommendationService(),
+);
+
 /* 本詳細画面 */
 bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Response) => {
   const id = req.params.bookId; // 本のID
@@ -56,8 +65,36 @@ bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Re
   const isLogin = admin.verifyToken(req.session.token);
   try {
     bookData = await bookApplicationService.searchBookById(id);
+
+    // 本の題名に近い題名の本を検索
+    const nearCategoryBookDatas = await bookApplicationService.searchBooks(
+        bookData.BookName,
+        'none',
+        'book',
+        0,
+        10,
+    ).then((res) => res.books);
+
+    const recommendationSection = await recommendationApplicationService.findRecommendationByBookId(bookData.Id);
+
+    let recommendation: IRecommendationObj | null = null;
+
+    if (recommendationSection !== null) {
+      const items = await Promise.all(recommendationSection.RecommendationItems.map(async (item) => {
+        return {
+          book: await bookApplicationService.searchBookById(item.BookId),
+          comment: item.Comment,
+        };
+      }));
+
+      recommendation = recommendationSection === null ? null : {
+        recommendation: recommendationSection,
+        items,
+      };
+    }
+
     pageData.headTitle = `${bookData.BookName} | HOTATE`;
-    pageData.anyData = {bookData, isError: false, isLogin};
+    pageData.anyData = {bookData, isError: false, isLogin, nearCategoryBookDatas, recommendation};
 
     pageData.csrfToken = req.csrfToken();
   } catch {
