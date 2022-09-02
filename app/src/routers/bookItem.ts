@@ -56,8 +56,16 @@ bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Re
   const isLogin = admin.verifyToken(req.session.token);
   try {
     bookData = await bookApplicationService.searchBookById(id);
+    const nearCategoryBookDatas = await bookApplicationService.searchBooks(
+        bookData.BookName,
+        'none',
+        'book',
+        0,
+        10,
+    ).then((res) => res.books);
+
     pageData.headTitle = `${bookData.BookName} | HOTATE`;
-    pageData.anyData = {bookData, isError: false, isLogin};
+    pageData.anyData = {bookData, isError: false, isLogin, nearCategoryBookDatas};
 
     pageData.csrfToken = req.csrfToken();
   } catch {

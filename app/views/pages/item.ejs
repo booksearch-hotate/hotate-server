@@ -3,6 +3,7 @@
   <head>
     <%- include('./../components/head') %>
     <link rel="stylesheet" href="<%= pageData.origin %>/css/item.css" />
+    <meta name="csrfToken" content="<%= pageData.csrfToken %>">
   </head>
   <body>
     <%- include('./../components/navbar') %>
@@ -40,11 +41,33 @@
             </div>
           </div>
         </form>
+
+        <div class="recommend-other-books">
+          <div class="near-category-books">
+            <div class="recommendation-box">
+              <h1><%= data.BookName %>に類似している本</h1>
+              <div class="recommendation-book-list-box">
+                <% for (const item of pageData.anyData.nearCategoryBookDatas) { %>
+                  <div class="recommendation-book-item-box">
+                    <img src="<%= item.ImgLink %>" data-isbn="<%= item.Isbn %>">
+                    <h2><%= item.BookName %></h2>
+                    <a href="/item/<%= item.Id %>">詳細</a>
+                    <% if (item.comment !== null) { %>
+                      <p class="m-0"><%= item.comment %></p>
+                    <% } %>
+                  </div>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+
       <% } else { %>
         <h4 class="text-danger">本が見つかりませんでした。</h4>
       <% } %>
     </main>
     <%- include('./../components/stateToast', {pageData}) %>
     <%- include('./../components/inputJs') %>
+    <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
   </body>
 </html>
