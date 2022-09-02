@@ -113,6 +113,11 @@ export default class RecommendationApplicationService {
     return recommendationModel.isOverNumberOfBooks();
   }
 
+  /**
+   * おすすめセクションの文章を省略するための処理です
+   * @param recommendations 省略したいおすすめセクションのデータ
+   * @returns 文章を省略したおすすめセクション
+   */
   public omitContent(recommendations: RecommendationData[]): RecommendationData[] {
     const omitRecommendations = recommendations.map((recommendationData) => {
       const recommendationItemModel = recommendationData.RecommendationItems.map((item) => new RecommendationItem(new BookId(item.BookId), item.Comment));
