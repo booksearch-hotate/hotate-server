@@ -138,4 +138,20 @@ export default class RecommendationApplicationService {
 
     return omitRecommendations.map((recommendationModel) => new RecommendationData(recommendationModel));
   }
+
+  /**
+   * 本のIDからおすすめセクションを取得します。複数のセクションが存在する場合は、直近に登録されたセクションを適用します。
+   * @param bookId 本のID
+   * @returns 本が登録されているおすすめ機能
+   */
+  public async findRecommendationByBookId(bookId: string): Promise<RecommendationData | null> {
+    const bookIdModel = new BookId(bookId);
+    const existRecommendationId = await this.recommendationRepository.findByBookId(bookIdModel);
+
+    if (existRecommendationId === null) return null;
+
+    const fetchModel = await this.recommendationRepository.findById(existRecommendationId);
+
+    return fetchModel === null ? null : new RecommendationData(fetchModel);
+  }
 }

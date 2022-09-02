@@ -60,6 +60,27 @@
               </div>
             </div>
           </div>
+
+          <div class="exist-recommendation">
+            <% if (pageData.anyData.recommendation !== null) { %>
+            <div class="recommendation-box">
+              <h1><%= pageData.anyData.recommendation.recommendation.Title %></h1>
+              <p><%= pageData.anyData.recommendation.recommendation.Content %></p>
+              <div class="recommendation-book-list-box">
+                <% for (const item of pageData.anyData.recommendation.items) { %>
+                  <div class="recommendation-book-item-box">
+                    <img src="<%= item.book.ImgLink %>" data-isbn="<%= item.book.Isbn %>">
+                    <h2><%= item.book.BookName %></h2>
+                    <a href="/item/<%= item.book.Id %>">詳細</a>
+                    <% if (item.comment !== null) { %>
+                      <p class="m-0"><%= item.comment %></p>
+                    <% } %>
+                  </div>
+                <% } %>
+              </div>
+            </div>
+            <% } %>
+          </div>
         </div>
 
       <% } else { %>
