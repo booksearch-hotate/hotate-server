@@ -87,7 +87,7 @@ bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Re
         };
       }));
 
-      recommendation = recommendationSection === null ? null : {
+      recommendation = {
         recommendation: recommendationSection,
         items,
       };
