@@ -123,6 +123,18 @@ async function createConfirmBox(formName, message = '') {
   document.getElementById(CONFIRM_ID_PHRASE).classList.add('is-active');
 }
 
+function showDetail(showId, hideId = '') {
+  const showEle = document.getElementById(showId);
+
+  showEle.style.height = '100%';
+
+  if (hideId === '') return;
+
+  const hideEle = document.getElementById(hideId);
+
+  hideEle.remove();
+}
+
 
 document.addEventListener('animationend', ele => {
   ele.target.remove();

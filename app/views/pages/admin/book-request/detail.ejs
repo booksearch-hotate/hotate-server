@@ -1,5 +1,5 @@
 <%
-const itemComponentLink = './../../../components/confirmRequestItem'; 
+const itemComponentLink = './../../../components/confirm-request-item'; 
 %>
 <!DOCTYPE html>
 <html>
@@ -21,6 +21,6 @@ const itemComponentLink = './../../../components/confirmRequestItem';
       <%- include(itemComponentLink, {title: '名前', content: `${pageData.anyData.request.StudentInfo} ${pageData.anyData.request.UserName}`}) %>
       <a href="/admin/book-request">戻る</a>
     </main>
-    <%- include('./../../../components/inputJs') %>
+    <%- include('./../../../components/input-js') %>
   </body>
 </html>

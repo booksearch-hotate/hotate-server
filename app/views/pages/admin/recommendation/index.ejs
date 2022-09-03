@@ -5,23 +5,23 @@
     <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/recommendation/recommendation.css" />
   </head>
   <body>
-    <%- include('./../../../components/headerTitle', {mes: 'おすすめセクション一覧'}) %>
+    <%- include('./../../../components/header-title', {mes: 'おすすめセクション一覧'}) %>
 
     <div class="text-center">
       <a href="/admin/recommendation/add" class="btn btn-primary">セクションを追加する</a>
     </div>
 
     <% if (pageData.anyData.recommendations.length === 0) { %>
-      <%- include('../../../components/noItem', {title: "セクションがありません", mes:"お知らせやおすすめの本を皆さんに紹介しましょう！"}) %>
+      <%- include('../../../components/no-item', {title: "セクションがありません", mes:"お知らせやおすすめの本を皆さんに紹介しましょう！"}) %>
     <% } else { %>
-      <%- include('./../../../components/recommendationList', {editMode: true}) %>
+      <%- include('./../../../components/recommendation-list', {editMode: true}) %>
     <% } %>
 
-    <%- include('./../../../components/navigation', {paginationData: pageData.anyData.paginationData, url: '/admin/recommendation/?'}) %>
+    <%- include('./../../../components/pagination', {paginationData: pageData.anyData.paginationData, url: '/admin/recommendation/?'}) %>
 
     <div class="text-center">
       <a href="/admin/">戻る</a>
     </div>
-    <%- include('./../../../components/inputJs') %>
+    <%- include('./../../../components/input-js') %>
   </body>
 </html>

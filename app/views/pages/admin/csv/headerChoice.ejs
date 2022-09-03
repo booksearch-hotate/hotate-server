@@ -11,49 +11,49 @@
       <section>
         <p>ISBN</p>
         <select class="form-select" name="isbn">
-          <%- include('./../../../components/admin/csv/headerList.ejs', { required: false }) %>
+          <%- include('./../../../components/admin/csv/header-list.ejs', { required: false }) %>
         </select>
       </section>
       <section>
         <p>本の名称※</p>
         <select class="form-select" name="bookName">
-          <%- include('./../../../components/admin/csv/headerList.ejs', { required: true }) %>
+          <%- include('./../../../components/admin/csv/header-list.ejs', { required: true }) %>
         </select>
       </section>
       <section>
         <p>副題</p>
         <select class="form-select" name="bookSubName">
-          <%- include('./../../../components/admin/csv/headerList.ejs', { required: false }) %>
+          <%- include('./../../../components/admin/csv/header-list.ejs', { required: false }) %>
         </select>
       </section>
       <section>
         <p>著者名※</p>
         <select class="form-select" name="authorName">
-          <%- include('./../../../components/admin/csv/headerList.ejs', { required: true }) %>
+          <%- include('./../../../components/admin/csv/header-list.ejs', { required: true }) %>
         </select>
       </section>
       <section>
         <p>日本十進分類法</p>
         <select class="form-select" name="ndc">
-          <%- include('./../../../components/admin/csv/headerList.ejs', { required: false }) %>
+          <%- include('./../../../components/admin/csv/header-list.ejs', { required: false }) %>
         </select>
       </section>
       <section>
         <p>出版社名※</p>
         <select class="form-select" name="publisherName">
-          <%- include('./../../../components/admin/csv/headerList.ejs', { required: true }) %>
+          <%- include('./../../../components/admin/csv/header-list.ejs', { required: true }) %>
         </select>
       </section>
       <section>
         <p>出版年</p>
         <select class="form-select" name="year">
-          <%- include('./../../../components/admin/csv/headerList.ejs',{ required: false }) %>
+          <%- include('./../../../components/admin/csv/header-list.ejs',{ required: false }) %>
         </select>
       </section>
       <section>
         <p>内容</p>
         <select class="form-select" name="bookContent">
-          <%- include('./../../../components/admin/csv/headerList.ejs',{ required: false }) %>
+          <%- include('./../../../components/admin/csv/header-list.ejs',{ required: false }) %>
         </select>
       </section>
       <div class="form-check form-switch">
@@ -62,6 +62,6 @@
       </div>
       <button type="submit" class="btn btn-primary" onclick="sendForm()">送信</button>
     </form>
-    <%- include('./../../../components/inputJs') %>
+    <%- include('./../../../components/input-js') %>
   </body>
 </html>

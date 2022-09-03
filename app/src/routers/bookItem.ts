@@ -72,7 +72,7 @@ bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Re
         'none',
         'book',
         0,
-        10,
+        9,
     ).then((res) => res.books);
 
     const recommendationSection = await recommendationApplicationService.findRecommendationByBookId(bookData.Id);
@@ -87,7 +87,7 @@ bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Re
         };
       }));
 
-      recommendation = recommendationSection === null ? null : {
+      recommendation = {
         recommendation: recommendationSection,
         items,
       };
