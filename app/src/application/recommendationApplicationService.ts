@@ -160,4 +160,8 @@ export default class RecommendationApplicationService {
 
     await this.recommendationRepository.removeUsingByBookId(bookIdModel);
   }
+
+  public async removeUsingAll(): Promise<void> {
+    await this.recommendationRepository.removeUsingAll();
+  }
 }

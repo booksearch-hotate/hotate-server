@@ -27,6 +27,9 @@ import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 
 import {IPage} from '../datas/IPage';
+import RecommendationApplicationService from '../../application/recommendationApplicationService';
+import RecommendationRepository from '../../interface/repository/recommendationRepository';
+import RecommendationService from '../../domain/service/recommendationService';
 
 
 // eslint-disable-next-line new-cap
@@ -63,6 +66,11 @@ const authorApplicationService = new AuthorApplicationService(
 const publisherApplicationService = new PublisherApplicationService(
     new PublisherRepository(db, new EsPublisher('publishers')),
     new PublisherService(new PublisherRepository(db, new EsPublisher('publishers'))),
+);
+
+const recommendationApplicationService = new RecommendationApplicationService(
+    new RecommendationRepository(db),
+    new RecommendationService(),
 );
 
 /* csvファイル選択画面 */
@@ -129,6 +137,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
     if (req.body.initData === 'true') {
       /* 初期化 */
       if (await tagApplicationService.isExistTable()) await tagApplicationService.deleteAll();
+      await recommendationApplicationService.removeUsingAll();
       await bookApplicationService.deleteBooks();
       await publisherApplicationService.deletePublishers();
       await authorApplicationService.deleteAuthors();

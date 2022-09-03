@@ -264,6 +264,7 @@ bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) =
 bookRouter.post('/delete-all', csrfProtection, async (req: Request, res: Response) => {
   try {
     if (await tagApplicationService.isExistTable()) await tagApplicationService.deleteAll();
+    await recommendationApplicationService.removeUsingAll();
     await bookApplicationService.deleteBooks();
     await publisherApplicationService.deletePublishers();
     await authorApplicationService.deleteAuthors();
