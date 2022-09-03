@@ -55,10 +55,12 @@
             </div>
           </div>
 
+          <% if (pageData.anyData.recommendation !== null) { %>
           <div class="exist-recommendation">
             <h2 class="recommend-other-books-title"><%= data.BookName %>が紹介されているセクション</h2>
             <%- include('../components/recommendationBox', {recommendation: pageData.anyData.recommendation}) %>
           </div>
+          <% } %>
         </div>
 
       <% } else { %>
