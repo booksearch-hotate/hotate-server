@@ -6,7 +6,7 @@
   </head>
   <body>
     <header>
-      <%- include('./../../components/headerTitle', {mes: '管理画面', logo:'person'}) %>
+      <%- include('./../../components/header-title', {mes: '管理画面', logo:'person'}) %>
     </header>
     <main>
       <div class="list-group m-4">
@@ -29,7 +29,7 @@
         </form>
       </div>
     </main>
-    <%- include('./../../components/stateToast', {pageData}) %>
-    <%- include('./../../components/inputJs') %>
+    <%- include('./../../components/state-alert', {pageData}) %>
+    <%- include('./../../components/input-js') %>
   </body>
 </html>

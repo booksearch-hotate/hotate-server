@@ -1,3 +1,40 @@
 .book-content h4 {
   color: #777;
 }
+
+.recommend-other-books-title {
+  text-align: center;
+  border-bottom: 2px solid rgb(104, 55, 29);
+  margin: 20px auto;
+}
+
+.near-category-books {
+  height: 50%;
+}
+
+.near-category-books-list {
+  height: 50vh;
+  overflow: hidden;
+}
+
+.near-category-books-list-box {
+  position: relative;
+}
+
+.near-category-detail-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0), 30%, white);
+  text-align: center;
+}
+
+.near-category-detail-box p {
+  text-align: center;
+  font-size: 1.6rem;
+  margin: 0;
+  color: #666;
+  cursor: pointer;
+  display: inline;
+}

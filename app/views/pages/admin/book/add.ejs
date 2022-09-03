@@ -6,7 +6,7 @@
   </head>
   <body>
     <header>
-      <%- include('./../../../components/headerTitle', {mes: '本の追加'}) %>
+      <%- include('./../../../components/header-title', {mes: '本の追加'}) %>
     </header>
 
     <main>
@@ -35,7 +35,7 @@
               <div class="row row-cols-2">
                 <% for (let i = 0; i < pageData.anyData.count; i++) { %>
                   <div class="col">
-                    <%- include('../../../components/admin/book/bookCard', {bookCount: i + 1}) %>
+                    <%- include('../../../components/admin/book/book-card', {bookCount: i + 1}) %>
                   </div>
                 <% } %>
               </div>
@@ -43,6 +43,6 @@
           </form>
         </div>
     </main>
-    <%- include('./../../../components/inputJs') %>
+    <%- include('./../../../components/input-js') %>
   </body>
 </html>

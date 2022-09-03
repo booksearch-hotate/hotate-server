@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/school-info/index.css" />
   </head>
   <body>
-    <%- include('./../../../components/headerTitle', {mes: '学校情報の管理'}) %>
+    <%- include('./../../../components/header-title', {mes: '学校情報の管理'}) %>
     <div class="grade-info-box">
       <div class="text-center">
         <h2>学年・クラスの設定</h2>
@@ -60,7 +60,7 @@
       </form>
     </div>
     <% if (pageData.anyData.departmentList.length === 0) { %>
-      <%- include('../../../components/noItem', {title: "学科情報が登録されていません", mes:"本リクエスト機能を使用するには学科情報が必要です"}) %>
+      <%- include('../../../components/no-item', {title: "学科情報が登録されていません", mes:"本リクエスト機能を使用するには学科情報が必要です"}) %>
     <% } else { %>
     <table class="table table-striped">
       <thead>
@@ -94,7 +94,7 @@
     <div class="text-center">
       <a href="/admin/">戻る</a>
     </div>
-    <%- include('./../../../components/stateToast', {pageData}) %>
-    <%- include('./../../../components/inputJs') %>
+    <%- include('./../../../components/state-alert', {pageData}) %>
+    <%- include('./../../../components/input-js') %>
   </body>
 </html>

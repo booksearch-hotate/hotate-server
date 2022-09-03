@@ -6,7 +6,7 @@
   </head>
   <body>
     <header>
-      <%- include('./../components/headerTitle', {mes: 'Login', logo:'key'}) %>
+      <%- include('./../components/header-title', {mes: 'Login', logo:'key'}) %>
     </header>
     <form method="POST" action="/check" class="px-4">
       <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
@@ -29,7 +29,7 @@
         </div>
       </div>
     </form>
-    <%- include('./../components/stateToast', {pageData}) %>
-    <%- include('./../components/inputJs') %>
+    <%- include('./../components/state-alert', {pageData}) %>
+    <%- include('./../components/input-js') %>
   </body>
 </html>
