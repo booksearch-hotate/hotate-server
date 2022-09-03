@@ -1,0 +1,15 @@
+{
+  "properties": {
+    "db_id": {
+      "type": "integer"
+    },
+    "book_name": {
+      "type": "text",
+      "analyzer": "my_ja_analyzer"
+     },
+     "book_content": {
+      "type": "text",
+      "analyzer": "my_ja_analyzer"
+     }
+  }
+}
