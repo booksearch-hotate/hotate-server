@@ -4,7 +4,7 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <%- include('./../../../components/headerTitle', {mes: '本一覧', logo: 'book'}) %>
+    <%- include('./../../../components/header-title', {mes: '本一覧', logo: 'book'}) %>
     <h5>ログイン状態で本の詳細ページを閲覧すると、その本を編集することが可能です</h5>
   
     <h5>合計 : <%= pageData.anyData.bookCount %>冊</h5>
@@ -14,7 +14,7 @@
     </div>
 
     <% if (pageData.anyData.bookCount === 0) { %>
-      <%- include('../../../components/noItem', {title: "本が登録されていません", mes:"上の「本を追加する」から本を追加しましょう！"}) %>
+      <%- include('../../../components/no-item', {title: "本が登録されていません", mes:"上の「本を追加する」から本を追加しましょう！"}) %>
     <% } else { %>
     <div class="text-center">
       <form action="/admin/book/delete-all" method="post" name="deleteAll">
@@ -58,11 +58,11 @@
       </tbody>
     </table>
     <% } %>
-    <%- include('./../../../components/navigation', {paginationData: pageData.anyData.paginationData, url: '/admin/book/?'}) %>
+    <%- include('./../../../components/pagination', {paginationData: pageData.anyData.paginationData, url: '/admin/book/?'}) %>
     <div class="text-center">
       <a href="/admin/">戻る</a>
     </div>
-    <%- include('./../../../components/stateToast', {pageData}) %>
-    <%- include('./../../../components/inputJs') %>
+    <%- include('./../../../components/state-alert', {pageData}) %>
+    <%- include('./../../../components/input-js') %>
   </body>
 </html>
