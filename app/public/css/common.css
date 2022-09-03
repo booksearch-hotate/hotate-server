@@ -15,6 +15,10 @@ body {
   background-color: var(--main-theme-color);
 }
 
+main {
+  margin: 16px auto;
+}
+
 .navbar-search-button {
   width: 24px;
   height: auto;
