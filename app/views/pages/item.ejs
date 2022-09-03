@@ -44,11 +44,19 @@
 
         <div class="recommend-other-books">
           <div class="near-category-books">
-            <%- include('../components/book-item-list', {books: pageData.anyData.nearCategoryBookDatas}) %>
+            <h2 class="recommend-other-books-title"><%= data.BookName %>に類似している本</h2>
+            <div class="near-category-books-list-box">
+              <div class="near-category-books-list" id="nearCategoryBooksList">
+                <%- include('../components/book-item-list', {books: pageData.anyData.nearCategoryBookDatas}) %>
+              </div>
+              <div class="near-category-detail-box" id="nearCategoryDetailBox">
+                <p onclick="showDetail('nearCategoryBooksList', 'nearCategoryDetailBox')">もっとみる</p>
+              </div>
+            </div>
           </div>
 
           <div class="exist-recommendation">
-            <h2><%= data.BookName %>が紹介されているセクション</h2>
+            <h2 class="recommend-other-books-title"><%= data.BookName %>が紹介されているセクション</h2>
             <%- include('../components/recommendationBox', {recommendation: pageData.anyData.recommendation}) %>
           </div>
         </div>
