@@ -1,7 +1,7 @@
 {
   "properties": {
     "db_id": {
-      "type": "integer"
+      "type": "keyword"
     },
     "book_name": {
       "type": "text",
