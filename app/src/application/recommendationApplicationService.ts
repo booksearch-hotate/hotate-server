@@ -144,7 +144,7 @@ export default class RecommendationApplicationService {
    * @param bookId 本のID
    * @returns 本が登録されているおすすめ機能
    */
-  public async findRecommendationByBookId(bookId: string): Promise<RecommendationData | null> {
+  public async findOneByBookId(bookId: string): Promise<RecommendationData | null> {
     const bookIdModel = new BookId(bookId);
     const existRecommendationId = await this.recommendationRepository.findByBookId(bookIdModel);
 
@@ -153,5 +153,11 @@ export default class RecommendationApplicationService {
     const fetchModel = await this.recommendationRepository.findById(existRecommendationId);
 
     return fetchModel === null ? null : new RecommendationData(fetchModel);
+  }
+
+  public async removeUsingByBookId(bookId: string): Promise<void> {
+    const bookIdModel = new BookId(bookId);
+
+    await this.recommendationRepository.removeUsingByBookId(bookIdModel);
   }
 }
