@@ -4,9 +4,9 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <%- include('./../../../components/headerTitle', {mes: 'タグ一覧', logo: 'tags'}) %>
+    <%- include('./../../../components/header-title', {mes: 'タグ一覧', logo: 'tags'}) %>
     <% if (pageData.anyData.tags.length === 0) { %>
-      <%- include('../../../components/noItem', {title: "タグが登録されていません", mes: "気になる本にどんどんタグをつけていきましょう！", icon: "tags"}) %>
+      <%- include('../../../components/no-item', {title: "タグが登録されていません", mes: "気になる本にどんどんタグをつけていきましょう！", icon: "tags"}) %>
     <% } else { %>
     <table class="table table-striped">
       <thead>
@@ -45,6 +45,6 @@
     <div class="text-center">
       <a href="/admin/">戻る</a>
     </div>
-    <%- include('./../../../components/inputJs') %>
+    <%- include('./../../../components/input-js') %>
   </body>
 </html>

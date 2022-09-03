@@ -4,9 +4,9 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <%- include('./../../../components/headerTitle', {mes: 'リクエスト一覧'}) %>
+    <%- include('./../../../components/header-title', {mes: 'リクエスト一覧'}) %>
     <% if (pageData.anyData.requests.length === 0) { %>
-      <%- include('../../../components/noItem', {title: "リクエスト情報はありません", mes:""}) %>
+      <%- include('../../../components/no-item', {title: "リクエスト情報はありません", mes:""}) %>
     <% } else { %>
     <table class="table table-striped">
       <thead>
@@ -40,7 +40,7 @@
     <div class="text-center">
       <a href="/admin/">戻る</a>
     </div>
-    <%- include('./../../../components/stateToast', {pageData}) %>
-    <%- include('./../../../components/inputJs') %>
+    <%- include('./../../../components/state-alert', {pageData}) %>
+    <%- include('./../../../components/input-js') %>
   </body>
 </html>

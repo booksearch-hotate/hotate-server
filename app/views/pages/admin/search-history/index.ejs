@@ -4,9 +4,9 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <%- include('./../../../components/headerTitle', {mes: '検索履歴一覧'}) %>
+    <%- include('./../../../components/header-title', {mes: '検索履歴一覧'}) %>
     <% if (pageData.anyData.searchHistory.length === 0) { %>
-      <%- include('../../../components/noItem', {title: "検索履歴がありません", mes: ""}) %>
+      <%- include('../../../components/no-item', {title: "検索履歴がありません", mes: ""}) %>
     <% } else { %>
     <table class="table table-striped">
       <thead>
@@ -33,10 +33,10 @@
       </tbody>
     </table>
     <% } %>
-    <%- include('./../../../components/navigation', {paginationData: pageData.anyData.paginationData, url: '/admin/search-history/?'}) %>
+    <%- include('./../../../components/pagination', {paginationData: pageData.anyData.paginationData, url: '/admin/search-history/?'}) %>
     <div class="text-center">
       <a href="/admin/">戻る</a>
     </div>
-    <%- include('./../../../components/inputJs') %>
+    <%- include('./../../../components/input-js') %>
   </body>
 </html>
