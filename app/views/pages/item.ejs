@@ -44,15 +44,7 @@
 
         <div class="recommend-other-books">
           <div class="near-category-books">
-            <div class="recommendation-book-list-box">
-              <% for (const item of pageData.anyData.nearCategoryBookDatas) { %>
-                <div class="recommendation-book-item-box">
-                  <img src="<%= item.ImgLink %>" data-isbn="<%= item.Isbn %>">
-                  <h2><%= item.BookName %></h2>
-                  <a href="/item/<%= item.Id %>">詳細</a>
-                </div>
-              <% } %>
-            </div>
+            <%- include('../components/book-item-list', {books: pageData.anyData.nearCategoryBookDatas}) %>
           </div>
 
           <div class="exist-recommendation">

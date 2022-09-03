@@ -30,36 +30,9 @@ if (pageData.anyData.isTag) queryLink += '&tag=true';
         <% }) %>
         </div>
       <% } %>
-      <div class="container">
-        <div class="row row-cols-3">
-          <% for (data of pageData.anyData.searchRes) { %>
-            <div class="col my-3">
-              <div class="card" style="width: 100%; height: 100%;">
-                <div class="row g-0">
-                  <div class="col-md-4">
-                    <img src="<%= data.ImgLink %>" class="img-fluid rounded-start" data-isbn="<%= data.Isbn %>">
-                  </div>
-                  <div class="col-md-8">
-                    <div class="card-body">
-                      <h5 class="card-title"><%= data.BookName %></h5>
-                      <h6 class="card-subtitle mb-2 text-muted"><%= data.AuthorName %> ・ <%= data.publisherName%></h6>
-                      <p class="card-text"><%= data.BookContent %></p>
-                      <% data.Tags.forEach(tag => { %>
-                        <%- include('../components/bookTag', {tag: tag}) %>
-                      <% }) %>
-                      <div class="mt-2">
-                        <a href="/item/<%= data.id %>">
-                          <span class="mx-3"><%- include('./../icons/book') %></span>詳細
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          <% } %>
-        </div>
-      </div>
+
+      <%- include('../components/book-item-list', {books: pageData.anyData.searchRes}) %>
+
       <%- include('../components/navigation', {paginationData: pageData.anyData.paginationData, url: `/search?search=${pageData.anyData.searchWord}${queryLink}&type=${pageData.anyData.searchCategory}&`}) %>
     </main>
     <%- include('./../components/inputJs') %>
