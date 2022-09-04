@@ -27,12 +27,24 @@
       },
       "book_name": {
         "type": "text",
-        "analyzer": "my_ja_analyzer"
-       },
-       "book_content": {
+        "analyzer": "my_ja_analyzer",
+        "fields": {
+          "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+          }
+        }
+      },
+      "book_content": {
         "type": "text",
-        "analyzer": "my_ja_analyzer"
-       }
+        "analyzer": "my_ja_analyzer",
+        "fields": {
+          "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+          }
+        }
+      }
     }
   }
 }
