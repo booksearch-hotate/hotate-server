@@ -48,8 +48,6 @@ services:
       ES_JAVA_OPTS: '-Xms512m -Xmx512m'
       http.cors.allow-origin: '*'
       http.cors.enabled: 'true'
-      node.master: 'true'
-      node.data: 'true'
     volumes:
       - esdata:/usr/share/elasticsearch/data
     ports:
