@@ -112,16 +112,12 @@ const settingTemplate = async () => {
     }
   });
 
-  await Promise.all(checkFiles).catch((e: any) => {
-    throw e;
-  });
+  await Promise.all(checkFiles);
 };
 
 /* elasticsearchの初期化処理 */
 const settingInitEs = async () => {
-  await settingTemplate().catch((e: any) => {
-    throw e;
-  });
+  await settingTemplate();
 
   const esPromiseList = [];
 
@@ -129,9 +125,7 @@ const settingInitEs = async () => {
     esPromiseList.push(new ElasticSearch(index).initIndex(false));
   }
 
-  await Promise.all(esPromiseList).catch((e: any) => {
-    throw e;
-  });
+  await Promise.all(esPromiseList);
 };
 
 settingInitEs().catch((e: any) => {
