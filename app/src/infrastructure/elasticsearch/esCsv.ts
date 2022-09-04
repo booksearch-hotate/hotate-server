@@ -52,7 +52,7 @@ export default class EsCsv extends ElasticSearch {
         'Content-Type': 'application/json',
       },
     });
-    // this.removeBulkApiFile();
+    this.removeBulkApiFile();
   }
 
   /**
