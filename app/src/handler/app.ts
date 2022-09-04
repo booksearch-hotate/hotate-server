@@ -4,9 +4,10 @@ import session from 'express-session';
 import dotenv from 'dotenv';
 import csurf from 'csurf';
 import colors from 'colors/safe';
-import glob from 'glob';
 import path from 'path';
 import fs from 'fs';
+import glob from 'glob';
+import * as appRoot from 'app-root-path';
 
 /* routers */
 import homeRouter from '../routers/home';
@@ -85,17 +86,9 @@ app.use(csurf({cookie: false}));
 
 /* elasticsearchのtemplateを読み込み、適用する処理 */
 const settingTemplate = async () => {
-  const templatePath = './settings/elasticsearch/templates/*.json';
+  const templatePath = `${appRoot.path}/settings/elasticsearch/templates/*.json`;
 
-  let files: string[] = [];
-
-  glob(templatePath, (err, fetchFiles) => {
-    if (err) {
-      logger.error(err.message);
-      throw err;
-    }
-    files = fetchFiles;
-  });
+  const files = glob.sync(templatePath);
 
   const checkFiles = files.map(async (file) => {
     const fileName = path.basename(file, '.json');
