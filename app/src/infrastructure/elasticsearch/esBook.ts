@@ -30,7 +30,12 @@ export default class EsSearchBook extends EsCsv {
         query: {
           bool: {
             should: [
-              {match: {'book_name': searchWords}},
+              {match: {
+                'book_name': {
+                  query: searchWords,
+                  boost: 1.5,
+                },
+              }},
               {match: {'book_content': searchWords}},
             ],
           },

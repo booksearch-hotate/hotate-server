@@ -6,10 +6,12 @@ services:
       context: app
     ports:
       - "8080:8080"
+      - "5051:5051"
     volumes:
       - ./app/views:/views/
       - ./app/public:/public/
       - ./app/log/:/log/
+      - ./app/settings/:/settings/
     depends_on:
       mysql:
         condition: service_healthy
@@ -34,8 +36,10 @@ services:
       - esnet
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 20s
+      timeout: 10s
+      interval: 30s
       retries: 10
+      start_period: 40s
 
   es:
     build:
@@ -48,8 +52,7 @@ services:
       ES_JAVA_OPTS: '-Xms512m -Xmx512m'
       http.cors.allow-origin: '*'
       http.cors.enabled: 'true'
-      node.master: 'true'
-      node.data: 'true'
+      xpack.security.enabled: 'false'
     volumes:
       - esdata:/usr/share/elasticsearch/data
     ports:
@@ -58,10 +61,10 @@ services:
       - esnet
     healthcheck:
       test: curl -s http://es:9200/dev/null || exit 1
-      interval: 10s
-      timeout: 30s
-      retries: 6
-      start_period: 30s
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
   
 volumes:
   esdata:

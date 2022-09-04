@@ -4,6 +4,10 @@ import session from 'express-session';
 import dotenv from 'dotenv';
 import csurf from 'csurf';
 import colors from 'colors/safe';
+import path from 'path';
+import fs from 'fs';
+import glob from 'glob';
+import * as appRoot from 'app-root-path';
 
 /* routers */
 import homeRouter from '../routers/home';
@@ -31,6 +35,7 @@ import ResStatus from '../presentation/session/status/resStatus';
 import ElasticSearch from '../infrastructure/elasticsearch/elasticsearch';
 
 import esDocuments from '../infrastructure/elasticsearch/documents/documentType';
+import axios from 'axios';
 
 const COOKIE_MAX_AGE = 60 * 60 * 1000; // 1時間
 
@@ -79,22 +84,54 @@ app.use(limiter);
 
 app.use(csurf({cookie: false}));
 
-const esPromiseList = [];
+/* elasticsearchのtemplateを読み込み、適用する処理 */
+const settingTemplate = async () => {
+  const templatePath = `${appRoot.path}/settings/elasticsearch/templates/*.json`;
 
-for (const index of elasticsearchDocuments) {
-  esPromiseList.push(new ElasticSearch(index).initIndex(false));
-}
+  const files = glob.sync(templatePath);
 
-Promise.all(esPromiseList).catch((e: any) => {
+  const checkFiles = files.map(async (file) => {
+    const fileName = path.basename(file, '.json');
+
+    const hostName = `http://${isLocal() ? 'localhost': 'es'}:9200`;
+
+    const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+
+    try {
+      await axios.put(`${hostName}/_template/${fileName}_template`, data);
+    } catch (e: any) {
+      logger.error(e);
+      throw e;
+    }
+  });
+
+  await Promise.all(checkFiles);
+};
+
+/* elasticsearchの初期化処理 */
+const settingInitEs = async () => {
+  await settingTemplate();
+
+  const esPromiseList = [];
+
+  for (const index of elasticsearchDocuments) {
+    esPromiseList.push(new ElasticSearch(index).initIndex(false));
+  }
+
+  await Promise.all(esPromiseList);
+};
+
+settingInitEs().catch((e: any) => {
+  logger.fatal(e);
   logger.fatal('Initialization failed.');
 
   console.log(`
-  Elasticsearchの初期化に失敗しました。
-  これにより${colors.red('検索エンジンが使えない状況')}となります。
-  早急に改善してください。\n
-  ↓主要な問題とその解決策↓\n
-  ${colors.blue('https://github.com/booksearch-hotate/hotate-server/blob/main/DOC/resolve-problem.md')}
-  `);
+    Elasticsearchの初期化に失敗しました。
+    これにより${colors.red('検索エンジンが使えない状況')}となります。
+    早急に改善してください。\n
+    ↓主要な問題とその解決策↓\n
+    ${colors.blue('https://github.com/booksearch-hotate/hotate-server/blob/main/DOC/resolve-problem.md')}
+    `);
 });
 
 app.use('/', homeRouter);

@@ -29,6 +29,9 @@ import isSameLenAllArray from '../../utils/isSameLenAllArray';
 import conversionpageStatus from '../../utils/conversionPageStatus';
 import TagRepository from '../../interface/repository/tagRepository';
 import TagService from '../../domain/service/tagService';
+import RecommendationApplicationService from '../../application/recommendationApplicationService';
+import RecommendationRepository from '../../interface/repository/recommendationRepository';
+import RecommendationService from '../../domain/service/recommendationService';
 
 // eslint-disable-next-line new-cap
 const bookRouter = Router();
@@ -60,6 +63,11 @@ const tagApplicationService = new TagApplicationService(
     new TagRepository(db),
     new BookRepository(db, new EsSearchBook('books')),
     new TagService(new TagRepository(db)),
+);
+
+const recommendationApplicationService = new RecommendationApplicationService(
+    new RecommendationRepository(db),
+    new RecommendationService(),
 );
 
 bookRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
@@ -233,6 +241,10 @@ bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) =
 
     if ((await tagApplicationService.findByBookId(id)).length > 0) await tagApplicationService.deleteByBookId(id);
 
+    if (await recommendationApplicationService.findOneByBookId(id) !== null) {
+      await recommendationApplicationService.removeUsingByBookId(id);
+    }
+
     const book = await bookApplicationService.searchBookById(id);
 
     await bookApplicationService.deleteBook(id);
@@ -252,6 +264,7 @@ bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) =
 bookRouter.post('/delete-all', csrfProtection, async (req: Request, res: Response) => {
   try {
     if (await tagApplicationService.isExistTable()) await tagApplicationService.deleteAll();
+    await recommendationApplicationService.removeUsingAll();
     await bookApplicationService.deleteBooks();
     await publisherApplicationService.deletePublishers();
     await authorApplicationService.deleteAuthors();

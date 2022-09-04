@@ -75,7 +75,7 @@ bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Re
         9,
     ).then((res) => res.books);
 
-    const recommendationSection = await recommendationApplicationService.findRecommendationByBookId(bookData.Id);
+    const recommendationSection = await recommendationApplicationService.findOneByBookId(bookData.Id);
 
     let recommendation: IRecommendationObj | null = null;
 

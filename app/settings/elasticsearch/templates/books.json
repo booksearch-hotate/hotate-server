@@ -1,0 +1,49 @@
+{
+  "index_patterns": "books",
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_ja_analyzer": {
+          "type": "custom",
+          "char_filter":[
+                "icu_normalizer"
+          ],
+          "tokenizer": "kuromoji_tokenizer",
+          "filter": [
+            "kuromoji_baseform",
+            "kuromoji_part_of_speech",
+            "ja_stop",
+            "kuromoji_number"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "db_id": {
+        "type": "keyword"
+      },
+      "book_name": {
+        "type": "text",
+        "analyzer": "my_ja_analyzer",
+        "fields": {
+          "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+          }
+        }
+      },
+      "book_content": {
+        "type": "text",
+        "analyzer": "my_ja_analyzer",
+        "fields": {
+          "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+          }
+        }
+      }
+    }
+  }
+}
