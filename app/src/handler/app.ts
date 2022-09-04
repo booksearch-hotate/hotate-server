@@ -83,6 +83,7 @@ app.use(limiter);
 
 app.use(csurf({cookie: false}));
 
+/* elasticsearchのtemplateを読み込み、適用する処理 */
 const settingTemplate = async () => {
   const templatePath = './settings/elasticsearch/templates/*.json';
 
@@ -111,35 +112,40 @@ const settingTemplate = async () => {
     }
   });
 
-  await Promise.all(checkFiles);
+  await Promise.all(checkFiles).catch((e: any) => {
+    throw e;
+  });
 };
 
-try {
-  const settingInitEs = async () => {
-    await settingTemplate();
+/* elasticsearchの初期化処理 */
+const settingInitEs = async () => {
+  await settingTemplate().catch((e: any) => {
+    throw e;
+  });
 
-    const esPromiseList = [];
+  const esPromiseList = [];
 
-    for (const index of elasticsearchDocuments) {
-      esPromiseList.push(new ElasticSearch(index).initIndex(false));
-    }
+  for (const index of elasticsearchDocuments) {
+    esPromiseList.push(new ElasticSearch(index).initIndex(false));
+  }
 
-    await Promise.all(esPromiseList);
-  };
+  await Promise.all(esPromiseList).catch((e: any) => {
+    throw e;
+  });
+};
 
-  settingInitEs();
-} catch (e: any) {
+settingInitEs().catch((e: any) => {
+  logger.fatal(e);
   logger.fatal('Initialization failed.');
-  logger.fatal(e as string);
 
   console.log(`
-  Elasticsearchの初期化に失敗しました。
-  これにより${colors.red('検索エンジンが使えない状況')}となります。
-  早急に改善してください。\n
-  ↓主要な問題とその解決策↓\n
-  ${colors.blue('https://github.com/booksearch-hotate/hotate-server/blob/main/DOC/resolve-problem.md')}
-  `);
-}
+    Elasticsearchの初期化に失敗しました。
+    これにより${colors.red('検索エンジンが使えない状況')}となります。
+    早急に改善してください。\n
+    ↓主要な問題とその解決策↓\n
+    ${colors.blue('https://github.com/booksearch-hotate/hotate-server/blob/main/DOC/resolve-problem.md')}
+    `);
+});
 
 app.use('/', homeRouter);
 app.use('/', bookItemRouter);
