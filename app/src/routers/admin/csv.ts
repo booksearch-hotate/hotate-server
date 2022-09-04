@@ -4,18 +4,15 @@ import multer from 'multer';
 import {broadcast} from '../../handler/ws';
 
 import BookService from '../../domain/service/bookService';
-import TagService from '../../domain/service/tagService';
 import AuthorService from '../../domain/service/authorService';
 import PublisherService from '../../domain/service/publisherService';
 
 import BookApplicationService from '../../application/bookApplicationService';
-import TagApplicationService from '../../application/tagApplicationService';
 import AuthorApplicationService from '../../application/authorApplicationService';
 import PublisherApplicationService
   from '../../application/publisherApplicationService';
 
 import BookRepository from '../../interface/repository/bookRepository';
-import TagRepository from '../../interface/repository/tagRepository';
 import AuthorRepository from '../../interface/repository/authorRepository';
 import PublisherRepository from '../../interface/repository/publisherRepository';
 
@@ -27,9 +24,6 @@ import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 
 import {IPage} from '../datas/IPage';
-import RecommendationApplicationService from '../../application/recommendationApplicationService';
-import RecommendationRepository from '../../interface/repository/recommendationRepository';
-import RecommendationService from '../../domain/service/recommendationService';
 
 
 // eslint-disable-next-line new-cap
@@ -52,12 +46,6 @@ const bookApplicationService = new BookApplicationService(
     new BookService(),
 );
 
-const tagApplicationService = new TagApplicationService(
-    new TagRepository(db),
-    new BookRepository(db, new EsSearchBook('books')),
-    new TagService(new TagRepository(db)),
-);
-
 const authorApplicationService = new AuthorApplicationService(
     new AuthorRepository(db, new EsAuthor('authors')),
     new AuthorService(new AuthorRepository(db, new EsAuthor('authors'))),
@@ -66,11 +54,6 @@ const authorApplicationService = new AuthorApplicationService(
 const publisherApplicationService = new PublisherApplicationService(
     new PublisherRepository(db, new EsPublisher('publishers')),
     new PublisherService(new PublisherRepository(db, new EsPublisher('publishers'))),
-);
-
-const recommendationApplicationService = new RecommendationApplicationService(
-    new RecommendationRepository(db),
-    new RecommendationService(),
 );
 
 /* csvファイル選択画面 */
@@ -134,14 +117,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
 
 
     const startTimer = performance.now();
-    if (req.body.initData === 'true') {
-      /* 初期化 */
-      if (await tagApplicationService.isExistTable()) await tagApplicationService.deleteAll();
-      await recommendationApplicationService.removeUsingAll();
-      await bookApplicationService.deleteBooks();
-      await publisherApplicationService.deletePublishers();
-      await authorApplicationService.deleteAuthors();
-    }
+
     const csvLengh = csv.length;
 
     const booksPromise = [];
