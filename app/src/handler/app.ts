@@ -83,14 +83,54 @@ app.use(limiter);
 
 app.use(csurf({cookie: false}));
 
-const esPromiseList = [];
+const settingTemplate = async () => {
+  const templatePath = './settings/elasticsearch/templates/*.json';
 
-for (const index of elasticsearchDocuments) {
-  esPromiseList.push(new ElasticSearch(index).initIndex(false));
-}
+  let files: string[] = [];
 
-Promise.all(esPromiseList).catch((e: any) => {
+  glob(templatePath, (err, fetchFiles) => {
+    if (err) {
+      logger.error(err.message);
+      throw err;
+    }
+    files = fetchFiles;
+  });
+
+  const checkFiles = files.map(async (file) => {
+    const fileName = path.basename(file, '.json');
+
+    const hostName = `http://${isLocal() ? 'localhost': 'es'}:9200`;
+
+    const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+
+    try {
+      await axios.put(`${hostName}/_template/${fileName}_template`, data);
+    } catch (e: any) {
+      logger.error(e);
+      throw e;
+    }
+  });
+
+  await Promise.all(checkFiles);
+};
+
+try {
+  const settingInitEs = async () => {
+    await settingTemplate();
+
+    const esPromiseList = [];
+
+    for (const index of elasticsearchDocuments) {
+      esPromiseList.push(new ElasticSearch(index).initIndex(false));
+    }
+
+    await Promise.all(esPromiseList);
+  };
+
+  settingInitEs();
+} catch (e: any) {
   logger.fatal('Initialization failed.');
+  logger.fatal(e as string);
 
   console.log(`
   Elasticsearchの初期化に失敗しました。
@@ -99,27 +139,7 @@ Promise.all(esPromiseList).catch((e: any) => {
   ↓主要な問題とその解決策↓\n
   ${colors.blue('https://github.com/booksearch-hotate/hotate-server/blob/main/DOC/resolve-problem.md')}
   `);
-}).then((e: any) => {
-  const templatePath = './settings/elasticsearch/templates/*.json';
-  glob(templatePath, (err, files) => {
-    if (err) {
-      logger.error(err.message);
-      return;
-    }
-
-    const checkFiles = files.map(async (file) => {
-      const fileName = path.basename(file, '.json');
-
-      const hostName = `http://${isLocal() ? 'localhost': 'es'}:9200`;
-
-      const data = JSON.parse(fs.readFileSync(file, 'utf8'));
-
-      await axios.put(`${hostName}/_template/${fileName}_template`, data);
-    });
-
-    Promise.all(checkFiles);
-  });
-});
+}
 
 app.use('/', homeRouter);
 app.use('/', bookItemRouter);
