@@ -64,7 +64,7 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
   /* タグ検索とぜったい検索が両方とも選択されている場合、両方とも無効化 */
   if (isTag && isStrict) searchMode = 'none';
 
-  if (typeof formSearchCategory !== 'string') throw new Error('Invalid search category');
+  if (typeof formSearchCategory !== 'string') searchCategory = 'book';
 
   if (formSearchCategory === 'author') searchCategory = 'author';
   else if (formSearchCategory === 'publisher') searchCategory = 'publisher';

@@ -166,4 +166,16 @@ export default class RecommendationRepository implements IRecommendationReposito
 
     return recommendationId.recommendation_id;
   }
+
+  public async removeUsingByBookId(bookId: BookId): Promise<void> {
+    await this.db.UsingRecommendations.destroy({
+      where: {book_id: bookId.Id},
+    });
+  }
+
+  public async removeUsingAll(): Promise<void> {
+    await this.db.UsingRecommendations.destroy({
+      where: {},
+    });
+  }
 }

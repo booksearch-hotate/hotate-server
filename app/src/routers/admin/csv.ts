@@ -4,18 +4,15 @@ import multer from 'multer';
 import {broadcast} from '../../handler/ws';
 
 import BookService from '../../domain/service/bookService';
-import TagService from '../../domain/service/tagService';
 import AuthorService from '../../domain/service/authorService';
 import PublisherService from '../../domain/service/publisherService';
 
 import BookApplicationService from '../../application/bookApplicationService';
-import TagApplicationService from '../../application/tagApplicationService';
 import AuthorApplicationService from '../../application/authorApplicationService';
 import PublisherApplicationService
   from '../../application/publisherApplicationService';
 
 import BookRepository from '../../interface/repository/bookRepository';
-import TagRepository from '../../interface/repository/tagRepository';
 import AuthorRepository from '../../interface/repository/authorRepository';
 import PublisherRepository from '../../interface/repository/publisherRepository';
 
@@ -47,12 +44,6 @@ const bookApplicationService = new BookApplicationService(
     new AuthorRepository(db, new EsAuthor('authors')),
     new PublisherRepository(db, new EsPublisher('publishers')),
     new BookService(),
-);
-
-const tagApplicationService = new TagApplicationService(
-    new TagRepository(db),
-    new BookRepository(db, new EsSearchBook('books')),
-    new TagService(new TagRepository(db)),
 );
 
 const authorApplicationService = new AuthorApplicationService(
@@ -126,13 +117,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
 
 
     const startTimer = performance.now();
-    if (req.body.initData === 'true') {
-      /* 初期化 */
-      if (await tagApplicationService.isExistTable()) await tagApplicationService.deleteAll();
-      await bookApplicationService.deleteBooks();
-      await publisherApplicationService.deletePublishers();
-      await authorApplicationService.deleteAuthors();
-    }
+
     const csvLengh = csv.length;
 
     const booksPromise = [];

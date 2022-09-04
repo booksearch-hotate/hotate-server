@@ -37,6 +37,7 @@ export default class ElasticSearch {
       logger.info(`${this.index} does not exist.`);
 
       await axios.put(`${this.uri}`);
+
       return;
     }
 

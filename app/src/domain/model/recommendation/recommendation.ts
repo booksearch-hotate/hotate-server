@@ -10,7 +10,7 @@ export default class Recommendation {
   private updatedAt: Date | null;
   private recommendationItems: RecommendationItem[];
 
-  private readonly MAX_CONTENT_LEN = 20;
+  private readonly MAX_CONTENT_LEN = 100;
   private readonly MAX_HAVING_BOOK_COUNT = 10;
 
   constructor(
