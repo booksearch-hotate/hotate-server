@@ -1,5 +1,4 @@
 import axios from 'axios';
-import fs from 'fs';
 
 import {isLocal} from '../cli/cmdLine';
 import Logger from '../logger/logger';
@@ -39,26 +38,9 @@ export default class ElasticSearch {
 
       await axios.put(`${this.uri}`);
 
-      const settingFolderPath = `settings/elasticsearch/${this.index}`;
-
-      if (fs.existsSync(settingFolderPath)) {
-        await axios.post(`${this.uri}/_close`);
-        await this.executeApi(`${settingFolderPath}/setting.json`, '_settings');
-        await this.executeApi(`${settingFolderPath}/mapping.json`, '_mappings');
-        await axios.post(`${this.uri}/_open`);
-      }
-
       return;
     }
 
     if (isRemove) return axios.delete(`${this.uri}`);
-  }
-
-  private async executeApi(jsonPath: string, type: String): Promise<void> {
-    if (!fs.existsSync(jsonPath)) return;
-
-    const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-
-    await axios.put(`${this.uri}/${type}`, data);
   }
 }

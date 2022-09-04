@@ -4,6 +4,9 @@ import session from 'express-session';
 import dotenv from 'dotenv';
 import csurf from 'csurf';
 import colors from 'colors/safe';
+import glob from 'glob';
+import path from 'path';
+import fs from 'fs';
 
 /* routers */
 import homeRouter from '../routers/home';
@@ -31,6 +34,7 @@ import ResStatus from '../presentation/session/status/resStatus';
 import ElasticSearch from '../infrastructure/elasticsearch/elasticsearch';
 
 import esDocuments from '../infrastructure/elasticsearch/documents/documentType';
+import axios from 'axios';
 
 const COOKIE_MAX_AGE = 60 * 60 * 1000; // 1時間
 
@@ -95,6 +99,26 @@ Promise.all(esPromiseList).catch((e: any) => {
   ↓主要な問題とその解決策↓\n
   ${colors.blue('https://github.com/booksearch-hotate/hotate-server/blob/main/DOC/resolve-problem.md')}
   `);
+}).then((e: any) => {
+  const templatePath = './settings/elasticsearch/templates/*.json';
+  glob(templatePath, (err, files) => {
+    if (err) {
+      logger.error(err.message);
+      return;
+    }
+
+    const checkFiles = files.map(async (file) => {
+      const fileName = path.basename(file, '.json');
+
+      const hostName = `http://${isLocal() ? 'localhost': 'es'}:9200`;
+
+      const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+
+      await axios.put(`${hostName}/_template/${fileName}_template`, data);
+    });
+
+    Promise.all(checkFiles);
+  });
 });
 
 app.use('/', homeRouter);
