@@ -6,6 +6,7 @@ services:
       context: app
     ports:
       - "8080:8080"
+      - "5051:5051"
     volumes:
       - ./app/views:/views/
       - ./app/public:/public/
