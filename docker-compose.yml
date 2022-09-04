@@ -11,6 +11,7 @@ services:
       - ./app/views:/views/
       - ./app/public:/public/
       - ./app/log/:/log/
+      - ./app/settings/:/settings/
     depends_on:
       mysql:
         condition: service_healthy
