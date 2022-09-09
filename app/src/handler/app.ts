@@ -93,7 +93,9 @@ const settingTemplate = async () => {
   const checkFiles = files.map(async (file) => {
     const fileName = path.basename(file, '.json');
 
-    const hostName = `http://${isLocal() ? 'localhost': 'es'}:9200`;
+    const port = process.env.ES_PORT;
+
+    const hostName = `http://${isLocal() ? 'localhost': process.env.ES_DOCKER_NAME}:${port}`;
 
     const data = JSON.parse(fs.readFileSync(file, 'utf8'));
 

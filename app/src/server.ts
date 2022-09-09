@@ -1,7 +1,15 @@
 import {startAppServer} from './handler/app';
 import {startWSServer} from './handler/ws';
+import dotenv from 'dotenv';
 
-const appPort = 8080;
-const wsPort = 5051;
-startAppServer(appPort);
-startWSServer(wsPort);
+dotenv.config();
+
+try {
+  const appPort = Number(process.env.APP_PORT);
+  const wsPort = Number(process.env.WS_PORT);
+
+  startAppServer(appPort);
+  startWSServer(wsPort);
+} catch (e) {
+  console.error(e);
+}

@@ -2,6 +2,9 @@ import axios from 'axios';
 
 import {isLocal} from '../cli/cmdLine';
 import Logger from '../logger/logger';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const logger = new Logger('elasticSearch');
 
@@ -11,7 +14,8 @@ export default class ElasticSearch {
   protected uri: string;
 
   constructor(index: 'books' | 'authors' | 'publishers' | 'search_history') {
-    this.host = isLocal() ? 'localhost:9200' : 'es:9200';
+    const port = process.env.ES_PORT;
+    this.host = `${isLocal() ? 'localhost' : process.env.ES_DOCKER_NAME}:${port}`;
     this.index = index;
     this.uri = `http://${this.host}/${this.index}`;
   }

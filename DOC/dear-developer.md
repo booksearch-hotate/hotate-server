@@ -68,9 +68,23 @@ docker-compose up phpmyadmin // phpmyadmin
 | :--: | :--: |
 | DB_PW_KEY | DBの暗号化に用いる暗号鍵 |
 | SESSION_SECRET | セッション通信に用いる暗号鍵 |
-| JWTSECRET | JWTに用いる暗号鍵 |
+| JWT_SECRET | JWTに用いる暗号鍵 |
 
 この内容を`app`フォルダ直下に`.env`の名称で作成してください。
+
+### 環境変数の追加
+
+以下の項目をenvファイルに追加してください。
+
+```env
+APP_PORT=8080
+WS_PORT=5051
+ES_PORT=9200
+ES_DOCKER_NAME=es
+MYSQL_DOCKER_NAME=mysql
+```
+
+issue186に対応するために環境変数を追加しました。
 
 ## DBの構造について
 
@@ -97,3 +111,7 @@ curl -H "Content-Type: application/json" -XPUT localhost:9200/*/_settings -d '{"
 どの部分を改変しているかは「type」に書かれていますので、参考にしてください。
 
 なお、テスト用のcsvファイルに関してですが、**testData.csv**と**testData_utf8.csv**が存在しています。testData.csvは文字コードが**ANCI(Shift_JIS)**、testData_utf8.csvは文字コードが**UTF-8**になっています。Shift-JISはWindows標準の文字コード、UTF-8はMac標準の文字コードとなっています。現在HOTATEは**UTF-8のみに対応**しています。
+
+## コントリビュートに関して
+
+コントリビュートに関する記載は[こちら](../CONTRIBUTING.md)をご覧ください。

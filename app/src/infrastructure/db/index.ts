@@ -1,4 +1,6 @@
 import {Sequelize} from 'sequelize';
+import dotenv from 'dotenv';
+
 import BookTable from './tables/books';
 import AuthorTable from './tables/authors';
 import PublisherTable from './tables/publishers';
@@ -13,8 +15,10 @@ import SchoolGradeInfoTable from './tables/schoolGradeInfo';
 
 import {isLocal} from '../cli/cmdLine';
 
+dotenv.config();
+
 const sequelize = new Sequelize('hotate', 'root', 'root', {
-  host: isLocal() ? 'localhost' : 'mysql',
+  host: isLocal() ? 'localhost' : process.env.MYSQL_DOCKER_NAME,
   dialect: 'mysql',
   logging: false,
 });
