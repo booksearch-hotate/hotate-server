@@ -7,7 +7,7 @@ import AdminData from '../../domain/model/admin/adminData';
 dotenv.config();
 
 export default class AdminSession {
-  private readonly jwtSecret = process.env.JWTSECRET as string;
+  private readonly jwtSecret = process.env.JWT_SECRET as string;
   private id: string;
   private pw: string;
 
