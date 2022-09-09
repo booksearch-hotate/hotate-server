@@ -27,7 +27,7 @@ issueは基本的にいつでも受け付けています。例えばこんなiss
 
 ### Docker
 
-基本的には`docker-compose up`で起動してください。詳しいサービス名は[docker-compose.yml](./docker-compose.yml)をご覧ください。
+基本的には`docker-compose up app`で起動してください。詳しいサービス名は[docker-compose.yml](./docker-compose.yml)をご覧ください。
 
 ### app
 
