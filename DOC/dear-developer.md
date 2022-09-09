@@ -111,3 +111,7 @@ curl -H "Content-Type: application/json" -XPUT localhost:9200/*/_settings -d '{"
 どの部分を改変しているかは「type」に書かれていますので、参考にしてください。
 
 なお、テスト用のcsvファイルに関してですが、**testData.csv**と**testData_utf8.csv**が存在しています。testData.csvは文字コードが**ANCI(Shift_JIS)**、testData_utf8.csvは文字コードが**UTF-8**になっています。Shift-JISはWindows標準の文字コード、UTF-8はMac標準の文字コードとなっています。現在HOTATEは**UTF-8のみに対応**しています。
+
+## コントリビュートに関して
+
+コントリビュートに関する記載は[こちら](../CONTRIBUTING.md)をご覧ください。
