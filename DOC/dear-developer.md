@@ -74,7 +74,7 @@ docker-compose up phpmyadmin // phpmyadmin
 
 ### 環境変数の追加
 
-issue186に対応するため、以下の項目をenvファイルに追加してください。
+以下の項目をenvファイルに追加してください。
 
 ```env
 APP_PORT=8080
@@ -83,6 +83,8 @@ ES_PORT=9200
 ES_DOCKER_NAME=es
 MYSQL_DOCKER_NAME=mysql
 ```
+
+issue186に対応するために環境変数を追加しました。
 
 ## DBの構造について
 
