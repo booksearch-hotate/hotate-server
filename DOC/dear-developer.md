@@ -68,9 +68,21 @@ docker-compose up phpmyadmin // phpmyadmin
 | :--: | :--: |
 | DB_PW_KEY | DBの暗号化に用いる暗号鍵 |
 | SESSION_SECRET | セッション通信に用いる暗号鍵 |
-| JWTSECRET | JWTに用いる暗号鍵 |
+| JWT_SECRET | JWTに用いる暗号鍵 |
 
 この内容を`app`フォルダ直下に`.env`の名称で作成してください。
+
+### 環境変数の追加
+
+issue186に対応するため、以下の項目をenvファイルに追加してください。
+
+```env
+APP_PORT=8080
+WS_PORT=5051
+ES_PORT=9200
+ES_DOCKER_NAME=es
+MYSQL_DOCKER_NAME=mysql
+```
 
 ## DBの構造について
 
