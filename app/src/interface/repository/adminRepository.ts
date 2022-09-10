@@ -1,6 +1,5 @@
 import AdminTable from '../../infrastructure/db/tables/admin';
 import dotenv from 'dotenv';
-import Logger from '../../infrastructure/logger/logger';
 
 import {IAdminApplicationRepository}
   from '../../domain/model/admin/IAdminRepository';
@@ -13,12 +12,10 @@ interface sequelize {
 
 export default class AdminRepository implements IAdminApplicationRepository {
   private readonly db: sequelize;
-  private readonly logger: Logger;
 
   public constructor(db: sequelize) {
     this.db = db;
     dotenv.config();
-    this.logger = new Logger('AdminRepository');
   }
 
   public async getAdmin(): Promise<Admin> {
