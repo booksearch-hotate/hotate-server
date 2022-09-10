@@ -160,3 +160,5 @@ export function startAppServer(port: number) {
     console.log(`サーバの起動に成功しました！\nリンク : ${colors.blue(`http://localhost:${port}`)}`);
   });
 }
+
+export {app};
