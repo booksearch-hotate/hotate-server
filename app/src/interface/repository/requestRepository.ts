@@ -17,6 +17,34 @@ export default class RequestRepository implements IBookRequestRepository {
     this.db = db;
   }
 
+  public async findByDepartmendId(departmentId: string): Promise<BookRequest[]> {
+    const fetchData = await this.db.Request.findAll({
+      where: {
+        department_id: departmentId,
+      },
+    });
+
+    if (fetchData === null) return [];
+
+    const fetchDepartment = await this.db.Department.findOne({where: {id: departmentId}});
+
+    if (fetchDepartment === null) throw new Error();
+
+    return fetchData.map((column) => new BookRequest(
+        column.id,
+        column.book_name,
+        column.author_name,
+        column.publisher_name,
+        column.isbn,
+        column.message,
+        new Department(column.department_id, fetchDepartment.name),
+        column.school_year,
+        column.school_class,
+        column.user_name,
+        column.created_at,
+    ));
+  }
+
   public async register(request: BookRequest): Promise<void> {
     await this.db.Request.create({
       id: request.Id,
