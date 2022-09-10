@@ -1,5 +1,7 @@
 import Admin from '../../src/domain/model/admin/admin';
 import Author from '../../src/domain/model/author/author';
+import Book from '../../src/domain/model/book/book';
+import Publisher from '../../src/domain/model/publisher/publisher';
 import {DomainInvalidError} from '../../src/presentation/error';
 
 const makeRandomWords = (len: number): string => {
@@ -46,5 +48,19 @@ describe('Test validation of author model', () => {
     };
 
     expect(t).not.toThrow(DomainInvalidError);
+  });
+});
+
+describe('Test validation of book model', () => {
+  const bookValidation = (name: string, subName: string | null, content: string | null) => {
+    new Book('test', name, subName, content, null, null, null, new Author('author', null), new Publisher('publisher', null), []);
+  };
+
+  test('Set invalid value', () => {
+    expect(() => bookValidation(makeRandomWords(151), null, null)).toThrow(DomainInvalidError);
+  });
+
+  test('Set safety value', () => {
+    expect(() => bookValidation('tst', 'test', 'test')).not.toThrow(DomainInvalidError);
   });
 });
