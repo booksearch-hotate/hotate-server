@@ -15,7 +15,6 @@
         "@typescript-eslint"
     ],
     "ignorePatterns":[
-        "build.js",
         "public/js/*"
     ],
     "rules": {
