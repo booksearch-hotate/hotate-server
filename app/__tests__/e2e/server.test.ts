@@ -58,4 +58,10 @@ describe('Test search page', () => {
 
     expect(res.statusCode).toBe(200);
   });
+
+  test('search with tag and author category', async () => {
+    const res = await request.get(encodeURI('/search?search=時雨沢&tag=true&type=author'));
+
+    expect(res.statusCode).toBe(200);
+  });
 });
