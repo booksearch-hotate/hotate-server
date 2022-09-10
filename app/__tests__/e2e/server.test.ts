@@ -33,7 +33,7 @@ describe('Request admin page', () => {
     expect(res.headers['location']).toEqual('login');
   });
 
-  test('Access with right credentials', async () => {
+  test('Access with credentials', async () => {
     const csrfTokenData = await fetchCsrfData('/login');
 
     const userData = {
