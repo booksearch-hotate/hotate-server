@@ -1,3 +1,4 @@
+import {DomainInvalidError} from '../../../presentation/error';
 import Author from '../author/author';
 import Publisher from '../publisher/publisher';
 import Tag from '../tag/tag';
@@ -15,6 +16,9 @@ export default class Book {
   private tags!: Tag[];
 
   private readonly MAX_NUMBER_OF_TAGS = 10;
+  private readonly MAX_NAME_LEN = 150;
+  private readonly MAX_SUBNAME_LEN = 300;
+  private readonly MAX_CONTENT_LEN = 1000;
 
   constructor(
       id: string,
@@ -28,8 +32,10 @@ export default class Book {
       publisher: Publisher,
       tags: Tag[],
   ) {
-    if (id === null) throw new Error('Id is null.');
-    if (name === null) throw new Error('The title of the book is null.');
+    if (id === null) throw new DomainInvalidError('Id is null.');
+    if (name === null || name.length > this.MAX_NAME_LEN) throw new DomainInvalidError(`The format of the name of book is different. Name of book: ${name}`);
+    if (subName !== null && name.length > this.MAX_SUBNAME_LEN) throw new DomainInvalidError(`The format of the sub name of book is defferent. Sub name of book: ${subName}`);
+    if (content !== null && content.length > this.MAX_CONTENT_LEN) throw new DomainInvalidError(`The format of the sentences of book is defferent. Sentences of book: ${content}`);
 
     this.id = id;
     this.Name = name;
