@@ -52,8 +52,10 @@ describe('Access book request', () => {
         sendData.userName,
     );
 
-    const fetchData = await bookRequestApplicationService.findById('test');
+    const fetchData = await bookRequestApplicationService.findById(sendData.id);
 
     expect(fetchData?.BookName).toMatch(sendData.bookName);
+
+    await bookRequestApplicationService.delete(sendData.id);
   });
 });
