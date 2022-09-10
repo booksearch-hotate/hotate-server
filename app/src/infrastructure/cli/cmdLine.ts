@@ -6,6 +6,7 @@ const cmdList = process.argv.slice(2);
  * @returns localが含まれているか
  */
 export function isLocal() {
+  for (const cmd of process.argv) if (cmd.slice(-4) === 'jest') return true;
   return cmdList.includes('local');
 }
 
