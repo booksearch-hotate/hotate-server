@@ -43,6 +43,7 @@
     "@types/glob": "^8.0.0",
     "@types/jest": "^29.0.0",
     "@types/jsonwebtoken": "^8.5.8",
+    "@types/mongodb": "^4.0.7",
     "@types/multer": "^1.4.7",
     "@types/supertest": "^2.0.12",
     "@types/uuid": "^8.3.4",
@@ -53,6 +54,8 @@
     "eslint-config-google": "^0.14.0",
     "jest": "^29.0.2",
     "jest-puppeteer": "^6.1.1",
+    "mongodb": "^4.9.1",
+    "mongodb-memory-server": "^8.9.1",
     "supertest": "^6.2.4",
     "ts-jest": "^29.0.0",
     "ts-node": "^10.9.1"
