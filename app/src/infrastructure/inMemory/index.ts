@@ -2,6 +2,15 @@ import {MongoClient} from 'mongodb';
 import {MongoMemoryServer} from 'mongodb-memory-server';
 import {InMemoryDBError} from '../../presentation/error';
 
+/**
+ * インメモリで動作するDBです。このDBは**開発環境でのみ動作します**。
+ *
+ * MongoDB : https://www.mongodb.com/
+ *
+ * MongoMemoryServer: https://github.com/nodkz/mongodb-memory-server
+ *
+ * また、起動する際は必ず`.init()`を呼び出してください。
+ */
 export default class InMemoryDb {
   con: MongoClient | null = null;
   mongoServer: MongoMemoryServer | null = null;
