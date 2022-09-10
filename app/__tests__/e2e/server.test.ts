@@ -30,7 +30,7 @@ describe('Test the root path', () => {
 describe('Request admin page', () => {
   test('Access directly', async () => {
     const res = await request.get('/admin/');
-    expect(res.statusCode).toBe(302);
+    expect(res.headers['location']).toEqual('login');
   });
 
   test('Access with right credentials', async () => {
@@ -48,6 +48,6 @@ describe('Request admin page', () => {
         .set('Cookie', csrfTokenData.cookie)
         .send(userData);
 
-    expect(res.statusCode).toBe(302);
+    expect(res.headers['location']).toEqual('admin');
   });
 });
