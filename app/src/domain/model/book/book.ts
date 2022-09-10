@@ -19,6 +19,8 @@ export default class Book {
   private readonly MAX_NAME_LEN = 150;
   private readonly MAX_SUBNAME_LEN = 300;
   private readonly MAX_CONTENT_LEN = 1000;
+  private readonly MAX_YEAR_LEN = 4;
+  private readonly MAX_ISBN_LEN = 10;
 
   constructor(
       id: string,
@@ -86,7 +88,7 @@ export default class Book {
   }
 
   set Isbn(isbn: string | null) {
-    if (isbn === '' || isbn === null || isbn.length < 10) {
+    if (isbn === '' || isbn === null || isbn.length < this.MAX_ISBN_LEN) {
       this.isbn = null;
       return;
     }
@@ -109,7 +111,7 @@ export default class Book {
     return this.year;
   }
   private set Year(year: number | null) {
-    if (year !== null && year.toString().length < 4) {
+    if (year !== null && year.toString().length < this.MAX_YEAR_LEN) {
       year = null;
       return;
     }
