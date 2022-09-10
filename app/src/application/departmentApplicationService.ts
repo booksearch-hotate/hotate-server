@@ -64,7 +64,7 @@ export default class DepartmentApplicationService {
   }
 
   public async deleteDepartment(id: string): Promise<void> {
-    const bookRequestsHaveId = await this.departmentRepository.findBookRequestById(id);
+    const bookRequestsHaveId = await this.bookRequestRepository.findByDepartmendId(id);
 
     const deleteBookRequests = bookRequestsHaveId.map(async (bookRequest) => {
       await this.bookRequestRepository.delete(bookRequest.Id);
@@ -88,7 +88,7 @@ export default class DepartmentApplicationService {
   }
 
   public async findBookRequestById(departmentId: string): Promise<BookRequestData[]> {
-    const fetchBookRequest = await this.departmentRepository.findBookRequestById(departmentId);
+    const fetchBookRequest = await this.bookRequestRepository.findByDepartmendId(departmentId);
     return fetchBookRequest.map((bookRequest) => new BookRequestData(bookRequest));
   }
 }

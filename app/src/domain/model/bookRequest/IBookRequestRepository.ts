@@ -5,4 +5,5 @@ export interface IBookRequestRepository {
   delete(id: string): Promise<void>
   findAll(): Promise<BookRequest[] | null>
   findById(requestId: string): Promise<BookRequest | null>
+  findByDepartmendId(departmentId: string): Promise<BookRequest[]>
 }

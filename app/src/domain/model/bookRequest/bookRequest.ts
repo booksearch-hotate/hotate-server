@@ -1,5 +1,5 @@
 import Department from '../department/department';
-import {FormInvalidError} from '../../../presentation/error';
+import {DomainInvalidError} from '../../../presentation/error';
 
 export default class BookRequest {
   private id: string;
@@ -14,6 +14,12 @@ export default class BookRequest {
   private userName: string;
   private createdAt: Date;
 
+  private readonly MAX_BOOK_NAME_LEN = 150;
+  private readonly MAX_AUTHOR_NAME_LEN = 200;
+  private readonly MAX_PUBLISHER_NAME_LEN = 200;
+  private readonly MAX_MESSAGE_LEN = 500;
+  private readonly MAX_USERNAME_LEN = 50;
+
   public constructor(
       id: string,
       bookName: string,
@@ -27,11 +33,14 @@ export default class BookRequest {
       userName: string,
       createdAt: Date | null = null,
   ) {
-    if (bookName.length === 0) throw new FormInvalidError('Name of book is empty.');
-    if (userName.length === 0) throw new FormInvalidError('User name is empty.');
+    if (bookName.length === 0 || bookName.length > this.MAX_BOOK_NAME_LEN) throw new DomainInvalidError(`The format of the name of book is different. Name of book: ${bookName}`);
+    if (authorName.length > this.MAX_AUTHOR_NAME_LEN) throw new DomainInvalidError(`The format of the name of author is different. Name of author: ${authorName}`);
+    if (publisherName.length > this.MAX_PUBLISHER_NAME_LEN) throw new DomainInvalidError(`The format of the name of publisher is different. Name of author: ${publisherName}`);
+    if (message.length > this.MAX_MESSAGE_LEN) throw new DomainInvalidError(`The format of the message is different. Message: ${message}`);
+    if (userName.length === 0 || userName.length > this.MAX_USERNAME_LEN) throw new DomainInvalidError(`The format of the name of user is different. Name of user: ${userName}`);
 
-    if (schoolYear.length === 0) throw new Error('The grade does not exist.');
-    if (schoolClass.length === 0) throw new Error('class does not exist.');
+    if (schoolYear.length === 0) throw new DomainInvalidError('The grade does not exist.');
+    if (schoolClass.length === 0) throw new DomainInvalidError('class does not exist.');
 
     this.id = id;
     this.bookName = bookName;

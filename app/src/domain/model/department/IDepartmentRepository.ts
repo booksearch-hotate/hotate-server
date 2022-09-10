@@ -1,4 +1,3 @@
-import BookRequest from '../bookRequest/bookRequest';
 import Department from './department';
 
 export interface IDepartmentRepository {
@@ -9,5 +8,4 @@ export interface IDepartmentRepository {
   findById(id: string): Promise<Department | null>,
   update(department: Department): Promise<void>,
   findByName (name: string | null): Promise<Department | null>,
-  findBookRequestById(departmentId: string): Promise<BookRequest[]>
 }
