@@ -1,7 +1,7 @@
 import {Db} from 'mongodb';
 import Department from '../../domain/model/department/department';
 import {IDepartmentRepository} from '../../domain/model/department/IDepartmentRepository';
-import {departments} from '../../infrastructure/inMemory/collections/department';
+import {departmentCollectionName, departmentDocument} from '../../infrastructure/inMemory/collections/department';
 
 export default class TestDepartmentRepository implements IDepartmentRepository {
   db: Db;
@@ -9,7 +9,7 @@ export default class TestDepartmentRepository implements IDepartmentRepository {
 
   constructor(db: Db) {
     this.db = db;
-    this.col = db.collection<departments>('departments');
+    this.col = db.collection<departmentDocument>(departmentCollectionName);
   }
 
   async findAllDepartment(): Promise<Department[]> {
@@ -30,7 +30,7 @@ export default class TestDepartmentRepository implements IDepartmentRepository {
   }
 
   async insertDepartment(department: Department): Promise<void> {
-    const insertDoc: departments = {name: department.Name, id: department.Id};
+    const insertDoc: departmentDocument = {name: department.Name, id: department.Id};
 
     await this.col.insertOne(insertDoc);
   }
@@ -62,7 +62,7 @@ export default class TestDepartmentRepository implements IDepartmentRepository {
   }
 
   async update(department: Department): Promise<void> {
-    const updateDoc: departments = {name: department.Name, id: department.Id};
+    const updateDoc: departmentDocument = {name: department.Name, id: department.Id};
 
     await this.col.updateOne({id: department.Id}, updateDoc);
   }

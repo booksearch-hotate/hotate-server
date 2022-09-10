@@ -1,7 +1,7 @@
 import {ObjectId} from 'mongodb';
 import Department from '../../../domain/model/department/department';
 
-export type requests = {
+export type requestDocument = {
   _id?: ObjectId
   id: string;
   bookName: string;
@@ -15,3 +15,5 @@ export type requests = {
   userName: string;
   createdAt: Date;
 }
+
+export const bookRequestCollectionName = 'requests';

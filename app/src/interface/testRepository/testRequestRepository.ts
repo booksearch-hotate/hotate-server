@@ -2,9 +2,9 @@ import {Db} from 'mongodb';
 import BookRequest from '../../domain/model/bookRequest/bookRequest';
 import bookRequest from '../../domain/model/bookRequest/bookRequest';
 import {IBookRequestRepository} from '../../domain/model/bookRequest/IBookRequestRepository';
-import {requests} from '../../infrastructure/inMemory/collections/bookRequest';
+import {bookRequestCollectionName, requestDocument} from '../../infrastructure/inMemory/collections/bookRequest';
 
-const collectionName = 'requests';
+const collectionName = bookRequestCollectionName;
 
 export default class TestRequestRepository implements IBookRequestRepository {
   db: Db;
@@ -14,7 +14,7 @@ export default class TestRequestRepository implements IBookRequestRepository {
   }
 
   async findByDepartmendId(departmentId: string): Promise<BookRequest[]> {
-    const col = this.db.collection<requests>(collectionName);
+    const col = this.db.collection<requestDocument>(collectionName);
     const data = col.find({'department.Id': departmentId});
 
     const list:BookRequest[] = [];
@@ -47,7 +47,7 @@ export default class TestRequestRepository implements IBookRequestRepository {
   }
 
   async findById(requestId: string): Promise<bookRequest | null> {
-    const col = this.db.collection<requests>(collectionName);
+    const col = this.db.collection<requestDocument>(collectionName);
     const data = await col.findOne({id: requestId});
 
     if (data === null) return null;
@@ -70,7 +70,7 @@ export default class TestRequestRepository implements IBookRequestRepository {
   }
 
   async findAll(): Promise<BookRequest[] | null> {
-    const col = this.db.collection<requests>(collectionName);
+    const col = this.db.collection<requestDocument>(collectionName);
     const data = col.find();
 
     const list:BookRequest[] = [];
@@ -97,7 +97,7 @@ export default class TestRequestRepository implements IBookRequestRepository {
   }
 
   async delete(id: string): Promise<void> {
-    const col = this.db.collection<requests>(collectionName);
+    const col = this.db.collection<requestDocument>(collectionName);
 
     await col.deleteOne({id});
   }
