@@ -1,8 +1,6 @@
 import {MongoClient} from 'mongodb';
 import {MongoMemoryServer} from 'mongodb-memory-server';
-import Logger from '../logger/logger';
-
-const logger = new Logger('InMemory');
+import {InMemoryDBError} from '../../presentation/error';
 
 export default class InMemoryDb {
   con: MongoClient | null = null;
@@ -24,8 +22,7 @@ export default class InMemoryDb {
 
   db() {
     if (this.con === null || this.mongoServer === null) {
-      logger.error('Value of connection or mongo is null. Please execute init method.');
-      throw new Error('Miss connect DB');
+      throw new InMemoryDBError('Value of connection or mongo is null. Please execute init method.');
     }
 
     const db = this.con.db(this.mongoServer.instanceInfo!.dbName);
