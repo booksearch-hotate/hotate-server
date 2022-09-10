@@ -27,10 +27,10 @@ describe('Test the root path', () => {
   });
 });
 
-describe('Request admin page', () => {
+describe('Test admin page', () => {
   test('Access directly', async () => {
     const res = await request.get('/admin/');
-    expect(res.headers['location']).toEqual('login');
+    expect(res.headers['location']).toEqual('/login');
   });
 
   test('Access with credentials', async () => {
