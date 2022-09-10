@@ -48,6 +48,14 @@ describe('Test admin page', () => {
         .set('Cookie', csrfTokenData.cookie)
         .send(userData);
 
-    expect(res.headers['location']).toEqual('admin');
+    expect(res.headers['location']).toEqual('/admin/');
+  });
+});
+
+describe('Test search page', () => {
+  test('search normaly', async () => {
+    const res = await request.get(`/search?search=${encodeURI('キノの旅')}`);
+
+    expect(res.statusCode).toBe(200);
   });
 });
