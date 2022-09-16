@@ -25,7 +25,9 @@ export default class AdminRepository implements IAdminApplicationRepository {
 
           `SELECT id, CONVERT(AES_DECRYPT(UNHEX(pw), '${process.env.DB_PW_KEY}') USING utf8) AS pw FROM admin LIMIT 1`,
       );
-      if (!admin) throw new Error('admin not found');
+
+      if (!admin) throw new MySQLDBError('admin not found');
+
       /* sequelize.queryは[result, metadata]をレスポンスし
       resultはフィールド数分ある配列なので[0][0]と指定 */
       // https://sequelize.org/docs/v6/core-concepts/raw-queries/
@@ -33,8 +35,10 @@ export default class AdminRepository implements IAdminApplicationRepository {
       const res = admin[0][0] as { id: string, pw: string };
 
       return new Admin(res.id, res.pw);
-    } catch (e) {
-      throw new Error(`Could not obtain the administrator's id or pw.\n Error: ${e as string}`);
+    } catch (e: any) {
+      if (e instanceof MySQLDBError) throw e;
+
+      throw new MySQLDBError('Failed to fetch to administrator.');
     }
   }
 
@@ -44,7 +48,7 @@ export default class AdminRepository implements IAdminApplicationRepository {
           `INSERT INTO admin VALUES ('${admin.Id}', HEX(AES_ENCRYPT('${admin.Pw}', '${process.env.DB_PW_KEY}')))`,
       );
     } catch (e) {
-      throw e;
+      throw new MySQLDBError('Failed to execute SQL to insert administrator.');
     }
   }
 
