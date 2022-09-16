@@ -13,6 +13,8 @@ import AdminService from '../../domain/service/adminService';
 
 import AdminSession from '../../presentation/session';
 import db from '../../infrastructure/db';
+import {FormInvalidError} from '../../presentation/error';
+import conversionpageStatus from '../../utils/conversionPageStatus';
 
 // eslint-disable-next-line new-cap
 const settingRouter = Router();
@@ -53,8 +55,13 @@ settingRouter.post('/update', csrfProtection, async (req: Request, res: Response
 
     res.redirect('/login');
   } catch (e: any) {
-    req.session.status = {type: 'Failure', mes: '更新に失敗しました。', error: e};
-    logger.error('Failed to change id and pw.');
+    if (e instanceof FormInvalidError) {
+      req.session.status = {type: 'Failure', mes: '入力された値が間違っています。入力し直してください。', error: e};
+      logger.error(e.message);
+    } else {
+      req.session.status = {type: 'Failure', mes: '更新に失敗しました。', error: e};
+      logger.error('Failed to change id and pw.');
+    }
 
     res.redirect('/admin/setting/');
   }
