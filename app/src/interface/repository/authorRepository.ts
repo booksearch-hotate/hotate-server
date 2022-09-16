@@ -8,6 +8,7 @@ import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 import {IEsAuthor} from '../../infrastructure/elasticsearch/documents/IEsAuthor';
 
 import sequelize from 'sequelize';
+import {MySQLDBError} from '../../presentation/error';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -61,8 +62,10 @@ export default class AuthorRepository implements IAuthorRepository {
       attributes: ['id', 'name'],
       where: {id: authorId},
     });
+
     if (author) return new Author(author.id, author.name);
-    throw new Error('Author not found');
+
+    throw new MySQLDBError('Author not found');
   }
 
   public async deleteNoUsed(authorId: string): Promise<void> {
