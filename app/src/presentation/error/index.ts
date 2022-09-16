@@ -6,3 +6,4 @@ export class InMemoryDBError extends Error {};
 
 export class MySQLDBError extends Error {};
 
+export class InfrastructureError extends Error {};
