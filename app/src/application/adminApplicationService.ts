@@ -2,7 +2,7 @@ import Admin from '../domain/model/admin/admin';
 import {IAdminApplicationRepository} from '../domain/model/admin/IAdminRepository';
 import AdminData from '../domain/model/admin/adminData';
 import AdminService from '../domain/service/adminService';
-import {DomainInvalidError, FormInvalidError} from '../presentation/error';
+import {DomainInvalidError, FormInvalidError, InfrastructureError, MySQLDBError} from '../presentation/error';
 
 export default class AdminApplicationService {
   private readonly adminRepository: IAdminApplicationRepository;
@@ -44,6 +44,7 @@ export default class AdminApplicationService {
       await this.adminRepository.updateAdmin(admin);
     } catch (e: any) {
       if (e instanceof DomainInvalidError) throw new FormInvalidError('A value was entered that violates the rule');
+      else if (e instanceof MySQLDBError) throw new InfrastructureError(e.message);
       else throw e;
     }
   }
