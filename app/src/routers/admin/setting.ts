@@ -36,6 +36,11 @@ const adminApplicationService = new AdminApplicationService(
 settingRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   pageData.headTitle = '管理者設定画面';
 
+  pageData.status = conversionpageStatus(req.session.status);
+  req.session.status = undefined;
+
+  req.session.keepValue = undefined;
+
   pageData.csrfToken = req.csrfToken();
 
   res.render('pages/admin/setting/index', {pageData});
