@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import {IAdminApplicationRepository}
   from '../../domain/model/admin/IAdminRepository';
 import Admin from '../../domain/model/admin/admin';
+import {MySQLDBError} from '../../presentation/error';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -53,7 +54,7 @@ export default class AdminRepository implements IAdminApplicationRepository {
           `UPDATE admin SET id = '${admin.Id}', pw = HEX(AES_ENCRYPT('${admin.Pw}', '${process.env.DB_PW_KEY}'))`,
       );
     } catch (e) {
-      throw e;
+      throw new MySQLDBError('Failed to execute SQL to change administrator\'s information.');
     }
   }
 }
