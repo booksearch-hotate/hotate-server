@@ -13,7 +13,7 @@ import AdminService from '../../domain/service/adminService';
 
 import AdminSession from '../../presentation/session';
 import db from '../../infrastructure/db';
-import {FormInvalidError} from '../../presentation/error';
+import {FormInvalidError, InfrastructureError} from '../../presentation/error';
 import conversionpageStatus from '../../utils/conversionPageStatus';
 
 // eslint-disable-next-line new-cap
@@ -65,7 +65,9 @@ settingRouter.post('/update', csrfProtection, async (req: Request, res: Response
       logger.error(e.message);
     } else {
       req.session.status = {type: 'Failure', mes: '更新に失敗しました。', error: e};
-      logger.error('Failed to change id and pw.');
+
+      if (e instanceof InfrastructureError) logger.error(e.message);
+      else logger.error('Failed to change id and pw.');
     }
 
     res.redirect('/admin/setting/');
