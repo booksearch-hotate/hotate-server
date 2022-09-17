@@ -7,7 +7,7 @@ import Department from '../domain/model/department/department';
 import BookRequestData from '../domain/model/bookRequest/bookRequestData';
 
 import BookRequestService from '../domain/service/bookRequestService';
-import {InfrastructureError, InvalidDataTypeError} from '../presentation/error';
+import {DomainInvalidError, FormInvalidError, InfrastructureError, InvalidDataTypeError} from '../presentation/error';
 
 export default class BookRequestApplicationService {
   private requestRepository: IBookRequestRepository;
@@ -80,19 +80,25 @@ export default class BookRequestApplicationService {
 
     if (departmentModel === null) throw new InfrastructureError('The name of the department could not be obtained.');
 
-    const requestModel = new BookRequest(
-        this.requestService.createUUID(),
-        keepReqObj.bookName,
-        keepReqObj.authorName,
-        keepReqObj.publisherName,
-        keepReqObj.isbn,
-        keepReqObj.message,
-        departmentModel,
-        keepReqObj.schoolYear,
-        keepReqObj.schoolClass,
-        keepReqObj.userName,
-    );
-    return new BookRequestData(requestModel);
+    try {
+      const requestModel = new BookRequest(
+          this.requestService.createUUID(),
+          keepReqObj.bookName,
+          keepReqObj.authorName,
+          keepReqObj.publisherName,
+          keepReqObj.isbn,
+          keepReqObj.message,
+          departmentModel,
+          keepReqObj.schoolYear,
+          keepReqObj.schoolClass,
+          keepReqObj.userName,
+      );
+      return new BookRequestData(requestModel);
+    } catch (e) {
+      if (e instanceof DomainInvalidError) throw new FormInvalidError('The value entered in the request screen is invalid.');
+
+      throw e;
+    }
   }
 
   public async delete(id: string): Promise<void> {
