@@ -1,6 +1,6 @@
 import {MongoClient} from 'mongodb';
 import {MongoMemoryServer} from 'mongodb-memory-server';
-import {InMemoryDBError} from '../../presentation/error';
+import {InMemoryDBError} from '../../presentation/error/infrastructure';
 
 /**
  * インメモリで動作するDBです。このDBは**開発環境でのみ動作します**。

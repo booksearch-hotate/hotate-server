@@ -13,6 +13,7 @@ import Logger from '../../infrastructure/logger/logger';
 import db from '../../infrastructure/db';
 
 import conversionpageStatus from '../../utils/conversionPageStatus';
+import {InvalidDataTypeError, NullDataError} from '../../presentation/error';
 
 // eslint-disable-next-line new-cap
 const bookRequestRouter = Router();
@@ -46,11 +47,11 @@ bookRequestRouter.get('/detail', async (req: Request, res: Response) => {
   try {
     const requestId = req.query.id;
 
-    if (typeof requestId !== 'string') throw new Error('Failed to get id.');
+    if (typeof requestId !== 'string') throw new InvalidDataTypeError('Failed to get id.');
 
     const requestData = await requestApplicationService.findById(requestId);
 
-    if (requestData === null) throw new Error('Request data did not exist.');
+    if (requestData === null) throw new NullDataError('Request data did not exist.');
 
     pageData.headTitle = '本リクエストの詳細 | HOTATE';
     pageData.anyData = {request: requestData};

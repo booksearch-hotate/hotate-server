@@ -2,7 +2,7 @@ import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 import {IPage} from './datas/IPage';
 
-import {FormInvalidError} from '../presentation/error';
+import {FormInvalidError, NullDataError} from '../presentation/error';
 
 import DepartmentRepository from '../interface/repository/departmentRepository';
 import RequestRepository from '../interface/repository/requestRepository';
@@ -143,7 +143,7 @@ requestRouter.post('/register', csrfProtection, async (req: Request, res: Respon
     const departmentData = await departmentApplicationService.findById(departmentId);
 
     // 学科情報が取得できなかった場合はエラー
-    if (departmentData === null) throw new Error('The name of the department could not be obtained.');
+    if (departmentData === null) throw new NullDataError('The name of the department could not be obtained.');
 
     await requestApplicationService.register(
         id,

@@ -1,10 +1,12 @@
+import {DomainInvalidError} from '../../../presentation/error';
+
 export default class AdminData {
   private id: string;
   private pw: string;
 
   public constructor(id: string, pw: string) {
-    if (id === null) throw new Error('idがnullです');
-    if (pw === null) throw new Error('pwがnullです');
+    if (id === null) throw new DomainInvalidError('id of administrator is null.');
+    if (pw === null) throw new DomainInvalidError('pw of administrator is null.');
 
     this.id = id;
     this.pw = pw;

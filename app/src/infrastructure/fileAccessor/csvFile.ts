@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import csv from 'csvtojson';
+import {DomainInvalidError} from '../../presentation/error';
 
 export default class CsvFile {
   private file!: Express.Multer.File;
@@ -23,10 +24,10 @@ export default class CsvFile {
 
     const maxLen = 5000; // csvファイルの最大行数
 
-    if (!data.length) throw new Error('csv file is empty');
+    if (!data.length) throw new DomainInvalidError('csv file is empty');
 
     if (data.length > maxLen) {
-      throw new Error(`csv file is too large. max lengh is ${maxLen} but now is ${data.length}`);
+      throw new DomainInvalidError(`csv file is too large. max lengh is ${maxLen} but now is ${data.length}`);
     }
 
     return data;
@@ -68,7 +69,7 @@ export default class CsvFile {
 
   set File(file: Express.Multer.File | undefined) {
     if (!file || path.extname(file.originalname) !== '.csv') {
-      throw new Error('undefined file');
+      throw new DomainInvalidError('unknown file');
     }
     this.file = file;
   }

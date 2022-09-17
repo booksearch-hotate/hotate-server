@@ -17,20 +17,6 @@ export class FormInvalidError extends Error {};
 export class DomainInvalidError extends Error {};
 
 /**
- * インメモリで動作しているDBに関するエラーの際にthrowされるべきエラークラス
- *
- * @export
- * @class InMemoryDBError
- * @extends {Error}
- */
-export class InMemoryDBError extends Error {};
-
-/**
- * MySQLに関するエラーの際にthrowされるべきエラークラス
- */
-export class MySQLDBError extends Error {};
-
-/**
  * インフラに関するエラーの際にthrowされるべきエラークラス
  *
  * @export
@@ -38,3 +24,32 @@ export class MySQLDBError extends Error {};
  * @extends {Error}
  */
 export class InfrastructureError extends Error {};
+
+/**
+ * データ形式が正しくない場合にthrowされるべきエラークラス
+ *
+ * @export
+ * @class InvalidDataTypeError
+ * @extends {Error}
+ */
+export class InvalidDataTypeError extends Error {};
+
+
+/**
+ * データが既定の数をオーバーしている場合にthrowされるべきエラークラス
+ *
+ * @export
+ * @class OverflowDataError
+ * @extends {Error}
+ */
+export class OverflowDataError extends Error {};
+
+
+/**
+ * データがNULLもしくはemptyである場合にthrowされるべきエラークラス
+ *
+ * @export
+ * @class NullDataError
+ * @extends {Error}
+ */
+export class NullDataError extends Error {};
