@@ -1,5 +1,4 @@
 import {ObjectId} from 'mongodb';
-import Department from '../../../domain/model/department/department';
 
 export type requestDocument = {
   _id?: ObjectId
@@ -9,7 +8,10 @@ export type requestDocument = {
   publisherName: string;
   isbn: string;
   message: string;
-  department: Department;
+  department: {
+    id: string,
+    name: string,
+  };
   schoolYear: string;
   schoolClass: string;
   userName: string;

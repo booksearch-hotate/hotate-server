@@ -32,6 +32,7 @@ import TagService from '../../domain/service/tagService';
 import RecommendationApplicationService from '../../application/recommendationApplicationService';
 import RecommendationRepository from '../../interface/repository/recommendationRepository';
 import RecommendationService from '../../domain/service/recommendationService';
+import {InvalidDataTypeError, NullDataError} from '../../presentation/error';
 
 // eslint-disable-next-line new-cap
 const bookRouter = Router();
@@ -115,7 +116,7 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
   try {
     const bookId = req.body.id;
 
-    if (typeof bookId !== 'string') throw new Error('Invalid request id.');
+    if (typeof bookId !== 'string') throw new InvalidDataTypeError('Invalid request id.');
 
     const book = await bookApplicationService.searchBookById(bookId);
     /* 変更前のauthorId、publisherIdを取得 */
@@ -199,10 +200,10 @@ bookRouter.post('/add', csrfProtection, async (req: Request, res: Response) => {
       req.body.publisherName,
     ]);
 
-    if (!isSameLen) throw new Error('Datas could not be successfully retrieved.');
+    if (!isSameLen) throw new InvalidDataTypeError('Datas could not be successfully retrieved.');
 
     for (let i = 0; i < req.body.isbn.length; i++) {
-      if (req.body.bookName[i] === '') throw new Error('Name of book is empty.');
+      if (req.body.bookName[i] === '') throw new NullDataError('Name of book is empty.');
       const authorName = req.body.authorName[i];
       const publisherName = req.body.publisherName[i];
 
@@ -237,7 +238,7 @@ bookRouter.post('/add', csrfProtection, async (req: Request, res: Response) => {
 bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) => {
   try {
     const id = req.body.id;
-    if (typeof id !== 'string') throw new Error('Invalid request id');
+    if (typeof id !== 'string') throw new InvalidDataTypeError('Invalid request id');
 
     if ((await tagApplicationService.findByBookId(id)).length > 0) await tagApplicationService.deleteByBookId(id);
 

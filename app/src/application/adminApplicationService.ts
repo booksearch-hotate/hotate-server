@@ -2,6 +2,8 @@ import Admin from '../domain/model/admin/admin';
 import {IAdminApplicationRepository} from '../domain/model/admin/IAdminRepository';
 import AdminData from '../domain/model/admin/adminData';
 import AdminService from '../domain/service/adminService';
+import {DomainInvalidError, FormInvalidError, InfrastructureError} from '../presentation/error';
+import {MySQLDBError} from '../presentation/error/infrastructure';
 
 export default class AdminApplicationService {
   private readonly adminRepository: IAdminApplicationRepository;
@@ -37,8 +39,14 @@ export default class AdminApplicationService {
   }
 
   public async updateAdmin(id: string, pw: string): Promise<void> {
-    const admin = new Admin(id, pw);
+    try {
+      const admin = new Admin(id, pw);
 
-    await this.adminRepository.updateAdmin(admin);
+      await this.adminRepository.updateAdmin(admin);
+    } catch (e: any) {
+      if (e instanceof DomainInvalidError) throw new FormInvalidError('A value was entered that violates the rule');
+      else if (e instanceof MySQLDBError) throw new InfrastructureError(e.message);
+      else throw e;
+    }
   }
 }

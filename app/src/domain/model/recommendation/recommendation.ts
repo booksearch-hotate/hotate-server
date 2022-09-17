@@ -26,12 +26,12 @@ export default class Recommendation {
       updatedAt: Date | null,
       recommendationItems: RecommendationItem[],
   ) {
-    if (id === null) throw new Error('The id is null.');
+    if (id === null) throw new DomainInvalidError('The id is null.');
     if (title.length === 0 || title.length > this.MAX_TITLE_LEN) throw new DomainInvalidError(`The format of the title of recommendation section is different. Title of recommendation section: ${title}`);
     if (content.length === 0|| content.length > this.MAX_CONTENT_LEN) throw new DomainInvalidError('The format of the content of recommendation section is different.');
-    if (isSolid === null) throw new Error('The isSolid is null.');
-    if (sortIndex === null || sortIndex < 0) throw new Error('Incorrect id.');
-    if (recommendationItems.length > this.MAX_HAVING_BOOK_COUNT) throw new Error('The maximum number of units held has been exceeded.');
+    if (isSolid === null) throw new DomainInvalidError('The isSolid is null.');
+    if (sortIndex === null || sortIndex < 0) throw new DomainInvalidError('Incorrect id.');
+    if (recommendationItems.length > this.MAX_HAVING_BOOK_COUNT) throw new DomainInvalidError('The maximum number of units held has been exceeded.');
 
     this.id = id;
     this.title = title;
@@ -69,19 +69,19 @@ export default class Recommendation {
   }
 
   public changeTitle(title: string) {
-    if (title.length === 0) throw new Error('Empty title.');
+    if (title.length === 0) throw new DomainInvalidError('Empty title.');
 
     this.title = title;
   }
 
   public changeContent(content: string) {
-    if (content.length === 0) throw new Error('Empty content.');
+    if (content.length === 0) throw new DomainInvalidError('Empty content.');
 
     this.content = content;
   }
 
   public changeSortIndex(sortIndex: number) {
-    if (sortIndex < 1) throw new Error('Invalid sort index.');
+    if (sortIndex < 1) throw new DomainInvalidError('Invalid sort index.');
 
     this.sortIndex = sortIndex;
   }
@@ -91,7 +91,7 @@ export default class Recommendation {
   }
 
   public replaceItems(bookIds: RecommendationItem[]) {
-    if (bookIds.length > this.MAX_HAVING_BOOK_COUNT) throw new Error('The maximum number of units held has been exceeded.');
+    if (bookIds.length > this.MAX_HAVING_BOOK_COUNT) throw new DomainInvalidError('The maximum number of units held has been exceeded.');
     this.recommendationItems = bookIds;
   }
 

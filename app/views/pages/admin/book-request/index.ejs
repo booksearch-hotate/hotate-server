@@ -13,6 +13,7 @@
         <tr>
           <th>書名</th>
           <th>登録日時</th>
+          <th>申請者</th>
           <th>詳細</th>
           <th>削除</th>
         </tr>
@@ -22,6 +23,7 @@
           <tr>
             <td><%= request.BookName %></td>
             <td><%= request.CreatedAt %></td>
+            <td><%= request.StudentInfo %> <%= request.userName %></td>
             <td>
               <a href="/admin/book-request/detail?id=<%= request.Id %>" class="btn btn-success">詳細</a>
             </td>

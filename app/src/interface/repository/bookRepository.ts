@@ -16,6 +16,7 @@ import BookId from '../../domain/model/book/bookId';
 import PaginationMargin from '../../domain/model/pagination/paginationMargin';
 
 import sequelize from 'sequelize';
+import {MySQLDBError} from '../../presentation/error/infrastructure';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -82,7 +83,7 @@ export default class BookRepository implements IBookRepository {
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
       const tags = await this.getTagsByBookId(fetchBook.id);
 
-      if (!(author && publisher)) throw new Error('author or publisher not found');
+      if (!(author && publisher)) throw new MySQLDBError('author or publisher not found');
 
       const authorModel = new Author(author.id, author.name);
       const publisherModel = new Publisher(publisher.id, publisher.name);
@@ -106,7 +107,7 @@ export default class BookRepository implements IBookRepository {
 
   public async searchById(id: BookId): Promise<Book> {
     const book = await this.db.Book.findOne({where: {id: id.Id}});
-    if (!book) throw new Error('book not found');
+    if (!book) throw new MySQLDBError('book not found');
 
     const authorId = book.author_id;
     const publisherId = book.publisher_id;
@@ -116,7 +117,7 @@ export default class BookRepository implements IBookRepository {
 
     const tags = await this.getTagsByBookId(book.id);
 
-    if (!(author && publisher)) throw new Error('author or publisher not found');
+    if (!(author && publisher)) throw new MySQLDBError('author or publisher not found');
 
     const authorModel = new Author(author.id, author.name);
     const publisherModel = new Publisher(publisher.id, publisher.name);
@@ -173,7 +174,7 @@ export default class BookRepository implements IBookRepository {
       const author = await this.db.Author.findOne({where: {id: column.author_id}}); // authorを取得
       const publisher = await this.db.Publisher.findOne({where: {id: column.publisher_id}}); // publisherを取得
 
-      if (!(author && publisher)) throw new Error('author or publisher not found');
+      if (!(author && publisher)) throw new MySQLDBError('author or publisher not found');
 
       const authorModel = new Author(author.id, author.name);
       const publisherModel = new Publisher(publisher.id, publisher.name);
@@ -220,7 +221,7 @@ export default class BookRepository implements IBookRepository {
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
       const tags = await this.getTagsByBookId(book.id);
 
-      if (!(author && publisher)) throw new Error('author or publisher not found');
+      if (!(author && publisher)) throw new MySQLDBError('author or publisher not found');
 
       const authorModel = new Author(author.id, author.name);
       const publisherModel = new Publisher(publisher.id, publisher.name);
@@ -251,7 +252,7 @@ export default class BookRepository implements IBookRepository {
     const tagModels: Tag[] = [];
     for (const tag of tags) {
       const tagByDb = await this.db.Tag.findOne({where: {id: tag.tag_id}});
-      if (!tagByDb) throw new Error('tag not found');
+      if (!tagByDb) throw new MySQLDBError('tag not found');
       const tagModel = new Tag(tagByDb.id, tagByDb.name, tagByDb.created_at, []);
       tagModels.push(tagModel);
     }
@@ -278,7 +279,7 @@ export default class BookRepository implements IBookRepository {
     const bookModels = tagIds.map(async (column) => {
       const book = await this.db.Book.findOne({where: {id: column.book_id}});
 
-      if (!book) throw new Error('book not found');
+      if (!book) throw new MySQLDBError('book not found');
 
       const authorId = book.author_id;
       const publisherId = book.publisher_id;
@@ -287,7 +288,7 @@ export default class BookRepository implements IBookRepository {
       const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
       const tags = await this.getTagsByBookId(column.book_id);
 
-      if (!(author && publisher)) throw new Error('author or publisher not found');
+      if (!(author && publisher)) throw new MySQLDBError('author or publisher not found');
 
       const authorModel = new Author(author.id, author.name);
       const publisherModel = new Publisher(publisher.id, publisher.name);
@@ -347,7 +348,7 @@ export default class BookRepository implements IBookRepository {
 
       const tags = await this.getTagsByBookId(book.id);
 
-      if (!(author && publisher)) throw new Error('author or publisher not found');
+      if (!(author && publisher)) throw new MySQLDBError('author or publisher not found');
 
       const authorModel = new Author(author.id, author.name);
       const publisherModel = new Publisher(publisher.id, publisher.name);

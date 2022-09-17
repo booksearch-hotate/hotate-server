@@ -3,6 +3,7 @@ import SchoolClass from '../../domain/model/schoolGradeInfo/schoolClass';
 import SchoolGradeInfo from '../../domain/model/schoolGradeInfo/schoolGradeInfo';
 import SchoolYear from '../../domain/model/schoolGradeInfo/schoolYear';
 import SchoolGradeInfoTable from '../../infrastructure/db/tables/schoolGradeInfo';
+import {MySQLDBError} from '../../presentation/error/infrastructure';
 
 interface sequelize {
   SchoolGradeInfo: typeof SchoolGradeInfoTable,
@@ -18,7 +19,7 @@ export default class SchoolYearRepository implements ISchoolGradeInfoRepository 
   public async find(): Promise<SchoolGradeInfo> {
     const data = await this.db.SchoolGradeInfo.findOne();
 
-    if (data === null) throw new Error('Grade information does not exist.');
+    if (data === null) throw new MySQLDBError('Grade information does not exist.');
 
     const year = data.year;
     const schoolClass = data.school_class;

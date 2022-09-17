@@ -7,6 +7,7 @@ import {ITagRepository} from '../../domain/model/tag/ITagRepository';
 import Tag from '../../domain/model/tag/tag';
 import sequelize from 'sequelize';
 import BookId from '../../domain/model/book/bookId';
+import {MySQLDBError} from '../../presentation/error/infrastructure';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -135,7 +136,9 @@ export default class TagRepository implements ITagRepository {
     const tagModels: Tag[] = [];
     for (const tag of tags) {
       const tagByDb = await this.db.Tag.findOne({where: {id: tag.tag_id}});
-      if (!tagByDb) throw new Error('tag not found');
+
+      if (!tagByDb) throw new MySQLDBError('tag not found');
+
       const tagModel = new Tag(tagByDb.id, tagByDb.name, tagByDb.created_at, []);
       tagModels.push(tagModel);
     }

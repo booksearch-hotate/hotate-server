@@ -1,3 +1,5 @@
+import {DomainInvalidError} from '../../../presentation/error';
+
 export default class Tag {
   private id: string;
   private name: string;
@@ -10,10 +12,10 @@ export default class Tag {
       createdAt: Date | null,
       bookIds: string[],
   ) {
-    if (id === undefined) throw new Error('idが不明です');
-    if (name === undefined) throw new Error('pwが不明です');
+    if (id === undefined) throw new DomainInvalidError('Unknown to id of tag');
+    if (name === undefined) throw new DomainInvalidError('Unknown to passwords of tag');
 
-    if (name === '') throw new Error('nameが空です');
+    if (name === '') throw new DomainInvalidError('name of tag is empty');
 
     this.id = id;
     this.name = name;
@@ -35,7 +37,7 @@ export default class Tag {
   }
 
   public changeName(name: string | null) {
-    if (name === null) throw new Error('The tag name is null.');
+    if (name === null) throw new DomainInvalidError('The tag name is null.');
 
     this.name = name;
   }

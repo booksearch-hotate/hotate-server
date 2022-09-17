@@ -7,6 +7,7 @@ import DepartmentData from '../domain/model/department/departmentData';
 import {IDepartmentRepository} from '../domain/model/department/IDepartmentRepository';
 import {IBookRequestRepository} from '../domain/model/bookRequest/IBookRequestRepository';
 import BookRequestData from '../domain/model/bookRequest/bookRequestData';
+import {OverflowDataError} from '../presentation/error';
 
 export default class DepartmentApplicationService {
   private readonly departmentRepository: IDepartmentRepository;
@@ -56,7 +57,7 @@ export default class DepartmentApplicationService {
 
     if (isExist) return false;
 
-    if (await this.isMax()) throw new Error('The number of department names that can be registered is exceeded.');
+    if (await this.isMax()) throw new OverflowDataError('The number of department names that can be registered is exceeded.');
 
     await this.departmentRepository.insertDepartment(department);
 

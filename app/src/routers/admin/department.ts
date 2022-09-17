@@ -14,6 +14,7 @@ import Logger from '../../infrastructure/logger/logger';
 import conversionpageStatus from '../../utils/conversionPageStatus';
 import SchoolGradeInfoApplicationService from '../../application/schoolGradeInfoApplication';
 import SchoolYearRepository from '../../interface/repository/schoolYearRepository';
+import {InvalidDataTypeError, NullDataError} from '../../presentation/error';
 
 // eslint-disable-next-line new-cap
 const departmentRouter = Router();
@@ -93,11 +94,11 @@ departmentRouter.get('/confirm-delete', csrfProtection, async (req: Request, res
   try {
     const departmentId = req.query.did;
 
-    if (typeof departmentId !== 'string') throw new Error('Invalid request id.');
+    if (typeof departmentId !== 'string') throw new InvalidDataTypeError('Invalid request id.');
 
     const department = await departmentApplicationService.findById(departmentId);
 
-    if (department === null) throw new Error('The department content cannot find.');
+    if (department === null) throw new NullDataError('The department content cannot find.');
 
     const bookRequestsHaveId = await departmentApplicationService.findBookRequestById(departmentId);
 
@@ -139,7 +140,7 @@ departmentRouter.get('/edit', csrfProtection, async (req: Request, res: Response
     const id = req.query.id as string;
     const fetchData = await departmentApplicationService.findById(id);
 
-    if (fetchData === null) throw new Error('id does not exist in DB.');
+    if (fetchData === null) throw new NullDataError('id does not exist in DB.');
 
     pageData.headTitle = '学科名の編集';
 
@@ -167,7 +168,7 @@ departmentRouter.post('/update', csrfProtection, async (req: Request, res: Respo
     const id = req.body.id;
     const name = req.body.name;
 
-    if (id !== req.session.keepValue) throw new Error('There is a discrepancy in the id.');
+    if (id !== req.session.keepValue) throw new InvalidDataTypeError('There is a discrepancy in the id.');
 
     await departmentApplicationService.update(id, name);
 
