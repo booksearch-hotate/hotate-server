@@ -1,5 +1,6 @@
 import BookRequest from './bookRequest';
 import Department from '../department/department';
+import conversionDate from '../../../utils/conversionDate';
 
 export default class BookRequestData {
   private id: string;
@@ -12,7 +13,7 @@ export default class BookRequestData {
   private schoolYear: string;
   private schoolClass: string;
   private userName: string;
-  private createAt: Date;
+  private createAt: string;
   private studentInfo: string;
 
   public constructor(requestModel: BookRequest) {
@@ -26,7 +27,7 @@ export default class BookRequestData {
     this.schoolYear = requestModel.SchoolYear;
     this.schoolClass = requestModel.SchoolClass;
     this.userName = requestModel.UserName;
-    this.createAt = requestModel.CreatedAt;
+    this.createAt = conversionDate(requestModel.CreatedAt);
     this.studentInfo = requestModel.makeStudentInfo();
   }
 
@@ -60,7 +61,7 @@ export default class BookRequestData {
   get UserName(): string {
     return this.userName;
   }
-  get CreatedAt(): Date {
+  get CreatedAt(): string {
     return this.createAt;
   }
   get StudentInfo(): string {
