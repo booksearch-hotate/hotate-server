@@ -1,14 +1,15 @@
+import conversionDate from '../../../utils/conversionDate';
 import SearchHistory from './searchHistory';
 
 export default class SearchHistoryData {
   private words: string;
   private id: string;
-  private createdAt: Date;
+  private createdAt: string;
 
   public constructor(tar: SearchHistory) {
     this.words = tar.Words;
     this.id = tar.Id;
-    this.createdAt = tar.CreatedAt;
+    this.createdAt = conversionDate(tar.CreatedAt);
   }
 
   get Words(): string {
@@ -19,7 +20,7 @@ export default class SearchHistoryData {
     return this.id;
   }
 
-  get CreatedAt(): Date {
+  get CreatedAt(): string {
     return this.createdAt;
   }
 }

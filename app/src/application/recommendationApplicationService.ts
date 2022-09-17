@@ -31,8 +31,8 @@ export default class RecommendationApplicationService {
         content,
         false,
         await this.recommendationRepository.findMaxIndex() + 1,
-        null,
-        null,
+        new Date(),
+        new Date(),
         [],
     );
 
@@ -107,8 +107,8 @@ export default class RecommendationApplicationService {
         recommendationData.Content,
         recommendationData.IsSolid,
         recommendationData.SortIndex,
-        recommendationData.CreatedAt,
-        recommendationData.UpdatedAt,
+        new Date(recommendationData.CreatedAt),
+        new Date(recommendationData.UpdatedAt),
         recommendationItemModel,
     );
     return recommendationModel.isOverNumberOfBooks();
@@ -129,8 +129,8 @@ export default class RecommendationApplicationService {
           recommendationData.Content,
           recommendationData.IsSolid,
           recommendationData.SortIndex,
-          recommendationData.CreatedAt,
-          recommendationData.UpdatedAt,
+          new Date(recommendationData.CreatedAt),
+          new Date(recommendationData.UpdatedAt),
           recommendationItemModel,
       );
       recommendationModel.omitContent();
