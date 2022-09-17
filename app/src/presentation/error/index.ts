@@ -53,3 +53,12 @@ export class OverflowDataError extends Error {};
  * @extends {Error}
  */
 export class NullDataError extends Error {};
+
+/**
+ * アクセスが不正である場合にthrowされるべきエラークラス
+ *
+ * @export
+ * @class InvalidAccessError
+ * @extends {Error}
+ */
+export class InvalidAccessError extends Error {};
