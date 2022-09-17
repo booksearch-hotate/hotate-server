@@ -7,8 +7,8 @@ export default class Recommendation {
   private content: string;
   private isSolid: boolean;
   private sortIndex: number;
-  private createdAt: Date | null;
-  private updatedAt: Date | null;
+  private createdAt: Date;
+  private updatedAt: Date;
   private recommendationItems: RecommendationItem[];
 
   private readonly MAX_SHORTCUT_CONTENT_LEN = 100;
@@ -22,8 +22,8 @@ export default class Recommendation {
       content: string,
       isSolid: boolean,
       sortIndex: number,
-      createdAt: Date | null,
-      updatedAt: Date | null,
+      createdAt: Date,
+      updatedAt: Date,
       recommendationItems: RecommendationItem[],
   ) {
     if (id === null) throw new DomainInvalidError('The id is null.');
