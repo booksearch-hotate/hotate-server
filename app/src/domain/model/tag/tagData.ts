@@ -1,15 +1,16 @@
+import conversionDate from '../../../utils/conversionDate';
 import Tag from './tag';
 
 export default class TagData {
   private id: string;
   private name: string;
-  private createdAt: Date | null;
+  private createdAt: string | null;
   private bookIds: string[];
 
   public constructor(tagModel: Tag) {
     this.id = tagModel.Id;
     this.name = tagModel.Name;
-    this.createdAt = tagModel.CreatedAt;
+    this.createdAt = tagModel.CreatedAt !== null ? conversionDate(tagModel.CreatedAt) : null;
     this.bookIds = tagModel.BookIds;
   }
 
@@ -19,7 +20,7 @@ export default class TagData {
   get Name(): string {
     return this.name;
   }
-  get CreatedAt(): Date | null {
+  get CreatedAt(): string | null {
     return this.createdAt;
   }
   get BookIds(): string[] {
