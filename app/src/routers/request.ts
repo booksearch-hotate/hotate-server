@@ -115,7 +115,7 @@ requestRouter.get('/confirm-request', csrfProtection, async (req: Request, res: 
     logger.error(e);
 
     if (e instanceof FormInvalidError) {
-      req.session.status = {type: 'Failure', error: e, mes: '必須項目が入力されていません'};
+      req.session.status = {type: 'Failure', error: e, mes: 'フォームの入力が間違っています。もう一度お試しください。'};
       return res.redirect('/request');
     }
 
