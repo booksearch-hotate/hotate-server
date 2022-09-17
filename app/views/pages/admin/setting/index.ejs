@@ -13,6 +13,20 @@
     <main>
       <form action="/admin/setting/update" method="post">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+
+        <h3>現在のIDとパスワード</h3>
+
+        <div class="form-group">
+          <label for="nowId" class="form-label">現在のID</label>
+          <input class="form-control" type="text" id="nowId" name="nowId">
+        </div>
+        <div class="form-group">
+          <label for="nowPw" class="form-label">現在のパスワード</label>
+          <input class="form-control" type="password" id="nowPw" name="nowPw">
+        </div>
+
+        <h3>変更するIDとパスワード</h3>
+
         <div class="form-group">
           <label for="id" class="form-label">ID名</label>
           <input class="form-control" type="text" id="id" name="id">
@@ -21,6 +35,7 @@
           <label for="pw" class="form-label">パスワード</label>
           <input class="form-control" type="password" id="pw" name="pw">
         </div>
+
         <button type="submit" class="btn btn-outline-warning">更新</button>
       </form>
     </main>
