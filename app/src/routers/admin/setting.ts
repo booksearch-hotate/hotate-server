@@ -13,8 +13,9 @@ import AdminService from '../../domain/service/adminService';
 
 import AdminSession from '../../presentation/session';
 import db from '../../infrastructure/db';
-import {FormInvalidError, InfrastructureError} from '../../presentation/error';
+import {FormInvalidError, InfrastructureError, InvalidAccessError} from '../../presentation/error';
 import conversionpageStatus from '../../utils/conversionPageStatus';
+import AdminData from '../../domain/model/admin/adminData';
 
 // eslint-disable-next-line new-cap
 const settingRouter = Router();
@@ -50,7 +51,15 @@ settingRouter.post('/update', csrfProtection, async (req: Request, res: Response
   const id = req.body.id;
   const pw = req.body.pw;
 
+  // 変更前のid、パスワード
+  const nowId = req.body.nowId;
+  const nowPw = req.body.nowPw;
+
   try {
+    const isValid = await adminApplicationService.isValid(new AdminData(nowId, nowPw));
+
+    if (!isValid) throw new InvalidAccessError('Current id or password is incorrect.');
+
     await adminApplicationService.updateAdmin(id, pw);
     req.session.status = {type: 'Success', mes: '更新が完了しました。再度ログインしてください。'};
 
@@ -62,6 +71,9 @@ settingRouter.post('/update', csrfProtection, async (req: Request, res: Response
   } catch (e: any) {
     if (e instanceof FormInvalidError) {
       req.session.status = {type: 'Failure', mes: '入力された値が間違っています。入力し直してください。', error: e};
+      logger.error(e.message);
+    } else if (e instanceof InvalidAccessError) {
+      req.session.status = {type: 'Failure', mes: '現在のidもしくはパスワードが間違っています。入力し直してください。', error: e};
       logger.error(e.message);
     } else {
       req.session.status = {type: 'Failure', mes: '更新に失敗しました。', error: e};
