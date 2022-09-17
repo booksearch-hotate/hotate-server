@@ -1,12 +1,15 @@
 import BookRequestApplicationService from '../../src/application/bookRequestApplicationService';
+import DepartmentApplicationService from '../../src/application/departmentApplicationService';
 import TestRequestRepository from '../../src/interface/testRepository/testRequestRepository';
 import TestDepartmentRepository from '../../src/interface/testRepository/testDepartmentRepository';
 import InMemoryDb from '../../src/infrastructure/inMemory/index';
 import BookRequestService from '../../src/domain/service/bookRequestService';
+import DepartmentService from '../../src/domain/service/departmentService';
 
 describe('Access book request', () => {
   let bookRequestApplicationService: BookRequestApplicationService;
   let inMemoryDb: InMemoryDb;
+  let departmentApplicationService: DepartmentApplicationService;
 
   beforeAll(async () => {
     inMemoryDb = new InMemoryDb();
@@ -17,13 +20,28 @@ describe('Access book request', () => {
         new TestDepartmentRepository(inMemoryDb.db()),
         new BookRequestService(),
     );
+
+    departmentApplicationService = new DepartmentApplicationService(
+        new TestDepartmentRepository(inMemoryDb.db()),
+        new TestRequestRepository(inMemoryDb.db()),
+        new DepartmentService(new TestDepartmentRepository(inMemoryDb.db())),
+    );
   });
 
   afterAll(async () => {
     await inMemoryDb.remove();
   });
 
-  it('send and get book request data', async () => {
+  it('Add department', async () => {
+    const departmentName = 'Research on Human Destruction';
+
+    await departmentApplicationService.insertDepartment(departmentName);
+  });
+
+  it('CRUD flow of request of book.', async () => {
+    const departmentList = await departmentApplicationService.findAllDepartment();
+    const instanceDepartment = departmentList[Math.floor(Math.random() * departmentList.length)];
+
     const sendData = {
       id: 'test',
       bookName: 'test',
@@ -31,8 +49,8 @@ describe('Access book request', () => {
       publisherName: 'where',
       isbn: '',
       message: '',
-      departmentId: 'departmentTest',
-      departmentName: 'departmentId',
+      departmentId: instanceDepartment.Id,
+      departmentName: instanceDepartment.Name,
       schoolYear: '1',
       schoolClass: '3',
       userName: 'test',
