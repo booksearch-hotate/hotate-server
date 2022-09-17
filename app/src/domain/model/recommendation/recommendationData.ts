@@ -1,3 +1,4 @@
+import conversionDate from '../../../utils/conversionDate';
 import Recommendation from './recommendation';
 import RecommendationItemData from './recommendationItemData';
 
@@ -7,8 +8,8 @@ export default class RecommendationData {
   private content: string;
   private isSolid: boolean;
   private sortIndex: number;
-  private createdAt: Date | null;
-  private updatedAt: Date | null;
+  private createdAt: string;
+  private updatedAt: string;
   private recommendationItems: RecommendationItemData[];
 
   public constructor(recommendationModel: Recommendation) {
@@ -17,8 +18,8 @@ export default class RecommendationData {
     this.content = recommendationModel.Content;
     this.isSolid = recommendationModel.IsSolid;
     this.sortIndex = recommendationModel.SortIndex;
-    this.createdAt = recommendationModel.CreatedAt;
-    this.updatedAt = recommendationModel.UpdatedAt;
+    this.createdAt = conversionDate(recommendationModel.CreatedAt);
+    this.updatedAt = conversionDate(recommendationModel.UpdatedAt);
     this.recommendationItems = recommendationModel.RecommendationItems.map((item) => new RecommendationItemData(item));
   }
 
