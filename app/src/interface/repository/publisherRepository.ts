@@ -9,6 +9,7 @@ import Publisher from '../../domain/model/publisher/publisher';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 
 import {IEsPublisher} from '../../infrastructure/elasticsearch/documents/IEsPublisher';
+import {MySQLDBError} from '../../presentation/error/infrastructure';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -82,7 +83,7 @@ export default class PublisherRepository implements IPublisherRepository {
       where: {id: publisherId},
     });
     if (publisher) return new Publisher(publisher.id, publisher.name);
-    throw new Error('Author not found');
+    throw new MySQLDBError('Author not found');
   }
 
   public async update(publisher: Publisher): Promise<void> {

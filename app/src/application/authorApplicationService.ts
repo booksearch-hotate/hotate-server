@@ -3,6 +3,7 @@ import Author from '../domain/model/author/author';
 import AuthorService from '../domain/service/authorService';
 
 import AuthorData from '../domain/model/author/authorData';
+import {InfrastructureError} from '../presentation/error';
 
 export default class AuthorApplicationService {
   private readonly authorRepository: IAuthorRepository;
@@ -18,7 +19,9 @@ export default class AuthorApplicationService {
     let id;
     if (await this.authorService.isExist(author)) {
       const found = await this.authorRepository.findByName(author.Name);
-      if (found === null) throw new Error('Author not found');
+
+      if (found === null) throw new InfrastructureError('The author should already exist, but could not find it.');
+
       id = found.Id;
     } else {
       await this.authorRepository.save(author, isBulk);

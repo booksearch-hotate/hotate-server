@@ -24,6 +24,7 @@ import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 import AuthorRepository from '../../interface/repository/authorRepository';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 import PublisherRepository from '../../interface/repository/publisherRepository';
+import {InvalidDataTypeError} from '../../presentation/error';
 
 // eslint-disable-next-line new-cap
 const recommendationRouter = Router();
@@ -83,7 +84,7 @@ recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Resp
   try {
     const id = req.query.rid;
 
-    if (typeof id !== 'string') throw new Error('Invalid value for id');
+    if (typeof id !== 'string') throw new InvalidDataTypeError('Invalid value for id');
 
     const recommendation = await recommendationApplicationService.findById(id);
 
@@ -130,7 +131,7 @@ recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: R
         isSolid = false;
         break;
       default:
-        throw new Error('Invalid optional value; isSolid.');
+        throw new InvalidDataTypeError('Invalid optional value; isSolid.');
     }
 
     const allCount = await recommendationApplicationService.fetchAllCount();
@@ -176,7 +177,7 @@ recommendationRouter.post('/delete', csrfProtection, async (req: Request, res: R
   try {
     const id = req.body.id;
 
-    if (typeof id !== 'string') throw new Error('Invalid recommendation section id.');
+    if (typeof id !== 'string') throw new InvalidDataTypeError('Invalid recommendation section id.');
 
     await recommendationApplicationService.delete(id);
     logger.info('Posting is deleted.');

@@ -7,6 +7,7 @@ import Department from '../domain/model/department/department';
 import BookRequestData from '../domain/model/bookRequest/bookRequestData';
 
 import BookRequestService from '../domain/service/bookRequestService';
+import {InfrastructureError, InvalidDataTypeError} from '../presentation/error';
 
 export default class BookRequestApplicationService {
   private requestRepository: IBookRequestRepository;
@@ -69,7 +70,7 @@ export default class BookRequestApplicationService {
   }
 
   public async makeData(saveData: any): Promise<BookRequestData> {
-    if (typeof saveData !== 'object') throw new Error('The value could not be obtained correctly.');
+    if (typeof saveData !== 'object') throw new InvalidDataTypeError('The saveData is invalid data type.');
 
     const keepReqObj = saveData.keepReqObj;
 
@@ -77,7 +78,7 @@ export default class BookRequestApplicationService {
 
     const departmentModel = await this.deparmentRepository.findById(departmentId);
 
-    if (departmentModel === null) throw new Error('The name of the department could not be obtained.');
+    if (departmentModel === null) throw new InfrastructureError('The name of the department could not be obtained.');
 
     const requestModel = new BookRequest(
         this.requestService.createUUID(),

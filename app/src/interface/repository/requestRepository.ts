@@ -4,6 +4,7 @@ import BookRequest from '../../domain/model/bookRequest/bookRequest';
 import RequestTable from '../../infrastructure/db/tables/requests';
 import DepartmentTable from '../../infrastructure/db/tables/departments';
 import Department from '../../domain/model/department/department';
+import {MySQLDBError} from '../../presentation/error/infrastructure';
 
 interface sequelize {
   Request: typeof RequestTable,
@@ -28,7 +29,7 @@ export default class RequestRepository implements IBookRequestRepository {
 
     const fetchDepartment = await this.db.Department.findOne({where: {id: departmentId}});
 
-    if (fetchDepartment === null) throw new Error();
+    if (fetchDepartment === null) throw new MySQLDBError('Could not find department data.');
 
     return fetchData.map((column) => new BookRequest(
         column.id,
@@ -109,7 +110,7 @@ export default class RequestRepository implements IBookRequestRepository {
 
     const fetchDepartmentData = await this.db.Department.findOne({where: {id: fetchData.department_id}});
 
-    if (fetchDepartmentData === null) throw new Error(`Request data existed, but departmental data did not.  requestId: ${fetchData.id}`);
+    if (fetchDepartmentData === null) throw new MySQLDBError(`Request data existed, but departmental data did not.  requestId: ${fetchData.id}`);
 
     const departmentModel = new Department(
         fetchDepartmentData.id,

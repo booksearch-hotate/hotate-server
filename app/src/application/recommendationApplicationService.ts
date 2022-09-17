@@ -9,6 +9,7 @@ import isSameLenAllArray from '../utils/isSameLenAllArray';
 import RecommendationItem from '../domain/model/recommendation/recommendationItem';
 import BookId from '../domain/model/book/bookId';
 import PaginationMargin from '../domain/model/pagination/paginationMargin';
+import {InfrastructureError, InvalidDataTypeError, OverflowDataError} from '../presentation/error';
 
 export default class RecommendationApplicationService {
   private readonly recommendationRepository: IRecommendationRepository;
@@ -49,7 +50,7 @@ export default class RecommendationApplicationService {
 
   public async findById(id: string): Promise<RecommendationData> {
     const fetchModel = await this.recommendationRepository.findById(id);
-    if (fetchModel === null) throw new Error('Cannot find recommendation section.');
+    if (fetchModel === null) throw new InfrastructureError('Could not find recommendation section.');
     return new RecommendationData(fetchModel);
   }
 
@@ -64,11 +65,11 @@ export default class RecommendationApplicationService {
   ): Promise<void> {
     const recommendation = await this.recommendationRepository.findById(id);
 
-    if (recommendation === null) throw new Error('Cannot find recommendation section.');
+    if (recommendation === null) throw new InfrastructureError('Could not find recommendation section.');
 
-    if (recommendation.isOverNumberOfBooks()) throw new Error('The number of books has been exceeded.');
+    if (recommendation.isOverNumberOfBooks()) throw new OverflowDataError('The number of books has been exceeded.');
 
-    if (!isSameLenAllArray([bookIds, bookComments])) throw new Error('Invalid recommendation data.');
+    if (!isSameLenAllArray([bookIds, bookComments])) throw new InvalidDataTypeError('Invalid recommendation data.');
 
     const items: RecommendationItem[] = [];
 
@@ -90,7 +91,7 @@ export default class RecommendationApplicationService {
   public async delete(id: string): Promise<void> {
     const recommendation = await this.recommendationRepository.findById(id);
 
-    if (recommendation === null) throw new Error('Cannot find recommendation section.');
+    if (recommendation === null) throw new InfrastructureError('Could not find recommendation section.');
 
     await this.recommendationRepository.delete(recommendation);
   }

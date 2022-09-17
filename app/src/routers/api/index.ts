@@ -17,6 +17,7 @@ import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 import AuthorRepository from '../../interface/repository/authorRepository';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 import PublisherRepository from '../../interface/repository/publisherRepository';
+import {InvalidDataTypeError, OverflowDataError} from '../../presentation/error';
 
 // eslint-disable-next-line new-cap
 const apiRouter = Router();
@@ -52,13 +53,13 @@ apiRouter.post('/recommendation/book/add', csrfProtection, async (req: Request, 
     const url = req.body.addUrl;
     const recommendationId = req.body.recommendationId;
 
-    if (typeof url !== 'string' || url.length === 0 || url.indexOf(bookIdUri) === -1) throw new Error('Invalid url.');
+    if (typeof url !== 'string' || url.length === 0 || url.indexOf(bookIdUri) === -1) throw new InvalidDataTypeError('Invalid url.');
 
     const bookId = url.substring(url.indexOf(bookIdUri) + bookIdUri.length);
 
     const recommendation = await recommendationApplicationService.findById(recommendationId);
 
-    if (recommendationApplicationService.isOverNumberOfBooksWhenAdd(recommendation)) throw new Error('The number of books has been exceeded.');
+    if (recommendationApplicationService.isOverNumberOfBooksWhenAdd(recommendation)) throw new OverflowDataError('The number of books has been exceeded.');
 
     const book = await bookApplicationService.searchBookById(bookId);
 
