@@ -57,5 +57,9 @@ describe('Access book request', () => {
     expect(fetchData?.BookName).toMatch(sendData.bookName);
 
     await bookRequestApplicationService.delete(sendData.id);
+
+    const fetchAfterDeleteData = await bookRequestApplicationService.findAll();
+
+    expect(fetchAfterDeleteData.length).toBe(0);
   });
 });
