@@ -1,12 +1,14 @@
+import {DomainInvalidError} from '../../../presentation/error';
+
 export default class SearchHistory {
   private words: string;
   private id: string;
   private createdAt: Date;
 
   public constructor(id:string, words: string, createdAt: Date) {
-    if (words === undefined) throw new Error('wordsが不明です');
-    if (id === undefined) throw new Error('idが不明です');
-    if (createdAt === undefined) throw new Error('作成日時が不明です');
+    if (words === undefined) throw new DomainInvalidError('keywords of history of search is unknown.');
+    if (id === undefined) throw new DomainInvalidError('id of history of search is unknown.');
+    if (createdAt === undefined) throw new DomainInvalidError('date of create of history of search is unknown.');
 
     this.words = words;
     this.id = id;

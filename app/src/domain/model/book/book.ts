@@ -132,7 +132,7 @@ export default class Book {
   }
 
   public changeName(name: string | null) {
-    if (name === null) throw new Error('The book title is null.');
+    if (name === null) throw new DomainInvalidError('The book title is null.');
 
     this.Name = name;
   }

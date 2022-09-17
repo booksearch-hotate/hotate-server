@@ -9,6 +9,7 @@ import Recommendation from '../../domain/model/recommendation/recommendation';
 import RecommendationItem from '../../domain/model/recommendation/recommendationItem';
 import BookId from '../../domain/model/book/bookId';
 import PaginationMargin from '../../domain/model/pagination/paginationMargin';
+import {MySQLDBError} from '../../presentation/error/infrastructure';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -108,7 +109,7 @@ export default class RecommendationRepository implements IRecommendationReposito
       /* ソート順の調整 */
       const beforeData = await this.db.Recommendation.findOne({where: {id: recommendation.Id}});
 
-      if (beforeData === null) throw new Error('Cannnot find recommendation section.');
+      if (beforeData === null) throw new MySQLDBError('Could not find recommendation section.');
 
       const beforeSortIndex = beforeData.sort_index;
       const updateSortIndex = recommendation.SortIndex;
