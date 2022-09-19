@@ -48,7 +48,6 @@ document.getElementById('thumbnailFile').addEventListener('input', async (value)
   }).then((res) => res.json());
 
   if (res.status === 'success') {
-    console.log(res.fileName);
     const element = makeThumbnailCard(res.fileName);
     
     document.getElementById('existThumbnail').innerHTML = element + document.getElementById('existThumbnail').innerHTML;
