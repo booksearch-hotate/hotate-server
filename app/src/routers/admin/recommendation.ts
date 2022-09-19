@@ -25,6 +25,10 @@ import AuthorRepository from '../../interface/repository/authorRepository';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 import PublisherRepository from '../../interface/repository/publisherRepository';
 import {InvalidDataTypeError} from '../../presentation/error';
+import multer from 'multer';
+import appRoot from 'app-root-path';
+import conversionImgSize from '../../utils/conversionImgSize';
+import fs from 'fs';
 
 // eslint-disable-next-line new-cap
 const recommendationRouter = Router();
@@ -35,6 +39,11 @@ const csrfProtection = csurf({cookie: false});
 
 const logger = new Logger('recommendation');
 
+const upload = multer({
+  dest: './public/thumbnail/',
+  limits: {fileSize: 4 * 1000 * 1000}, // 画像サイズは4MBまでに制限
+}); // multerの設定
+
 const recommendationApplicationService = new RecommendationApplicationService(new RecommendationRepository(db), new RecommendationService());
 
 const bookApplicationService = new BookApplicationService(
@@ -44,7 +53,7 @@ const bookApplicationService = new BookApplicationService(
     new BookService(),
 );
 
-recommendationRouter.get('/', async (req: Request, res: Response) => {
+recommendationRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   const pageCount = conversionpageCounter(req);
 
   const fetchMargin = 10;
@@ -77,6 +86,9 @@ recommendationRouter.get('/', async (req: Request, res: Response) => {
     recommendations,
     paginationData,
   };
+
+  pageData.csrfToken = req.csrfToken();
+
   res.render('pages/admin/recommendation/', {pageData});
 });
 
@@ -188,6 +200,20 @@ recommendationRouter.post('/delete', csrfProtection, async (req: Request, res: R
   } finally {
     res.redirect('/admin/recommendation/');
   }
+});
+
+recommendationRouter.post('/thumbnail/add', csrfProtection, upload.single('imgFile'), async (req: Request, res: Response) => {
+  if (req.file === undefined) throw new InvalidDataTypeError('Thumbnail images could not be retrieved properly.');
+
+  if (req.file.mimetype.indexOf('image/') === -1) throw new InvalidDataTypeError('The file sent is not an image.');
+
+  const inputFilePath = req.file.path;
+
+  await conversionImgSize(inputFilePath, `${appRoot.path}/public/thumbnail/${req.file.originalname}`);
+
+  fs.unlinkSync(req.file.path);
+
+  res.redirect('/admin/recommendation/');
 });
 
 export default recommendationRouter;
