@@ -119,7 +119,12 @@ recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Resp
       thumbnailList,
       defaultThumbnailList,
     };
+
     pageData.csrfToken = req.csrfToken();
+
+    pageData.status = conversionpageStatus(req.session.status);
+    req.session.status = undefined;
+
     res.render('pages/admin/recommendation/edit', {pageData});
   } catch (e: any) {
     logger.error(e);
@@ -171,7 +176,7 @@ recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: R
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '投稿の変更に失敗しました。'};
   } finally {
-    res.redirect('/admin/recommendation/');
+    res.redirect('/admin/recommendation/edit');
   }
 });
 
@@ -189,7 +194,11 @@ recommendationRouter.get('/add', csrfProtection, (req: Request, res: Response) =
     thumbnailList,
     defaultThumbnailList,
   };
+
   pageData.csrfToken = req.csrfToken();
+
+  pageData.status = conversionpageStatus(req.session.status);
+  req.session.status = undefined;
 
   res.render('pages/admin/recommendation/add', {pageData});
 });
@@ -207,7 +216,7 @@ recommendationRouter.post('/insert', csrfProtection, async (req: Request, res: R
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '投稿の追加に失敗しました。'};
   } finally {
-    res.redirect('/admin/recommendation/');
+    res.redirect('/admin/recommendation/add');
   }
 });
 
