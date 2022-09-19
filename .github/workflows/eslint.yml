@@ -23,8 +23,7 @@ jobs:
     name: Run eslint scanning
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      actions: write
+      contents: read
       security-events: write
     steps:
 
@@ -41,7 +40,7 @@ jobs:
           --config .eslintrc.js
           --ext .js,.jsx,.ts,.tsx
           --format @microsoft/eslint-formatter-sarif 
-          --output-file eslint-results.sarif
+          --output-file eslint-results.sarif || true
         continue-on-error: true
         
       - name: Check
