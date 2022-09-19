@@ -13,7 +13,6 @@ import RecommendationItem from '../../domain/model/recommendation/recommendation
 import BookId from '../../domain/model/book/bookId';
 import PaginationMargin from '../../domain/model/pagination/paginationMargin';
 import {MySQLDBError} from '../../presentation/error/infrastructure';
-import {IRecommendationThumbnailObj} from '../../domain/model/recommendation/IRecommendationThumbnailObj';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -194,18 +193,12 @@ export default class RecommendationRepository implements IRecommendationReposito
    * @return {*}  {string} サムネイル名の配列
    * @memberof RecommendationRepository
    */
-  public fetchAllThumbnailName(): IRecommendationThumbnailObj[] {
+  public fetchAllThumbnailName(): string[] {
     const templatePath = `${appRoot.path}/public/thumbnail/*`;
 
     const files = glob.sync(templatePath);
 
-    const res: IRecommendationThumbnailObj[] = files.map((file) => {
-      const extname = path.extname(file);
-      return {
-        fileName: path.basename(file, extname),
-        extName: extname,
-      };
-    });
+    const res: string[] = files.map((file) => path.basename(file, '.png'));
 
     return res;
   }

@@ -10,7 +10,6 @@ import RecommendationItem from '../domain/model/recommendation/recommendationIte
 import BookId from '../domain/model/book/bookId';
 import PaginationMargin from '../domain/model/pagination/paginationMargin';
 import {InfrastructureError, InvalidDataTypeError, OverflowDataError} from '../presentation/error';
-import {IRecommendationThumbnailObj} from '../domain/model/recommendation/IRecommendationThumbnailObj';
 
 export default class RecommendationApplicationService {
   private readonly recommendationRepository: IRecommendationRepository;
@@ -170,7 +169,7 @@ export default class RecommendationApplicationService {
     await this.recommendationRepository.removeUsingAll();
   }
 
-  public fetchAllthumbnailName(): IRecommendationThumbnailObj[] {
+  public fetchAllthumbnailName(): string[] {
     return this.recommendationRepository.fetchAllThumbnailName();
   }
 }

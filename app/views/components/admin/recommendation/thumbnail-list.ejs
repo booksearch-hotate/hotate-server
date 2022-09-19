@@ -7,13 +7,13 @@
     <div class="exist-thumbnail-list" id="existThumbnail">
       <% let isFirst = true; %>
       <% for (const thumbnail of thumbnailList) { %>
-        <div class="thumbnail-card-item-box" id="<%= thumbnail.fileName %>-box">
+        <div class="thumbnail-card-item-box" id="<%= thumbnail %>-box">
           <input type="radio" id="<%= thumbnail.fileName %>-input" class="thumbnail-button" name="thumbnailName" value="<%= thumbnail.fileName %>" <% if (isFirst) { %>checked<% } %>>
-          <label for="<%= thumbnail.fileName %>-input" class="choice-thumbnail-label">
-            <img src="/thumbnail/<%= thumbnail.fileName + thumbnail.extName %>" class="choice-thumbnail-img" />
-            <% if (defaults.indexOf(thumbnail.fileName) === -1) { %>
+          <label for="<%= thumbnail %>-input" class="choice-thumbnail-label">
+            <img src="/thumbnail/<%= thumbnail %>.png" class="choice-thumbnail-img" />
+            <% if (defaults.indexOf(thumbnail) === -1) { %>
             <div class="thumbnail-delete-box">
-              <a  href="javascript:void(0);" onclick="deleteThumbnail('<%= thumbnail.fileName + thumbnail.extName %>')">
+              <a  href="javascript:void(0);" onclick="deleteThumbnail('<%= thumbnail %>')">
                 削除
               </a>
             </div>
