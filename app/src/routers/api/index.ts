@@ -103,7 +103,7 @@ apiRouter.post('/recommendation/thumbnail/add', csrfProtection, upload.single('i
 
     if (recommendationApplicationService.fetchAllthumbnailName().length >= MAX_THUMBNAIL_LEN) throw new OverflowDataError(`Up to ${MAX_THUMBNAIL_LEN} thumbnails are allowed.`);
 
-    const inputFilePath = req.file.path;
+    const inputFilePath = `${appRoot.path}/public/thumbnail/${req.file.filename}`;
 
     const fileName = uuidv4();
 
