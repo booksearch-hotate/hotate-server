@@ -25,6 +25,7 @@ import fs from 'fs';
 import {v4 as uuidv4} from 'uuid';
 import glob from 'glob';
 import {defaultThumbnailReg} from '../datas/defaultThumbnailReg';
+import sanitize from 'sanitize-filename';
 
 // eslint-disable-next-line new-cap
 const apiRouter = Router();
@@ -103,13 +104,13 @@ apiRouter.post('/recommendation/thumbnail/add', csrfProtection, upload.single('i
 
     if (recommendationApplicationService.fetchAllthumbnailName().length >= MAX_THUMBNAIL_LEN) throw new OverflowDataError(`Up to ${MAX_THUMBNAIL_LEN} thumbnails are allowed.`);
 
-    const inputFilePath = `${appRoot.path}/public/thumbnail/${req.file.filename}`;
+    const inputFilePath = `${appRoot.path}/public/thumbnail/${sanitize(req.file.filename)}`;
 
     const fileName = uuidv4();
 
     await conversionImgSize(inputFilePath, `${appRoot.path}/public/thumbnail/${fileName}.png`);
 
-    fs.unlinkSync(req.file.path);
+    fs.unlinkSync(inputFilePath);
 
     sendObj.status = 'success';
     sendObj.fileName = fileName;
