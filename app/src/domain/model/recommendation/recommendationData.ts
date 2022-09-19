@@ -8,6 +8,7 @@ export default class RecommendationData {
   private content: string;
   private isSolid: boolean;
   private sortIndex: number;
+  private thumbnailName: string;
   private createdAt: string;
   private updatedAt: string;
   private recommendationItems: RecommendationItemData[];
@@ -18,6 +19,7 @@ export default class RecommendationData {
     this.content = recommendationModel.Content;
     this.isSolid = recommendationModel.IsSolid;
     this.sortIndex = recommendationModel.SortIndex;
+    this.thumbnailName = recommendationModel.ThumbnailName;
     this.createdAt = conversionDate(recommendationModel.CreatedAt);
     this.updatedAt = conversionDate(recommendationModel.UpdatedAt);
     this.recommendationItems = recommendationModel.RecommendationItems.map((item) => new RecommendationItemData(item));
@@ -41,6 +43,10 @@ export default class RecommendationData {
 
   get SortIndex() {
     return this.sortIndex;
+  }
+
+  get ThumbnailName() {
+    return this.thumbnailName;
   }
 
   get CreatedAt() {

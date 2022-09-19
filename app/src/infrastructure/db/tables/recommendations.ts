@@ -7,6 +7,7 @@ export default class RecommendationTable extends Model {
   public content!: string;
   public is_solid!: number;
   public sort_index!: number;
+  public thumbnail_name!: string;
   public created_at!: Date;
   public updated_at!: Date;
 
@@ -30,6 +31,10 @@ export default class RecommendationTable extends Model {
       },
       sort_index: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      thumbnail_name: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
     }, {

@@ -7,6 +7,7 @@ export default class Recommendation {
   private content: string;
   private isSolid: boolean;
   private sortIndex: number;
+  private thumbnailName: string;
   private createdAt: Date;
   private updatedAt: Date;
   private recommendationItems: RecommendationItem[];
@@ -22,6 +23,7 @@ export default class Recommendation {
       content: string,
       isSolid: boolean,
       sortIndex: number,
+      thumbnailName: string,
       createdAt: Date,
       updatedAt: Date,
       recommendationItems: RecommendationItem[],
@@ -30,6 +32,7 @@ export default class Recommendation {
     if (title.length === 0 || title.length > this.MAX_TITLE_LEN) throw new DomainInvalidError(`The format of the title of recommendation section is different. Title of recommendation section: ${title}`);
     if (content.length === 0|| content.length > this.MAX_CONTENT_LEN) throw new DomainInvalidError('The format of the content of recommendation section is different.');
     if (isSolid === null) throw new DomainInvalidError('The isSolid is null.');
+    if (thumbnailName === null) throw new DomainInvalidError('The name of thumbnail is null');
     if (sortIndex === null || sortIndex < 0) throw new DomainInvalidError('Incorrect id.');
     if (recommendationItems.length > this.MAX_HAVING_BOOK_COUNT) throw new DomainInvalidError('The maximum number of units held has been exceeded.');
 
@@ -38,6 +41,7 @@ export default class Recommendation {
     this.content = content;
     this.isSolid = isSolid;
     this.sortIndex = sortIndex;
+    this.thumbnailName = thumbnailName;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.recommendationItems = recommendationItems;
@@ -57,6 +61,9 @@ export default class Recommendation {
   }
   get SortIndex() {
     return this.sortIndex;
+  }
+  get ThumbnailName() {
+    return this.thumbnailName;
   }
   get CreatedAt() {
     return this.createdAt;
@@ -84,6 +91,12 @@ export default class Recommendation {
     if (sortIndex < 1) throw new DomainInvalidError('Invalid sort index.');
 
     this.sortIndex = sortIndex;
+  }
+
+  public changeThumbnailName(thumbnailName: string) {
+    if (thumbnailName.length === 0) throw new DomainInvalidError('Invalid name of thumbnail');
+
+    this.thumbnailName = thumbnailName;
   }
 
   public changeIsSolid(isSolid: boolean) {
