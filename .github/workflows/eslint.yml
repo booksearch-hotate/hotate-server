@@ -23,7 +23,8 @@ jobs:
     name: Run eslint scanning
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
+      actions: write
       security-events: write
     steps:
 
@@ -34,9 +35,6 @@ jobs:
         run: |
           npm install eslint@8.10.0
           npm install @microsoft/eslint-formatter-sarif@2.1.7
-      
-      - name: make sarif file
-        run: touch eslint-results.sarif
 
       - name: Run ESLint
         run: npx eslint "./app/**/*"
