@@ -1,7 +1,7 @@
 import BookId from '../book/bookId';
 import PaginationMargin from '../pagination/paginationMargin';
-import {IRecommendationThumbnailObj} from './IRecommendationThumbnailObj';
 import Recommendation from './recommendation';
+
 export interface IRecommendationRepository {
   insert(recommendationModel: Recommendation): Promise<void>
   findMaxIndex(): Promise<number>
@@ -13,5 +13,5 @@ export interface IRecommendationRepository {
   findByBookId(bookId: BookId): Promise<string | null>
   removeUsingByBookId(bookId: BookId): Promise<void>
   removeUsingAll(): Promise<void>
-  fetchAllThumbnailName(): IRecommendationThumbnailObj[]
+  fetchAllThumbnailName(): string[]
 }

@@ -160,8 +160,8 @@ recommendationRouter.get('/add', csrfProtection, (req: Request, res: Response) =
 
   const defaultThumbnailList: string[] = [];
   thumbnailList.forEach((thumbnail) => {
-    if (new RegExp(defaultThumbnailReg, 'g').test(thumbnail.fileName)) {
-      defaultThumbnailList.push(thumbnail.fileName);
+    if (new RegExp(defaultThumbnailReg, 'g').test(thumbnail)) {
+      defaultThumbnailList.push(thumbnail);
     }
   });
   pageData.anyData = {

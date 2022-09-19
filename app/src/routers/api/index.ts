@@ -22,9 +22,7 @@ import multer from 'multer';
 import appRoot from 'app-root-path';
 import conversionImgSize from '../../utils/conversionImgSize';
 import fs from 'fs';
-import path from 'path';
 import {v4 as uuidv4} from 'uuid';
-import {IRecommendationThumbnailObj} from '../../domain/model/recommendation/IRecommendationThumbnailObj';
 import glob from 'glob';
 import {defaultThumbnailReg} from '../datas/defaultThumbnailReg';
 
@@ -90,10 +88,10 @@ apiRouter.post('/recommendation/book/add', csrfProtection, async (req: Request, 
 apiRouter.post('/recommendation/thumbnail/add', csrfProtection, upload.single('imgFile'), async (req: Request, res: Response) => {
   const sendObj: {
     status: string,
-    res: IRecommendationThumbnailObj | null,
+    fileName: string | null,
   } = {
     status: 'error',
-    res: null,
+    fileName: null,
   };
   try {
     if (req.file === undefined) throw new InvalidDataTypeError('Thumbnail images could not be retrieved properly.');
@@ -102,19 +100,14 @@ apiRouter.post('/recommendation/thumbnail/add', csrfProtection, upload.single('i
 
     const inputFilePath = req.file.path;
 
-    const extName = path.extname(req.file.originalname);
-
     const fileName = uuidv4();
 
-    await conversionImgSize(inputFilePath, `${appRoot.path}/public/thumbnail/${fileName}${extName}`);
+    await conversionImgSize(inputFilePath, `${appRoot.path}/public/thumbnail/${fileName}.png`);
 
     fs.unlinkSync(req.file.path);
 
     sendObj.status = 'success';
-    sendObj.res = {
-      fileName,
-      extName,
-    };
+    sendObj.fileName = fileName;
 
     return res.json(sendObj);
   } catch (e: any) {
@@ -132,7 +125,7 @@ apiRouter.post('/recommendation/thumbnail/delete', csrfProtection, async (req: R
       throw new InvalidAccessError('Default images cannot be deleted.');
     }
 
-    const filePath = `${appRoot.path}/public/thumbnail/${fileName}`;
+    const filePath = `${appRoot.path}/public/thumbnail/${fileName}.png`;
 
     const file = glob.sync(filePath);
 
