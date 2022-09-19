@@ -25,6 +25,7 @@ import AuthorRepository from '../../interface/repository/authorRepository';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 import PublisherRepository from '../../interface/repository/publisherRepository';
 import {InvalidDataTypeError} from '../../presentation/error';
+import {defaultThumbnailReg} from '../datas/defaultThumbnailReg';
 
 // eslint-disable-next-line new-cap
 const recommendationRouter = Router();
@@ -44,7 +45,7 @@ const bookApplicationService = new BookApplicationService(
     new BookService(),
 );
 
-recommendationRouter.get('/', async (req: Request, res: Response) => {
+recommendationRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   const pageCount = conversionpageCounter(req);
 
   const fetchMargin = 10;
@@ -77,6 +78,9 @@ recommendationRouter.get('/', async (req: Request, res: Response) => {
     recommendations,
     paginationData,
   };
+
+  pageData.csrfToken = req.csrfToken();
+
   res.render('pages/admin/recommendation/', {pageData});
 });
 
@@ -98,13 +102,29 @@ recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Resp
 
     const maxSortIndex = await recommendationApplicationService.findMaxIndex();
 
+    const thumbnailList = recommendationApplicationService.fetchAllthumbnailName();
+
+    const defaultThumbnailList: string[] = [];
+    thumbnailList.forEach((thumbnail) => {
+      if (new RegExp(defaultThumbnailReg, 'g').test(thumbnail)) {
+        defaultThumbnailList.push(thumbnail);
+      }
+    });
+
     pageData.headTitle = 'セクションの編集';
     pageData.anyData = {
       recommendation,
       maxSortIndex,
       items,
+      thumbnailList,
+      defaultThumbnailList,
     };
+
     pageData.csrfToken = req.csrfToken();
+
+    pageData.status = conversionpageStatus(req.session.status);
+    req.session.status = undefined;
+
     res.render('pages/admin/recommendation/edit', {pageData});
   } catch (e: any) {
     logger.error(e);
@@ -118,6 +138,7 @@ recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: R
 
     const title = req.body.title;
     const content = req.body.content;
+    const thumbnailName = req.body.thumbnailName;
     const formSortIndex = Number(req.body.sortIndex);
     const bookIds = req.body.books === undefined ? [] : req.body.books;
     const bookComments = req.body.bookComments === undefined ? [] : req.body.bookComments;
@@ -138,21 +159,48 @@ recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: R
 
     const sortIndex = allCount - (formSortIndex - 1);
 
-    await recommendationApplicationService.update(recommendationId, title, content, sortIndex, isSolid, bookIds, bookComments);
+    await recommendationApplicationService.update(
+        recommendationId,
+        title,
+        content,
+        sortIndex,
+        thumbnailName,
+        isSolid,
+        bookIds,
+        bookComments,
+    );
 
     req.session.status = {type: 'Success', mes: '投稿の変更に成功しました。'};
     logger.info('Posting is updated.');
+
+    res.redirect('/admin/recommendation/');
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '投稿の変更に失敗しました。'};
-  } finally {
-    res.redirect('/admin/recommendation/');
+
+    res.redirect('/admin/recommendation/edit');
   }
 });
 
 recommendationRouter.get('/add', csrfProtection, (req: Request, res: Response) => {
   pageData.headTitle = 'セクションの追加';
+  const thumbnailList = recommendationApplicationService.fetchAllthumbnailName();
+
+  const defaultThumbnailList: string[] = [];
+  thumbnailList.forEach((thumbnail) => {
+    if (new RegExp(defaultThumbnailReg, 'g').test(thumbnail)) {
+      defaultThumbnailList.push(thumbnail);
+    }
+  });
+  pageData.anyData = {
+    thumbnailList,
+    defaultThumbnailList,
+  };
+
   pageData.csrfToken = req.csrfToken();
+
+  pageData.status = conversionpageStatus(req.session.status);
+  req.session.status = undefined;
 
   res.render('pages/admin/recommendation/add', {pageData});
 });
@@ -161,15 +209,18 @@ recommendationRouter.post('/insert', csrfProtection, async (req: Request, res: R
   try {
     const title = req.body.title;
     const content = req.body.content;
+    const thumbnailName = req.body.thumbnailName;
 
-    await recommendationApplicationService.insert(title, content);
+    await recommendationApplicationService.insert(title, content, thumbnailName);
     logger.info(`Add new recommendation section. title: ${title}`);
     req.session.status = {type: 'Success', mes: '投稿の追加が完了しました。'};
+
+    res.redirect('/admin/recommendation/');
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '投稿の追加に失敗しました。'};
-  } finally {
-    res.redirect('/admin/recommendation/');
+
+    res.redirect('/admin/recommendation/add');
   }
 });
 

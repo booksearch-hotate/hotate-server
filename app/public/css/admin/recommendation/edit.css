@@ -7,3 +7,89 @@
   display: block;
   opacity: 1;
 }
+
+.choice-thumbnail-img, .append-thumbnail-box {
+  position: relative;
+  animation-name: viewThumbnail;
+  animation-duration: 1.5s;
+}
+
+.choice-thumbnail-img {
+  height: 200px;
+  cursor: pointer;
+}
+
+.choice-thumbnail-label {
+  transition: .5s;
+}
+
+.thumbnail-card-item-box {
+  position: relative;
+}
+
+.thumbnail-delete-box {
+  position:absolute;
+  bottom: 10px;
+  left: 10px;
+  width: auto;
+}
+
+.thumbnail-delete-box a {
+  background-color: aliceblue;
+  border: solid 1px #432;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  transition: transform .5s;
+  color: #432;
+}
+
+.thumbnail-delete-box a:hover {
+  transform: scale(1.1);
+}
+
+.thumbnail-button {
+  display: none;
+}
+
+.thumbnail-button:checked + .choice-thumbnail-label{
+  transform: scale(.9);
+}
+
+.append-thumbnail-box {
+  height: 200px;
+  min-width: 340px;
+  cursor: pointer;
+  background-color: white;
+  border: 2px solid #432;
+  border-radius: 5px;
+  position: relative;
+}
+
+.append-thumbnail-box p {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.thumbnail-card-list {
+  overflow-x: scroll;
+}
+
+.thumbnail-card-list, .exist-thumbnail-list {
+  display: flex;
+  gap: 1rem;
+}
+
+@keyframes viewThumbnail {
+  from {
+    opacity: 0;
+    bottom: -20px;
+  }
+
+  to {
+    opacity: 1;
+    bottom: 0px;
+  }
+}

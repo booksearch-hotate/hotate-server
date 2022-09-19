@@ -1,0 +1,38 @@
+<%
+nowThumbnail = typeof nowThumbnail === 'undefined' ? '' : nowThumbnail;
+%>
+
+<div class="mb-3 choice-thumbnail">
+  <div class="text-center">
+    <h3>サムネイル選択</h3>
+  </div>
+
+  <div class="thumbnail-card-list px-4">
+    <div class="exist-thumbnail-list" id="existThumbnail">
+      <% let isFirst = nowThumbnail === ''; %>
+      <% for (const thumbnail of thumbnailList) { %>
+        <div class="thumbnail-card-item-box" id="<%= thumbnail %>-box">
+          <input type="radio" id="<%= thumbnail %>-input" class="thumbnail-button" name="thumbnailName" value="<%= thumbnail %>" <% if ((isFirst && nowThumbnail.length === 0) || nowThumbnail === thumbnail) { %>checked<% } %>>
+          <label for="<%= thumbnail %>-input" class="choice-thumbnail-label">
+            <img src="/thumbnail/<%= thumbnail %>.png" class="choice-thumbnail-img" />
+            <% if (defaults.indexOf(thumbnail) === -1) { %>
+            <div class="thumbnail-delete-box">
+              <a  href="javascript:void(0);" onclick="deleteThumbnail('<%= thumbnail %>')">
+                削除
+              </a>
+            </div>
+            <% } %>
+          </label>
+        </div>
+        <% isFirst = false; %>
+      <% } %>
+    </div>
+
+  <input type="file" id="thumbnailFile" name="imgFile" hidden>
+  <label for="thumbnailFile" class="append-thumbnail-box">
+    <p>ファイルを追加</p>
+    <p class="error-message" id="errorMessage"></p>
+  </label>
+  </div>
+</div>
+

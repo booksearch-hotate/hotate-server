@@ -24,13 +24,14 @@ export default class RecommendationApplicationService {
     return await this.recommendationRepository.findMaxIndex();
   }
 
-  public async insert(title: string, content: string) {
+  public async insert(title: string, content: string, thumbnailName: string) {
     const recommendation = new Recommendation(
         this.recommendationService.createUUID(),
         title,
         content,
         false,
         await this.recommendationRepository.findMaxIndex() + 1,
+        thumbnailName,
         new Date(),
         new Date(),
         [],
@@ -59,6 +60,7 @@ export default class RecommendationApplicationService {
       title: string,
       content: string,
       sortIndex: number,
+      thumbnailName: string,
       isSolid: boolean,
       bookIds: string[],
       bookComments: string[],
@@ -84,6 +86,7 @@ export default class RecommendationApplicationService {
     recommendation.changeSortIndex(sortIndex);
     recommendation.changeIsSolid(isSolid);
     recommendation.replaceItems(items);
+    recommendation.changeThumbnailName(thumbnailName);
 
     await this.recommendationRepository.update(recommendation);
   }
@@ -107,6 +110,7 @@ export default class RecommendationApplicationService {
         recommendationData.Content,
         recommendationData.IsSolid,
         recommendationData.SortIndex,
+        recommendationData.ThumbnailName,
         new Date(recommendationData.CreatedAt),
         new Date(recommendationData.UpdatedAt),
         recommendationItemModel,
@@ -129,6 +133,7 @@ export default class RecommendationApplicationService {
           recommendationData.Content,
           recommendationData.IsSolid,
           recommendationData.SortIndex,
+          recommendationData.ThumbnailName,
           new Date(recommendationData.CreatedAt),
           new Date(recommendationData.UpdatedAt),
           recommendationItemModel,
@@ -164,5 +169,9 @@ export default class RecommendationApplicationService {
 
   public async removeUsingAll(): Promise<void> {
     await this.recommendationRepository.removeUsingAll();
+  }
+
+  public fetchAllthumbnailName(): string[] {
+    return this.recommendationRepository.fetchAllThumbnailName();
   }
 }
