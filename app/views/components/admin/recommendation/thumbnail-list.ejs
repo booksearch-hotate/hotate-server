@@ -1,3 +1,7 @@
+<%
+nowThumbnail = typeof nowThumbnail === 'undefined' ? '' : nowThumbnail;
+%>
+
 <div class="mb-3 choice-thumbnail">
   <div class="text-center">
     <h3>サムネイル選択</h3>
@@ -5,10 +9,10 @@
 
   <div class="thumbnail-card-list px-4">
     <div class="exist-thumbnail-list" id="existThumbnail">
-      <% let isFirst = true; %>
+      <% let isFirst = nowThumbnail === ''; %>
       <% for (const thumbnail of thumbnailList) { %>
         <div class="thumbnail-card-item-box" id="<%= thumbnail %>-box">
-          <input type="radio" id="<%= thumbnail %>-input" class="thumbnail-button" name="thumbnailName" value="<%= thumbnail %>" <% if (isFirst) { %>checked<% } %>>
+          <input type="radio" id="<%= thumbnail %>-input" class="thumbnail-button" name="thumbnailName" value="<%= thumbnail %>" <% if ((isFirst && nowThumbnail.length === 0) || nowThumbnail === thumbnail) { %>checked<% } %>>
           <label for="<%= thumbnail %>-input" class="choice-thumbnail-label">
             <img src="/thumbnail/<%= thumbnail %>.png" class="choice-thumbnail-img" />
             <% if (defaults.indexOf(thumbnail) === -1) { %>
