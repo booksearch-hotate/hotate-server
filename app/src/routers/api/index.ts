@@ -95,27 +95,33 @@ apiRouter.post('/recommendation/thumbnail/add', csrfProtection, upload.single('i
     status: 'error',
     res: null,
   };
-  if (req.file === undefined) throw new InvalidDataTypeError('Thumbnail images could not be retrieved properly.');
+  try {
+    if (req.file === undefined) throw new InvalidDataTypeError('Thumbnail images could not be retrieved properly.');
 
-  if (req.file.mimetype.indexOf('image/') === -1) throw new InvalidDataTypeError('The file sent is not an image.');
+    if (req.file.mimetype.indexOf('image/') === -1) throw new InvalidDataTypeError('The file sent is not an image.');
 
-  const inputFilePath = req.file.path;
+    const inputFilePath = req.file.path;
 
-  const extName = path.extname(req.file.originalname);
+    const extName = path.extname(req.file.originalname);
 
-  const fileName = uuidv4();
+    const fileName = uuidv4();
 
-  await conversionImgSize(inputFilePath, `${appRoot.path}/public/thumbnail/${fileName}${extName}`);
+    await conversionImgSize(inputFilePath, `${appRoot.path}/public/thumbnail/${fileName}${extName}`);
 
-  fs.unlinkSync(req.file.path);
+    fs.unlinkSync(req.file.path);
 
-  sendObj.status = 'success';
-  sendObj.res = {
-    fileName,
-    extName,
-  };
+    sendObj.status = 'success';
+    sendObj.res = {
+      fileName,
+      extName,
+    };
 
-  return res.json(sendObj);
+    return res.json(sendObj);
+  } catch (e: any) {
+    logger.error(e);
+
+    res.sendStatus(500);
+  }
 });
 
 apiRouter.post('/recommendation/thumbnail/delete', csrfProtection, async (req: Request, res: Response) => {
