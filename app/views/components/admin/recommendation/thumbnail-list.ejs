@@ -8,7 +8,7 @@
       <% let isFirst = true; %>
       <% for (const thumbnail of thumbnailList) { %>
         <div class="thumbnail-card-item-box" id="<%= thumbnail %>-box">
-          <input type="radio" id="<%= thumbnail.fileName %>-input" class="thumbnail-button" name="thumbnailName" value="<%= thumbnail.fileName %>" <% if (isFirst) { %>checked<% } %>>
+          <input type="radio" id="<%= thumbnail %>-input" class="thumbnail-button" name="thumbnailName" value="<%= thumbnail %>" <% if (isFirst) { %>checked<% } %>>
           <label for="<%= thumbnail %>-input" class="choice-thumbnail-label">
             <img src="/thumbnail/<%= thumbnail %>.png" class="choice-thumbnail-img" />
             <% if (defaults.indexOf(thumbnail) === -1) { %>
