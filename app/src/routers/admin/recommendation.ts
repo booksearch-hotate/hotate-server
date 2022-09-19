@@ -172,10 +172,12 @@ recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: R
 
     req.session.status = {type: 'Success', mes: '投稿の変更に成功しました。'};
     logger.info('Posting is updated.');
+
+    res.redirect('/admin/recommendation/');
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '投稿の変更に失敗しました。'};
-  } finally {
+
     res.redirect('/admin/recommendation/edit');
   }
 });
@@ -212,10 +214,12 @@ recommendationRouter.post('/insert', csrfProtection, async (req: Request, res: R
     await recommendationApplicationService.insert(title, content, thumbnailName);
     logger.info(`Add new recommendation section. title: ${title}`);
     req.session.status = {type: 'Success', mes: '投稿の追加が完了しました。'};
+
+    res.redirect('/admin/recommendation/');
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '投稿の追加に失敗しました。'};
-  } finally {
+
     res.redirect('/admin/recommendation/add');
   }
 });
