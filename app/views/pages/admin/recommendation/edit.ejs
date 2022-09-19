@@ -83,6 +83,8 @@
         </div>
       </div>
 
+      <%- include('./../../../components/admin/recommendation/thumbnail-list', {thumbnailList: pageData.anyData.thumbnailList, defaults: pageData.anyData.defaultThumbnailList, nowThumbnail: recommendation.ThumbnailName}) %>
+
       <div class="text-center mb-3">
         <button type="button" onclick="submit();" class="btn btn-primary">確定</button>
       </div>
@@ -99,7 +101,11 @@
     <div class="text-center">
       <a href="/admin/recommendation">戻る</a>
     </div>
+
+    <%- include('./../../../components/state-alert', {pageData}) %>
+
     <%- include('./../../../components/input-js') %>
     <script src="<%= pageData.origin %>/js/editRecommendation.js"></script>
+    <script src="/js/sendThumbnailFile.js"></script>
   </body>
 </html>
