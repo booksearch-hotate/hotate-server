@@ -2,6 +2,7 @@
 <html>
   <head>
     <%- include('./../../../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/recommendation/edit.css" />
   </head>
   <body>
     <h3>セクションの追加</h3>
@@ -18,6 +19,8 @@
         <label for="content">内容</label>
       </div>
 
+      <%- include('./../../../components/admin/recommendation/thumbnail-list', {thumbnailList: pageData.anyData.thumbnailList, defaults: pageData.anyData.defaultThumbnailList}) %>
+
       <div class="mb-3">
         <button type="button" onclick="submit();" class="btn btn-primary">追加</button>
       </div>
@@ -27,5 +30,6 @@
       <a href="/admin/recommendation">戻る</a>
     </div>
     <%- include('./../../../components/input-js') %>
+    <script src="/js/sendThumbnailFile.js"></script>
   </body>
 </html>
