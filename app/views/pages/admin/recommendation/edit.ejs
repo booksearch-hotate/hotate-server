@@ -83,7 +83,7 @@
         </div>
       </div>
 
-      <%- include('./../../../components/admin/recommendation/thumbnail-list', {thumbnailList: pageData.anyData.thumbnailList, defaults: pageData.anyData.defaultThumbnailList}) %>
+      <%- include('./../../../components/admin/recommendation/thumbnail-list', {thumbnailList: pageData.anyData.thumbnailList, defaults: pageData.anyData.defaultThumbnailList, nowThumbnail: recommendation.ThumbnailName}) %>
 
       <div class="text-center mb-3">
         <button type="button" onclick="submit();" class="btn btn-primary">確定</button>
