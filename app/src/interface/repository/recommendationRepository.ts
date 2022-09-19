@@ -1,4 +1,7 @@
 import sequelize from 'sequelize';
+import glob from 'glob';
+import appRoot from 'app-root-path';
+import path from 'path';
 
 import RecommendationTable from '../../infrastructure/db/tables/recommendations';
 import UsingRecommendationsTable from '../../infrastructure/db/tables/usingRecommendations';
@@ -10,6 +13,7 @@ import RecommendationItem from '../../domain/model/recommendation/recommendation
 import BookId from '../../domain/model/book/bookId';
 import PaginationMargin from '../../domain/model/pagination/paginationMargin';
 import {MySQLDBError} from '../../presentation/error/infrastructure';
+import {IRecommendationThumbnailObj} from '../../domain/model/recommendation/IRecommendationThumbnailObj';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -36,6 +40,7 @@ export default class RecommendationRepository implements IRecommendationReposito
       content: recommendationModel.Content,
       is_solid: recommendationModel.IsSolid ? 1 : 0,
       sort_index: recommendationModel.SortIndex,
+      thumbnail_name: recommendationModel.ThumbnailName,
     });
   }
 
@@ -58,6 +63,7 @@ export default class RecommendationRepository implements IRecommendationReposito
           column.content,
           column.is_solid === 1,
           column.sort_index,
+          column.thumbnail_name,
           column.created_at,
           column.updated_at,
           items,
@@ -86,6 +92,7 @@ export default class RecommendationRepository implements IRecommendationReposito
         fetchData.content,
         fetchData.is_solid === 1,
         fetchData.sort_index,
+        fetchData.thumbnail_name,
         fetchData.created_at,
         fetchData.updated_at,
         items,
@@ -144,6 +151,7 @@ export default class RecommendationRepository implements IRecommendationReposito
       content: recommendation.Content,
       sort_index: recommendation.SortIndex,
       is_solid: recommendation.IsSolid ? 1 : 0,
+      thumbnail_name: recommendation.ThumbnailName,
     }, {where: {id: recommendation.Id}});
   }
 
@@ -178,5 +186,27 @@ export default class RecommendationRepository implements IRecommendationReposito
     await this.db.UsingRecommendations.destroy({
       where: {},
     });
+  }
+
+  /**
+   * 現在登録されている画像のサムネイル名を取得します
+   *
+   * @return {*}  {string} サムネイル名の配列
+   * @memberof RecommendationRepository
+   */
+  public fetchAllThumbnailName(): IRecommendationThumbnailObj[] {
+    const templatePath = `${appRoot.path}/public/thumbnail/*`;
+
+    const files = glob.sync(templatePath);
+
+    const res: IRecommendationThumbnailObj[] = files.map((file) => {
+      const extname = path.extname(file);
+      return {
+        fileName: path.basename(file, extname),
+        extName: extname,
+      };
+    });
+
+    return res;
   }
 }
