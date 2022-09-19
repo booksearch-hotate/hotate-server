@@ -93,10 +93,15 @@ apiRouter.post('/recommendation/thumbnail/add', csrfProtection, upload.single('i
     status: 'error',
     fileName: null,
   };
+
+  const MAX_THUMBNAIL_LEN = 10;
+
   try {
     if (req.file === undefined) throw new InvalidDataTypeError('Thumbnail images could not be retrieved properly.');
 
     if (req.file.mimetype.indexOf('image/') === -1) throw new InvalidDataTypeError('The file sent is not an image.');
+
+    if (recommendationApplicationService.fetchAllthumbnailName().length >= MAX_THUMBNAIL_LEN) throw new OverflowDataError(`Up to ${MAX_THUMBNAIL_LEN} thumbnails are allowed.`);
 
     const inputFilePath = req.file.path;
 
