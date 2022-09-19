@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS recommendations (
   content text NOT NULL,
   is_solid int NOT NULL,
   sort_index int NOT NULL,
+  thumbnail_name varchar(200) NOT NULL,
   created_at timestamp NOT NULL,
   updated_at timestamp NOT NULL,
   PRIMARY KEY (id)
