@@ -1,6 +1,9 @@
 <% editMode = typeof editMode === 'undefined' ? false : editMode %>
 
 <div class="recommendation-box">
+  <div class="text-center">
+    <img src="/thumbnail/<%= recommendation.recommendation.ThumbnailName %>.png" style="width: 95%" />
+  </div>
   <h1><%= recommendation.recommendation.Title %></h1>
   <p><%= recommendation.recommendation.Content %></p>
   <div class="recommendation-book-list-box">

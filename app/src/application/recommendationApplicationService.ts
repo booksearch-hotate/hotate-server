@@ -60,6 +60,7 @@ export default class RecommendationApplicationService {
       title: string,
       content: string,
       sortIndex: number,
+      thumbnailName: string,
       isSolid: boolean,
       bookIds: string[],
       bookComments: string[],
@@ -85,6 +86,7 @@ export default class RecommendationApplicationService {
     recommendation.changeSortIndex(sortIndex);
     recommendation.changeIsSolid(isSolid);
     recommendation.replaceItems(items);
+    recommendation.changeThumbnailName(thumbnailName);
 
     await this.recommendationRepository.update(recommendation);
   }

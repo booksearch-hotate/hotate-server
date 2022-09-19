@@ -102,11 +102,22 @@ recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Resp
 
     const maxSortIndex = await recommendationApplicationService.findMaxIndex();
 
+    const thumbnailList = recommendationApplicationService.fetchAllthumbnailName();
+
+    const defaultThumbnailList: string[] = [];
+    thumbnailList.forEach((thumbnail) => {
+      if (new RegExp(defaultThumbnailReg, 'g').test(thumbnail)) {
+        defaultThumbnailList.push(thumbnail);
+      }
+    });
+
     pageData.headTitle = 'セクションの編集';
     pageData.anyData = {
       recommendation,
       maxSortIndex,
       items,
+      thumbnailList,
+      defaultThumbnailList,
     };
     pageData.csrfToken = req.csrfToken();
     res.render('pages/admin/recommendation/edit', {pageData});
@@ -122,6 +133,7 @@ recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: R
 
     const title = req.body.title;
     const content = req.body.content;
+    const thumbnailName = req.body.thumbnailName;
     const formSortIndex = Number(req.body.sortIndex);
     const bookIds = req.body.books === undefined ? [] : req.body.books;
     const bookComments = req.body.bookComments === undefined ? [] : req.body.bookComments;
@@ -142,7 +154,16 @@ recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: R
 
     const sortIndex = allCount - (formSortIndex - 1);
 
-    await recommendationApplicationService.update(recommendationId, title, content, sortIndex, isSolid, bookIds, bookComments);
+    await recommendationApplicationService.update(
+        recommendationId,
+        title,
+        content,
+        sortIndex,
+        thumbnailName,
+        isSolid,
+        bookIds,
+        bookComments,
+    );
 
     req.session.status = {type: 'Success', mes: '投稿の変更に成功しました。'};
     logger.info('Posting is updated.');
