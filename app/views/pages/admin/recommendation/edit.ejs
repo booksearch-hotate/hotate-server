@@ -101,6 +101,9 @@
     <div class="text-center">
       <a href="/admin/recommendation">戻る</a>
     </div>
+
+    <%- include('./../../../components/state-alert', {pageData}) %>
+
     <%- include('./../../../components/input-js') %>
     <script src="<%= pageData.origin %>/js/editRecommendation.js"></script>
     <script src="/js/sendThumbnailFile.js"></script>
