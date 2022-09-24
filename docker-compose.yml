@@ -12,6 +12,7 @@ services:
       - ./app/public:/public/
       - ./app/log/:/log/
       - ./app/settings/:/settings/
+      - ./app/.env:/.env
     depends_on:
       mysql:
         condition: service_healthy
