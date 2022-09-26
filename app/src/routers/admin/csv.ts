@@ -103,6 +103,7 @@ csvRouter.post('/sendFile', csrfProtection, upload.single('csv'), async (req, re
 /* csvファイルからDBへ登録する作業 */
 csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response) => {
   try {
+    logger.trace('getting csv file.');
     const csv = await csvFile.getFileContent(); // csvファイルの内容を取得
     if (csvFile.File !== undefined) res.redirect('/admin/csv/loading');
     else res.redirect('/admin/csv/choice');
@@ -115,6 +116,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
       },
     });
 
+    logger.trace('start to input books data.');
 
     const startTimer = performance.now();
 
@@ -162,6 +164,8 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
 
     await Promise.all(booksPromise);
 
+    logger.trace('starting send bulk api.');
+
     /* bulk apiの実行 */
     const bulkApis = [
       bookApplicationService.executeBulkApi(),
@@ -180,7 +184,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
     });
     const endTimer = performance.now();
 
-    logger.debug(`CSVファイルの読み込みに ${endTimer - startTimer}ms で終了しました。`);
+    logger.trace(`It took ${endTimer - startTimer}ms to register the csv file.`);
   } catch (e) {
     logger.error(e as string);
 
