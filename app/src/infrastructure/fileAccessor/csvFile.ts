@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import csv from 'csvtojson';
-import {DomainInvalidError} from '../../presentation/error';
+import {DomainInvalidError, InvalidDataTypeError} from '../../presentation/error';
 
 export default class CsvFile {
   private file!: Express.Multer.File;
