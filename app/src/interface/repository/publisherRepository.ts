@@ -42,7 +42,6 @@ export default class PublisherRepository implements IPublisherRepository {
 
   public async findByName(name: string | null): Promise<Publisher | null> {
     const publisher = await this.db.Publisher.findOne({
-      attributes: ['id'],
       where: {name},
     });
     if (publisher) return new Publisher(publisher.id, publisher.name);

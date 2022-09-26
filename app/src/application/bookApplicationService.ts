@@ -11,14 +11,11 @@ import searchMode from '../routers/datas/searchModeType';
 
 import {getImgLink} from '../infrastructure/api/openbd';
 
-import Logger from '../infrastructure/logger/logger';
 import BookId from '../domain/model/book/bookId';
 import PaginationMargin from '../domain/model/pagination/paginationMargin';
 import {IAuthorRepository} from '../domain/model/author/IAuthorRepository';
 import searchCategory from '../routers/datas/searchCategoryType';
 import {IPublisherRepository} from '../domain/model/publisher/IPublisherRepository';
-
-const logger = new Logger('bookApplicationService');
 
 export default class BookApplicationService {
   private readonly bookRepository: IBookRepository;
@@ -67,25 +64,21 @@ export default class BookApplicationService {
   ): Promise<void> {
     const author = new Author(authorId, authorName);
     const publisher = new Publisher(publisherId, publisherName);
-    try {
-      const book = new Book(
-          this.bookService.createUUID(),
-          bookName,
-          subName === undefined ? null : subName,
-          content === undefined ? null : content,
-          isbn === undefined ? null : isbn,
-          ndc === undefined ? null : ndc,
-          year === undefined ? null : year,
-          author,
-          publisher,
-          [],
-      );
-      await this.bookRepository.save(book);
+    const book = new Book(
+        this.bookService.createUUID(),
+        bookName,
+        subName === undefined ? null : subName,
+        content === undefined ? null : content,
+        isbn === undefined ? null : isbn,
+        ndc === undefined ? null : ndc,
+        year === undefined ? null : year,
+        author,
+        publisher,
+        [],
+    );
+    await this.bookRepository.save(book);
 
-      if (isBulk === false) await this.bookRepository.executeBulkApi();
-    } catch (e: any) {
-      logger.error(e);
-    }
+    if (isBulk === false) await this.bookRepository.executeBulkApi();
   }
 
   /**
