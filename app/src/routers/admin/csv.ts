@@ -127,6 +127,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
     for (let i = 0; i < csvLengh; i++) {
       const row = csv[i];
 
+      const bookName = row[req.body.bookName];
       const authorName = row[req.body.authorName];
       const publisherName = row[req.body.publisherName];
 
@@ -137,7 +138,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
       for (const item in req.body) if (req.body[item] === undefined) req.body[item] = null;
 
       booksPromise.push(bookApplicationService.createBook(
-          row[req.body.bookName],
+          bookName,
           row[req.body.bookSubName],
           row[req.body.bookContent],
           row[req.body.isbn],
@@ -148,7 +149,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
           publisherId,
           publisherName,
       ).catch((e: any) => {
-        logger.error(`Failed to add book.  bookName: ${row[req.body.bookName]}`);
+        logger.error(`Failed to add book.  bookName: ${bookName}`);
       }));
 
       if (i % 50 == 0) { // 50件ごとにブロードキャスト
@@ -159,6 +160,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
             total: csvLengh,
           },
         });
+        logger.trace(`${i / csvLengh}% complete`);
       }
     }
 
