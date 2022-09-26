@@ -2,7 +2,7 @@ import {DomainInvalidError} from '../../../presentation/error';
 
 export default class Author {
   private id: string;
-  private name!: string | null;
+  private name: string | null;
 
   private readonly MAX_NAME_LEN = 200;
 
