@@ -19,6 +19,10 @@ export default class Logger {
     this.logger = log4js.getLogger(name);
   }
 
+  public trace(message: string) {
+    this.logger.trace(message);
+  }
+
   public info(message: string) {
     this.logger.info(message);
   }
