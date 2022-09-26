@@ -24,6 +24,7 @@ import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 
 import {IPage} from '../datas/IPage';
+import {DomainInvalidError} from '../../presentation/error';
 
 
 // eslint-disable-next-line new-cap
@@ -188,7 +189,8 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
 
     logger.trace(`It took ${endTimer - startTimer}ms to register the csv file.`);
   } catch (e) {
-    logger.error(e as string);
+    if (e instanceof DomainInvalidError) logger.error(e.message);
+    else logger.error(e as string);
 
     broadcast({
       progress: 'error',
