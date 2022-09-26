@@ -24,6 +24,7 @@ import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 
 import {IPage} from '../datas/IPage';
+import {DomainInvalidError} from '../../presentation/error';
 
 
 // eslint-disable-next-line new-cap
@@ -103,6 +104,7 @@ csvRouter.post('/sendFile', csrfProtection, upload.single('csv'), async (req, re
 /* csvファイルからDBへ登録する作業 */
 csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response) => {
   try {
+    logger.trace('getting csv file.');
     const csv = await csvFile.getFileContent(); // csvファイルの内容を取得
     if (csvFile.File !== undefined) res.redirect('/admin/csv/loading');
     else res.redirect('/admin/csv/choice');
@@ -115,6 +117,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
       },
     });
 
+    logger.trace('start to input books data.');
 
     const startTimer = performance.now();
 
@@ -125,6 +128,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
     for (let i = 0; i < csvLengh; i++) {
       const row = csv[i];
 
+      const bookName = row[req.body.bookName];
       const authorName = row[req.body.authorName];
       const publisherName = row[req.body.publisherName];
 
@@ -135,7 +139,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
       for (const item in req.body) if (req.body[item] === undefined) req.body[item] = null;
 
       booksPromise.push(bookApplicationService.createBook(
-          row[req.body.bookName],
+          bookName,
           row[req.body.bookSubName],
           row[req.body.bookContent],
           row[req.body.isbn],
@@ -146,7 +150,7 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
           publisherId,
           publisherName,
       ).catch((e: any) => {
-        logger.error(`Failed to add book.  bookName: ${row[req.body.bookName]}`);
+        logger.error(`Failed to add book.  bookName: ${bookName}`);
       }));
 
       if (i % 50 == 0) { // 50件ごとにブロードキャスト
@@ -157,10 +161,13 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
             total: csvLengh,
           },
         });
+        logger.trace(`${i / csvLengh}% complete`);
       }
     }
 
     await Promise.all(booksPromise);
+
+    logger.trace('starting send bulk api.');
 
     /* bulk apiの実行 */
     const bulkApis = [
@@ -180,9 +187,10 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
     });
     const endTimer = performance.now();
 
-    logger.debug(`CSVファイルの読み込みに ${endTimer - startTimer}ms で終了しました。`);
+    logger.trace(`It took ${endTimer - startTimer}ms to register the csv file.`);
   } catch (e) {
-    logger.error(e as string);
+    if (e instanceof DomainInvalidError) logger.error(e.message);
+    else logger.error(e as string);
 
     broadcast({
       progress: 'error',

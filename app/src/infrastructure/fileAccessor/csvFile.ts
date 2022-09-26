@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import csv from 'csvtojson';
-import {DomainInvalidError} from '../../presentation/error';
+import {DomainInvalidError, InvalidDataTypeError} from '../../presentation/error';
 
 export default class CsvFile {
   private file!: Express.Multer.File;
@@ -69,7 +69,7 @@ export default class CsvFile {
 
   set File(file: Express.Multer.File | undefined) {
     if (!file || path.extname(file.originalname) !== '.csv') {
-      throw new DomainInvalidError('unknown file');
+      throw new InvalidDataTypeError('unknown file');
     }
     this.file = file;
   }
