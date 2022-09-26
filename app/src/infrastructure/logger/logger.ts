@@ -10,6 +10,7 @@ export default class Logger {
       appenders: {
         system: {type: 'stdout'}, // 標準出力
         out: {type: 'file', filename: `log/system-${new Date().getFullYear()}-${new Date().getMonth() + 1}.log`}, // ログファイルへの出力
+        wrapErr: {type: 'logLevelFilter', appender: 'out', level: 'info'},
       },
       categories: {
         default: defaultCategories,
