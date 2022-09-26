@@ -41,7 +41,6 @@ export default class AuthorRepository implements IAuthorRepository {
 
   public async findByName(name: string | null): Promise<Author | null> {
     const author = await this.db.Author.findOne({
-      attributes: ['id'],
       where: {name},
     });
     if (author) return new Author(author.id, author.name);
