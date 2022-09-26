@@ -69,7 +69,7 @@ export default class CsvFile {
 
   set File(file: Express.Multer.File | undefined) {
     if (!file || path.extname(file.originalname) !== '.csv') {
-      throw new DomainInvalidError('unknown file');
+      throw new InvalidDataTypeError('unknown file');
     }
     this.file = file;
   }
