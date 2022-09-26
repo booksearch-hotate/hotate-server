@@ -47,7 +47,10 @@ export default class EsCsv extends ElasticSearch {
    * bulk apiを実行します。
    */
   public async executeBulkApi(): Promise<void> {
-    await axios.post(`${this.uri}/_bulk`, fs.readFileSync(this.bulkApiPath), {
+    const file = fs.readFileSync(this.bulkApiPath);
+    const line = file.toString().split('/n').length - 1; // ファイルの行数を取得
+    if (line === 0) return;
+    await axios.post(`${this.uri}/_bulk`, file, {
       headers: {
         'Content-Type': 'application/json',
       },
