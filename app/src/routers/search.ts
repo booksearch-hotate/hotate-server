@@ -99,7 +99,7 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
     paginationData = getPaginationInfo(pageCount, bookRes.count, FETCH_MARGIN, 7);
   }
 
-  pageData.headTitle = '検索結果 | HOTATE';
+  pageData.headTitle = '検索結果 | TREE';
   pageData.anyData = {
     searchRes: resDatas,
     searchHis: searchHisDatas,

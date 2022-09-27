@@ -46,7 +46,7 @@ const schoolGradeInfoApplicationService = new SchoolGradeInfoApplicationService(
 );
 
 requestRouter.get('/request', csrfProtection, async (req: Request, res: Response) => {
-  pageData.headTitle = '本のリクエスト | HOTATE';
+  pageData.headTitle = '本のリクエスト | TREE';
 
   const keepReqObj = typeof req.session.keepValue === 'object' ? req.session.keepValue.keepReqObj : {};
 
@@ -101,7 +101,7 @@ requestRouter.post('/confirm', csrfProtection, async (req: Request, res: Respons
 });
 
 requestRouter.get('/confirm-request', csrfProtection, async (req: Request, res: Response) => {
-  pageData.headTitle = 'リクエスト内容の確認 | HOTATE';
+  pageData.headTitle = 'リクエスト内容の確認 | TREE';
 
   pageData.csrfToken = req.csrfToken();
 
@@ -173,7 +173,7 @@ requestRouter.get('/thanks-request', (req: Request, res: Response) => {
 
   req.session.keepValue = undefined;
 
-  pageData.headTitle = 'リクエスト完了 | HOTATE';
+  pageData.headTitle = 'リクエスト完了 | TREE';
 
   return res.render('pages/thanks-request', {pageData});
 });
