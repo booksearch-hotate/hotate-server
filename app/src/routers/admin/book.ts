@@ -21,8 +21,6 @@ import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 import Logger from '../../infrastructure/logger/logger';
 
-import {IPage} from '../datas/IPage';
-
 import getPaginationInfo from '../../utils/getPaginationInfo';
 import conversionpageCounter from '../../utils/conversionPageCounter';
 import isSameLenAllArray from '../../utils/isSameLenAllArray';
@@ -36,8 +34,6 @@ import {InvalidDataTypeError, NullDataError} from '../../presentation/error';
 
 // eslint-disable-next-line new-cap
 const bookRouter = Router();
-
-const pageData: IPage = {} as IPage;
 
 const csrfProtection = csurf({cookie: false});
 
@@ -82,19 +78,19 @@ bookRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
 
   const paginationData = getPaginationInfo(pageCount, total, FETCH_MARGIN, 10);
 
-  pageData.headTitle = '本の管理';
-  pageData.anyData = {
+  res.pageData.headTitle = '本の管理';
+  res.pageData.anyData = {
     books,
     paginationData,
     bookCount: total,
   };
 
-  pageData.status = conversionpageStatus(req.session.status);
+  res.pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
 
-  pageData.csrfToken = req.csrfToken();
+  res.pageData.csrfToken = req.csrfToken();
 
-  res.render('pages/admin/book/', {pageData});
+  res.render('pages/admin/book/', {pageData: res.pageData});
 });
 
 /* 本の編集画面 */
@@ -105,10 +101,10 @@ bookRouter.get('/edit', csrfProtection, async (req: Request, res: Response) => {
 
   const book = await bookApplicationService.searchBookById(id);
 
-  pageData.headTitle = '本編集';
-  pageData.anyData = {book};
-  pageData.csrfToken = req.csrfToken();
-  return res.render('pages/admin/book/edit', {pageData});
+  res.pageData.headTitle = '本編集';
+  res.pageData.anyData = {book};
+  res.pageData.csrfToken = req.csrfToken();
+  return res.render('pages/admin/book/edit', {pageData: res.pageData});
 });
 
 /* 本の更新処理 */
@@ -180,10 +176,10 @@ bookRouter.get('/add', csrfProtection, (req: Request, res: Response) => {
 
   if (count > 10) count = 10;
 
-  pageData.headTitle = '本の追加';
-  pageData.anyData = {count};
-  pageData.csrfToken = req.csrfToken();
-  res.render('pages/admin/book/add', {pageData});
+  res.pageData.headTitle = '本の追加';
+  res.pageData.anyData = {count};
+  res.pageData.csrfToken = req.csrfToken();
+  res.render('pages/admin/book/add', {pageData: res.pageData});
 });
 
 /* 本の追加処理 */

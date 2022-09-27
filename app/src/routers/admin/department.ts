@@ -1,5 +1,4 @@
 import {Request, Response, Router} from 'express';
-import {IPage} from '../datas/IPage';
 import csurf from 'csurf';
 
 import DepartmentRepository from '../../interface/repository/departmentRepository';
@@ -19,8 +18,6 @@ import {InvalidDataTypeError, NullDataError} from '../../presentation/error';
 // eslint-disable-next-line new-cap
 const departmentRouter = Router();
 
-const pageData: IPage = {} as IPage;
-
 const csrfProtection = csurf({cookie: false});
 
 const logger = new Logger('department');
@@ -36,22 +33,22 @@ const schoolGradeInfoApplicationService = new SchoolGradeInfoApplicationService(
 );
 
 departmentRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
-  pageData.headTitle = '学科名一覧';
+  res.pageData.headTitle = '学科名一覧';
 
-  pageData.anyData = {
+  res.pageData.anyData = {
     departmentList: await departmentApplicationService.findAllDepartment(),
     isMax: await departmentApplicationService.isMax(),
     schoolGradeInfo: await schoolGradeInfoApplicationService.find(),
   };
 
-  pageData.status = conversionpageStatus(req.session.status);
+  res.pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
 
   req.session.keepValue = undefined;
 
-  pageData.csrfToken = req.csrfToken();
+  res.pageData.csrfToken = req.csrfToken();
 
-  res.render('pages/admin/school-info/index', {pageData});
+  res.render('pages/admin/school-info/index', {pageData: res.pageData});
 });
 
 departmentRouter.post('/grade-info/update', csrfProtection, async (req: Request, res: Response) => {
@@ -102,16 +99,16 @@ departmentRouter.get('/confirm-delete', csrfProtection, async (req: Request, res
 
     const bookRequestsHaveId = await departmentApplicationService.findBookRequestById(departmentId);
 
-    pageData.headTitle = '学科名の削除';
+    res.pageData.headTitle = '学科名の削除';
 
-    pageData.anyData = {
+    res.pageData.anyData = {
       department: department,
       bookRequests: bookRequestsHaveId,
     };
 
-    pageData.csrfToken = req.csrfToken();
+    res.pageData.csrfToken = req.csrfToken();
 
-    return res.render('pages/admin/school-info/confirm-delete', {pageData});
+    return res.render('pages/admin/school-info/confirm-delete', {pageData: res.pageData});
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '学科の情報の取得に失敗しました。'};
@@ -142,20 +139,20 @@ departmentRouter.get('/edit', csrfProtection, async (req: Request, res: Response
 
     if (fetchData === null) throw new NullDataError('id does not exist in DB.');
 
-    pageData.headTitle = '学科名の編集';
+    res.pageData.headTitle = '学科名の編集';
 
-    pageData.anyData = {
+    res.pageData.anyData = {
       department: fetchData,
     };
 
-    pageData.csrfToken = req.csrfToken();
+    res.pageData.csrfToken = req.csrfToken();
 
-    pageData.status = conversionpageStatus(req.session.status);
+    res.pageData.status = conversionpageStatus(req.session.status);
     req.session.status = undefined;
 
     req.session.keepValue = id;
 
-    res.render('pages/admin/school-info/edit', {pageData});
+    res.render('pages/admin/school-info/edit', {pageData: res.pageData});
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: '編集に必要な情報が正常に取得できませんでした。'};

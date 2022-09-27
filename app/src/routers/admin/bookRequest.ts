@@ -1,5 +1,4 @@
 import {Request, Response, Router} from 'express';
-import {IPage} from '../datas/IPage';
 import csurf from 'csurf';
 
 import BookRequestApplicationService from '../../application/bookRequestApplicationService';
@@ -18,8 +17,6 @@ import {InvalidDataTypeError, NullDataError} from '../../presentation/error';
 // eslint-disable-next-line new-cap
 const bookRequestRouter = Router();
 
-const pageData: IPage = {} as IPage;
-
 const csrfProtection = csurf({cookie: false});
 
 const logger = new Logger('department');
@@ -33,14 +30,14 @@ const requestApplicationService = new BookRequestApplicationService(
 bookRequestRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   const requests = await requestApplicationService.findAll();
 
-  pageData.headTitle = '本のリクエスト画面の詳細 | TREE';
-  pageData.csrfToken = req.csrfToken();
-  pageData.anyData = {requests};
+  res.pageData.headTitle = '本のリクエスト画面の詳細 | TREE';
+  res.pageData.csrfToken = req.csrfToken();
+  res.pageData.anyData = {requests};
 
-  pageData.status = conversionpageStatus(req.session.status);
+  res.pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
 
-  res.render('pages/admin/book-request/index', {pageData});
+  res.render('pages/admin/book-request/index', {pageData: res.pageData});
 });
 
 bookRequestRouter.get('/detail', async (req: Request, res: Response) => {
@@ -53,10 +50,10 @@ bookRequestRouter.get('/detail', async (req: Request, res: Response) => {
 
     if (requestData === null) throw new NullDataError('Request data did not exist.');
 
-    pageData.headTitle = '本リクエストの詳細 | TREE';
-    pageData.anyData = {request: requestData};
+    res.pageData.headTitle = '本リクエストの詳細 | TREE';
+    res.pageData.anyData = {request: requestData};
 
-    res.render('pages/admin/book-request/detail', {pageData});
+    res.render('pages/admin/book-request/detail', {pageData: res.pageData});
   } catch (e: any) {
     logger.error(e);
     req.session.status = {type: 'Failure', error: e, mes: 'リクエスト情報の取得に失敗しました'};
