@@ -34,7 +34,7 @@ import ElasticSearch from '../infrastructure/elasticsearch/elasticsearch';
 
 import esDocuments from '../infrastructure/elasticsearch/documents/documentType';
 import axios from 'axios';
-import GlobalData from '../utils/globalData';
+import SetPageData from '../utils/setPageData';
 
 const COOKIE_MAX_AGE = 60 * 60 * 1000; // 1時間
 
@@ -73,7 +73,7 @@ app.use(limiter);
 
 app.use(csurf({cookie: false}));
 
-app.use(GlobalData);
+app.use(SetPageData);
 
 /* elasticsearchのtemplateを読み込み、適用する処理 */
 const settingTemplate = async () => {
