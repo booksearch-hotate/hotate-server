@@ -18,8 +18,6 @@ import AdminSession from '../presentation/session';
 
 import BookData from '../domain/model/book/bookData';
 
-import {IPage} from './datas/IPage';
-
 import conversionpageStatus from '../utils/conversionPageStatus';
 import EsAuthor from '../infrastructure/elasticsearch/esAuthor';
 import AuthorRepository from '../interface/repository/authorRepository';
@@ -31,8 +29,6 @@ import {IRecommendationObj} from '../domain/model/recommendation/IRecommendation
 
 // eslint-disable-next-line new-cap
 const bookItemRouter = Router();
-
-
 
 const csrfProtection = csurf({cookie: false});
 

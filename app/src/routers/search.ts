@@ -17,7 +17,6 @@ import EsSearchHistory from '../infrastructure/elasticsearch/esSearchHistory';
 import BookData from '../domain/model/book/bookData';
 import SearchHistoryData from '../domain/model/searchHistory/searchHistoryData';
 
-import {IPage} from './datas/IPage';
 import {IPaginationData} from './datas/IPaginationData';
 
 import searchMode from './datas/searchModeType';
@@ -32,7 +31,6 @@ import PublisherRepository from '../interface/repository/publisherRepository';
 
 // eslint-disable-next-line new-cap
 const searchRouter = Router();
-
 
 
 const csrfProtection = csurf({cookie: false});
