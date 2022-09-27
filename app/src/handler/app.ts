@@ -30,8 +30,6 @@ import Logger from '../infrastructure/logger/logger';
 
 import {isLocal} from '../infrastructure/cli/cmdLine';
 
-import ResStatus from '../presentation/session/status/resStatus';
-
 import ElasticSearch from '../infrastructure/elasticsearch/elasticsearch';
 
 import esDocuments from '../infrastructure/elasticsearch/documents/documentType';
@@ -55,16 +53,6 @@ const limiter = expressRateLimit({
   windowMs: 60 * 1000, // 1分間に
   max: 1000, // 100回まで
 });
-
-// セッションに用いるデータの型を定義
-declare module 'express-session' {
-  // eslint-disable-next-line no-unused-vars
-  interface SessionData {
-    token: string,
-    status: ResStatus,
-    keepValue: any,
-  }
-}
 
 app.use(express.urlencoded({extended: true})); // POSTで送られてきたデータを解析する
 app.use(express.json());
