@@ -13,14 +13,10 @@ import AdminSession from '../presentation/session';
 
 import AdminData from '../domain/model/admin/adminData';
 
-import {IPage} from './datas/IPage';
-
 import conversionpageStatus from '../utils/conversionPageStatus';
 
 // eslint-disable-next-line new-cap
 const loginRouter = Router();
-
-const pageData: IPage = {} as IPage;
 
 const csrfProtection = csurf({cookie: false});
 
@@ -40,26 +36,26 @@ loginRouter.get('/login', csrfProtection, async (req: Request, res: Response) =>
   // もしも管理者が存在してなければ
   if (!await adminApplicationService.isExist()) return res.redirect('/init-admin');
 
-  pageData.headTitle = 'ログイン | TREE';
-  pageData.csrfToken = req.csrfToken();
+  res.pageData.headTitle = 'ログイン | TREE';
+  res.pageData.csrfToken = req.csrfToken();
 
-  pageData.status = conversionpageStatus(req.session.status);
+  res.pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
 
-  return res.render('pages/login', {pageData});
+  return res.render('pages/login', {pageData: res.pageData});
 });
 
 loginRouter.get('/init-admin', csrfProtection, async (req: Request, res: Response) => {
   // もしも管理者が存在していれば
   if (await adminApplicationService.isExist()) return res.redirect('/');
 
-  pageData.headTitle = '管理者の初期設定 | TREE';
-  pageData.csrfToken = req.csrfToken();
+  res.pageData.headTitle = '管理者の初期設定 | TREE';
+  res.pageData.csrfToken = req.csrfToken();
 
-  pageData.status = conversionpageStatus(req.session.status);
+  res.pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
 
-  res.render('pages/init-admin', {pageData});
+  res.render('pages/init-admin', {pageData: res.pageData});
 });
 
 loginRouter.post('/init-admin', csrfProtection, async (req: Request, res: Response) => {

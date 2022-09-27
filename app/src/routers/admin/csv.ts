@@ -23,7 +23,6 @@ import Logger from '../../infrastructure/logger/logger';
 import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 
-import {IPage} from '../datas/IPage';
 import {DomainInvalidError} from '../../presentation/error';
 
 
@@ -33,8 +32,6 @@ const csvRouter = Router();
 const csvFile = new CsvFile();
 
 const upload = multer({dest: './uploads/csv/'}); // multerの設定
-
-const pageData: IPage = {} as IPage;
 
 const csrfProtection = csurf({cookie: false});
 
@@ -59,20 +56,20 @@ const publisherApplicationService = new PublisherApplicationService(
 
 /* csvファイル選択画面 */
 csvRouter.get('/choice', csrfProtection, (req: Request, res: Response) => {
-  pageData.headTitle = 'CSVファイル選択';
-  pageData.csrfToken = req.csrfToken();
+  res.pageData.headTitle = 'CSVファイル選択';
+  res.pageData.csrfToken = req.csrfToken();
 
-  res.render('pages/admin/csv/choice', {pageData});
+  res.render('pages/admin/csv/choice', {pageData: res.pageData});
 });
 
 /* csvファイルのヘッダを選択する画面 */
 csvRouter.get('/headerChoice', csrfProtection, async (req: Request, res: Response) => {
   try {
-    pageData.anyData = {csvHeader: await csvFile.getHeaderNames()};
-    pageData.headTitle = 'CSVファイルヘッダー選択';
-    pageData.csrfToken = req.csrfToken();
+    res.pageData.anyData = {csvHeader: await csvFile.getHeaderNames()};
+    res.pageData.headTitle = 'CSVファイルヘッダー選択';
+    res.pageData.csrfToken = req.csrfToken();
 
-    res.render('pages/admin/csv/headerChoice', {pageData});
+    res.render('pages/admin/csv/headerChoice', {pageData: res.pageData});
   } catch (e) {
     res.redirect('/admin/csv/choice');
   }
@@ -82,9 +79,9 @@ csvRouter.get('/headerChoice', csrfProtection, async (req: Request, res: Respons
 csvRouter.get('/loading', (req: Request, res: Response) => {
   if (!csvFile.isExistFile()) return res.redirect('/admin/');
 
-  pageData.headTitle = '読み込み中...';
+  res.pageData.headTitle = '読み込み中...';
 
-  return res.render('pages/admin/csv/loading', {pageData});
+  return res.render('pages/admin/csv/loading', {pageData: res.pageData});
 });
 
 /* csvファイルの受け取り */
