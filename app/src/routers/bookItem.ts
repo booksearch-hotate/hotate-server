@@ -89,7 +89,7 @@ bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Re
       };
     }
 
-    res.pageData.headTitle = `${bookData.BookName} | TREE`;
+    res.pageData.headTitle = `${bookData.BookName} `;
     res.pageData.anyData = {bookData, isError: false, isLogin, nearCategoryBookDatas, recommendation};
 
     res.pageData.csrfToken = req.csrfToken();

@@ -64,7 +64,7 @@ homeRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
       recommendations: [],
     };
   } finally {
-    res.pageData.headTitle = 'ホーム | TREE';
+    res.pageData.headTitle = 'ホーム';
 
     res.pageData.status = conversionpageStatus(req.session.status);
     req.session.status = undefined;

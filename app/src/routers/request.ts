@@ -43,7 +43,7 @@ const schoolGradeInfoApplicationService = new SchoolGradeInfoApplicationService(
 );
 
 requestRouter.get('/request', csrfProtection, async (req: Request, res: Response) => {
-  res.pageData.headTitle = '本のリクエスト | TREE';
+  res.pageData.headTitle = '本のリクエスト ';
 
   const keepReqObj = typeof req.session.keepValue === 'object' ? req.session.keepValue.keepReqObj : {};
 
@@ -98,7 +98,7 @@ requestRouter.post('/confirm', csrfProtection, async (req: Request, res: Respons
 });
 
 requestRouter.get('/confirm-request', csrfProtection, async (req: Request, res: Response) => {
-  res.pageData.headTitle = 'リクエスト内容の確認 | TREE';
+  res.pageData.headTitle = 'リクエスト内容の確認 ';
 
   res.pageData.csrfToken = req.csrfToken();
 
@@ -170,7 +170,7 @@ requestRouter.get('/thanks-request', (req: Request, res: Response) => {
 
   req.session.keepValue = undefined;
 
-  res.pageData.headTitle = 'リクエスト完了 | TREE';
+  res.pageData.headTitle = 'リクエスト完了 ';
 
   return res.render('pages/thanks-request', {pageData: res.pageData});
 });

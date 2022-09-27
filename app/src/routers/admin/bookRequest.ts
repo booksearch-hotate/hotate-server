@@ -30,7 +30,7 @@ const requestApplicationService = new BookRequestApplicationService(
 bookRequestRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   const requests = await requestApplicationService.findAll();
 
-  res.pageData.headTitle = '本のリクエスト画面の詳細 | TREE';
+  res.pageData.headTitle = '本のリクエスト画面の詳細 ';
   res.pageData.csrfToken = req.csrfToken();
   res.pageData.anyData = {requests};
 
@@ -50,7 +50,7 @@ bookRequestRouter.get('/detail', async (req: Request, res: Response) => {
 
     if (requestData === null) throw new NullDataError('Request data did not exist.');
 
-    res.pageData.headTitle = '本リクエストの詳細 | TREE';
+    res.pageData.headTitle = '本リクエストの詳細 ';
     res.pageData.anyData = {request: requestData};
 
     res.render('pages/admin/book-request/detail', {pageData: res.pageData});

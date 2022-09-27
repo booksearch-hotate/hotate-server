@@ -36,7 +36,7 @@ loginRouter.get('/login', csrfProtection, async (req: Request, res: Response) =>
   // もしも管理者が存在してなければ
   if (!await adminApplicationService.isExist()) return res.redirect('/init-admin');
 
-  res.pageData.headTitle = 'ログイン | TREE';
+  res.pageData.headTitle = 'ログイン ';
   res.pageData.csrfToken = req.csrfToken();
 
   res.pageData.status = conversionpageStatus(req.session.status);
@@ -49,7 +49,7 @@ loginRouter.get('/init-admin', csrfProtection, async (req: Request, res: Respons
   // もしも管理者が存在していれば
   if (await adminApplicationService.isExist()) return res.redirect('/');
 
-  res.pageData.headTitle = '管理者の初期設定 | TREE';
+  res.pageData.headTitle = '管理者の初期設定 ';
   res.pageData.csrfToken = req.csrfToken();
 
   res.pageData.status = conversionpageStatus(req.session.status);

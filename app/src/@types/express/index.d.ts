@@ -11,6 +11,7 @@ interface IPage {
   csrfToken: string;
   anyData?: unknown; // その他のデータ
   status?: IPageStatus;
+  serviceName: string;
 }
 
 // eslint-disable-next-line no-unused-vars
