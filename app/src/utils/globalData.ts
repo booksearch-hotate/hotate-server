@@ -5,6 +5,7 @@ export default function GlobalData(req: Request, res: Response, next: NextFuncti
     headTitle: '',
     path: req.path,
     csrfToken: '',
+    serviceName: 'TREE',
   };
   next();
 };
