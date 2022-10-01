@@ -52,12 +52,11 @@ node --enable-source-maps dist/server.js local
 
 ## Elasticsearch、DBの起動方法
 
-elasticsearch、mysql、phpmyadminに関しては通常と同じようにdockerで起動してください。
+elasticsearch、mysqlに関しては通常と同じようにdockerで起動してください。
 
 ```bash
 docker-compose up es // Elasticsearch
 docker-compose up mysql // MySql
-docker-compose up phpmyadmin // phpmyadmin
 ```
 
 ## 環境変数について
@@ -84,7 +83,7 @@ ES_DOCKER_NAME=es
 MYSQL_DOCKER_NAME=mysql
 ```
 
-issue186に対応するために環境変数を追加しました。
+[issue186](https://github.com/booksearch-hotate/hotate-server/issues/186)に対応するために環境変数を追加しました。
 
 ## DBの構造について
 
@@ -93,16 +92,6 @@ issue186に対応するために環境変数を追加しました。
 ## 使用している技術
 
 使用している技術などについては[こちら](./use-tech.md)をご覧ください。
-
-## TODO
-
-- envファイルの作成
-- 一度elasticsearchを起動した後、以下のコマンドを入力する
-
-```bash
-curl -H "Content-Type: application/json" -XPUT localhost:9200/*/_settings -d '{"number_of_replicas":0}'
-{"acknowledged":true}
-```
 
 ## テスト用csvファイルに関して
 
