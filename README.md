@@ -2,7 +2,7 @@
 
 <div align="center">
   
-<img src="DOC/img/Tree-logo.png" alt="logo" width="300px" />
+<img src="DOC/img/tree.png" alt="logo" width="300px" />
 
 [![build](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml)
 [![markdownlint](https://github.com/booksearch-hotate/hotate-server/actions/workflows/markdownlint.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/markdownlint.yml)
