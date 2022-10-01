@@ -18,8 +18,6 @@ import AdminSession from '../presentation/session';
 
 import BookData from '../domain/model/book/bookData';
 
-import {IPage} from './datas/IPage';
-
 import conversionpageStatus from '../utils/conversionPageStatus';
 import EsAuthor from '../infrastructure/elasticsearch/esAuthor';
 import AuthorRepository from '../interface/repository/authorRepository';
@@ -31,8 +29,6 @@ import {IRecommendationObj} from '../domain/model/recommendation/IRecommendation
 
 // eslint-disable-next-line new-cap
 const bookItemRouter = Router();
-
-const pageData: IPage = {} as IPage;
 
 const csrfProtection = csurf({cookie: false});
 
@@ -93,19 +89,19 @@ bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Re
       };
     }
 
-    pageData.headTitle = `${bookData.BookName} | HOTATE`;
-    pageData.anyData = {bookData, isError: false, isLogin, nearCategoryBookDatas, recommendation};
+    res.pageData.headTitle = `${bookData.BookName} `;
+    res.pageData.anyData = {bookData, isError: false, isLogin, nearCategoryBookDatas, recommendation};
 
-    pageData.csrfToken = req.csrfToken();
+    res.pageData.csrfToken = req.csrfToken();
   } catch {
     logger.warn(`Not found bookId: ${id}`);
-    pageData.headTitle = '本が見つかりませんでした。';
-    pageData.anyData = {isError: true};
+    res.pageData.headTitle = '本が見つかりませんでした。';
+    res.pageData.anyData = {isError: true};
   } finally {
-    pageData.status = conversionpageStatus(req.session.status);
+    res.pageData.status = conversionpageStatus(req.session.status);
     req.session.status = undefined;
 
-    res.render('pages/item', {pageData});
+    res.render('pages/item', {pageData: res.pageData});
   }
 });
 

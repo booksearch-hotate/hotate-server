@@ -1,5 +1,4 @@
 import {Request, Response, Router} from 'express';
-import {IPage} from '../datas/IPage';
 import csurf from 'csurf';
 
 import Logger from '../../infrastructure/logger/logger';
@@ -29,8 +28,6 @@ import {defaultThumbnailReg} from '../datas/defaultThumbnailReg';
 
 // eslint-disable-next-line new-cap
 const recommendationRouter = Router();
-
-const pageData: IPage = {} as IPage;
 
 const csrfProtection = csurf({cookie: false});
 
@@ -68,20 +65,20 @@ recommendationRouter.get('/', csrfProtection, async (req: Request, res: Response
 
   const paginationData = getPaginationInfo(pageCount, total, fetchMargin, 10);
 
-  pageData.status = conversionpageStatus(req.session.status);
+  res.pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
 
   req.session.keepValue = undefined;
 
-  pageData.headTitle = 'おすすめセクション一覧';
-  pageData.anyData = {
+  res.pageData.headTitle = 'おすすめセクション一覧';
+  res.pageData.anyData = {
     recommendations,
     paginationData,
   };
 
-  pageData.csrfToken = req.csrfToken();
+  res.pageData.csrfToken = req.csrfToken();
 
-  res.render('pages/admin/recommendation/', {pageData});
+  res.render('pages/admin/recommendation/', {pageData: res.pageData});
 });
 
 recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Response) => {
@@ -111,8 +108,8 @@ recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Resp
       }
     });
 
-    pageData.headTitle = 'セクションの編集';
-    pageData.anyData = {
+    res.pageData.headTitle = 'セクションの編集';
+    res.pageData.anyData = {
       recommendation,
       maxSortIndex,
       items,
@@ -120,12 +117,12 @@ recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Resp
       defaultThumbnailList,
     };
 
-    pageData.csrfToken = req.csrfToken();
+    res.pageData.csrfToken = req.csrfToken();
 
-    pageData.status = conversionpageStatus(req.session.status);
+    res.pageData.status = conversionpageStatus(req.session.status);
     req.session.status = undefined;
 
-    res.render('pages/admin/recommendation/edit', {pageData});
+    res.render('pages/admin/recommendation/edit', {pageData: res.pageData});
   } catch (e: any) {
     logger.error(e);
     res.redirect('/admin/recommendation/');
@@ -183,7 +180,7 @@ recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: R
 });
 
 recommendationRouter.get('/add', csrfProtection, (req: Request, res: Response) => {
-  pageData.headTitle = 'セクションの追加';
+  res.pageData.headTitle = 'セクションの追加';
   const thumbnailList = recommendationApplicationService.fetchAllthumbnailName();
 
   const defaultThumbnailList: string[] = [];
@@ -192,17 +189,17 @@ recommendationRouter.get('/add', csrfProtection, (req: Request, res: Response) =
       defaultThumbnailList.push(thumbnail);
     }
   });
-  pageData.anyData = {
+  res.pageData.anyData = {
     thumbnailList,
     defaultThumbnailList,
   };
 
-  pageData.csrfToken = req.csrfToken();
+  res.pageData.csrfToken = req.csrfToken();
 
-  pageData.status = conversionpageStatus(req.session.status);
+  res.pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
 
-  res.render('pages/admin/recommendation/add', {pageData});
+  res.render('pages/admin/recommendation/add', {pageData: res.pageData});
 });
 
 recommendationRouter.post('/insert', csrfProtection, async (req: Request, res: Response) => {

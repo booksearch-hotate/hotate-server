@@ -7,7 +7,6 @@ import RecommendationRepository from '../interface/repository/recommendationRepo
 
 import Logger from '../infrastructure/logger/logger';
 
-import {IPage} from './datas/IPage';
 import BookApplicationService from '../application/bookApplicationService';
 import BookRepository from '../interface/repository/bookRepository';
 import EsSearchBook from '../infrastructure/elasticsearch/esBook';
@@ -22,8 +21,6 @@ import conversionpageStatus from '../utils/conversionPageStatus';
 
 // eslint-disable-next-line new-cap
 const homeRouter = Router();
-
-const pageData: IPage = {} as IPage;
 
 const logger = new Logger('home');
 
@@ -57,22 +54,22 @@ homeRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
       return item;
     }));
 
-    pageData.anyData = {
+    res.pageData.anyData = {
       recommendations: recommendations === undefined ? [] : recommendations,
     };
-    pageData.csrfToken = req.csrfToken();
+    res.pageData.csrfToken = req.csrfToken();
   } catch (e: any) {
     logger.error(e);
-    pageData.anyData = {
+    res.pageData.anyData = {
       recommendations: [],
     };
   } finally {
-    pageData.headTitle = 'ホーム | HOTATE';
+    res.pageData.headTitle = 'ホーム';
 
-    pageData.status = conversionpageStatus(req.session.status);
+    res.pageData.status = conversionpageStatus(req.session.status);
     req.session.status = undefined;
 
-    res.render('pages/index', {pageData});
+    res.render('pages/index', {pageData: res.pageData});
   }
 });
 

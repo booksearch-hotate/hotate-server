@@ -3,7 +3,6 @@ import csurf from 'csurf';
 
 import Logger from '../../infrastructure/logger/logger';
 
-import {IPage} from '../datas/IPage';
 
 import AdminApplicationService from '../../application/adminApplicationService';
 
@@ -20,8 +19,6 @@ import AdminData from '../../domain/model/admin/adminData';
 // eslint-disable-next-line new-cap
 const settingRouter = Router();
 
-const pageData: IPage = {} as IPage;
-
 const csrfProtection = csurf({cookie: false});
 
 const admin = new AdminSession();
@@ -35,16 +32,16 @@ const adminApplicationService = new AdminApplicationService(
 
 /* タグ管理画面 */
 settingRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
-  pageData.headTitle = '管理者設定画面';
+  res.pageData.headTitle = '管理者設定画面';
 
-  pageData.status = conversionpageStatus(req.session.status);
+  res.pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
 
   req.session.keepValue = undefined;
 
-  pageData.csrfToken = req.csrfToken();
+  res.pageData.csrfToken = req.csrfToken();
 
-  res.render('pages/admin/setting/index', {pageData});
+  res.render('pages/admin/setting/index', {pageData: res.pageData});
 });
 
 settingRouter.post('/update', csrfProtection, async (req: Request, res: Response) => {

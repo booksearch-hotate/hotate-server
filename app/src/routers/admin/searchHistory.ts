@@ -10,7 +10,6 @@ import SearchHistoryRepository from '../../interface/repository/searchHistoryRep
 
 import EsSearchHistory from '../../infrastructure/elasticsearch/esSearchHistory';
 
-import {IPage} from '../datas/IPage';
 
 import getPaginationInfo from '../../utils/getPaginationInfo';
 
@@ -19,7 +18,7 @@ import conversionpageCounter from '../../utils/conversionPageCounter';
 // eslint-disable-next-line new-cap
 const searchHistoryRouter = Router();
 
-const pageData: IPage = {} as IPage;
+
 
 const csrfProtection = csurf({cookie: false});
 
@@ -38,13 +37,13 @@ searchHistoryRouter.get('/', csrfProtection, async (req: Request, res: Response)
 
   const paginationData = getPaginationInfo(pageCount, total, fetchMargin, 5);
 
-  pageData.headTitle = '検索履歴';
-  pageData.anyData = {
+  res.pageData.headTitle = '検索履歴';
+  res.pageData.anyData = {
     searchHistory,
     paginationData,
   };
-  pageData.csrfToken = req.csrfToken();
-  res.render('pages/admin/search-history/index', {pageData});
+  res.pageData.csrfToken = req.csrfToken();
+  res.render('pages/admin/search-history/index', {pageData: res.pageData});
 });
 
 /* 検索履歴削除 */
