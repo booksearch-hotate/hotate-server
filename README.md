@@ -2,10 +2,13 @@
 
 <div align="center">
   
-<img src="DOC/img/Tree-logo.png" alt="logo" width="300px" />
+<img src="DOC/img/tree.png" alt="logo" width="300px" />
 
 [![build](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/build.yml)
 [![markdownlint](https://github.com/booksearch-hotate/hotate-server/actions/workflows/markdownlint.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/markdownlint.yml)
+[![CodeQL](https://github.com/booksearch-hotate/hotate-server/actions/workflows/codeql.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/codeql.yml)
+[![Dependency Review](https://github.com/booksearch-hotate/hotate-server/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/booksearch-hotate/hotate-server/actions/workflows/dependency-review.yml)
+
 ![GitHub repo size](https://img.shields.io/github/repo-size/booksearch-hotate/hotate-server)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/booksearch-hotate/hotate-server/main)
 
