@@ -1,6 +1,5 @@
 import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
-import {IPage} from './datas/IPage';
 
 import {FormInvalidError, NullDataError} from '../presentation/error';
 
@@ -23,8 +22,6 @@ import SchoolYearRepository from '../interface/repository/schoolYearRepository';
 // eslint-disable-next-line new-cap
 const requestRouter = Router();
 
-const pageData: IPage = {} as IPage;
-
 const csrfProtection = csurf({cookie: false});
 
 const logger = new Logger('bookRequest');
@@ -46,7 +43,7 @@ const schoolGradeInfoApplicationService = new SchoolGradeInfoApplicationService(
 );
 
 requestRouter.get('/request', csrfProtection, async (req: Request, res: Response) => {
-  pageData.headTitle = '本のリクエスト | HOTATE';
+  res.pageData.headTitle = '本のリクエスト ';
 
   const keepReqObj = typeof req.session.keepValue === 'object' ? req.session.keepValue.keepReqObj : {};
 
@@ -58,18 +55,18 @@ requestRouter.get('/request', csrfProtection, async (req: Request, res: Response
     return res.redirect('/');
   }
 
-  pageData.anyData = {
+  res.pageData.anyData = {
     departmentList,
     saveVal: keepReqObj,
     schoolGradeInfo: await schoolGradeInfoApplicationService.find(),
   };
 
-  pageData.status = conversionpageStatus(req.session.status);
+  res.pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
 
-  pageData.csrfToken = req.csrfToken();
+  res.pageData.csrfToken = req.csrfToken();
 
-  return res.render('pages/request', {pageData});
+  return res.render('pages/request', {pageData: res.pageData});
 });
 
 requestRouter.post('/confirm', csrfProtection, async (req: Request, res: Response) => {
@@ -101,16 +98,16 @@ requestRouter.post('/confirm', csrfProtection, async (req: Request, res: Respons
 });
 
 requestRouter.get('/confirm-request', csrfProtection, async (req: Request, res: Response) => {
-  pageData.headTitle = 'リクエスト内容の確認 | HOTATE';
+  res.pageData.headTitle = 'リクエスト内容の確認 ';
 
-  pageData.csrfToken = req.csrfToken();
+  res.pageData.csrfToken = req.csrfToken();
 
   try {
     const reqData = await requestApplicationService.makeData(req.session.keepValue);
 
-    pageData.anyData = {request: reqData};
+    res.pageData.anyData = {request: reqData};
 
-    return res.render('pages/confirm-request', {pageData});
+    return res.render('pages/confirm-request', {pageData: res.pageData});
   } catch (e: any) {
     logger.error(e);
 
@@ -173,9 +170,9 @@ requestRouter.get('/thanks-request', (req: Request, res: Response) => {
 
   req.session.keepValue = undefined;
 
-  pageData.headTitle = 'リクエスト完了 | HOTATE';
+  res.pageData.headTitle = 'リクエスト完了 ';
 
-  return res.render('pages/thanks-request', {pageData});
+  return res.render('pages/thanks-request', {pageData: res.pageData});
 });
 
 export default requestRouter;

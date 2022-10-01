@@ -17,7 +17,6 @@ import EsSearchHistory from '../infrastructure/elasticsearch/esSearchHistory';
 import BookData from '../domain/model/book/bookData';
 import SearchHistoryData from '../domain/model/searchHistory/searchHistoryData';
 
-import {IPage} from './datas/IPage';
 import {IPaginationData} from './datas/IPaginationData';
 
 import searchMode from './datas/searchModeType';
@@ -33,7 +32,6 @@ import PublisherRepository from '../interface/repository/publisherRepository';
 // eslint-disable-next-line new-cap
 const searchRouter = Router();
 
-const pageData: IPage = {} as IPage;
 
 const csrfProtection = csurf({cookie: false});
 
@@ -99,8 +97,8 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
     paginationData = getPaginationInfo(pageCount, bookRes.count, FETCH_MARGIN, 7);
   }
 
-  pageData.headTitle = '検索結果 | HOTATE';
-  pageData.anyData = {
+  res.pageData.headTitle = '検索結果 ';
+  res.pageData.anyData = {
     searchRes: resDatas,
     searchHis: searchHisDatas,
     searchWord,
@@ -109,11 +107,11 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
     isTag,
     searchCategory,
   };
-  pageData.csrfToken = req.csrfToken();
+  res.pageData.csrfToken = req.csrfToken();
 
   if (!isStrict && !isTag) searchHistoryApplicationService.add(searchWord);
 
-  res.render('pages/search', {pageData});
+  res.render('pages/search', {pageData: res.pageData});
 });
 
 export default searchRouter;

@@ -30,12 +30,11 @@ import Logger from '../infrastructure/logger/logger';
 
 import {isLocal} from '../infrastructure/cli/cmdLine';
 
-import ResStatus from '../presentation/session/status/resStatus';
-
 import ElasticSearch from '../infrastructure/elasticsearch/elasticsearch';
 
 import esDocuments from '../infrastructure/elasticsearch/documents/documentType';
 import axios from 'axios';
+import SetPageData from '../utils/setPageData';
 
 const COOKIE_MAX_AGE = 60 * 60 * 1000; // 1時間
 
@@ -56,16 +55,6 @@ const limiter = expressRateLimit({
   max: 1000, // 100回まで
 });
 
-// セッションに用いるデータの型を定義
-declare module 'express-session' {
-  // eslint-disable-next-line no-unused-vars
-  interface SessionData {
-    token: string,
-    status: ResStatus,
-    keepValue: any,
-  }
-}
-
 app.use(express.urlencoded({extended: true})); // POSTで送られてきたデータを解析する
 app.use(express.json());
 
@@ -83,6 +72,8 @@ app.use(session({ // lgtm [js/clear-text-cookie]
 app.use(limiter);
 
 app.use(csurf({cookie: false}));
+
+app.use(SetPageData);
 
 /* elasticsearchのtemplateを読み込み、適用する処理 */
 const settingTemplate = async () => {

@@ -13,7 +13,6 @@ import Logger from '../../infrastructure/logger/logger';
 
 import AdminData from '../../domain/model/admin/adminData';
 
-import {IPage} from '../datas/IPage';
 
 import conversionpageStatus from '../../utils/conversionPageStatus';
 
@@ -22,7 +21,7 @@ const adminRouter = Router();
 
 const admin = new AdminSession();
 
-const pageData: IPage = {} as IPage;
+
 
 const csrfProtection = csurf({cookie: false});
 
@@ -52,14 +51,14 @@ adminRouter.use('/', authCheckMiddle);
 
 /* 管理者用ホーム画面 */
 adminRouter.get('/', csrfProtection, (req: Request, res: Response) => {
-  pageData.headTitle = '管理画面';
+  res.pageData.headTitle = '管理画面';
 
-  pageData.csrfToken = req.csrfToken();
+  res.pageData.csrfToken = req.csrfToken();
 
-  pageData.status = conversionpageStatus(req.session.status);
+  res.pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
 
-  res.render('pages/admin/', {pageData});
+  res.render('pages/admin/', {pageData: res.pageData});
 });
 
 adminRouter.post('/logout', (req: Request, res: Response) => {

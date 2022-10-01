@@ -1,5 +1,9 @@
 import ResStatus from '../presentation/session/status/resStatus';
-import {IPageStatus} from '../routers/datas/IPage';
+
+interface IPageStatus {
+  mes: string,
+  buttonType: 'danger' | 'success' | 'warning' | 'info'
+}
 
 export default function conversionpageStatus(status: ResStatus | undefined): IPageStatus | undefined {
   if (status !== undefined) {

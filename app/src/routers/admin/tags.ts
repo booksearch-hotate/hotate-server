@@ -12,12 +12,11 @@ import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 
 import db from '../../infrastructure/db';
 
-import {IPage} from '../datas/IPage';
 
 // eslint-disable-next-line new-cap
 const tagsRouter = Router();
 
-const pageData: IPage = {} as IPage;
+
 
 const csrfProtection = csurf({cookie: false});
 
@@ -31,10 +30,10 @@ const tagApplicationService = new TagApplicationService(
 tagsRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   const tags = await tagApplicationService.findAll();
 
-  pageData.headTitle = 'タグ管理';
-  pageData.anyData = {tags};
-  pageData.csrfToken = req.csrfToken();
-  res.render('pages/admin/tags/index', {pageData});
+  res.pageData.headTitle = 'タグ管理';
+  res.pageData.anyData = {tags};
+  res.pageData.csrfToken = req.csrfToken();
+  res.render('pages/admin/tags/index', {pageData: res.pageData});
 });
 
 /* タグの削除 */
@@ -53,10 +52,10 @@ tagsRouter.get('/edit', csrfProtection, async (req: Request, res: Response) => {
 
   const tag = await tagApplicationService.findById(id);
 
-  pageData.headTitle = 'タグ編集';
-  pageData.anyData = {tag};
-  pageData.csrfToken = req.csrfToken();
-  res.render('pages/admin/tags/edit', {pageData});
+  res.pageData.headTitle = 'タグ編集';
+  res.pageData.anyData = {tag};
+  res.pageData.csrfToken = req.csrfToken();
+  res.render('pages/admin/tags/edit', {pageData: res.pageData});
 });
 
 /* タグの編集処理 */
