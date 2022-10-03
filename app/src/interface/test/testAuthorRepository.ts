@@ -64,7 +64,7 @@ export default class TestAuthorRepository implements IAuthorRepository {
 
   /** 疑似的にlike検索を使用 */
   async search(name: string): Promise<Author[]> {
-    const fetchData = this.authorCollection.find({author_name: {$regex: name}});
+    const fetchData = this.authorCollection.find({name: {$regex: name}});
 
     const authors: Author[] = [];
 
@@ -78,7 +78,7 @@ export default class TestAuthorRepository implements IAuthorRepository {
 
   /** 疑似的に完全一致検索を使用 */
   async searchUsingLike(name: string): Promise<Author[]> {
-    const fetchData = this.authorCollection.find({author_name: name});
+    const fetchData = this.authorCollection.find({name});
 
     const authors: Author[] = [];
 
