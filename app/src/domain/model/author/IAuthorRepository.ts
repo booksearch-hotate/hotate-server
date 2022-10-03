@@ -5,7 +5,7 @@ export interface IAuthorRepository {
   findByName (name: string | null): Promise<Author | null>
   deleteAll (): Promise<void>
   executeBulkApi (): Promise<void>
-  findById(bookId: string): Promise<Author>
+  findById(authorId: string): Promise<Author>
   deleteNoUsed(authorId: string): Promise<void>
   update(author: Author): Promise<void>
   search(name: string): Promise<Author[]>
