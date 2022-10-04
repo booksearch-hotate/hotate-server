@@ -8,6 +8,9 @@ import {IEsBook} from './documents/IEsBook';
 import {IEsPublisher} from './documents/IEsPublisher';
 
 import esDocuments from './documents/documentType';
+import Logger from '../logger/logger';
+
+const logger = new Logger('ElasticsearchBulkApiByCsv');
 
 /**
  * csvファイルからbulk apiを作成する関係のクラスです。
