@@ -7,7 +7,7 @@ import {bookRequestCollectionName, requestDocument} from '../../infrastructure/i
 
 const collectionName = bookRequestCollectionName;
 
-export default class TestRequestRepository implements IBookRequestRepository {
+export default class InMemoryRequestRepository implements IBookRequestRepository {
   db: Db;
 
   constructor(db: Db) {

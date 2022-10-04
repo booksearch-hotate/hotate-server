@@ -1,7 +1,7 @@
 import BookRequestApplicationService from '../../src/application/bookRequestApplicationService';
 import DepartmentApplicationService from '../../src/application/departmentApplicationService';
-import TestRequestRepository from '../../src/interface/test/testRequestRepository';
-import TestDepartmentRepository from '../../src/interface/test/testDepartmentRepository';
+import InMemoryRequestRepository from '../../src/interface/test/testRequestRepository';
+import InMemoryDepartmentRepository from '../../src/interface/test/testDepartmentRepository';
 import InMemoryDb from '../../src/infrastructure/inMemory/index';
 import BookRequestService from '../../src/domain/service/bookRequestService';
 import DepartmentService from '../../src/domain/service/departmentService';
@@ -16,15 +16,15 @@ describe('Access book request', () => {
     await inMemoryDb.init();
 
     bookRequestApplicationService = new BookRequestApplicationService(
-        new TestRequestRepository(inMemoryDb.db()),
-        new TestDepartmentRepository(inMemoryDb.db()),
+        new InMemoryRequestRepository(inMemoryDb.db()),
+        new InMemoryDepartmentRepository(inMemoryDb.db()),
         new BookRequestService(),
     );
 
     departmentApplicationService = new DepartmentApplicationService(
-        new TestDepartmentRepository(inMemoryDb.db()),
-        new TestRequestRepository(inMemoryDb.db()),
-        new DepartmentService(new TestDepartmentRepository(inMemoryDb.db())),
+        new InMemoryDepartmentRepository(inMemoryDb.db()),
+        new InMemoryRequestRepository(inMemoryDb.db()),
+        new DepartmentService(new InMemoryDepartmentRepository(inMemoryDb.db())),
     );
   });
 
