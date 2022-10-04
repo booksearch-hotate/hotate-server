@@ -285,7 +285,7 @@ export default class InMemoryBookRepository implements IBookRepository {
   }
 
   async searchByForeignId(foreignModel: Author[] | Publisher[], pageCount: number, margin: PaginationMargin): Promise<{ books: Book[]; count: number; }> {
-    if (foreignModel === []) return {books: [], count: 0};
+    if (foreignModel.length === 0) return {books: [], count: 0};
 
     let bookDatas: bookDocument[] = [];
     let count = 0;
