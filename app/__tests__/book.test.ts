@@ -105,7 +105,7 @@ describe('Access book request', () => {
     expect(book.books[0].PublisherName).toBe(mockData.publisherName);
   });
 
-  it('add new tags with the book before adding, then fetch it', async () => {
+  it('Add new tags to the book just added, then fetch them.', async () => {
     const addRes = await Promise.all(mockData.tags.map(async (tagName) => await tagApplicationService.create(tagName, mockData.book.id)));
 
     expect(addRes).toStrictEqual([false, false, true]);
