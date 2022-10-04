@@ -6,7 +6,7 @@ import {tagCollectionName, tagDocument} from '../../infrastructure/inMemory/coll
 import {usingTagCollectionName, usingTagDocument} from '../../infrastructure/inMemory/collections/usingTag';
 import {InMemoryDBError} from '../../presentation/error/infrastructure';
 
-export default class TestTagRepository implements ITagRepository {
+export default class InMemoryTagRepository implements ITagRepository {
   db: Db;
   tagCollection;
   usingTagCollection;

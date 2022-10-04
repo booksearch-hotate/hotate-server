@@ -14,7 +14,7 @@ import {tagCollectionName, tagDocument} from '../../infrastructure/inMemory/coll
 import {usingTagCollectionName, usingTagDocument} from '../../infrastructure/inMemory/collections/usingTag';
 import {InMemoryDBError} from '../../presentation/error/infrastructure';
 
-export default class TestBookRepository implements IBookRepository {
+export default class InMemoryBookRepository implements IBookRepository {
   db: Db;
   bookCollection;
   authorCollection;

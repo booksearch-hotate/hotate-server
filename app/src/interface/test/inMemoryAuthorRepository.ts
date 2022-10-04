@@ -5,7 +5,7 @@ import {authorCollectionName, authorDocument} from '../../infrastructure/inMemor
 import {bookCollectionName, bookDocument} from '../../infrastructure/inMemory/collections/book';
 import {InMemoryDBError} from '../../presentation/error/infrastructure';
 
-export default class TestAuthorRepository implements IAuthorRepository {
+export default class InMemoryAuthorRepository implements IAuthorRepository {
   db: Db;
   authorCollection;
   bookCollection;

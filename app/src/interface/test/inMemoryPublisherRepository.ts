@@ -5,7 +5,7 @@ import {bookCollectionName, bookDocument} from '../../infrastructure/inMemory/co
 import {publisherCollectionName, publisherDocument} from '../../infrastructure/inMemory/collections/publisher';
 import {InMemoryDBError} from '../../presentation/error/infrastructure';
 
-export default class TestPublisherRepository implements IPublisherRepository {
+export default class InMemoryPublisherRepository implements IPublisherRepository {
   db: Db;
   publisherCollection;
   bookCollection;
