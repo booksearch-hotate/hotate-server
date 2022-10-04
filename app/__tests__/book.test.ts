@@ -39,7 +39,7 @@ describe('Access book request', () => {
     );
   });
 
-  it('add new book', async () => {
+  it('add new book with new author and new publisher, then find it.', async () => {
     const mockData = {
       authorName: 'test Author',
       publisherName: 'test Publisher',
