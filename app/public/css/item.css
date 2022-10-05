@@ -1,40 +1,112 @@
-.book-content h4 {
-  color: #777;
+html {
+  height: 100%;
 }
-
-.recommend-other-books-title {
-  text-align: center;
-  border-bottom: 2px solid rgb(104, 55, 29);
-  margin: 20px auto;
+body {
+  height: 100%;
 }
-
-.near-category-books {
-  height: 50%;
+.height {
+  background-color: #FBF6F0;
+  height: 100%;
 }
-
-.near-category-books-list {
-  height: 50vh;
-  overflow: hidden;
+main {
+  background-color: #ffffff;
+  margin-top: 40px;
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-bottom: 40px;
 }
-
-.near-category-books-list-box {
-  position: relative;
+.item-title {
+  font-size: 2.3rem;
+  padding-top: 10px;
+  padding-left: 30px;
 }
-
-.near-category-detail-box {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: linear-gradient(rgba(0, 0, 0, 0), 30%, white);
-  text-align: center;
+.item-syousai img {
+width: 300px;
+padding-left: 25px;
+margin-bottom: 40px;
 }
+.item-syousai {
+display: flex;
+}
+.item-text {
+padding-left: 30px;
+padding-right: 20px;
+}
+.item-writer {
+font-size: 23px;
+}
+.arasuzi {
+font-size: 18px;
+padding-top: 10px;
+margin-bottom: 5px;
+}
+.arasuzi-p {
+font-size: 15px;
+max-width: 90%;
+}
+.tagu {
+display: flex;
+margin-left: 10px;
+padding-top: 10px;
+padding-left: 5px;
+padding-bottom: 10px;
+}
+.tagu-flex {
+display: flex;
+position: relative;
+margin-top: 30px;
+margin-left: 20px;
+width: 50%;
+background: #b4d8e4;
+border-radius: .4em;
+}
+.tagu-flex:after {
+content: '';
+position: absolute;
+left: 0;
+top: 50%;
+width: 0;
+height: 0;
+border: 8px solid transparent;
+border-right-color: #b4d8e4;
+border-left: 0;
+margin-top: -9px;
+margin-left: -7px;
+}  
+aside {
+background-color: #ffffff;
+margin-left: 40px;
+  margin-right: 40px;
+  margin-bottom: 40px;
+}
+.osusume-title {
+font-size: 1.5rem;
+padding-top: 20px;
+margin-left: 40px;
+margin-bottom: 15px;
+}
+.osusume-flex {
+display: flex;
+justify-content: space-between;
 
-.near-category-detail-box p {
-  text-align: center;
-  font-size: 1.6rem;
-  margin: 0;
-  color: #666;
-  cursor: pointer;
-  display: inline;
+}
+.osusume-book {
+display: flex;
+padding-left: 30px;
+}
+.osusume-book img {
+width: 120px;
+margin-bottom: 20px;
+}
+.osusume-book-title {
+font-size: 20px;
+}
+.osusume-text {
+padding-left: 20px;
+padding-right: 40px;
+padding-top: 15px;
+}
+.bi-binoculars-fill {
+font-size: 25px;
+margin-right: 7px;
 }
