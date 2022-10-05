@@ -4,6 +4,98 @@
  *
 */
 
+/**
+ * 各ラベルの属性をまとめた配列
+ * 
+ * {
+ *  idPhrase: ラベルのID
+ *  themeColor: ラベルのテーマカラー
+ *  element: ラベルのIDに対応したHTMLエレメント。初期化時に設定
+ *  message: ラベルを選択したときにコンテンツの上部に表示されるコメントの内容
+ * }
+ */
+ const itemContentList = [
+  {
+    idPhrase: "amb",
+    themeColor: "#6E927A",
+    element: null,
+    message: "キーワードを入力して検索します"
+  },
+  {
+    idPhrase: "abs",
+    themeColor: "#97C0A5",
+    element: null,
+    message: "キーワードと完全一致で検索されます"
+  },
+   {
+    idPhrase: "tag",
+    themeColor: "#BEE5CB",
+    element: null,
+    message: "タグで検索します"
+   }
+];
+
+const searchContentEle = document.getElementById('searchContentBox'); // コンテンツのエレメント
+const searchMessageEle = document.getElementById('contentMessage'); // メッセージのエレメント
+
+/**
+ * クリックされたときに実行される関数
+ *
+ * @param {*} event クリックイベント
+ */
+function itemClickEvent(event) {
+  const tarEle = event.target; // クリックされた要素を取得
+
+  for (let i = 0; i < itemContentList.length; i++) {
+    const item = itemContentList[i];
+
+    if (item.idPhrase === tarEle.id) {
+      item.element.style.zIndex = itemContentList.length + 1; // z-indexが一番上になるように設定
+      searchContentEle.style.backgroundColor = item.themeColor;
+      searchMessageEle.innerText = item.message;
+
+      /* その他の属性のz-indexの調整 */
+      if (i !== 0) {
+        for (let k = 0; k < i; k++) {
+          const otherItem = itemContentList[k];
+
+          otherItem.element.style.zIndex = k;
+        }
+      }
+
+      if (i !== itemContentList.length - 1) {
+        for (let k = i + 1; k < itemContentList.length; k++) {
+          const otherItem = itemContentList[k];
+
+          otherItem.element.style.zIndex = itemContentList.length - k;
+        }
+      }
+    }
+  }
+}
+
+
+/* 初期化 */
+for (let i = 0; i < itemContentList.length; i++) {
+  /* オブジェクトの初期化 */
+  itemContentList[i].element = document.getElementById(itemContentList[i].idPhrase);
+
+  /* スタイルの初期化 */
+  const ele = itemContentList[i].element;
+  ele.style.zIndex = itemContentList.length - i;
+  ele.style.backgroundColor = itemContentList[i].themeColor;
+  const moveLeft = 20; // 左へずらす量
+  ele.style.left = `-${moveLeft * i}px`;
+
+  if (i === 0) {
+    searchContentEle.style.backgroundColor = itemContentList[i].themeColor;
+    searchMessageEle.innerText = itemContentList[i].message;
+    
+  }
+
+  ele.addEventListener('click', itemClickEvent); // イベントリスナーの設定
+}
+
 const CONFIRM_ID_PHRASE = 'confirm-box' // 確認画面で用いるidの固定値
 let CONFIRM_TARGET_INFO = {
   id: '',
@@ -29,7 +121,7 @@ function makePhrase () {
   return resWords.slice(0, -1)
 }
 
-const searchBox = document.getElementById('search-box')
+const searchBox = document.getElementById('search-view-box')
 
 function viewSearchBox () {
   searchBox.classList.add('is-active')

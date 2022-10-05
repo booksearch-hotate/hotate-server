@@ -1,105 +1,99 @@
 <%#
 ナビゲーションバー
 %>
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-2">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">
-      <img src="<%= pageData.origin %>/img/logo.png" alt="logo" class="navbar-logo">
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Campaign</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">How</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/request">Request</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/login/">Admin(Debug)</a>
-        </li>
-      </ul>
-        <span class="navbar-text">
-          <a class="nav-link p-0 navbar-search-button" onclick="viewSearchBox()">
-              <%- include('./../icons/binocular') %>
+<header class="tree-header">
+  <nav class="page-header">
+    <nav class="page-header">
+      <ul class="main-nav">
+        <li>
+          <a href="/">
+            <img class="tree-header-logo" src="/img/tree-logo-alpha.png">
           </a>
-        </span>
-    </div>
-  </div>
-</nav>
+        </li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/campaign">Campaign</a></li>
+        <li><a href="/request">Request</a></li>
+      </ul>
+      <div class="header-search-box">
+        <a onclick="viewSearchBox()">
+          <i class="bi bi-search"></i>
+        </a>
+      </div>
+    </nav>
+  </nav>
+</header>
 
-<!-- 検索時に表示 -->
-<div class="search-box" id="search-box">
-  <div class="close-button" onclick="hideSearchBox()"><%- include('./../icons/x') %></div>
-  <div class="text-center search-title-box">
-    <h1 class="search-title">Search</h1>
-    <%-include('./../icons/binocular')  %>
+<div class="search-view-box" id="search-view-box">
+  <div class="close-button" onclick="hideSearchBox()">
+    <i class="bi bi-x"></i>
   </div>
-  <div class="search-form-box">
-    <form action="/search" method="get">
-      <div class="form-group search-input-box">
-        <input type="text" class="search-input" id="search-input" name="search" placeholder="本を検索" required>
-      </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-check form-switch text-center" style="font-size: 1.4rem;">
-              <input class="form-check-input" type="checkbox" name="strict" value="true" id="strictSearch" style="position: absolute;">
-              <label class="form-check-label" for="strictSearch">げんみつ検索</label>
-            </div>
+
+  <h3 class="search-title">Search</h3>
+
+  <div class="search-box">
+    <div class="search-label-list-box">
+      <label for="normalSearch" class="search-label-item-box" id="amb">
+        <p>あいまい検索</p>
+      </label>
+
+      <label for="strictSearch" class="search-label-item-box" id="abs">
+        <p>げんみつ検索</p>
+      </label>
+
+      <label for="tagSearch" class="search-label-item-box" id="tag">
+        <p>タグ検索</p>
+      </label>
+    </div>
+    <div class="search-content-box" id="searchContentBox">
+      <form method="get" action="/search" class="search-content-form">
+        <input type="radio" name="mode" value="none" id="normalSearch" hidden checked>
+        <input type="radio" name="mode" value="strict" id="strictSearch" hidden>
+        <input type="radio" name="mode" value="tag" id="tagSearch" hidden>
+        <div class="message-box">
+          <p id="contentMessage"></p>
+        </div>
+
+        <div class="search-form-box">
+            <input type="text" class="search-input" placeholder="検索キーワードを入力" id="search-input" name="search">
+            <button type="submit" class="search-submit-button">
+              <i class="bi bi-search"></i>
+            </button>
+        </div>
+
+        <!-- TODO: タグ検索時には著者・出版社のボタンを削除し、強制的に本にcheckを入れる処理をかく -->
+        <div class="category-button-list-box">
+          <div class="category-button-box">
+            <input id="bookButton" type="radio" name="type" value="book" class="category-button-input" hidden checked>
+            <label for="bookButton">
+              <div class="category-button">
+                <p>本を検索</p>
+                <i class="bi bi-book"></i>
+              </div>
+            </label>
           </div>
-          <div class="col-md-6" id="tagSearchButton">
-            <div class="form-check form-switch text-center" style="font-size: 1.4rem;">
-              <input class="form-check-input" type="checkbox" name="tag" value="true" id="tagSearch" style="position: absolute;">
-              <label class="form-check-label" for="tagSearch">タグ検索</label>
-            </div>
+
+          <div class="category-button-box">
+            <input id="authorButton" type="radio" name="type" value="author" class="category-button-input" hidden>
+            <label for="authorButton">
+              <div class="category-button">
+                <p>著者を検索</p>
+                <i class="bi bi-person"></i>
+              </div>
+            </label>
+          </div>
+
+          <div class="category-button-box">
+            <input id="publisherButton" type="radio" name="type" value="publisher" class="category-button-input" hidden>
+            <label for="publisherButton">
+              <div class="category-button">
+                <p>出版社を検索</p>
+                <i class="bi bi-building"></i>
+              </div>
+            </label>
           </div>
         </div>
-      </div>
-      <div class="search-type-box">
-        <h2>カテゴリ</h2>
-        <div class="container">
-          <div class="row">
-            <div class="col">
-              <div onclick="changeSearchType('author')">
-                <%- include('./nav-type-item', {icon: 'person', text: '著者', value: 'author', isDefault: false}) %>
-              </div>
-            </div>
-            <div class="col">
-              <div onclick="changeSearchType('book')">
-                <%- include('./nav-type-item', {icon: 'book', text: '本', value: 'book', isDefault: true}) %>
-              </div>
-            </div>
-            <div class="col">
-              <div onclick="changeSearchType('publisher')">
-                <%- include('./nav-type-item', {icon: 'building', text: '出版社', value: 'publisher', isDefault: false}) %>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="search-type-icon-box">
-    <div id="authorBgIcon" class="search-type-icon-item-box">
-      <%- include('./../icons/person') %>
-    </div>
-    <div id="bookBgIcon" class="search-type-icon-item-box search-type-icon-active">
-      <%- include('./../icons/book') %>
-    </div>
-    <div id="publisherBgIcon" class="search-type-icon-item-box">
-      <%- include('./../icons/building') %>
+      </form>
     </div>
   </div>
 </div>
