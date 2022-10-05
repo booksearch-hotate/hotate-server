@@ -7,7 +7,7 @@ import {SchoolGradeInfoCollectionName, schoolGradeInfoDocument} from '../../infr
 import {NullDataError} from '../../presentation/error';
 import {InMemoryDBError} from '../../presentation/error/infrastructure';
 
-export default class TestSchoolGradeInfoRepository implements ISchoolGradeInfoRepository {
+export default class InMemorySchoolGradeInfoRepository implements ISchoolGradeInfoRepository {
   db: Db;
   col;
 

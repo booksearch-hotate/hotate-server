@@ -3,7 +3,7 @@ import Department from '../../domain/model/department/department';
 import {IDepartmentRepository} from '../../domain/model/department/IDepartmentRepository';
 import {departmentCollectionName, departmentDocument} from '../../infrastructure/inMemory/collections/department';
 
-export default class TestDepartmentRepository implements IDepartmentRepository {
+export default class InMemoryDepartmentRepository implements IDepartmentRepository {
   db: Db;
   col;
 
