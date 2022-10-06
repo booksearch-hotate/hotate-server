@@ -21,8 +21,6 @@ export default class RecommendationData {
     this.sortIndex = recommendationModel.SortIndex;
     this.thumbnailName = recommendationModel.ThumbnailName;
     this.createdAt = conversionDateToString(recommendationModel.CreatedAt);
-    console.log(recommendationModel.CreatedAt);
-    console.log(this.createdAt);
     this.updatedAt = conversionDateToString(recommendationModel.UpdatedAt);
     this.recommendationItems = recommendationModel.RecommendationItems.map((item) => new RecommendationItemData(item));
   }
