@@ -357,7 +357,13 @@ footer p {
   cursor: pointer;
   bottom: -10px; /* hover時に上に上がる分を考慮 */
   padding-bottom: 10px; /* 上のbottomに数値を合わせること! */
-  transition: bottom .5s;
+  transition: all .5s;
+}
+
+/* ラベルが隠された場合のアニメーション */
+.remove-label {
+  bottom: -100%;
+  opacity: 0;
 }
 
 .search-label-item-box p {
