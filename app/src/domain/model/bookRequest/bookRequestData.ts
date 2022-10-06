@@ -1,6 +1,6 @@
 import BookRequest from './bookRequest';
 import Department from '../department/department';
-import conversionDate from '../../../utils/conversionDate';
+import {conversionDateToString} from '../../../utils/conversionDate';
 
 export default class BookRequestData {
   private id: string;
@@ -27,7 +27,7 @@ export default class BookRequestData {
     this.schoolYear = requestModel.SchoolYear;
     this.schoolClass = requestModel.SchoolClass;
     this.userName = requestModel.UserName;
-    this.createAt = conversionDate(requestModel.CreatedAt);
+    this.createAt = conversionDateToString(requestModel.CreatedAt);
     this.studentInfo = requestModel.makeStudentInfo();
   }
 

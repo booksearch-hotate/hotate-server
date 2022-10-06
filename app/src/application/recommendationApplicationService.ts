@@ -10,6 +10,7 @@ import RecommendationItem from '../domain/model/recommendation/recommendationIte
 import BookId from '../domain/model/book/bookId';
 import PaginationMargin from '../domain/model/pagination/paginationMargin';
 import {InfrastructureError, InvalidDataTypeError, OverflowDataError} from '../presentation/error';
+import {conversionStringToDate} from '../utils/conversionDate';
 
 export default class RecommendationApplicationService {
   private readonly recommendationRepository: IRecommendationRepository;
@@ -134,8 +135,8 @@ export default class RecommendationApplicationService {
           recommendationData.IsSolid,
           recommendationData.SortIndex,
           recommendationData.ThumbnailName,
-          new Date(recommendationData.CreatedAt),
-          new Date(recommendationData.UpdatedAt),
+          conversionStringToDate(recommendationData.CreatedAt),
+          conversionStringToDate(recommendationData.UpdatedAt),
           recommendationItemModel,
       );
       recommendationModel.omitContent();
