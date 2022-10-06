@@ -8,8 +8,31 @@
   <body>
     <%- include('./../components/navbar') %>
 
-    <%- include('./../components/input-js') %>
+    <main>
+      <div class="home-search-box">
+        <div class="home-search">
+          <form class="search-input-box" action="/search" method="get">
+            <input type="search" id="search-input" name="search" placeholder="Search" required>
+            <input type="submit" id="home-search-submit" hidden>
+            <label for="home-search-submit">
+              <i class="bi bi-search"></i>
+            </label>
+          </form>
+  
+          <div class="detail-search-box">
+            <a onclick="viewSearchBox()">
+              <p>
+                <i class="bi bi-chevron-double-right"></i>
+                詳細設定
+              </p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+
     <%- include('./../components/state-alert', {pageData}) %>
+    <%- include('./../components/input-js') %>
     <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
   </body>
 </html>
