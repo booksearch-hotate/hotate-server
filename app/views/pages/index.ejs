@@ -29,6 +29,28 @@
           </div>
         </div>
       </div>
+
+      <div class="index-campaign">
+        <div class="campaign-title">
+          <i class="bi bi-chat-dots"></i>
+          <div class="campaign-title-text">Campaign</div>
+        </div>
+
+        <div class="campaign-flex">
+          <% for (const section of pageData.anyData.recommendations) { %>
+            <li class="campaign-item">
+              <% if (section.recommendation.IsSolid) { %>
+              <% } %>
+              <% const recommendation = section %>
+              <img class="campaign-item-cover" src="/thumbnail/<%= recommendation.recommendation.ThumbnailName %>.png" >
+              <div class="campaign-item-text">
+                <div class="campaign-item-time"><%= recommendation.recommendation.CreatedAt %></div>
+                <div class="campaign-item-title"><%= recommendation.recommendation.Title %></div>
+              </div>
+            </li>
+          <% } %>
+        </div>
+      </div>
     </main>
 
     <%- include('./../components/state-alert', {pageData}) %>
