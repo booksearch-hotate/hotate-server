@@ -3,41 +3,65 @@
   width: 100%;
   position: relative;
 }
+
 .home-search-box-part {
   display: flex;
   justify-content: center;
 }
-input[type="search"] {
-    height: 70px;
-    width:30%;
-    padding: 0 10px;
-    border-bottom: 2px solid #244E5F;
-    font-size: 3rem;
-    text-align: center;
-  }
-  ::placeholder {
-    color: #244E5F;
-  }
-  img{
-     width: 40px;
-   }
-.detail-search-box p{
-  font-size: 1rem;
+
+/* 検索フォーム全体のレイアウト */
+.home-search-box {
+  margin: 40px 0 auto;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 検索フォーム本体のレイアウト */
+.search-input-box {
+  display: inline-flex;
+  align-items: center;
+  border-bottom: 2px solid #244E5F;
+}
+
+.search-input-box input[type="search"] {
+  padding: 0 10px;
+  font-size: 3rem;
+  text-align: center;
   color: #244E5F;
 }
-.syousai {
-  display: flex;
-  justify-content: center;
-  padding-left: 17rem;
+
+.search-input-box input[type="search"]::placeholder {
+  color: #244E5F;
 }
-.double-right {
-width: 17px;
+
+.search-input-box i {
+  font-size: 2.6rem;
+  color: #244E5F;
+  cursor: pointer;
 }
+
+.search-input-box::placeholder {
+  color: #244E5F;
+}
+
+.detail-search-box {
+  text-align: right;
+}
+
+.detail-search-box p {
+  font-size: 1rem;
+  color: #244E5F;
+  cursor: pointer;
+}
+
 .index-campaign {
   background-image: url(../images/tree-background.png);
   min-height: 100vh;
   background-size: cover;
 }
+
 .campaign-title {
   display: flex;
   justify-content: center;
