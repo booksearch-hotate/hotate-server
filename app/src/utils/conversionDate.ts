@@ -19,12 +19,12 @@ export function conversionDateToString(date: Date): string {
 
 export function conversionStringToDate(dateString: string): Date {
   const formatString = 'YYYY年MM月DD日 HH時mm分ss秒';
-  const yearRange = [formatString.indexOf('Y'), formatString.lastIndexOf('Y')];
-  const monthRange = [formatString.indexOf('M'), formatString.lastIndexOf('M')];
-  const dateRange = [formatString.indexOf('D'), formatString.lastIndexOf('D')];
-  const hourRange = [formatString.indexOf('H'), formatString.lastIndexOf('H')];
-  const minuteRange = [formatString.indexOf('m'), formatString.lastIndexOf('m')];
-  const secondRange = [formatString.indexOf('s'), formatString.lastIndexOf('s')];
+  const yearRange = [formatString.indexOf('Y'), formatString.lastIndexOf('Y') + 1];
+  const monthRange = [formatString.indexOf('M'), formatString.lastIndexOf('M') + 1];
+  const dateRange = [formatString.indexOf('D'), formatString.lastIndexOf('D') + 1];
+  const hourRange = [formatString.indexOf('H'), formatString.lastIndexOf('H') + 1];
+  const minuteRange = [formatString.indexOf('m'), formatString.lastIndexOf('m') + 1];
+  const secondRange = [formatString.indexOf('s'), formatString.lastIndexOf('s') + 1];
 
   const year = dateString.substring(yearRange[0], yearRange[1]);
   const month = dateString.substring(monthRange[0], monthRange[1]);
