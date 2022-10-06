@@ -357,7 +357,7 @@ footer p {
   cursor: pointer;
   bottom: -10px; /* hover時に上に上がる分を考慮 */
   padding-bottom: 10px; /* 上のbottomに数値を合わせること! */
-  transition: all .5s;
+  transition: bottom .5s, opacity .5s;
 }
 
 /* ラベルが隠された場合のアニメーション */
