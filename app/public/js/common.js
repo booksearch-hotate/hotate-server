@@ -41,15 +41,13 @@ const searchMessageEle = document.getElementById('contentMessage'); // メッセ
 /**
  * クリックされたときに実行される関数
  *
- * @param {*} event クリックイベント
+ * @param {*} clickId クリックした要素のid
  */
-function itemClickEvent(event) {
-  const tarEle = event.target; // クリックされた要素を取得
-
+function itemClickEvent(clickId) {
   for (let i = 0; i < itemContentList.length; i++) {
     const item = itemContentList[i];
 
-    if (item.idPhrase === tarEle.id) {
+    if (item.idPhrase === clickId) {
       item.element.style.zIndex = itemContentList.length + 1; // z-indexが一番上になるように設定
       searchContentEle.style.backgroundColor = item.themeColor;
       searchMessageEle.innerText = item.message;
@@ -93,7 +91,7 @@ for (let i = 0; i < itemContentList.length; i++) {
     
   }
 
-  ele.addEventListener('click', itemClickEvent); // イベントリスナーの設定
+  ele.addEventListener('click', (e) => itemClickEvent(e.target.id)); // イベントリスナーの設定
 }
 
 const CONFIRM_ID_PHRASE = 'confirm-box' // 確認画面で用いるidの固定値
@@ -141,22 +139,20 @@ async function changeSearchType(type) {
 
   if (searchTypeList.indexOf(type) === -1) throw new Error('Invalid search type.');
 
-  const tagButton = document.getElementById('tagSearchButton');
+  const tagLabelElement = document.getElementById('tag');
 
   if (type !== 'book') {
-    tagButton.style.opacity = 0;
+    tagLabelElement.classList.add('remove-label');
+
+    const formElement = document.getElementById('searchForm'); // formのエレメントを取得
+    if (formElement.elements['mode'].value === 'tag') {
+      itemClickEvent('amb');
+      const bookButton = document.getElementById('normalSearch');
+      bookButton.checked = true;
+    }
   } else {
-    tagButton.style.opacity = 1;
+    tagLabelElement.classList.remove('remove-label');
   }
-
-  /* 背景のロゴのアニメーション処理 */
-  searchTypeList.forEach((item) => {
-    document.getElementById(`${item}BgIcon`).classList.remove('search-type-icon-active');
-  });
-
-  await new Promise(resolve => setTimeout(resolve, 500));
-
-  document.getElementById(`${type}BgIcon`).classList.add('search-type-icon-active');
 }
 
 async function removeConfirmBox (confirmId) {
