@@ -1,4 +1,4 @@
-.about-big-bg {
+.main-about-box {
   background-color: #888;
   position: relative;
   height: 100vh;
@@ -51,11 +51,14 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  margin: 10px auto;
+  margin: 30px auto;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .post-img {
   max-height: 500px;
+  max-width: 46vw;
   border-radius: 5px;
 }
 
@@ -85,7 +88,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  margin: 10px auto;
+  margin: 30px auto;
   text-align: center;
   color: #edf2f4;
 }
@@ -104,8 +107,8 @@
 }
 
 .dev-icon {
-  height: 400px;
-  width: 400px;
+  height: 300px;
+  width: 300px;
   object-fit: cover;
   border-radius: 50%;
 }

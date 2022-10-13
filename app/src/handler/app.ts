@@ -25,6 +25,7 @@ import settingRouter from '../routers/admin/setting';
 import departmentRouter from '../routers/admin/department';
 import bookRequestRouter from '../routers/admin/bookRequest';
 import recommendationRouter from '../routers/admin/recommendation';
+import aboutRouter from '../routers/about';
 
 import Logger from '../infrastructure/logger/logger';
 
@@ -132,6 +133,7 @@ app.use('/', bookItemRouter);
 app.use('/', loginRouter);
 app.use('/', searchRouter);
 app.use('/', requestRouter);
+app.use('/about', aboutRouter);
 app.use('/admin', adminRouter);
 app.use('/admin/book', bookRouter);
 app.use('/admin/search-history', searchHistoryRouter);

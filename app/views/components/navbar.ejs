@@ -1,7 +1,7 @@
 <%#
 ナビゲーションバー
 %>
-<header class="tree-header">
+<header class="tree-header" id="tree-header">
   <nav class="page-header">
     <ul class="main-nav">
       <li>
@@ -59,61 +59,65 @@
             </button>
         </div>
 
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-4 category-button-box">
+              <input
+                id="bookButton"
+                type="radio"
+                name="type"
+                value="book"
+                class="category-button-input"
+                hidden
+                checked
+                onclick="changeSearchType('book')"
+              >
+              <label for="bookButton" class="w-100">
+                <div class="category-button">
+                  <p>本を検索</p>
+                  <i class="bi bi-book"></i>
+                </div>
+              </label>
+            </div>
+
+            <div class="col-sm-4 category-button-box">
+              <input
+                id="authorButton"
+                type="radio"
+                name="type"
+                value="author"
+                class="category-button-input"
+                hidden
+                onclick="changeSearchType('author')"
+              >
+              <label for="authorButton" class="w-100">
+                <div class="category-button">
+                  <p>著者を検索</p>
+                  <i class="bi bi-person"></i>
+                </div>
+              </label>
+            </div>
+
+            <div class="col-sm-4 category-button-box">
+              <input
+                id="publisherButton"
+                type="radio"
+                name="type"
+                value="publisher"
+                class="category-button-input"
+                hidden
+                onclick="changeSearchType('publisher')"
+              >
+              <label for="publisherButton" class="w-100">
+                <div class="category-button">
+                  <p>出版社を検索</p>
+                  <i class="bi bi-building"></i>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
         <div class="category-button-list-box">
-          <div class="category-button-box">
-            <input
-              id="bookButton"
-              type="radio"
-              name="type"
-              value="book"
-              class="category-button-input"
-              hidden
-              checked
-              onclick="changeSearchType('book')"
-            >
-            <label for="bookButton">
-              <div class="category-button">
-                <p>本を検索</p>
-                <i class="bi bi-book"></i>
-              </div>
-            </label>
-          </div>
-
-          <div class="category-button-box">
-            <input
-              id="authorButton"
-              type="radio"
-              name="type"
-              value="author"
-              class="category-button-input"
-              hidden
-              onclick="changeSearchType('author')"
-            >
-            <label for="authorButton">
-              <div class="category-button">
-                <p>著者を検索</p>
-                <i class="bi bi-person"></i>
-              </div>
-            </label>
-          </div>
-
-          <div class="category-button-box">
-            <input
-              id="publisherButton"
-              type="radio"
-              name="type"
-              value="publisher"
-              class="category-button-input"
-              hidden
-              onclick="changeSearchType('publisher')"
-            >
-            <label for="publisherButton">
-              <div class="category-button">
-                <p>出版社を検索</p>
-                <i class="bi bi-building"></i>
-              </div>
-            </label>
-          </div>
         </div>
       </form>
     </div>
