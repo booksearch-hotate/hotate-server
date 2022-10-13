@@ -1,0 +1,43 @@
+.progress-main-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+}
+
+.progress-box {
+  width: 90%;
+  height: 2rem;
+  margin: 0 auto;
+}
+
+.progress-box h4 {
+  text-align: center;
+  color: #432;
+  margin-top: 10px;
+}
+
+.progress-button {
+  opacity: 0;
+  position: relative;
+  top: 10px;
+  pointer-events: none;
+  text-align: center;
+  transition: all .5s;
+}
+
+.button-active {
+  opacity: 1;
+  top: 0;
+  pointer-events: all;
+}
+
+.progress-box .progress {
+  height: 100%;
+}
+
+.progress-bar {
+  background-color: var(--sub-color);
+  font-size: 1rem;
+}
