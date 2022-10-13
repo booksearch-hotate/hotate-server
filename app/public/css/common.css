@@ -338,6 +338,7 @@ footer p {
   justify-content: center;
   margin: 20px auto;
   align-items: center;
+  gap: 2rem;
 }
 
 .tree-input {

@@ -67,7 +67,11 @@
           <%- include('./../../../components/admin/csv/header-list.ejs',{ required: false }) %>
         </select>
       </section>
-      <button type="submit" class="btn btn-primary" onclick="sendForm()">送信</button>
+
+      <button type="submit" class="tree-button my-4 mx-auto" onclick="sendForm()">
+        登録する
+        <i class="bi bi-check-lg"></i>
+      </button>
     </form>
     <%- include('./../../../components/input-js') %>
   </body>
