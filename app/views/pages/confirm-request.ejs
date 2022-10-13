@@ -21,6 +21,7 @@ const itemComponentLink = './../components/confirm-request-item';
         <%- include(itemComponentLink, {title: '出版社名', content: pageData.anyData.request.PublisherName}) %>
         <%- include(itemComponentLink, {title: 'ISBN', content: pageData.anyData.request.Isbn}) %>
         <%- include(itemComponentLink, {title: '内容', content: pageData.anyData.request.Message}) %>
+        <%- include(itemComponentLink, {title: '氏名', content: `${pageData.anyData.request.StudentInfo} ${pageData.anyData.request.UserName}`}) %>
 
         <div class="text-center">
           <a href="/request" class="btn btn-outline-success">戻る</a>
