@@ -130,6 +130,7 @@ input:focus {
   align-items: flex-start;
   flex-direction: column;
   margin-top: 70px;
+  width: 80vw;
 }
 
 /* 上に飛び出している部分（以下「ラベル」）のボックス */
@@ -161,7 +162,7 @@ input:focus {
 .search-label-item-box p {
   margin: 0;
   color: white;
-  font-size: 2rem;
+  font-size: 1.5rem;
   pointer-events: none; /* これをしないとうまくjavascriptが動作しないので注意 */
 }
 
@@ -171,7 +172,7 @@ input:focus {
 
 /* メインとなる部分（以下「コンテンツ」）のボックス */
 .search-content-box {
-  width: 1000px;
+  width: 100%;
   height: 425px;
   border-radius: 30px;
   padding: 30px;
@@ -189,7 +190,7 @@ input:focus {
 
 .message-box p{
   font-size: 1.4rem;
-  margin: 0;
+  margin: 2rem 0;
   color: #432;
 }
 
@@ -226,10 +227,7 @@ input:focus {
   border: none;
   color: white;
   border-radius: 30px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding: 1rem 1.4rem;
   cursor: pointer;
   transition: all .5s;
 }
@@ -239,10 +237,6 @@ input:focus {
 }
 
 /* カテゴリ（本、著者名、出版社名）のボタンを配置するbox */
-.category-button-list-box {
-  display: flex;
-  justify-content: space-evenly;
-}
 
 /* 各カテゴリのデザイン */
 .category-button {
@@ -250,7 +244,6 @@ input:focus {
   color: #755F4B;
   border-radius: 90px;
   background-color: white;
-  width: 300px;
   height: 90px;
   position: relative;
   overflow: hidden; /* これを入れないとロゴが見切れずbuttonから飛び出すことになるので注意 */
