@@ -2,57 +2,68 @@
 <html>
   <head>
     <%- include('./../../../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/csv/header-choice.css" />
   </head>
   <body>
-    <h1>ヘッダーを選択</h1>
-    <p>データを追加するのに必要なヘッダーを選択してください</p>
-    <form action="/admin/csv/formHader" method="post">
+    <header>
+      <%- include('./../../../components/header-title', {mes: 'CSVファイルから本を登録', logo: 'filetype-csv'}) %>
+    </header>
+
+    <form action="/admin/csv/formHader" method="post" class="header-choice-form">
       <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
-      <section>
-        <p>ISBN</p>
-        <select class="form-select" name="isbn">
-          <%- include('./../../../components/admin/csv/header-list.ejs', { required: false }) %>
-        </select>
-      </section>
-      <section>
-        <p>本の名称※</p>
-        <select class="form-select" name="bookName">
+
+      <section class="tree-form-item">
+        <label class="tree-label"><%- include('../../../components/required-text', {mes: '書名'}) %></label>
+        <select class="tree-input form-select tree-select-with-bg" name="bookName">
           <%- include('./../../../components/admin/csv/header-list.ejs', { required: true }) %>
         </select>
       </section>
-      <section>
-        <p>副題</p>
-        <select class="form-select" name="bookSubName">
+
+      <section class="tree-form-item">
+        <label class="tree-label">ISBN</label>
+        <select class="tree-input form-select tree-select-with-bg" name="isbn">
           <%- include('./../../../components/admin/csv/header-list.ejs', { required: false }) %>
         </select>
       </section>
-      <section>
-        <p>著者名※</p>
-        <select class="form-select" name="authorName">
-          <%- include('./../../../components/admin/csv/header-list.ejs', { required: true }) %>
-        </select>
-      </section>
-      <section>
-        <p>日本十進分類法</p>
-        <select class="form-select" name="ndc">
+
+      <section class="tree-form-item">
+        <label class="tree-label">副題</label>
+        <select class="tree-input form-select tree-select-with-bg" name="bookSubName">
           <%- include('./../../../components/admin/csv/header-list.ejs', { required: false }) %>
         </select>
       </section>
-      <section>
-        <p>出版社名※</p>
-        <select class="form-select" name="publisherName">
+
+      <section class="tree-form-item">
+        <label class="tree-label">著者名</label>
+        <select class="tree-input form-select tree-select-with-bg" name="authorName">
           <%- include('./../../../components/admin/csv/header-list.ejs', { required: true }) %>
         </select>
       </section>
-      <section>
-        <p>出版年</p>
-        <select class="form-select" name="year">
+
+      <section class="tree-form-item">
+        <label class="tree-label">出版社名</label>
+        <select class="tree-input form-select tree-select-with-bg" name="publisherName">
+          <%- include('./../../../components/admin/csv/header-list.ejs', { required: true }) %>
+        </select>
+      </section>
+
+      <section class="tree-form-item">
+        <label class="tree-label">日本十進分類法</label>
+        <select class="tree-input form-select tree-select-with-bg" name="ndc">
+          <%- include('./../../../components/admin/csv/header-list.ejs', { required: false }) %>
+        </select>
+      </section>
+
+      <section class="tree-form-item">
+        <label class="tree-label">出版年</label>
+        <select class="tree-input form-select tree-select-with-bg" name="year">
           <%- include('./../../../components/admin/csv/header-list.ejs',{ required: false }) %>
         </select>
       </section>
-      <section>
-        <p>内容</p>
-        <select class="form-select" name="bookContent">
+
+      <section class="tree-form-item">
+        <label class="tree-label">内容</label>
+        <select class="tree-input form-select tree-select-with-bg" name="bookContent">
           <%- include('./../../../components/admin/csv/header-list.ejs',{ required: false }) %>
         </select>
       </section>
