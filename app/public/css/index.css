@@ -1,3 +1,7 @@
+:root {
+  --index-about-button: #E8BB50;
+}
+
 /* 検索フォーム全体のレイアウト */
 .home-search-box {
   margin: 40px 0 auto;
@@ -127,17 +131,32 @@
   color: #E8BB50;
   margin-bottom: -15px
 }
+
+.about-button {
+  color: var(--index-about-button);
+  border-color: var(--index-about-button);
+  width: 10.6rem;
+  height: 4rem;
+}
+
+.about-button::after {
+  background-color: var(--index-about-button);
+}
+
 .about-main-title {
   font-size: 64px;
   color: #000000;
 }
+
 .about-explanation {
   font-size: 32px;
   margin-left: 100px;
 }
+
 .button-detail{
   padding-top: 15px;
 }
+
 button[type="button"] {
   cursor: pointer;
   width: 170px;
@@ -147,31 +166,39 @@ button[type="button"] {
   border: 2px #E8BB50 solid;
   border-radius: 90px;
 }
+
 .index-how {
   margin-top: 170px;
   display: flex;
   justify-content: center;
   margin-bottom: 100px;
+  align-items: center;
 }
+
 .how-text {
   margin-left: 100px;
 }
+
 .how-image {
   width: 630px;
   height: 380px;
   border-radius: 50px;
   margin-left: 100px;
+  object-fit: contain;
 }
+
 .how-sub-title {
   display: flex;
   font-size: 40px;
   color: #E8BB50;
   margin-bottom: -15px
 }
+
 .how-main-title {
   font-size: 64px;
   color: #000000;
 }
+
 .how-explanation {
   font-size: 32px;
   color: #000000;

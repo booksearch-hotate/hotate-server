@@ -381,7 +381,7 @@ footer p {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  text-decoration: none;
   overflow: hidden;
   position: relative;
   transition-duration: .4s;
