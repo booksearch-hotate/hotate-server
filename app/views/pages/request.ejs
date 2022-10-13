@@ -4,38 +4,41 @@
     <%- include('./../components/head') %>
   </head>
   <body>
+    <%- include('./../components/navbar') %>
+
     <header class="text-center">
-      <h1>リクエスト</h1>
-      <p>入荷してほしい本を入力してください。<br>入荷した際には図書室から連絡が届きます。</p>
+      <%- include('./../components/header-title', {mes: 'request', logo:'book'}) %>
+      <p>入荷してほしい本を入力してください。</p>
+      <p>入荷した際には図書館から連絡が届きます</p>
     </header>
 
     <main>
       <form method="POST" action="/confirm" class="px-4">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
-        <div class="mb-3">
-          <label for="bookName" class="form-label" required>書名(<span class="text-danger">必須</span>)</label>
-          <input type="text" class="form-control" id="bookName" name="bookName" placeholder="例) 余命3000文字" value="<%= pageData.anyData.saveVal.bookName %>" required>
+        <div class="tree-form-item">
+          <label for="bookName" class="tree-label">書名</label>
+          <input class="tree-input" type="text" id="bookName" name="bookName" placeholder="例) 余命3000文字" value="<%= pageData.anyData.saveVal.bookName %>">
         </div>
-        <div class="mb-3">
-          <label for="authorName" class="form-label">著者名</label>
-          <input type="text" class="form-control" id="authorName" name="authorName" placeholder="例) 村崎羯諦" value="<%= pageData.anyData.saveVal.authorName %>">
+        <div class="tree-form-item">
+          <label for="authorName" class="tree-label">著者名</label>
+          <input type="text" class="tree-input" id="authorName" name="authorName" placeholder="例) 村崎羯諦" value="<%= pageData.anyData.saveVal.authorName %>">
         </div>
-        <div class="mb-3">
-          <label for="publisherName" class="form-label">出版社名</label>
-          <input type="text" class="form-control" id="publisherName" name="publisherName" placeholder="例) 小学館文庫" value="<%= pageData.anyData.saveVal.publisherName %>">
+        <div class="tree-form-item">
+          <label for="publisherName" class="tree-label">出版社名</label>
+          <input type="text" class="tree-input" id="publisherName" name="publisherName" placeholder="例) 小学館文庫" value="<%= pageData.anyData.saveVal.publisherName %>">
         </div>
-        <div class="mb-3">
-          <label for="isbn" class="form-label">ISBN</label>
-          <input type="text" class="form-control" id="isbn" name="isbn" placeholder="例) 9784094068498" value="<%= pageData.anyData.saveVal.isbn %>">
+        <div class="tree-form-item">
+          <label for="isbn" class="tree-label">ISBN</label>
+          <input type="text" class="tree-input" id="isbn" name="isbn" placeholder="例) 9784094068498" value="<%= pageData.anyData.saveVal.isbn %>">
         </div>
-        <div class="mb-3 form-floating">
-          <input type="text" class="form-control" placeholder="書名が思い出せない場合などに入力してください" id="message" style="height: 100px" name="message"  value="<%= pageData.anyData.saveVal.message %>"></input>
-          <label for="message">本の内容・その他</label>
+        <div class="mb-3 tree-form-item">
+          <label for="message" class="tree-label">本の内容etc.</label>
+          <textarea class="tree-input tree-textarea" id="message" style="height: 100px" name="message"><%= pageData.anyData.saveVal.message %></textarea>
         </div>
 
-        <div class="mb-3 row g-6 align-items-center">
+        <div class="my-4 row g-6 align-items-center justify-content-center">
           <div class="col-auto">
-            <select class="form-select" name="department">
+            <select class="form-select tree-select-with-bg" name="department">
               <% for (let department of pageData.anyData.departmentList) { %>
                 <option value="<%= department.Id %>"><%= department.Name %></option>
               <% } %>
@@ -45,7 +48,7 @@
             科
           </div>
           <div class="col-auto">
-            <select class="form-select" name="schoolYear">
+            <select class="form-select tree-select-with-bg" name="schoolYear">
               <% for (let i = 1; i <= pageData.anyData.schoolGradeInfo.Year; i++) { %>
                 <option value="<%= i %>"><%= i %></option>
               <% } %>
@@ -55,7 +58,7 @@
             年
           </div>
           <div class="col-auto">
-            <select class="form-select" name="class">
+            <select class="form-select tree-select-with-bg" name="class">
               <% for (let i = 1; i <= pageData.anyData.schoolGradeInfo.SchoolClass; i++) { %>
                 <option value="<%= i %>"><%= i %></option>
               <% } %>
@@ -66,15 +69,15 @@
           </div>
         </div>
 
-        <div class="mb-3">
-          <label for="userName" class="form-label">名前(<span class="text-danger">必須</span>)</label>
-          <input type="text" class="form-control" id="userName" name="userName" placeholder="例) 大淡路 不知火" required value="<%= pageData.anyData.saveVal.userName %>">
+        <div class="mb-3 tree-form-item">
+          <label for="userName" class="tree-label">名前(<span class="text-danger">必須</span>)</label>
+          <input type="text" class="tree-input" id="userName" name="userName" placeholder="例) 大淡路 不知火" required value="<%= pageData.anyData.saveVal.userName %>">
         </div>
-
-        <div class="text-center">
-          <a href="/" class="btn btn-outline-success">戻る</a>
-          <button type="submit" class="btn btn-outline-primary">確認</button>
-        </div>
+        
+        <button type="submit" class="tree-button my-0 mx-auto">
+          確認画面へ
+          <i class="bi bi-arrow-right ms-1"></i>
+        </button>
       </form>
     </main>
     <%- include('./../components/state-alert', {pageData}) %>
