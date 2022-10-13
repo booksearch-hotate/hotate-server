@@ -387,6 +387,7 @@ footer p {
   transition-duration: .4s;
   transition: color .6s;
   z-index: 2;
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .tree-button::after {
