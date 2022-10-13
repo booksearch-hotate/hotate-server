@@ -225,5 +225,5 @@ function showDetail(showId, hideId = '') {
 
 
 document.addEventListener('animationend', ele => {
-  if (ele.target.id === 'stateAlert')ele.target.remove();
+  if (ele.target.id === 'stateAlert') ele.target.remove();
 })
