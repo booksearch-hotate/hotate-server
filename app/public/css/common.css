@@ -528,3 +528,10 @@ footer p {
   justify-content: space-evenly;
   width: 100%;
 }
+
+.state-info-toast {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: .6rem;
+}

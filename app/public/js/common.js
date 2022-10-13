@@ -78,6 +78,8 @@ for (let i = 0; i < itemContentList.length; i++) {
   /* オブジェクトの初期化 */
   itemContentList[i].element = document.getElementById(itemContentList[i].idPhrase);
 
+  if (itemContentList[i].element === null) continue;
+
   /* スタイルの初期化 */
   const ele = itemContentList[i].element;
   ele.style.zIndex = itemContentList.length - i;
@@ -226,4 +228,13 @@ function showDetail(showId, hideId = '') {
 
 document.addEventListener('animationend', ele => {
   if (ele.target.id === 'stateAlert') ele.target.remove();
-})
+  console.log('ここ通過');
+});
+
+setTimeout(() => {
+  const tar = document.getElementById('stateAlert');
+
+  if (tar !== null) {
+    tar.remove();
+  }
+}, 1000 * 10);
