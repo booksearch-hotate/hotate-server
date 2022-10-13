@@ -35,8 +35,15 @@
    }
 ];
 
+const CONFIRM_ID_PHRASE = 'confirm-box'; // 確認画面で用いるidの固定値
+let CONFIRM_TARGET_INFO = {
+  id: '',
+  formName: ''
+};
+
 const searchContentEle = document.getElementById('searchContentBox'); // コンテンツのエレメント
 const searchMessageEle = document.getElementById('contentMessage'); // メッセージのエレメント
+const searchBox = document.getElementById('search-view-box')
 
 /**
  * クリックされたときに実行される関数
@@ -72,36 +79,6 @@ function itemClickEvent(clickId) {
   }
 }
 
-
-/* 初期化 */
-for (let i = 0; i < itemContentList.length; i++) {
-  /* オブジェクトの初期化 */
-  itemContentList[i].element = document.getElementById(itemContentList[i].idPhrase);
-
-  if (itemContentList[i].element === null) continue;
-
-  /* スタイルの初期化 */
-  const ele = itemContentList[i].element;
-  ele.style.zIndex = itemContentList.length - i;
-  ele.style.backgroundColor = itemContentList[i].themeColor;
-  const moveLeft = 20; // 左へずらす量
-  ele.style.left = `-${moveLeft * i}px`;
-
-  if (i === 0) {
-    searchContentEle.style.backgroundColor = itemContentList[i].themeColor;
-    searchMessageEle.innerText = itemContentList[i].message;
-    
-  }
-
-  ele.addEventListener('click', (e) => itemClickEvent(e.target.id)); // イベントリスナーの設定
-}
-
-const CONFIRM_ID_PHRASE = 'confirm-box' // 確認画面で用いるidの固定値
-let CONFIRM_TARGET_INFO = {
-  id: '',
-  formName: ''
-}
-
 function makePhrase () {
   const phrases = ['少女', '工業高校', '冒険', '歴史']
   const randomNum = Math.floor(Math.random() * 3) + 1
@@ -120,8 +97,6 @@ function makePhrase () {
   // 最後のスペースを削除
   return resWords.slice(0, -1)
 }
-
-const searchBox = document.getElementById('search-view-box')
 
 function viewSearchBox () {
   searchBox.classList.add('is-active')
@@ -225,6 +200,28 @@ function showDetail(showId, hideId = '') {
   hideEle.remove();
 }
 
+/* 初期化 */
+for (let i = 0; i < itemContentList.length; i++) {
+  /* オブジェクトの初期化 */
+  itemContentList[i].element = document.getElementById(itemContentList[i].idPhrase);
+
+  if (itemContentList[i].element === null) continue;
+
+  /* スタイルの初期化 */
+  const ele = itemContentList[i].element;
+  ele.style.zIndex = itemContentList.length - i;
+  ele.style.backgroundColor = itemContentList[i].themeColor;
+  const moveLeft = 20; // 左へずらす量
+  ele.style.left = `-${moveLeft * i}px`;
+
+  if (i === 0) {
+    searchContentEle.style.backgroundColor = itemContentList[i].themeColor;
+    searchMessageEle.innerText = itemContentList[i].message;
+    
+  }
+
+  ele.addEventListener('click', (e) => itemClickEvent(e.target.id)); // イベントリスナーの設定
+}
 
 document.addEventListener('animationend', ele => {
   if (ele.target.id === 'stateAlert') ele.target.remove();
