@@ -105,7 +105,7 @@ input:focus {
   opacity: 0;
   position: absolute;
   top: 0;
-  display: flex;
+  display: none; /* cssファイル読み込み時にtransitionが勝手に動作する不具合があるため、最初はdisplay: noneにしてあります。通常はflexです */
   flex-direction: column;
   align-items: center;
   transition: visibility .5s, opacity .5s;
