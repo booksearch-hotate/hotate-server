@@ -224,10 +224,10 @@ for (let i = 0; i < itemContentList.length; i++) {
 }
 
 searchBox.style.display = 'flex'; // jsファイル読み込み時にdisplayをnoneから変更
+searchBox.style.visibility = 'hidden';
 
 document.addEventListener('animationend', ele => {
   if (ele.target.id === 'stateAlert') ele.target.remove();
-  console.log('ここ通過');
 });
 
 setTimeout(() => {
