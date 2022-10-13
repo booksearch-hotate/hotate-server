@@ -120,6 +120,7 @@ input:focus {
   color: #467556;
   border-bottom: 3px #467556 solid;
   margin: 0;
+  margin-top: 2rem;
   width: 100vw;
   text-align: center;
 }
