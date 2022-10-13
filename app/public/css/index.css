@@ -80,6 +80,7 @@
   background-color: #ffffff;
   border: 1px #000000 solid;
   border-radius: 30px;
+  overflow: hidden;
 }
 
 .campaign-item-cover {
