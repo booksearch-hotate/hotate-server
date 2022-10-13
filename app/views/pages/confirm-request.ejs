@@ -8,11 +8,11 @@ const itemComponentLink = './../components/confirm-request-item';
   </head>
   <body>
     <header class="text-center">
-      <h1>リクエスト内容の確認</h1>
+      <%- include('./../components/header-title', {mes: 'リクエスト内容の確認'}) %>
       <p>リクエスト内容が正しければ「送信」を、誤りがあれば「戻る」を押してください。</p>
     </header>
 
-    <main>
+    <main class="px-3">
       <form method="POST" action="/register" class="px-4">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
       
@@ -23,9 +23,15 @@ const itemComponentLink = './../components/confirm-request-item';
         <%- include(itemComponentLink, {title: '内容', content: pageData.anyData.request.Message}) %>
         <%- include(itemComponentLink, {title: '氏名', content: `${pageData.anyData.request.StudentInfo} ${pageData.anyData.request.UserName}`}) %>
 
-        <div class="text-center">
-          <a href="/request" class="btn btn-outline-success">戻る</a>
-          <button type="submit" class="btn btn-outline-primary">送信</button>
+        <div class="d-flex justify-content-evenly">
+          <a href="/request" class="tree-button">
+            <i class="bi bi-arrow-counterclockwise me-2"></i>
+            戻る
+          </a>
+          <button type="submit" class="tree-button tree-button-success">
+            <i class="bi bi-send me-2"></i>
+            送信
+          </button>
         </div>
       </form>
     </main>
