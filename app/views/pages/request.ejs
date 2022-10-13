@@ -16,8 +16,8 @@
       <form method="POST" action="/confirm" class="px-4">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <div class="tree-form-item">
-          <label for="bookName" class="tree-label">書名</label>
-          <input class="tree-input" type="text" id="bookName" name="bookName" placeholder="例) 余命3000文字" value="<%= pageData.anyData.saveVal.bookName %>">
+          <label for="bookName" class="tree-label"><%- include('../components/required-text', {mes: '書名'}) %></label>
+          <input class="tree-input" type="text" id="bookName" name="bookName" placeholder="例) 余命3000文字" value="<%= pageData.anyData.saveVal.bookName %>" required>
         </div>
         <div class="tree-form-item">
           <label for="authorName" class="tree-label">著者名</label>
@@ -70,11 +70,11 @@
         </div>
 
         <div class="mb-3 tree-form-item">
-          <label for="userName" class="tree-label">名前(<span class="text-danger">必須</span>)</label>
+          <label for="userName" class="tree-label"><%- include('../components/required-text', {mes: '名前'}) %></label>
           <input type="text" class="tree-input" id="userName" name="userName" placeholder="例) 大淡路 不知火" required value="<%= pageData.anyData.saveVal.userName %>">
         </div>
         
-        <button type="submit" class="tree-button my-0 mx-auto">
+        <button type="submit" class="tree-button my-4 mx-auto">
           確認画面へ
           <i class="bi bi-arrow-right ms-1"></i>
         </button>
