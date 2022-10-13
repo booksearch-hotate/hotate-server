@@ -2,21 +2,44 @@
 <html>
   <head>
     <%- include('./../../../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/csv/choice.css" />
   </head>
   <body>
     <header>
-      <%- include('./../../../components/header-title', {mes: 'csvファイルを選択', logo: 'filetype-csv'}) %>
-      <p class="common-header-sub-title">
-        本の情報が登録されているcsvファイルを選択してください。<b>5000件</b>まで登録が可能です。
-      </p>
+      <%- include('./../../../components/header-title', {mes: 'CSVファイルから本を登録', logo: 'filetype-csv'}) %>
     </header>
-    <form action="/admin/csv/sendFile?_csrf=<%= pageData.csrfToken %>" method="post" enctype="multipart/form-data">
-      <div class="mb-3">
-        <label for="formFile" class="form-label">CSVファイル</label>
-        <input class="form-control" type="file" id="formFile" name="csv" accept=".csv">
-      </div>
-      <button type="submit" class="btn btn-primary">送信</button>
-    </form>
+
+    <div class="tree-attention">
+      <h3 class="tree-attention-title">
+        注意
+        <i class="bi bi-exclamation-triangle"></i>
+      </h3>
+      
+      <ul class="tree-attention-list">
+        <li>5000件を超えるデータは登録できません。</li>
+        <li>文字コードはUTF-8に設定してください。それ以外の文字コードを使用すると文字化けが発生します。</li>
+      </ul>
+    </div>
+
+    <div class="input-form-box">
+      <form action="/admin/csv/sendFile?_csrf=<%= pageData.csrfToken %>" method="post" enctype="multipart/form-data">
+        <input type="file" id="formFile" name="csv" accept=".csv" hidden />
+        <label for="formFile" class="input-file-label">
+          <div class="input-file-box">
+            <p class="input-file-content">登録したいcsvファイルを入力してください</p>
+            <i class="bi bi-file-earmark-arrow-up input-file-icon"></i>
+            <p class="view-file-name" id="viewFileName">ファイルが選択されていません</p>
+          </div>
+        </label>
+
+        <button type="submit" class="tree-button my-4 mx-auto" disabled id="submitButton">
+          <i class="bi bi-upload"></i>
+          アップロード
+        </button>
+      </form>
+    </div>
+
     <%- include('./../../../components/input-js') %>
+    <script src="/js/admin/csv/viewFileName.js"></script>
   </body>
 </html>
