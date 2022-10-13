@@ -1,0 +1,35 @@
+.input-form-box {
+  text-align: center;
+}
+
+.input-file-label {
+  border: solid 2px gray;
+  border-radius: 10px;
+  background: lightgray;
+  width: 500px;
+  height: 300px;
+  cursor: pointer;
+  position: relative;
+  transition: transform .5s;
+}
+
+.input-file-label:hover {
+  transform: scale(.95);
+}
+
+.input-file-box {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.input-file-content {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.input-file-icon {
+  font-size: 2rem;
+}
