@@ -223,6 +223,8 @@ for (let i = 0; i < itemContentList.length; i++) {
   ele.addEventListener('click', (e) => itemClickEvent(e.target.id)); // イベントリスナーの設定
 }
 
+searchBox.style.display = 'flex'; // jsファイル読み込み時にdisplayをnoneから変更
+
 document.addEventListener('animationend', ele => {
   if (ele.target.id === 'stateAlert') ele.target.remove();
   console.log('ここ通過');
