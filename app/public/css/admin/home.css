@@ -1,0 +1,44 @@
+main {
+  width: 100vw;
+  height: auto;
+  padding: 8px 16px;
+}
+
+.admin-menu-box {
+  padding: 10px 10px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.admin-menu-item-box a {
+  display: flex;
+  align-items: center;
+  color: #432;
+  transition: all .5s;
+  padding: .5rem;
+  text-decoration: none;
+}
+
+.admin-menu-item-box a::before {
+  content: url('/img/caret-right.svg');
+  position: relative;
+  left: -30px;
+  opacity: 0;
+  transform: scale(1.6);
+  padding-right: 10px;
+  transition: all .8s;
+}
+
+.admin-menu-item-box a:hover::before {
+  left: 0;
+  opacity: 1;
+}
+
+.admin-menu-sentence-box h4 {
+  font-size: 1.6rem;
+}
+
+.admin-menu-item-box a:hover {
+  padding-left: 30px;
+}
