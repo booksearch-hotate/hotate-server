@@ -33,7 +33,12 @@
         </div>
         <div class="mb-3 tree-form-item">
           <label for="message" class="tree-label">本の内容etc.</label>
-          <textarea class="tree-input tree-textarea" id="message" style="height: 100px" name="message"><%= pageData.anyData.saveVal.message %></textarea>
+          <textarea
+            class="tree-input tree-textarea"
+            id="message"
+            name="message"
+            placeholder="他に伝えたいことなどがありましたら入力してください。"
+          ><%= pageData.anyData.saveVal.message %></textarea>
         </div>
 
         <div class="my-4 row g-6 align-items-center justify-content-center">
