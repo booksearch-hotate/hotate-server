@@ -43,7 +43,7 @@ let CONFIRM_TARGET_INFO = {
 
 const searchContentEle = document.getElementById('searchContentBox'); // コンテンツのエレメント
 const searchMessageEle = document.getElementById('contentMessage'); // メッセージのエレメント
-const searchBox = document.getElementById('search-view-box')
+const searchBox = document.getElementById('search-view-box');
 
 /**
  * クリックされたときに実行される関数
