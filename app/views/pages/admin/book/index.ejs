@@ -57,15 +57,15 @@
                 </form>
               </td>
               <td class="text-center">
-                <form action="/admin/book/delete" method="post">
+                <form action="/admin/book/delete" method="post" name="deleteBook<%= book.Id %>">
                   <input type="hidden" name="id" value="<%= book.Id %>">
                   <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
                 </form>
 
                 <div class="text-center">
                   <button
-                    onclick="createConfirmBox('deleteBook', 'キノの旅を削除します。よろしいですか？')"
-                    class="tree-button tree-button-mini tree-button-danger  mx-auto my-0"
+                    onclick="createConfirmBox('deleteBook<%= book.Id %>', 'キノの旅を削除します。よろしいですか？')"
+                    class="tree-button tree-button-mini tree-button-danger mx-auto my-0"
                   >
                     削除
                     <i class="bi bi-trash"></i>
