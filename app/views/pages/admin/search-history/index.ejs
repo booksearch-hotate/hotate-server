@@ -8,35 +8,41 @@
     <% if (pageData.anyData.searchHistory.length === 0) { %>
       <%- include('../../../components/no-item', {title: "検索履歴がありません", mes: ""}) %>
     <% } else { %>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>検索内容</th>
-          <th>作成日時</th>
-          <th>削除</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% for (let tag of pageData.anyData.searchHistory) { %>
-          <tr>
-            <td><%= tag.Words %></td>
-            <td><%= tag.CreatedAt %></td>
-            <td>
-              <form action="/admin/search-history/delete" method="post">
-                <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
-                <input type="hidden" name="id" value="<%= tag.Id %>">
-                <button type="submit" class="btn btn-danger">削除</button>
-              </form>
-            </td>
-          </tr>
-        <% } %>
-      </tbody>
-    </table>
+      <div class="tree-table">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>検索内容</th>
+              <th>作成日時</th>
+              <th>削除</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let tag of pageData.anyData.searchHistory) { %>
+              <tr>
+                <td><%= tag.Words %></td>
+                <td><%= tag.CreatedAt %></td>
+                <td>
+                  <form action="/admin/search-history/delete" method="post">
+                    <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+                    <input type="hidden" name="id" value="<%= tag.Id %>">
+                    <button type="submit" class="btn btn-danger">削除</button>
+                  </form>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
     <% } %>
+
     <%- include('./../../../components/pagination', {paginationData: pageData.anyData.paginationData, url: '/admin/search-history/?'}) %>
-    <div class="text-center">
-      <a href="/admin/">戻る</a>
-    </div>
+    
+    <a href="/admin/" class="tree-button mx-auto my-4">
+      戻る
+      <i class="bi bi-arrow-clockwise"></i>
+    </a>
+
     <%- include('./../../../components/input-js') %>
   </body>
 </html>

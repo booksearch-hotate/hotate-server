@@ -535,3 +535,8 @@ footer p {
   margin: .6rem;
   z-index: 5;
 }
+
+.tree-table {
+  width: 90%;
+  margin: 0 auto;
+}
