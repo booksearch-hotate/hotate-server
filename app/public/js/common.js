@@ -35,11 +35,11 @@
    }
 ];
 
-const CONFIRM_ID_PHRASE = 'confirm-box'; // 確認画面で用いるidの固定値
+const CONFIRM_ID_PHRASE = 'tree-confirm-box' // 確認画面で用いるidの固定値
 let CONFIRM_TARGET_INFO = {
   id: '',
   formName: ''
-};
+}
 
 const searchContentEle = document.getElementById('searchContentBox'); // コンテンツのエレメント
 const searchMessageEle = document.getElementById('contentMessage'); // メッセージのエレメント
@@ -160,8 +160,8 @@ async function createConfirmBox(formName, message = '') {
   }
 
   const div = document.createElement('div');
-  div.classList.add('confirm-box');
-  div.setAttribute('id', 'confirm-box');
+  div.classList.add('tree-confirm-box');
+  div.setAttribute('id', CONFIRM_ID_PHRASE);
 
   const id = Math.random().toString(32).substring(2);
 
@@ -169,14 +169,20 @@ async function createConfirmBox(formName, message = '') {
   CONFIRM_TARGET_INFO.formName = formName;
 
   div.innerHTML = `
-  <div class="confirm-content-box">
-    <h3>確認</h3>
-    <p>${message}</p>
-    <div class="confirm-button-box">
-      <button class="btn btn-outline-success" onclick="removeConfirmBox('${id}')">戻る</button>
-      <button class="btn btn-outline-danger" onclick="admitConfirm('${id}')">確認</button>
+    <div class="tree-confirm-content-box">
+      <h3>確認</h3>
+      <p>${message}</p>
+      <div class="tree-confirm-button-box">
+        <button onclick="removeConfirmBox('${id}')" class="tree-button tree-button-mini">
+          戻る
+          <i class="bi bi-arrow-clockwise"></i>
+        </button>
+        <button onclick="admitConfirm('${id}')" class="tree-button tree-button-mini tree-button-danger">
+          確認
+          <i class="bi bi-check"></i>
+        </button>
+      </div>
     </div>
-  </div>
   `;
 
   const bodyEle = document.getElementsByTagName('body')[0];
