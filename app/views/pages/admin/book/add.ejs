@@ -6,43 +6,64 @@
   </head>
   <body>
     <header>
-      <%- include('./../../../components/header-title', {mes: '本の追加'}) %>
+      <%- include('./../../../components/header-title', {mes: '本の追加', logo: 'plus'}) %>
     </header>
 
     <main>
-
-      <h4 class="text-center my-4">数を変更すると入力されたデータは<span class="text-danger">リセット</span>されます。</h4>
-
-      <div class="d-flex justify-content-evenly my-4">
-        <% if (pageData.anyData.count > 1) { %>
-          <a href="/admin/book/add?c=<%=pageData.anyData.count - 1 %>" class="decrease-count">1冊減らす</a>
-        <% } %>
-        <% if (pageData.anyData.count < 10) { %>
-          <a href="/admin/book/add?c=<%=pageData.anyData.count + 1 %>" class="increase-count">1冊増やす</a>
-        <% } %>
+      <div class="tree-attention">
+        <h3 class="tree-attention-title">
+          注意
+          <i class="bi bi-exclamation-triangle"></i>
+        </h3>
+        
+        <ul class="tree-attention-list">
+          <li>追加する冊数を変更すると、入力したデータはリセットされます。</li>
+          <li>一度に登録できる冊数は10冊までです。</li>
+        </ul>
       </div>
 
-        <div class="form-box mb-4">
-          <form action="/admin/book/add" method="post">
-            <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
-
-            <div class="d-flex justify-content-evenly my-4">
-              <a href="/admin/book/" class="btn btn-outline-success">戻る</a>
-              <button type="submit" class="btn btn-outline-primary">追加</button>
-            </div>
-
-            <div class="container">
-              <div class="row row-cols-2">
-                <% for (let i = 0; i < pageData.anyData.count; i++) { %>
-                  <div class="col">
-                    <%- include('../../../components/admin/book/book-card', {bookCount: i + 1}) %>
-                  </div>
-                <% } %>
+      <form action="/admin/book/add" method="post">
+        <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+        <div class="d-flex justify-content-evenly my-4">
+          <div class="text-center">
+            <button onclick="deleteLastCard()" class="tree-button tree-button-danger">
+              1冊減らす
+              <i class="bi bi-dash"></i>
+            </button>
+          </div>
+  
+          <div class="text-center">
+            <a onclick="addCard()" class="tree-button">
+              1冊増やす
+              <i class="bi bi-plus"></i>
+            </a>
+          </div>
+        </div>
+  
+        <div class="form-box my-3">
+            <div class="container-fluid">
+              <div class="row row-cols-2" id="card-box">
+                <!-- Elements created by javascript will come here. -->
               </div>
             </div>
-          </form>
         </div>
+
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <a href="/admin/" class="tree-button tree-button-success mx-auto my-0">
+                戻る
+                <i class="bi bi-arrow-clockwise"></i>
+              </a>
+            </div>
+            <div class="col">
+              <button type="submit" class="tree-button mx-auto py-0">追加</button>
+            </div>
+          </div>
+        </div>
+      </form>
     </main>
     <%- include('./../../../components/input-js') %>
+    <script src="/js/admin/book/controlCard.js"></script>
   </body>
 </html>

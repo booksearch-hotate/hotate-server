@@ -2,66 +2,91 @@
 <html>
   <head>
     <%- include('./../../../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/book/index.css" />
   </head>
   <body>
-    <%- include('./../../../components/header-title', {mes: '本一覧', logo: 'book'}) %>
-    <h5>ログイン状態で本の詳細ページを閲覧すると、その本を編集することが可能です</h5>
-  
-    <h5>合計 : <%= pageData.anyData.bookCount %>冊</h5>
+    <header class="text-center">
+      <%- include('./../../../components/header-title', {mes: '本の管理', logo:'book'}) %>
+    </header>
 
-    <div class="add-book-box text-center">
-      <a href="/admin/book/add"><h3>本を追加する</h3></a>
-    </div>
+    <a href="/admin/book/add" class="tree-button tree-button my-4 mx-auto">
+      本の追加
+      <i class="bi bi-plus"></i>
+    </a>
 
     <% if (pageData.anyData.bookCount === 0) { %>
       <%- include('../../../components/no-item', {title: "本が登録されていません", mes:"上の「本を追加する」から本を追加しましょう！"}) %>
     <% } else { %>
-    <div class="text-center">
+    <div>
       <form action="/admin/book/delete-all" method="post" name="deleteAll">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
       </form>
-  
-      <button class="btn btn-danger" onclick="createConfirmBox('deleteAll', '本データを全て削除します。よろしいですか？')">本データを一括削除</button>
+
+      <button onclick="createConfirmBox('deleteAll', '現在登録されている本を全て削除します。よろしいですか？')" class="tree-button tree-button tree-button-danger my-4 mx-auto">
+        本を全削除
+        <i class="bi bi-trash"></i>
+      </button>
     </div>
 
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>本名称</th>
-          <th>著者</th>
-          <th>出版社</th>
-          <th>編集</th>
-          <th>削除</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% for (let book of pageData.anyData.books) { %>
+    <h5 class="text-center">合計 : <%= pageData.anyData.bookCount %>冊</h5>
+
+    <div class="book-list-box">
+      <table class="table table-striped text-center">
+        <thead>
           <tr>
-            <td><%= book.BookName %></td>
-            <td><%= book.AuthorName %></td>
-            <td><%= book.PublisherName %></td>
-            <td>
-              <form action="/admin/book/edit" method="get">
-                <input type="hidden" name="id" value="<%= book.Id %>">
-                <button type="submit" class="btn btn-success">編集</button>
-              </form>
-            </td>
-            <td>
-              <form action="/admin/book/delete" method="post">
-                <input type="hidden" name="id" value="<%= book.Id %>">
-                <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
-                <button type="submit" class="btn btn-danger">削除</button>
-              </form>
-            </td>
+            <th>書名</th>
+            <th>著者名</th>
+            <th>出版社名</th>
+            <th>編集</th>
+            <th>削除</th>
           </tr>
-        <% } %>
-      </tbody>
-    </table>
-    <% } %>
-    <%- include('./../../../components/pagination', {paginationData: pageData.anyData.paginationData, url: '/admin/book/?'}) %>
-    <div class="text-center">
-      <a href="/admin/">戻る</a>
+        </thead>
+        <tbody>
+          <% for (let book of pageData.anyData.books) { %>
+            <tr class="align-middle">
+              <td><%= book.BookName %></td>
+              <td><%= book.AuthorName %></td>
+              <td><%= book.PublisherName %></td>
+              <td>
+                <form action="/admin/book/edit" method="get" class="text-center">
+                  <input type="hidden" name="id" value="<%= book.Id %>">
+                  <button type="submit" class="tree-button tree-button-mini mx-auto my-0">
+                    編集
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                </form>
+              </td>
+              <td class="text-center">
+                <form action="/admin/book/delete" method="post">
+                  <input type="hidden" name="id" value="<%= book.Id %>">
+                  <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+                </form>
+
+                <div class="text-center">
+                  <button
+                    onclick="createConfirmBox('deleteBook', 'キノの旅を削除します。よろしいですか？')"
+                    class="tree-button tree-button-mini tree-button-danger  mx-auto my-0"
+                  >
+                    削除
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
     </div>
+    <% } %>
+
+    <%- include('./../../../components/pagination', {paginationData: pageData.anyData.paginationData, url: '/admin/book/?'}) %>
+
+      <a href="/admin/" class="tree-button mx-auto my-4">
+        戻る
+        <i class="bi bi-arrow-clockwise"></i>
+      </a>
+    </div>
+
     <%- include('./../../../components/state-alert', {pageData}) %>
     <%- include('./../../../components/input-js') %>
   </body>

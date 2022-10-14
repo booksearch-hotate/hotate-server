@@ -533,4 +533,5 @@ footer p {
   bottom: 0;
   right: 0;
   margin: .6rem;
+  z-index: 5;
 }
