@@ -9,28 +9,26 @@
     <div class="grade-info-box">
       <div class="text-center">
         <h2>学年・クラスの設定</h2>
-        <h4>学年とクラスの数を設定できます。</h4>
+        <p>学年とクラスの数を設定できます。</p>
       </div>
       <form action="/admin/school-info/grade-info/update" method="post">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <div class="container">
           <div class="row mb-2">
-            <div class="col text-center">
-              <div class="form-group">
-                <label for="schoolYear" class="form-label">学年</label>
-                <input type="number" class="form-control" name="year" value="<%= pageData.anyData.schoolGradeInfo.Year %>" min="1" max="10" id="schoolYear">
+            <div class="col">
+              <div class="tree-form-item">
+                <label for="schoolYear" class="tree-label">学年</label>
+                <input type="number" class="tree-input" name="year" value="<%= pageData.anyData.schoolGradeInfo.Year %>" min="1" max="10" id="schoolYear">
               </div>
-            </div>
-            <div class="col text-center">
-              <div class="form-group">
-                <label for="schoolClass" class="form-label">クラス</label>
-                <input type="number" class="form-control" name="schoolClass" value="<%= pageData.anyData.schoolGradeInfo.SchoolClass %>" min="1" max="10" id="schoolClass">
+              <div class="tree-form-item">
+                <label for="schoolClass" class="tree-label">クラス</label>
+                <input type="number" class="tree-input" name="schoolClass" value="<%= pageData.anyData.schoolGradeInfo.SchoolClass %>" min="1" max="10" id="schoolClass">
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col text-center">
-              <button type="submit" class="btn btn-outline-primary">確定</button>
+            <div class="col">
+              <button type="submit" class="tree-button tree-button-success my-0 mx-auto">確定</button>
             </div>
           </div>
         </div>
@@ -39,21 +37,22 @@
     <div class="insert-department-box my-3">
       <div class="text-center">
         <h2>学科の追加</h2>
-        <h4><b>20</b>個まで追加可能です。</h4>
+        <p><b>20</b>個まで追加可能です。</p>
       </div>
       <form action="/admin/school-info/insert" method="post">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <div class="container">
-          <div class="row align-items-center">
+          <div class="row mb-2">
             <div class="col">
-              <div class="form-group">
-                <label for="insertName" class="form-label">追加する学科名</label>
-                <input class="form-control" type="text" id="insertName" name="insertName">
-                <div id="insertName" class="form-text">30文字以内で入力してください。</div>
+              <div class="tree-form-item">
+                <label for="insertName" class="tree-label">追加する学科名</label>
+                <input class="tree-input" type="text" id="insertName" name="insertName">
               </div>
             </div>
+          </div>
+          <div class="row">
             <div class="col">
-              <button type="submit" class="btn btn-outline-primary" <%if (pageData.anyData.isMax) { %>disabled<% } %>>追加</button>
+              <button type="submit" class="tree-button tree-button-success mx-auto my-0" <%if (pageData.anyData.isMax) { %>disabled<% } %>>追加</button>
             </div>
           </div>
         </div>
@@ -62,38 +61,40 @@
     <% if (pageData.anyData.departmentList.length === 0) { %>
       <%- include('../../../components/no-item', {title: "学科情報が登録されていません", mes:"本リクエスト機能を使用するには学科情報が必要です"}) %>
     <% } else { %>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>学科名</th>
-          <th>変更</th>
-          <th>削除</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% for (let department of pageData.anyData.departmentList) { %>
-          <tr>
-            <td><%= department.Name %></td>
-            <td>
-              <form action="/admin/school-info/edit" method="get">
-                <input type="hidden" name="id" value="<%= department.Id %>">
-                <button type="submit" class="btn btn-outline-success">変更</button>
-              </form>
-            </td>
-            <td>
-              <form action="/admin/school-info/confirm-delete" method="get">
-                <input type="hidden" name="did" value="<%= department.Id %>">
-                <button type="submit" class="btn btn-danger">削除</button>
-              </form>
-            </td>
-          </tr>
-        <% } %>
-      </tbody>
-    </table>
+      <div class="tree-table">
+        <table class="table table-striped text-center">
+          <thead>
+            <tr>
+              <th>学科名</th>
+              <th>変更</th>
+              <th>削除</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let department of pageData.anyData.departmentList) { %>
+              <tr class="align-middle">
+                <td><%= department.Name %></td>
+                <td>
+                  <form action="/admin/school-info/edit" method="get">
+                    <input type="hidden" name="id" value="<%= department.Id %>">
+                    <button type="submit" class="tree-button tree-button-mini mx-auto">変更</button>
+                  </form>
+                </td>
+                <td>
+                  <form action="/admin/school-info/confirm-delete" method="get">
+                    <input type="hidden" name="did" value="<%= department.Id %>">
+                    <button type="submit" class="tree-button tree-button-danger tree-button-mini mx-auto">削除</button>
+                  </form>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
     <% } %>
-    <div class="text-center">
-      <a href="/admin/">戻る</a>
-    </div>
+    
+    <a href="/admin/" class="tree-button mx-auto my-4">戻る</a>
+
     <%- include('./../../../components/state-alert', {pageData}) %>
     <%- include('./../../../components/input-js') %>
   </body>
