@@ -66,51 +66,6 @@
   margin-right: 15px;
 }
 
-.campaign-flex {
-  display: flex;
-  justify-content: center;
-}
-
-.campaign-item {
-  list-style: none;
-  width: 400px;
-  margin-top: 80px;
-  margin-left: 50px;
-  background-color: #ffffff;
-  border: 1px #000000 solid;
-  border-radius: 30px;
-  overflow: hidden;
-}
-
-.campaign-item-cover {
-  width: 400px;
-  border-radius: 30px 30px 0 0;
-  border-bottom: 1px #000000 solid;
-}
-
-.campaign-item-text {
-  padding: .4rem;
-}
-
-.campaign-item-text p {
-  font-size: 24px;
-  color: #7C7C7C;
-}
-
-.campaign-item-text h3 {
-  font-size: 26px;
-  margin-left: 10px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.campaign-scroll {
-  display: flex;
-  justify-content: center;
-  list-style: none;
-}
-
 .sccroll-button {
   margin: 20px 10px;
   text-align: center;
