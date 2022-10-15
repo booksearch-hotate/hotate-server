@@ -11,22 +11,24 @@
       <% if (!pageData.anyData.isError) { %>
         <% data = pageData.anyData.bookData %>
 
-        <div class="item-title"><%= data.BookName %></div>
-        <div class="item-syousai">
-          <div><img src="<%= data.ImgLink %>" alt="" data-isbn="<%= data.Isbn %>"></div>
-          <div class="item-text">
-            <p class="item-writer">著者: <%= data.AuthorName %></p>
-            <p class="item-writer">出版社：<%= data.PublisherName %></p>
-            <div class="arasuzi">あらすじ</div>
-            <p><%= data.BookContent %></p>
-            <div class="tag-flex">
-              <% data.Tags.forEach(tag => { %>
-                <div class="tag">
-                  <a href="/search?search=<%= tag %>&tag=true">
-                    <p><i class="bi bi-hash"></i><%= tag %></p>
-                  </a>
-                </div> 
-              <% }) %>
+        <div class="item-box">
+          <div class="item-title"><%= data.BookName %></div>
+          <div class="item-syousai">
+            <div><img src="<%= data.ImgLink %>" alt="" data-isbn="<%= data.Isbn %>"></div>
+            <div class="item-text">
+              <p class="item-writer">著者: <%= data.AuthorName %></p>
+              <p class="item-writer">出版社：<%= data.PublisherName %></p>
+              <div class="arasuzi">あらすじ</div>
+              <p><%= data.BookContent %></p>
+              <div class="tag-flex">
+                <% data.Tags.forEach(tag => { %>
+                  <div class="tag">
+                    <a href="/search?search=<%= tag %>&tag=true">
+                      <p><i class="bi bi-hash"></i><%= tag %></p>
+                    </a>
+                  </div> 
+                <% }) %>
+              </div>
             </div>
           </div>
         </div>
