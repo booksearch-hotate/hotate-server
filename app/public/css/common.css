@@ -6,7 +6,7 @@
 
 :root {
   --font-color: #432;
-  --main-color: #F4E4D4;
+  --main-color: #467556;
   --sub-color: #244E5F;
   --danger-color: #a03434;
   --warning-color: #E8BB50;
@@ -64,7 +64,7 @@ input:focus {
 }
 
 .main-nav a, .header-search-box a {
-  color:#244E5F!important;
+  color:#fff!important;
   text-decoration: none;
 }
 
