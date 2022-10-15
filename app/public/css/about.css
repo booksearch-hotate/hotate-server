@@ -1,3 +1,7 @@
+main {
+  background-color: var(--bg-color);
+}
+
 .main-about-box {
   background-color: #888;
   position: relative;
@@ -22,6 +26,16 @@
 .about-title p {
   font-size: 1.125rem;
   margin: 10px 0 0px;
+}
+
+.about-main-message {
+  text-align: center;
+}
+
+.about-main-message h3 {
+  font-size: 3rem;
+  color: #fff;
+  letter-spacing: .6rem;
 }
 
 .about-contents {
@@ -79,7 +93,7 @@
 }
 
 .dev-comment-box {
-  background-color: #46788d;
+  background-color: #97C0A5;
   padding: 30px 10px;
   margin-top: 60px;
 }
