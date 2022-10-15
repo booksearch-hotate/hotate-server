@@ -111,6 +111,7 @@ input:focus {
   align-items: center;
   transition: visibility .5s, opacity .5s;
   backdrop-filter: blur(5px);
+  background-color: rgb(255 255 255 / 57%);
   width: 100vw;
   height: 100vh;
   z-index: 100;
