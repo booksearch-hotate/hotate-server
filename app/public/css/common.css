@@ -606,6 +606,105 @@ footer p {
   list-style: none;
 }
 
+/* -----------------------------------
+ページネーション
+----------------------------------- */
+
+.tree-pagination {
+  margin: 30px auto;
+}
+
+.tree-pagination-list {
+  display: flex;
+  justify-content: center;
+  padding: 0 10px;
+  gap: 1.4rem;
+}
+
+.tree-pagination-item {
+  list-style: none;
+  width: 3rem;
+  height: 3rem;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  position: relative;
+  transition-duration: .1s;
+  transition: color .1s;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.tree-pagination-item::after {
+  background: #ddd;
+  border-radius: 50%;
+  content: "";
+  display: block;
+  margin: auto;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding-top: 100%;
+  height: 0;
+  z-index: -1;
+  transform: translateY(-50%) scale(0.1);
+  transition: opacity .1s, transform 0s;
+  transition-delay: 0s, .2s;
+}
+
+.tree-pagination-item:disabled {
+  background-color: rgba(139, 139, 139, 0.627);
+  pointer-events: none;
+}
+
+.tree-pagination-item:disabled::after {
+  background-color: rgba(139, 139, 139, 0.627);
+}
+ 
+.tree-pagination-item:hover {
+  color: #fff;
+}
+
+.tree-pagination-item:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+  transition-delay: 0s;
+  transition: opacity .1s, transform .3s ease-in-out;
+}
+
+.tree-pagination-item * {
+  font-size: 2rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all .5s;
+}
+
+.tree-pagination-item-active * {
+  color: rgb(6 149 44)!important;
+}
+
+.tree-pagination-link {
+  text-decoration: none;
+  color: var(--font-color);
+}
+
+.tree-pagination-link:hover {
+  color: var(--font-color);
+}
+
+/* -----------------------------------
+アイテムがない場合のUIのレイアウト
+----------------------------------- */
+
 .no-item-box i {
   font-size: 5rem;
 }
