@@ -5,30 +5,35 @@
     <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/recommendation/edit.css" />
   </head>
   <body>
-    <h3>セクションの追加</h3>
+    <header>
+      <%- include('./../../../components/header-title', {mes: 'セクションの追加'}) %>
+    </header>
 
     <form method="post" action="/admin/recommendation/insert">
       <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
-      <div class="mb-3">
-        <label for="title" class="form-label" required>タイトル</label>
-        <input type="text" class="form-control" id="title" name="title" placeholder="タイトルを入力" required>
+      <div class="tree-form-item mb-3">
+        <label for="title" class="tree-label" required><%- include('../../../components/required-text', {mes: 'タイトル'}) %></label>
+        <input type="text" class="tree-input" id="title" name="title" placeholder="タイトルを入力" required>
       </div>
 
-      <div class="mb-3 form-floating">
-        <textarea class="form-control" placeholder="内容を追加" id="content" style="height: 200px;" name="content" required></textarea>
-        <label for="content">内容</label>
+      <div class="mb-3 tree-form-item">
+        <label for="content" class="tree-label"><%- include('../../../components/required-text', {mes: '内容'}) %></label>
+        <textarea class="tree-input tree-textarea" placeholder="内容を追加" id="content" style="height: 200px;" name="content"></textarea>
       </div>
 
       <%- include('./../../../components/admin/recommendation/thumbnail-list', {thumbnailList: pageData.anyData.thumbnailList, defaults: pageData.anyData.defaultThumbnailList}) %>
 
-      <div class="mb-3">
-        <button type="button" onclick="submit();" class="btn btn-primary">追加</button>
+      <div class="container my-4">
+        <div class="row">
+          <div class="col">
+            <a href="/admin/recommendation" class="tree-button mx-auto">戻る</a>
+          </div>
+          <div class="col">
+            <button type="button" onclick="submit();" class="tree-button tree-button-success mx-auto">追加</button>
+          </div>
+        </div>
       </div>
     </form>
-
-    <div class="text-center">
-      <a href="/admin/recommendation">戻る</a>
-    </div>
 
     <%- include('./../../../components/state-alert', {pageData}) %>
 
