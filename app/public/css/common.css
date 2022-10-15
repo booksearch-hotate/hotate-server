@@ -464,9 +464,9 @@ footer p {
   background-color: var(--success-color);
 }
 
-/**
+/* -----------------------------------
 注意書きカード
-*/
+----------------------------------- */
 
 .tree-attention {
   background: var(--warning-color);
@@ -542,6 +542,66 @@ footer p {
   margin: 0 auto;
 }
 
+/* -----------------------------------
+キャンペーンカード関係
+----------------------------------- */
+
+.campaign-item-box {
+  width: 100vw;
+  overflow: scroll;
+  margin-top: 80px;
+  padding: 0 30px;
+}
+
+.campaign-flex {
+  width: fit-content;
+  display: flex;
+  gap: 50px;
+  overflow: scroll;
+}
+
+.campaign-item {
+  list-style: none;
+  width: 400px;
+  background-color: #ffffff;
+  border: 1px #000000 solid;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.campaign-item-cover {
+  width: 100%;
+  border-bottom: 1px #000000 solid;
+}
+
+.campaign-item-text {
+  padding: .4rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.campaign-item-text p {
+  font-size: 24px;
+  color: #7C7C7C;
+  width: 100%;
+}
+
+.campaign-item-text h3 {
+  font-size: 26px;
+  margin-left: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.campaign-scroll {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
 
 .no-item-box i {
   font-size: 5rem;
