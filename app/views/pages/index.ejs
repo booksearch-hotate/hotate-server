@@ -36,15 +36,15 @@
           <div class="campaign-title-text">Campaign</div>
         </div>
 
-        <div class="tree-campaign-item-box">
-          <div class="tree-campaign-flex">
+        <div class="card-campaign-item-box">
+          <div class="card-campaign-flex">
             <% for (const section of pageData.anyData.recommendations) { %>
-              <div class="tree-campaign-item">
+              <div class="card-campaign-item">
                 <% if (section.recommendation.IsSolid) { %>
                 <% } %>
                 <% const recommendation = section %>
-                <img class="tree-campaign-item-cover" src="/thumbnail/<%= recommendation.recommendation.ThumbnailName %>.png" >
-                <div class="tree-campaign-item-text">
+                <img class="card-campaign-item-cover" src="/thumbnail/<%= recommendation.recommendation.ThumbnailName %>.png" >
+                <div class="card-campaign-item-text">
                   <p><%= recommendation.recommendation.CreatedAt %></p>
                   <h3><%= recommendation.recommendation.Title %></h3>
                 </div>
