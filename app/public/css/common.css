@@ -372,7 +372,9 @@ footer p {
 /* アニメーション参照元 : https://b-risk.jp/blog/2021/11/hover-reference/#i-17 */
 .tree-button {
   cursor: pointer;
-  width: 12rem;
+  min-width: 12rem;
+  width: fit-content;
+  padding: 0 10px;
   height: 4.1rem;
   font-size: 1.2rem;
   color: var(--sub-color);

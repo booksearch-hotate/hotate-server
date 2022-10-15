@@ -7,9 +7,9 @@
   <body>
     <%- include('./../../../components/header-title', {mes: 'おすすめセクション一覧'}) %>
 
-    <div class="text-center">
-      <a href="/admin/recommendation/add" class="btn btn-primary">セクションを追加する</a>
-    </div>
+    <a href="/admin/recommendation/add" class="tree-button mx-auto my-3">
+      セクションを追加する
+    </a>
 
     <% if (pageData.anyData.recommendations.length === 0) { %>
       <%- include('../../../components/no-item', {title: "セクションがありません", mes:"お知らせやおすすめの本を皆さんに紹介しましょう！"}) %>
@@ -19,9 +19,7 @@
 
     <%- include('./../../../components/pagination', {paginationData: pageData.anyData.paginationData, url: '/admin/recommendation/?'}) %>
 
-    <div class="text-center">
-      <a href="/admin/">戻る</a>
-    </div>
+    <a href="/admin/" class="tree-button mx-auto">戻る</a>
 
     <%- include('./../../../components/input-js') %>
   </body>
