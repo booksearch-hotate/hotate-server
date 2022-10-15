@@ -549,21 +549,21 @@ footer p {
 キャンペーンカード関係
 ----------------------------------- */
 
-.campaign-item-box {
+.tree-campaign-item-box {
   width: 100vw;
   overflow: scroll;
   margin-top: 80px;
   padding: 0 30px;
 }
 
-.campaign-flex {
+.tree-campaign-flex {
   width: fit-content;
   display: flex;
   gap: 50px;
   overflow: scroll;
 }
 
-.campaign-item {
+.tree-campaign-item {
   list-style: none;
   width: 400px;
   background-color: #ffffff;
@@ -575,24 +575,24 @@ footer p {
   overflow: hidden;
 }
 
-.campaign-item-cover {
+.tree-campaign-item-cover {
   width: 100%;
   border-bottom: 1px #000000 solid;
 }
 
-.campaign-item-text {
+.tree-campaign-item-text {
   padding: .4rem;
   width: 100%;
   overflow: hidden;
 }
 
-.campaign-item-text p {
+.tree-campaign-item-text p {
   font-size: 24px;
   color: #7C7C7C;
   width: 100%;
 }
 
-.campaign-item-text h3 {
+.tree-campaign-item-text h3 {
   font-size: 26px;
   margin-left: 10px;
   text-overflow: ellipsis;
@@ -604,6 +604,72 @@ footer p {
   display: flex;
   justify-content: center;
   list-style: none;
+}
+
+.campaign-title {
+  text-align: center;
+  font-size: 2.6rem;
+  margin-top: 40px;
+  margin-bottom: 100px;
+  margin-left: 70px;
+  margin-right: 70px;
+  display:flex;
+  align-items: center;  
+  color:#244E5F;
+}
+
+.campaign-title::before,
+.campaign-title::after {
+	content:"";
+	flex-grow: 1;
+	border-bottom: 2px solid #244E5F;
+}
+
+.campaign-title::before{
+  margin-right: 20px;  
+  padding-left: 15px;  
+}
+
+.campaign-title::after{
+  margin-left: 20px; 
+  padding-right: 15px;  
+}
+
+.campaign-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem;
+  justify-content: center;
+}
+
+.campaign-item {
+  list-style: none;
+}
+
+.campaign-thumbnail {
+  max-width: 370px;
+  margin-bottom: 10px;
+}
+
+.campaign-thumbnail img{
+  border-radius: 20px;
+}
+
+.campaign-item-text {
+  padding: 0 10px;
+}
+
+.campaign-text-title {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
+.campaign-text-time {
+  color: #ababab;
+  line-height: 1;
+  font-size: 0.9rem;
 }
 
 /* -----------------------------------

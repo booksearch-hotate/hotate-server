@@ -7,7 +7,7 @@ import colors from 'colors/safe';
 import path from 'path';
 import fs from 'fs';
 import glob from 'glob';
-import * as appRoot from 'app-root-path';
+import appRoot from 'app-root-path';
 
 /* routers */
 import homeRouter from '../routers/home';
@@ -36,6 +36,7 @@ import ElasticSearch from '../infrastructure/elasticsearch/elasticsearch';
 import esDocuments from '../infrastructure/elasticsearch/documents/documentType';
 import axios from 'axios';
 import SetPageData from '../utils/setPageData';
+import campaignRouter from '../routers/campaign';
 
 const COOKIE_MAX_AGE = 60 * 60 * 1000; // 1時間
 
@@ -133,6 +134,7 @@ app.use('/', bookItemRouter);
 app.use('/', loginRouter);
 app.use('/', searchRouter);
 app.use('/', requestRouter);
+app.use('/campaign', campaignRouter);
 app.use('/about', aboutRouter);
 app.use('/admin', adminRouter);
 app.use('/admin/book', bookRouter);
