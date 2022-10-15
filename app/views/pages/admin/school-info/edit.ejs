@@ -4,19 +4,29 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <h3>学科名の変更</h3>
+    <header>
+      <%- include('./../../../components/header-title', {mes: '学科名の変更'}) %>
+    </header>
+
     <form action="/admin/school-info/update" method="post">
       <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
       <input type="hidden" name="id" value="<%= pageData.anyData.department.Id %>">
-      <div class="form-group">
-        <label for="name" class="form-label">学科名の名称</label>
-        <input class="form-control" type="text" id="name" name="name" value="<%= pageData.anyData.department.Name %>">
+      <div class="tree-form-item">
+        <label for="name" class="tree-label">学科名の名称</label>
+        <input class="tree-input" type="text" id="name" name="name" value="<%= pageData.anyData.department.Name %>">
       </div>
-      <button class="btn btn-primary">確定</button>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <a href="/admin/school-info/" class="tree-button mx-auto my-4">戻る</a>
+          </div>
+          <div class="col">
+            <button class="tree-button tree-button-warning mx-auto my-4">確定</button>
+          </div>
+        </div>
+      </div>
     </form>
-    <div class="text-center">
-      <a href="/admin/school-info/">戻る</a>
-    </div>
+     
     <%- include('./../../../components/state-alert', {pageData}) %>
     <%- include('./../../../components/input-js') %>
   </body>
