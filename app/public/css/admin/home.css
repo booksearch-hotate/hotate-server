@@ -27,7 +27,7 @@ main {
   opacity: 0;
   transform: scale(1.6);
   padding-right: 10px;
-  transition: left .8s opacity .8s;
+  transition: left .8s, opacity .8s;
 }
 
 .admin-menu-item-box a:hover::before {
