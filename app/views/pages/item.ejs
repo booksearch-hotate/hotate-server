@@ -10,50 +10,43 @@
     <main>
       <% if (!pageData.anyData.isError) { %>
         <% data = pageData.anyData.bookData %>
-        <div class="book-content text-center my-3">
-          <%- include('./../components/header-title', {mes: data.BookName, logo: ''}) %>
-          <h4 class="mt-3"><%= data.AuthorName %> ・ <%= data.publisherName%></h4>
-          <img src="<%= data.ImgLink %>" class="img-fluid rounded-start">
-          <p class="mt-3"><%= data.BookContent %></p>
-        </div>
-        <% data.Tags.forEach(tag => { %>
-          <%- include('../components/book-tag', {tag: tag}) %>
-        <% }) %>
-        <% if (pageData.anyData.isLogin) { %>
-          <a href="/admin/book/edit?id=<%= data.Id %>">編集</a>
-        <% } %>
-        <form action="/tag/insert" method="post">
-          <input type="hidden" name="bookId" value="<%= data.Id %>">
-          <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
-          <div class="add-tag-form-box container">
-            <div class="row">
-              <div class="col-md-6">
-                <input type="text" class="form-control" name="tagName" placeholder="タグを追加">
-              </div>
-              <div class="col-md-6">
-                <button type="submit" class="btn btn-primary">追加</button>
-              </div>
-            </div>
-            <div class="row" id="tag-result-box">
-              <div class="col-md-12">
-                <p id="tag-result" class="m-0"></p>
-              </div>
+
+        <div class="item-title"><%= data.BookName %></div>
+        <div class="item-syousai">
+          <div><img src="<%= data.ImgLink %>" alt="" data-isbn="<%= data.Isbn %>"></div>
+          <div class="item-text">
+            <p class="item-writer">著者: <%= data.AuthorName %></p>
+            <p class="item-writer">出版社：<%= data.PublisherName %></p>
+            <div class="arasuzi">あらすじ</div>
+            <p><%= data.BookContent %></p>
+            <div class="tag-flex">
+              <% data.Tags.forEach(tag => { %>
+                <div class="tag">
+                  <a href="/search?search=<%= tag %>&tag=true">
+                    <p><i class="bi bi-hash"></i><%= tag %></p>
+                  </a>
+                </div> 
+              <% }) %>
             </div>
           </div>
-        </form>
+        </div>
+
+        <aside>
+          <div class="osusume-title"><i class="bi bi-binoculars-fill"></i>この本に似ている本</div>
+          <div class="osusume-flex">
+            <% for (const book of pageData.anyData.nearCategoryBookDatas) { %>
+              <div class="osusume-book">
+                <img src="<%= book.ImgLink %>" alt="" data-isbn="<%= book.Isbn %>">
+                <div class="osusume-text">
+                  <p class="osusume-book-title"><%= book.BookName %></p>
+                  <p class="osusume-writer">著；<%= book.AuthorName %></p>
+                </div>
+              </div>
+            <% } %>
+          </div>
+         </aside>
 
         <div class="recommend-other-books">
-          <div class="near-category-books">
-            <h2 class="recommend-other-books-title"><%= data.BookName %>に類似している本</h2>
-            <div class="near-category-books-list-box">
-              <div class="near-category-books-list" id="nearCategoryBooksList">
-                <%- include('../components/book-item-list', {books: pageData.anyData.nearCategoryBookDatas}) %>
-              </div>
-              <div class="near-category-detail-box" id="nearCategoryDetailBox">
-                <p onclick="showDetail('nearCategoryBooksList', 'nearCategoryDetailBox')">もっとみる</p>
-              </div>
-            </div>
-          </div>
 
           <% if (pageData.anyData.recommendation !== null) { %>
           <div class="exist-recommendation">
