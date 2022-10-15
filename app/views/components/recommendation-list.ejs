@@ -2,28 +2,27 @@
 おすすめセクション一覧の表示
 %>
 
-<% pageData.anyData.recommendations = typeof pageData.anyData.recommendations === 'undefined' ? [] : pageData.anyData.recommendations %>
+<% paginationItemList = typeof paginationData === 'undefined' ? [] : paginationData %>
 
-<div class="campaign-item-box">
+<div class="campaign-container">
   <div class="campaign-flex">
-    <% for (const section of pageData.anyData.recommendations) { %>
-      <div class="campaign-item">
-        <% if (section.recommendation.IsSolid) { %>
-        <% } %>
-        <% const recommendation = section %>
-        <img class="campaign-item-cover" src="/thumbnail/<%= recommendation.recommendation.ThumbnailName %>.png" >
-        <div class="campaign-item-text">
-          <p class="campaign-item-time"><%= recommendation.recommendation.CreatedAt %></p>
-          <h3 class="campaign-item-title"><%= recommendation.recommendation.Title %></h3>
-  
-          <% if (typeof editMode !== 'undefined' && editMode === true) { %>
-            <a
-              href="/admin/recommendation/edit?rid=<%= recommendation.recommendation.Id %>"
-              class="tree-button tree-button-success tree-button-mini mx-auto my-4"
-            >編集する</a>
-          <% } %>
-        </div>
+    <% for (recommendation of paginationItemList) { %>
+    <li class="campaign-item">
+      <div class="campaign-thumbnail">
+        <img class="w-100" src="/thumbnail/<%= recommendation.ThumbnailName %>.png">
       </div>
+      <div class="campaign-item-text">
+        <div class="campaign-text-title"><%= recommendation.Title %></div>
+        <div class="campaign-text-time"><%= recommendation.CreatedAt %></div>
+      </div>
+
+      <% if (typeof editMode !== 'undefined' && editMode === true) { %>
+        <a
+          href="/admin/recommendation/edit?rid=<%= recommendation.Id %>"
+          class="tree-button tree-button-success tree-button-mini mx-auto my-4"
+        >編集する</a>
+      <% } %>
+    </li>
     <% } %>
   </div>
 </div>

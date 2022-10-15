@@ -14,12 +14,12 @@
     <% if (pageData.anyData.recommendations.length === 0) { %>
       <%- include('../../../components/no-item', {title: "セクションがありません", mes:"お知らせやおすすめの本を皆さんに紹介しましょう！"}) %>
     <% } else { %>
-      <%- include('./../../../components/recommendation-list', {editMode: true}) %>
+      <%- include('./../../../components/recommendation-list', {paginationData: pageData.anyData.recommendations, editMode: true}) %>
     <% } %>
 
     <%- include('./../../../components/pagination', {paginationData: pageData.anyData.paginationData, url: '/admin/recommendation/?'}) %>
 
-    <a href="/admin/" class="tree-button mx-auto">戻る</a>
+    <a href="/admin/" class="tree-button mx-auto my-4">戻る</a>
 
     <%- include('./../../../components/input-js') %>
   </body>
