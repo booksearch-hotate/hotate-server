@@ -549,57 +549,6 @@ footer p {
 キャンペーンカード関係
 ----------------------------------- */
 
-.tree-campaign-item-box {
-  width: 100vw;
-  overflow: scroll;
-  margin-top: 80px;
-  padding: 0 30px;
-}
-
-.tree-campaign-flex {
-  width: fit-content;
-  display: flex;
-  gap: 50px;
-  overflow: scroll;
-}
-
-.tree-campaign-item {
-  list-style: none;
-  width: 400px;
-  background-color: #ffffff;
-  border: 1px #000000 solid;
-  border-radius: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
-}
-
-.tree-campaign-item-cover {
-  width: 100%;
-  border-bottom: 1px #000000 solid;
-}
-
-.tree-campaign-item-text {
-  padding: .4rem;
-  width: 100%;
-  overflow: hidden;
-}
-
-.tree-campaign-item-text p {
-  font-size: 24px;
-  color: #7C7C7C;
-  width: 100%;
-}
-
-.tree-campaign-item-text h3 {
-  font-size: 26px;
-  margin-left: 10px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
 .campaign-scroll {
   display: flex;
   justify-content: center;
@@ -644,6 +593,9 @@ footer p {
 
 .campaign-item {
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .campaign-thumbnail {
@@ -657,13 +609,16 @@ footer p {
 
 .campaign-item-text {
   padding: 0 10px;
+  max-width: 370px;
+  overflow: hidden;
 }
 
 .campaign-text-title {
   margin-bottom: 10px;
   font-size: 1.2rem;
-  display: -webkit-box;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .campaign-text-time {
