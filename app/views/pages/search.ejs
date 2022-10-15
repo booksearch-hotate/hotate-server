@@ -1,5 +1,5 @@
 <%
-var queryLink = '';
+let queryLink = '';
 
 if (pageData.anyData.isStrict) queryLink += '&strict=true';
 if (pageData.anyData.isTag) queryLink += '&tag=true';
@@ -8,19 +8,24 @@ if (pageData.anyData.isTag) queryLink += '&tag=true';
 <html>
   <head>
     <%- include('./../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/search.css" />
   </head>
   <body>
     <%- include('./../components/navbar') %>
-    <header>
-      <%- include('./../components/header-title', {mes: '検索結果', logo: 'search'})  %>
-    </header>
+
+    <div class="result-title">
+      <div class="result-title-text">
+        「<%= pageData.anyData.searchWord %>」の検索結果
+        <i class="bi bi-search ms-2"></i>
+      </div>
+     </div>
+
     <main>
-      <h4 class="text-center" style="color: #555">『<%= pageData.anyData.searchWord %>』</h4>
       <% if (pageData.anyData.searchRes.length === 0) { %>
         <%- include('../components/no-item', {title: "検索結果が見つかりませんでした", mes: "異なる単語でお試しください", icon: "search"}) %>
       <% } %>
       <% if (pageData.anyData.searchHis.length !== 0) { %>
-        <h4 class="mx-2">他の人はこんな検索をしていました</h4>
+        <h4 class="mx-2 text-center">他の人はこんな検索をしていました</h4>
         <div class="search-history-tag-box px-2">
         <% pageData.anyData.searchHis.forEach(data => { %>
           <a href="/search?search=<%= data.Words %>&type=<%= pageData.anyData.searchCategory %>" class="search-history-tag px-3 py-1">
@@ -30,7 +35,29 @@ if (pageData.anyData.isTag) queryLink += '&tag=true';
         </div>
       <% } %>
 
-      <%- include('../components/book-item-list', {books: pageData.anyData.searchRes}) %>
+      <div class="wrapper grid">
+        <% for (const book of pageData.anyData.searchRes) { %>
+          <div class="book-box">
+            <div class="book">
+              <img src="<%= book.ImgLink %>" class="img-fluid rounded-start" data-isbn="<%= book.Isbn %>">
+              <div class="book-text">
+                <p class="book-title"><%= book.BookName %></p>
+                <p class="book-writer"><%= book.AuthorName %></p>
+                <p class="book-content"><%= book.BookContent %></p>
+                <div class="tag-flex">
+                  <% book.Tags.forEach(tag => { %>
+                    <%- include('../components/book-tag', {tag: tag}) %>
+                  <% }) %> 
+                </div>
+              </div>
+            </div>
+            <a href="/item/<%= book.Id %>" class="tree-button tree-button-mini mx-auto my-2">
+              <i class="bi bi-book me-2"></i>
+              詳細
+            </a>
+          </div>
+        <% } %>
+      </div>
 
       <%- include('../components/pagination', {paginationData: pageData.anyData.paginationData, url: `/search?search=${pageData.anyData.searchWord}${queryLink}&type=${pageData.anyData.searchCategory}&`}) %>
     </main>
