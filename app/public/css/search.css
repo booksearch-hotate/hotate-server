@@ -23,6 +23,20 @@
   width: 2.5rem;
 }
 
+.search-history-tag-box {
+  text-align: center;
+}
+
+.search-history-tag-box a {
+  text-decoration: none;
+  color: var(--font-color);
+  transition: opacity .5s;
+}
+
+.search-history-tag-box a:hover {
+  opacity: .8;
+}
+
 .grid {
   display: grid;
   gap: 30px;

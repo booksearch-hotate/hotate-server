@@ -25,8 +25,8 @@ if (pageData.anyData.isTag) queryLink += '&tag=true';
         <%- include('../components/no-item', {title: "検索結果が見つかりませんでした", mes: "異なる単語でお試しください", icon: "search"}) %>
       <% } %>
       <% if (pageData.anyData.searchHis.length !== 0) { %>
-        <h4 class="mx-2 text-center">他の人はこんな検索をしていました</h4>
-        <div class="search-history-tag-box px-2">
+        <h4 class="mx-2 text-center">他の人はこんな検索もしていました</h4>
+        <div class="search-history-tag-box px-2 mb-4">
         <% pageData.anyData.searchHis.forEach(data => { %>
           <a href="/search?search=<%= data.Words %>&type=<%= pageData.anyData.searchCategory %>" class="search-history-tag px-3 py-1">
             <%= data.Words %>
