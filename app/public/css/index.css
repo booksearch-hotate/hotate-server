@@ -74,7 +74,6 @@
 .campaign-item {
   list-style: none;
   width: 400px;
-  height: 340px;
   margin-top: 80px;
   margin-left: 50px;
   background-color: #ffffff;
@@ -89,15 +88,18 @@
   border-bottom: 1px #000000 solid;
 }
 
-.campaign-item-time {
-  font-size: 24px;
-  color: #7C7C7C;
-  padding-left: 10px;
+.campaign-item-text {
+  padding: .4rem;
 }
 
-.campaign-item-title{
+.campaign-item-text p {
+  font-size: 24px;
+  color: #7C7C7C;
+}
+
+.campaign-item-text h3 {
   font-size: 26px;
-  padding-left: 20px;
+  margin-left: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
