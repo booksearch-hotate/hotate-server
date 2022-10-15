@@ -2,14 +2,26 @@
 おすすめセクション一覧の表示
 %>
 
-<% pageData.anyData.recommendations = typeof pageData.anyData.recommendations === 'undefined' ? [] : pageData.anyData.recommendations%>
-<% editMode = typeof editMode === 'undefined' ? false : editMode %>
+<% pageData.anyData.recommendations = typeof pageData.anyData.recommendations === 'undefined' ? [] : pageData.anyData.recommendations %>
 
-<div class="recommendation-list-box">
+<div class="campaign-flex">
   <% for (const section of pageData.anyData.recommendations) { %>
-    <% if (section.recommendation.IsSolid) { %>
-      <p class="recommendation-solid-text"><%- include('./../icons/pin-angle') %>固定済み</p>
-    <% } %>
-    <%- include('recommendation-box', {recommendation: section})  %>
+    <li class="campaign-item">
+      <% if (section.recommendation.IsSolid) { %>
+      <% } %>
+      <% const recommendation = section %>
+      <img class="campaign-item-cover" src="/thumbnail/<%= recommendation.recommendation.ThumbnailName %>.png" >
+      <div class="campaign-item-text">
+        <p class="campaign-item-time"><%= recommendation.recommendation.CreatedAt %></p>
+        <h3 class="campaign-item-title"><%= recommendation.recommendation.Title %></h3>
+
+        <% if (typeof editMode !== 'undefined' && editMode === true) { %>
+          <a
+            href="/admin/recommendation/edit?rid=<%= recommendation.recommendation.Id %>"
+            class="tree-button tree-button-success tree-button-mini mx-auto my-4"
+          >編集する</a>
+        <% } %>
+      </div>
+    </li>
   <% } %>
 </div>
