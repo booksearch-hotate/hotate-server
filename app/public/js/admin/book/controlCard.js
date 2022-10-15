@@ -62,7 +62,7 @@ const CARD_ID_LIST = []; // 現在表示しているカードのidを格納す�
 const MAX_CARD_LEN = 10;
 
 function addCard() {
-  if (CARD_ID_LIST.length > MAX_CARD_LEN) return;
+  if (CARD_ID_LIST.length >= MAX_CARD_LEN) return;
 
   const id = Math.random().toString(32).substring(2);
   CARD_ID_LIST.push(id);
