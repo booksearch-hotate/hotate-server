@@ -70,7 +70,7 @@ bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Re
         9,
     ).then((res) => res.books);
 
-    const recommendation = await recommendationApplicationService.findOneByBookId(bookData.Id);
+    const recommendation = await recommendationApplicationService.findByBookId(bookData.Id);
 
     res.pageData.headTitle = `${bookData.BookName} `;
     res.pageData.anyData = {bookData, isError: false, isLogin, nearCategoryBookDatas, recommendation};

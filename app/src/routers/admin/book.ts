@@ -233,7 +233,7 @@ bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) =
 
     if ((await tagApplicationService.findByBookId(id)).length > 0) await tagApplicationService.deleteByBookId(id);
 
-    if (await recommendationApplicationService.findOneByBookId(id) !== null) {
+    if (await recommendationApplicationService.findByBookId(id) !== null) {
       await recommendationApplicationService.removeUsingByBookId(id);
     }
 

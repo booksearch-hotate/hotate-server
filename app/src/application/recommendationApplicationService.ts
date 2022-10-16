@@ -147,19 +147,27 @@ export default class RecommendationApplicationService {
   }
 
   /**
-   * 本のIDからおすすめセクションを取得します。複数のセクションが存在する場合は、直近に登録されたセクションを適用します。
+   * 本のIDからおすすめセクションを取得します。最大で9つのセクションを取得します。
    * @param bookId 本のID
-   * @returns 本が登録されているおすすめ機能
+   * @returns 本が登録されているrecommendationの配列
    */
-  public async findOneByBookId(bookId: string): Promise<RecommendationData | null> {
+  public async findByBookId(bookId: string): Promise<RecommendationData[] | null> {
     const bookIdModel = new BookId(bookId);
-    const existRecommendationId = await this.recommendationRepository.findByBookId(bookIdModel);
+    const existRecommendationIds = await this.recommendationRepository.findByBookId(bookIdModel);
 
-    if (existRecommendationId === null) return null;
+    console.log(existRecommendationIds);
 
-    const fetchModel = await this.recommendationRepository.findById(existRecommendationId);
+    if (existRecommendationIds.length === 0) return null;
 
-    return fetchModel === null ? null : new RecommendationData(fetchModel);
+    const fetchModels = await Promise.all(existRecommendationIds.map(async (id) => {
+      const fetchData = await this.recommendationRepository.findById(id);
+
+      if (fetchData === null) throw new InvalidDataTypeError('Could not successfully retrieve the id.');
+
+      return fetchData;
+    }));
+
+    return fetchModels.map((model) => new RecommendationData(model));
   }
 
   public async removeUsingByBookId(bookId: string): Promise<void> {
