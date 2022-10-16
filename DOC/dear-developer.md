@@ -85,6 +85,8 @@ MYSQL_DOCKER_NAME=mysql
 
 [issue186](https://github.com/booksearch-hotate/hotate-server/issues/186)に対応するために環境変数を追加しました。
 
+なお、#249 より、`.env.production`を追加することで環境変数を設定する必要がなくなりました。
+
 ## DBの構造について
 
 [DBの構成について](./AboutDB.md)をご覧ください。

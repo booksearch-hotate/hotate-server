@@ -53,8 +53,8 @@ searchRouter.get('/search', csrfProtection, async (req: Request, res: Response) 
   let searchMode: searchMode = 'none';
   let searchCategory: searchCategory = 'book';
 
-  const isStrict = req.query.strict === 'true';
-  const isTag = req.query.tag == 'true';
+  const isStrict = req.query.mode === 'strict';
+  const isTag = req.query.mode == 'tag';
   const formSearchCategory = req.query.type;
 
   if (isStrict) searchMode = 'strict';

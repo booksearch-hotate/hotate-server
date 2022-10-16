@@ -3,6 +3,11 @@
 
 @params {tag: string}
 %>
-<a class="book-tag-box px-2" href="/search?search=<%= tag %>&tag=true">
-  <%- include('./../icons/hash') %><p class="book-tag-text"><%= tag %></p>
-</a>
+<div class="tag">
+  <a href="/search?search=<%= tag %>&tag=true">
+    <p>
+      <i class="bi bi-hash"></i>
+      <%= tag %>
+    </p>
+  </a>
+</div>

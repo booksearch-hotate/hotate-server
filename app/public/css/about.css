@@ -1,0 +1,128 @@
+main {
+  background-color: var(--bg-color);
+}
+
+.main-about-box {
+  background-color: #888;
+  position: relative;
+  height: 100vh;
+}
+
+.about-title {
+  font-family: 'Philosopher', serif;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+}
+
+.about-title h2 {
+  font-size: 5rem;
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
+.about-title p {
+  font-size: 1.125rem;
+  margin: 10px 0 0px;
+}
+
+.about-main-message {
+  text-align: center;
+}
+
+.about-main-message h3 {
+  font-size: 3rem;
+  color: #fff;
+  letter-spacing: .6rem;
+}
+
+.about-contents {
+  background-color: #FEF4EA;
+}
+
+.about-sub-title {
+  font-family: 'Philosopher', serif;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.about-sub-title h3 {
+  font-size: 3.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.about-sub-title h3::after, .about-sub-title h3::before {
+  content: "";
+  flex-grow: 1;
+  border-bottom: 2px solid #432;
+}
+
+.post-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 30px auto;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.post-img {
+  max-height: 500px;
+  max-width: 46vw;
+  border-radius: 5px;
+}
+
+.about-sentence {
+  text-align: center;
+}
+
+.about-sentence h4 {
+  font-size: 2.6rem;
+  margin-bottom: 1.6rem;
+  letter-spacing: 10px;
+}
+
+.about-sentence p {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.dev-comment-box {
+  background-color: #97C0A5;
+  padding: 30px 10px;
+  margin-top: 60px;
+}
+
+.dev-comment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 30px auto;
+  text-align: center;
+  color: #edf2f4;
+}
+
+.dev-sentence h4 {
+  font-size: 2.6rem;
+  letter-spacing: 5px;
+  padding-bottom: 2px;
+  margin: 0 auto;
+}
+
+.dev-sentence p {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.dev-icon {
+  height: 300px;
+  width: 300px;
+  object-fit: cover;
+  border-radius: 50%;
+}

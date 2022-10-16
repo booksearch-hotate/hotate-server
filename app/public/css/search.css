@@ -1,0 +1,128 @@
+.wrapper {
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.result-title {
+  padding: 30px 0;
+  width: 100%;
+}
+.result-title-text {
+  display: flex;
+  justify-content: center;
+  border-bottom: 2px #244E5F solid;
+  margin-left: 25%;
+  margin-right: 25%;
+}
+.result-title div {
+  color: #244E5F;
+    font-size: 2.5rem;
+}
+.result-title-seach {
+  margin-left: 7px;
+  width: 2.5rem;
+}
+
+.search-history-tag-box {
+  text-align: center;
+}
+
+.search-history-tag-box a {
+  text-decoration: none;
+  color: var(--font-color);
+  transition: opacity .5s;
+}
+
+.search-history-tag-box a:hover {
+  opacity: .8;
+}
+
+.grid {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-top: 10px;
+}
+
+.book-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px #244E5F solid;
+  background-color: #ffffff;
+  height: 100%;
+  position: relative;
+}
+
+.book {
+  display: flex;
+  justify-content: center;
+}
+
+.book-link {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.book img {
+  width: 110px;
+  height: auto;
+  object-fit: contain;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-left: 15px;
+  padding-right: 7px;
+}
+.book-title {
+  font-size: 1.3rem;
+  padding-top: 5px;
+}
+.book-writer {
+  font-size: 13px;
+  padding-left: 10px;
+}
+.book-content {
+  margin-top: 10px;
+  font-size: 11px;
+  margin-left: 10px;
+  padding-right: 15px;
+}
+.tag-flex {
+  display: flex;
+  justify-content: left;
+  margin-top:10px;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.tag {
+  border: 1px #244E5F solid;
+	border-radius: 100vh;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.tag a {
+  text-decoration: none;
+}
+
+.tag i {
+  color: #244E5F;
+}
+.tag p {
+  font-size: 12px;
+  color: #244E5F;
+  margin: 0;
+}
+.page {
+  display: flex;
+  justify-content: center;
+  margin-top: 7px;
+}
+.page p {
+  margin-left: 50px;
+  font-size: 2rem;
+}

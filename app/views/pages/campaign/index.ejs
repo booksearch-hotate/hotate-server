@@ -1,0 +1,24 @@
+<%
+const itemComponentLink = './../components/confirm-request-item'; 
+%>
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/campaign/index.css" />
+  </head>
+  <body>
+    <%- include('./../../components/navbar') %>
+
+    <header class="text-center">
+      <%- include('./../../components/header-title', {mes: 'campaign'}) %>
+    </header>
+
+    <%- include('./../../components/recommendation-list', {paginationData: pageData.anyData.recommendations}) %>
+
+    <%- include('./../../components/pagination', {paginationData: pageData.anyData.paginationData, url: '/campaign/?'}) %>
+
+    <%- include('./../../components/state-alert', {pageData}) %>
+    <%- include('./../../components/input-js') %>
+  </body>
+</html>

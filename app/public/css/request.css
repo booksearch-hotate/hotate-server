@@ -1,0 +1,104 @@
+/* request
+--------------------------------------*/
+.request-title {
+  text-align: center;
+  font-size: 40px;
+  margin-top: 30px;
+  display:flex;
+  align-items: center;  
+  color:#244E5F;
+}
+.request-title::before,
+.request-title::after {
+	content:"";
+	flex-grow: 1;
+	border-bottom: 2px solid #244E5F;
+
+}
+.request-title::before{
+  margin-right: 20px;  
+  padding-left: 15px;  
+}
+
+.request-title::after{
+  margin-left: 20px; 
+  padding-right: 15px;  
+}
+
+.request-p {
+  text-align: center;
+  margin-top: 10px;
+}
+
+form div {
+  margin-bottom: 30px;
+}
+
+label {
+  font-size: 1.4rem;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  margin-left: 20px;
+  width: 10rem;
+}
+
+.from {
+    display:flex;
+    justify-content: center;
+}
+
+input[type="text"],
+textarea {
+  background: #FEF4EA;
+  border: 1px #244E5F solid;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+input[type="text"]{
+    width: 40%;
+}
+
+textarea {
+  width: 40%;
+  max-width: 480px;
+  height: 6rem;
+}
+
+.bunrui {
+  display:flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.name {
+  display:flex;
+  justify-content: center;
+}
+
+.name2 {
+  font-size: 1.4rem;
+  margin-right: 50px;
+  margin-bottom: 10px;
+}
+
+button[type="submit"] {
+  cursor: pointer;
+  width: 12rem;
+  height: 4.1rem;
+  font-size: 1.2rem;
+  color: #244E5F;
+}
+.button {
+  text-align: center;
+}
+.kakunin {
+	display:flex;
+	justify-content: center;
+	border: 2px #244E5F solid;
+	line-height: 3;
+	border-radius: 100vh;
+}
+.arrow {
+	width:40px;
+}

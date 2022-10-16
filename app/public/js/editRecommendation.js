@@ -3,16 +3,17 @@ function makeBookItemNode(bookName, id) {
   div.classList.add('book-item-box');
   div.setAttribute('id', `book-item-${id}`);
   div.setAttribute('data-bookid', id);
+  div.classList.add('align-middle');
 
   div.innerHTML = `
-  <td>${bookName}</td>
-  <td>
-    <input type="text" placeholder="コメントを追加" name="bookComments[]">
-  </td>
-  <td>
-    <a onclick="deleteBook('${id}')" class="btn btn-warning">削除</a>
-  </td>
-  <input type="hidden" value="${id}" name="books[]">
+    <td>${bookName}</td>
+    <td>
+      <input class="tree-input w-100" type="text" placeholder="コメントを追加" name="bookComments[]">
+    </td>
+    <td>
+      <a onclick="deleteBook('${id}')" class="tree-button tree-button-danger tree-button-mini mx-auto">削除</a>
+    </td>
+    <input type="hidden" value="${id}" name="books[]">
   `;
   return div;
 }

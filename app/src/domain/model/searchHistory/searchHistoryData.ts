@@ -1,4 +1,4 @@
-import conversionDate from '../../../utils/conversionDate';
+import {conversionDateToString} from '../../../utils/conversionDate';
 import SearchHistory from './searchHistory';
 
 export default class SearchHistoryData {
@@ -9,7 +9,7 @@ export default class SearchHistoryData {
   public constructor(tar: SearchHistory) {
     this.words = tar.Words;
     this.id = tar.Id;
-    this.createdAt = conversionDate(tar.CreatedAt);
+    this.createdAt = conversionDateToString(tar.CreatedAt);
   }
 
   get Words(): string {

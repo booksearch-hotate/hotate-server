@@ -1,40 +1,123 @@
-.book-content h4 {
-  color: #777;
+:root {
+  --tag-color: var(--bg-color);
 }
 
-.recommend-other-books-title {
-  text-align: center;
-  border-bottom: 2px solid rgb(104, 55, 29);
-  margin: 20px auto;
+main {
+  background-color: var(--bg-color);
+  padding: 40px;
 }
 
-.near-category-books {
-  height: 50%;
+.item-box {
+  background-color: #fff;
+  padding: 20px 60px;
+  margin-bottom: 40px;
 }
 
-.near-category-books-list {
-  height: 50vh;
-  overflow: hidden;
+.item-title {
+  font-size: 2.3rem;
+  padding-left: 10px;
 }
 
-.near-category-books-list-box {
-  position: relative;
+.item-syousai {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
 }
 
-.near-category-detail-box {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: linear-gradient(rgba(0, 0, 0, 0), 30%, white);
-  text-align: center;
+.item-syousai img {
+  width: 300px;
 }
 
-.near-category-detail-box p {
-  text-align: center;
-  font-size: 1.6rem;
+.item-writer {
+  font-size: 23px;
+}
+.arasuzi {
+  font-size: 18px;
+  padding-top: 10px;
+  margin-bottom: 5px;
+}
+.arasuzi-p {
+  font-size: 15px;
+  max-width: 90%;
+}
+
+.tag {
+  display: flex;
+  margin-left: 10px;
+  padding-top: 10px;
+  padding-left: 5px;
+  padding-bottom: 10px;
+}
+
+.tag a {
+  text-decoration: none;
+  color: var(--font-color);
+}
+
+.tag p {
   margin: 0;
-  color: #666;
-  cursor: pointer;
-  display: inline;
+}
+
+.tag-flex {
+  display: flex;
+  position: relative;
+  margin-top: 30px;
+  margin-left: 20px;
+  width: 50%;
+  background: var(--tag-color);
+  border-radius: .4em;
+}
+
+.tag-flex:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color: var(--tag-color);
+  border-left: 0;
+  margin-top: -9px;
+  margin-left: -7px;
+}  
+
+aside {
+  background-color: #ffffff;
+}
+
+.osusume-title {
+  font-size: 1.5rem;
+  padding-top: 20px;
+  margin-left: 40px;
+  margin-bottom: 15px;
+}
+
+.osusume-flex {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  overflow: scroll;
+}
+
+.osusume-book {
+  display: flex;
+  align-items: center;
+}
+
+.osusume-book img {
+  width: 120px;
+  margin-bottom: 20px;
+}
+.osusume-book-title {
+  font-size: 20px;
+}
+.osusume-text {
+  padding-left: 20px;
+  padding-right: 40px;
+  padding-top: 15px;
+}
+.bi-binoculars-fill {
+  font-size: 25px;
+  margin-right: 7px;
 }

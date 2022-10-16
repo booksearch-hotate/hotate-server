@@ -170,14 +170,8 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
 
 /* 本の追加画面 */
 bookRouter.get('/add', csrfProtection, (req: Request, res: Response) => {
-  let count = Number(req.query.c as string);
-
-  if (isNaN(count) || count <= 0) count = 1;
-
-  if (count > 10) count = 10;
-
   res.pageData.headTitle = '本の追加';
-  res.pageData.anyData = {count};
+
   res.pageData.csrfToken = req.csrfToken();
   res.render('pages/admin/book/add', {pageData: res.pageData});
 });
@@ -238,7 +232,7 @@ bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) =
 
     if ((await tagApplicationService.findByBookId(id)).length > 0) await tagApplicationService.deleteByBookId(id);
 
-    if (await recommendationApplicationService.findOneByBookId(id) !== null) {
+    if (await recommendationApplicationService.findByBookId(id) !== null) {
       await recommendationApplicationService.removeUsingByBookId(id);
     }
 

@@ -1,37 +1,204 @@
+:root {
+  --index-about-button: #E8BB50;
+}
+
+/* 検索フォーム全体のレイアウト */
 .home-search-box {
-  width: 60%;
-  margin: 0 auto;
+  margin: 40px 0 auto;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.search-input-main-box {
-  width: 100%;
-  margin: 0 auto;
-  margin-top: 2rem;
+.search-input-box {
+  display: inline-flex;
+  align-items: center;
+  border-bottom: 2px solid #244E5F;
 }
 
-.search-input-main {
-  background: rgba(255, 255, 255, 0);
-  width: 100%;
-  border: none;
-  border-bottom: 2px solid var(--main-font-color);
-  outline: none;
-  font-size: 3.6rem;
-  transition: border-bottom 0.3s;
+.search-input-box input[type="search"] {
+  padding: 0 10px;
+  font-size: 3rem;
   text-align: center;
+  color: #244E5F;
 }
 
-.search-input-main:focus {
-  border-bottom: 2px solid #fff;
+.search-input-box input[type="search"]::placeholder {
+  color: #244E5F;
+}
+
+.search-input-box i {
+  font-size: 2.6rem;
+  color: #244E5F;
+  cursor: pointer;
+}
+
+.search-input-box::placeholder {
+  color: #244E5F;
 }
 
 .detail-search-box {
-  width: 100%;
-}
-
-.detail-search-box p {
   text-align: right;
 }
 
-.detail-search-box a {
+.detail-search-box p {
+  font-size: 1rem;
+  color: #244E5F;
   cursor: pointer;
+}
+
+.index-campaign {
+  background-image: url(/img/tree-index-bg.png);
+  min-height: 100vh;
+  background-size: cover;
+}
+
+.campaign-title {
+  display: flex;
+  justify-content: center;
+  font-size: 3rem;
+  margin-top: 50px;
+}
+
+
+.card-campaign-item-box {
+  width: 100vw;
+  overflow: scroll;
+  margin-top: 80px;
+  padding: 0 30px;
+}
+
+.card-campaign-flex {
+  width: fit-content;
+  display: flex;
+  gap: 50px;
+  overflow: scroll;
+}
+
+.card-campaign-item {
+  list-style: none;
+  width: 400px;
+  background-color: #ffffff;
+  border: 1px #000000 solid;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.card-campaign-item-cover {
+  width: 100%;
+  border-bottom: 1px #000000 solid;
+}
+
+.card-campaign-item-text {
+  padding: .4rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.card-campaign-item-text p {
+  font-size: 24px;
+  color: #7C7C7C;
+  width: 100%;
+}
+
+.card-campaign-item-text h3 {
+  font-size: 26px;
+  margin-left: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.bi-chat-dots {
+  transform: scale(-1, 1);
+  margin-right: 15px;
+}
+
+.sccroll-button {
+  margin: 20px 10px;
+  text-align: center;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.index-about {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  padding: 0 2rem;
+}
+
+.about-sub-title {
+  font-size: 40px;
+  color: #E8BB50;
+  margin-bottom: -15px
+}
+
+.about-button {
+  color: var(--index-about-button);
+  border-color: var(--index-about-button);
+  width: 10.6rem;
+  height: 4rem;
+}
+
+.about-button::after {
+  background-color: var(--index-about-button);
+}
+
+.about-main-title {
+  font-size: 64px;
+  color: #000000;
+}
+
+.about-explanation {
+  font-size: 1.6rem;
+}
+
+.button-detail{
+  padding-top: 15px;
+}
+
+button[type="button"] {
+  cursor: pointer;
+  width: 170px;
+  height: 54px;
+  font-size: 1.2rem;
+  color: #E8BB50;
+  border: 2px #E8BB50 solid;
+  border-radius: 90px;
+}
+
+.index-how {
+  margin-top: 170px;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 100px;
+  align-items: center;
+}
+
+.how-image {
+  max-width: 40%;
+  max-height: 360px;
+  border-radius: 50px;
+  object-fit: contain;
+}
+
+.how-sub-title {
+  display: flex;
+  font-size: 40px;
+  color: #E8BB50;
+  margin-bottom: -15px
+}
+
+.how-main-title {
+  font-size: 64px;
+  color: #000000;
+}
+
+.how-explanation {
+  font-size: 2rem;
 }
