@@ -33,7 +33,7 @@
           </div>
         </div>
 
-        <aside>
+        <aside class="my-4">
           <div class="osusume-title"><i class="bi bi-binoculars-fill"></i>この本に似ている本</div>
           <div class="osusume-flex">
             <% for (const book of pageData.anyData.nearCategoryBookDatas) { %>
@@ -46,17 +46,17 @@
               </div>
             <% } %>
           </div>
-         </aside>
+        </aside>
 
-        <div class="recommend-other-books">
-
-          <% if (pageData.anyData.recommendation !== null) { %>
-          <div class="exist-recommendation">
-            <h2 class="recommend-other-books-title"><%= data.BookName %>が紹介されているセクション</h2>
-            <%- include('../components/recommendation-box', {recommendation: pageData.anyData.recommendation}) %>
+        <% if (pageData.anyData.recommendation !== null) { %>
+        <aside class="my-4">
+          <div class="osusume-title"><i class="bi bi-binoculars-fill"></i>この本が紹介されているキャンペーン</div>
+          <div class="osusume-flex px-4">
+            <%- include('../components/recommendation-list', {paginationData: [pageData.anyData.recommendation]}) %>
           </div>
-          <% } %>
-        </div>
+        </aside>
+        <% } %>
+
 
       <% } else { %>
         <h4 class="text-danger">本が見つかりませんでした。</h4>
