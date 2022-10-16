@@ -2,15 +2,24 @@
 <html>
   <head>
     <%- include('./../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/thanks-request.css" />
   </head>
   <body>
     <header class="text-center">
-      <h1>リクエストの送信が完了しました！</h1>
+      <%- include('./../components/header-title', {mes: 'リクエストの送信完了！', logo:'send-check'}) %>
     </header>
 
-    <main class="text-center">
-      <h2>リクエストしていただきありがとうございます！</h2>
-      <a href="/" class="btn btn-outline-primary">ホームへ</a>
+    <main>
+      <div class="thx-content">
+        <h2>リクエストしていただきありがとうございます！</h2>
+        <span class="thx-icon" id="thx-icon">
+          <i class="bi bi-hand-thumbs-up"></i>
+        </span>
+        <a href="/" class="tree-button">
+          <i class="bi bi-house"></i>
+          ホームへ
+        </a>
+      </div>
     </main>
     <%- include('./../components/input-js') %>
   </body>

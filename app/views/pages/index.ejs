@@ -1,29 +1,100 @@
+<% pageData.anyData.recommendations = typeof pageData.anyData.recommendations === 'undefined' ? [] : pageData.anyData.recommendations %>
 <!DOCTYPE html>
 <html>
   <head>
     <%- include('./../components/head') %>
     <link rel="stylesheet" href="<%= pageData.origin %>/css/index.css" />
-    <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/recommendation/recommendation.css" />
   </head>
   <body>
     <%- include('./../components/navbar') %>
-    <div class="home-search-box">
-      <form action="/search" method="get">
-        <input type="hidden" name="type" value="book">
-        <div class="form-group search-input-main-box">
-          <input type="text" class="search-input-main" id="search-input" name="search" placeholder="Search" required>
-        </div>
-      </form>
-      <div class="detail-search-box mt-1">
-        <a onclick="viewSearchBox()">
-          <p>詳細設定</p>
-        </a>
-      </div>
-    </div>
 
-    <%- include('./../components/recommendation-list') %>
-    <%- include('./../components/input-js') %>
+    <main>
+      <div class="home-search-box">
+        <div class="home-search">
+          <form class="search-input-box" action="/search" method="get">
+            <input type="search" id="search-input" name="search" placeholder="Search" required>
+            <input type="submit" id="home-search-submit" hidden>
+            <label for="home-search-submit">
+              <i class="bi bi-search"></i>
+            </label>
+          </form>
+  
+          <div class="detail-search-box">
+            <a onclick="viewSearchBox()">
+              <p style="display: inline;">
+                <i class="bi bi-chevron-double-right"></i>
+                詳細設定
+              </p>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="index-campaign">
+        <div class="campaign-title">
+          <i class="bi bi-chat-dots"></i>
+          <div class="campaign-title-text">Campaign</div>
+        </div>
+
+        <div class="card-campaign-item-box">
+          <div class="card-campaign-flex">
+            <% for (const section of pageData.anyData.recommendations) { %>
+              <div class="card-campaign-item">
+                <% if (section.recommendation.IsSolid) { %>
+                <% } %>
+                <% const recommendation = section %>
+                <img class="card-campaign-item-cover" src="/thumbnail/<%= recommendation.recommendation.ThumbnailName %>.png" >
+                <div class="card-campaign-item-text">
+                  <p><%= recommendation.recommendation.CreatedAt %></p>
+                  <h3><%= recommendation.recommendation.Title %></h3>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+
+      <div class="index-about">
+        <div class="about-title">
+          <div class="about-sub-title">?About</div>
+          <div class="about-main-title">TREEって<br>どんなサービス？</div>
+        </div>
+        <div class="about-explanation">
+          <p>TREEは誰にでも使える本の検索サイト。<br>
+            「本との出逢いの機会を増やしていきたい」<br>
+            という思いからできた本の検索サービスです。</p>
+            <div class="button-detail">
+              <a href="./about" class="tree-button about-button my-0 mx-auto">
+                詳しく見る
+              </a>
+            </div>
+        </div>
+      </div>
+
+      <div class="index-how">
+        <img class="how-image" src="/img/tree-logo.png">
+        <div class="how-text">
+          <div class="how-sub-title">
+            <p>
+              <i class="bi bi-lightbulb"></i>
+              How to
+            </p>
+          </div>
+          <div class="how-main-title">使いかた</div>
+          <div class="how-explanation">
+            <p>TREEの主な機能を紹介します</p>
+            <div class="button-detail">
+              <a href="#" class="tree-button about-button my-0 mx-auto">
+                詳しく見る
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
     <%- include('./../components/state-alert', {pageData}) %>
+    <%- include('./../components/input-js') %>
     <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
   </body>
 </html>

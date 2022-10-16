@@ -1,4 +1,4 @@
-import conversionDate from '../../../utils/conversionDate';
+import {conversionDateToString} from '../../../utils/conversionDate';
 import Recommendation from './recommendation';
 import RecommendationItemData from './recommendationItemData';
 
@@ -20,8 +20,8 @@ export default class RecommendationData {
     this.isSolid = recommendationModel.IsSolid;
     this.sortIndex = recommendationModel.SortIndex;
     this.thumbnailName = recommendationModel.ThumbnailName;
-    this.createdAt = conversionDate(recommendationModel.CreatedAt);
-    this.updatedAt = conversionDate(recommendationModel.UpdatedAt);
+    this.createdAt = conversionDateToString(recommendationModel.CreatedAt);
+    this.updatedAt = conversionDateToString(recommendationModel.UpdatedAt);
     this.recommendationItems = recommendationModel.RecommendationItems.map((item) => new RecommendationItemData(item));
   }
 

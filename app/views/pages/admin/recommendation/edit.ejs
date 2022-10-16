@@ -11,31 +11,31 @@
     <form method="post" action="/admin/recommendation/udpate" class="mb-3">
       <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
       <input type="hidden" name="id" value="<%= recommendation.Id %>">
-      <div class="mb-3">
-        <label for="title" class="form-label" required>タイトル</label>
-        <input type="text" class="form-control" id="title" name="title" placeholder="タイトルを入力" value="<%= recommendation.Title %>" required>
+      <div class="mb-3 tree-form-item">
+        <label for="title" class="tree-label" required>タイトル</label>
+        <input type="text" class="tree-input" id="title" name="title" placeholder="タイトルを入力" value="<%= recommendation.Title %>" required>
       </div>
 
-      <div class="mb-3 form-floating">
-        <textarea class="form-control" placeholder="内容を追加" id="content" style="height: 200px;" name="content" required><%= recommendation.Content %></textarea>
-        <label for="content">内容</label>
+      <div class="mb-3 tree-form-item">
+        <label for="content" class="tree-label">内容</label>
+        <textarea class="tree-input tree-textarea" placeholder="内容を追加" id="content" style="height: 200px;" name="content" required><%= recommendation.Content %></textarea>
       </div>
 
       <div class="container">
         <div class="row">
           <h4 class="text-center">順番</h4>
         </div>
-        <div class="row">
-          <div class="col">
-            <div class="form-check form-switch">
+        <div class="row mb-2">
+          <div class="col text-center">
+            <div class="form-check form-switch" style="display: inline-block;">
               <input class="form-check-input" type="checkbox" name="isSolid" onclick="toggleSortIndex()" value="solid" <% if(recommendation.IsSolid) { %>checked<% } %> id="isSolid">
               <label class="form-check-label" for="isSolid">固定</label>
             </div>
           </div>
           <div class="col">
             <div class="sort-index-box <% if (!recommendation.IsSolid) { %>view<% } %>" id="sort-index-box">
-              <input type="number" class="form-control" min="1" max="<%= pageData.anyData.maxSortIndex %>" required id="sortIndex" name="sortIndex" value="<%= pageData.anyData.maxSortIndex - recommendation.SortIndex + 1 %>">
-              <label for="sortIndex">順番</label>
+              <label for="sortIndex" class="tree-label">順番</label>
+              <input type="number" class="tree-input" min="1" max="<%= pageData.anyData.maxSortIndex %>" required id="sortIndex" name="sortIndex" value="<%= pageData.anyData.maxSortIndex - recommendation.SortIndex + 1 %>">
             </div>
           </div>
         </div>
@@ -46,21 +46,22 @@
 
       <div class="my-3">
         <h4 class="text-center">追加する本</h3>
-        <table class="table table-striped">
+        <table class="tree-table table table-striped text-center mb-3">
           <thead>
             <thead>
               <th>書名</th>
+              <th>コメント</th>
               <th>削除</th>
             </thead>
             <tbody id="book-title-list-box">
               <% for (const item of pageData.anyData.items) { %>
-                <tr class="book-item-box" id="book-item-<%= item.book.Id %>" data-bookid="<%= item.book.Id %>">
+                <tr class="book-item-box align-middle" id="book-item-<%= item.book.Id %>" data-bookid="<%= item.book.Id %>">
                   <td><%= item.book.BookName %></td>
                   <td>
-                    <input type="text" placeholder="コメントを追加" name="bookComments[]" value="<%= item.comment %>">
+                    <input class="tree-input w-100" type="text" placeholder="コメントを追加" name="bookComments[]" value="<%= item.comment %>">
                   </td>
                   <td>
-                    <a onclick="deleteBook('<%= item.book.Id %>')" class="btn btn-warning">削除</a>
+                    <a onclick="deleteBook('<%= item.book.Id %>')" class="tree-button tree-button-danger tree-button-mini mx-auto">削除</a>
                   </td>
                   <input type="hidden" value="<%= item.book.Id %>" name="books[]">
                 </tr>
@@ -69,15 +70,13 @@
           </thead>
         </table>
         <div class="container">
-          <div class="row">
+          <div class="row align-items-center">
             <div class="col">
-              <input class="form-control add-id-input" type="text" placeholder="urlを入力" id="url">
+              <input class="tree-input w-100" type="text" placeholder="urlを入力" id="url">
               <div id="urlHelp" class="form-text">本詳細画面のURLを入力してください</div>
             </div>
             <div class="col">
-              <div class="text-center">
-                <a class="btn btn-outline-success mt-3" onclick="addBook('<%= recommendation.Id %>')">追加</a>
-              </div>
+              <a class="tree-button tree-button-success mx-auto tree-button-mini" onclick="addBook('<%= recommendation.Id %>')">追加</a>
             </div>
           </div>
         </div>
@@ -85,9 +84,7 @@
 
       <%- include('./../../../components/admin/recommendation/thumbnail-list', {thumbnailList: pageData.anyData.thumbnailList, defaults: pageData.anyData.defaultThumbnailList, nowThumbnail: recommendation.ThumbnailName}) %>
 
-      <div class="text-center mb-3">
-        <button type="button" onclick="submit();" class="btn btn-primary">確定</button>
-      </div>
+      <button type="button" onclick="submit();" class="tree-button tree-button-success mx-auto my-4">更新</button>
     </form>
 
     <div class="text-center my-4">
@@ -95,12 +92,14 @@
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
         <input type="hidden" name="id" value="<%= recommendation.Id %>">
       </form>
-      <button class="btn btn-danger" onclick="createConfirmBox('delete', 'セクションを削除します。よろしいですか？<br>登録されている本は削除されません。')">削除する</button>
+
+      <button class="tree-button tree-button-danger mx-auto" onclick="createConfirmBox('delete', 'セクションを削除します。よろしいですか？<br>登録されている本は削除されません。')">
+        <i class="bi bi-trash me-2"></i>
+        削除する
+      </button>
     </div>
 
-    <div class="text-center">
-      <a href="/admin/recommendation">戻る</a>
-    </div>
+    <a href="/admin/recommendation" class="tree-button mx-auto mb-4">戻る</a>
 
     <%- include('./../../../components/state-alert', {pageData}) %>
 

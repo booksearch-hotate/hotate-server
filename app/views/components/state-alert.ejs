@@ -3,7 +3,7 @@
 %>
 
 <% if (pageData.status !== undefined) {%>
-<div id="stateAlerts" class="alert alert-<%= pageData.status.buttonType %> alert-dismissible fade show state-info-toast auto-fade" role="alert">
+<div id="stateAlert" class="alert alert-<%= pageData.status.buttonType %> alert-dismissible fade show state-info-toast auto-fade" role="alert">
   <%= pageData.status.mes %>
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>

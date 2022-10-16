@@ -21,8 +21,6 @@ const adminRouter = Router();
 
 const admin = new AdminSession();
 
-
-
 const csrfProtection = csurf({cookie: false});
 
 const logger = new Logger('adminHome');

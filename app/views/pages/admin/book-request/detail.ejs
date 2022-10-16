@@ -7,8 +7,8 @@ const itemComponentLink = './../../../components/confirm-request-item';
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <header class="text-center">
-      <h1>リクスト内容の詳細</h1>
+    <header>
+      <%- include('./../../../components/header-title', {mes: 'リクエスト詳細'}) %>
     </header>
 
     <main>
@@ -17,9 +17,9 @@ const itemComponentLink = './../../../components/confirm-request-item';
       <%- include(itemComponentLink, {title: '出版社名', content: pageData.anyData.request.PublisherName}) %>
       <%- include(itemComponentLink, {title: 'ISBN', content: pageData.anyData.request.Isbn}) %>
       <%- include(itemComponentLink, {title: '内容', content: pageData.anyData.request.Message}) %>
-      <%- include(itemComponentLink, {title: '日時', content: pageData.anyData.request.CreatedAt}) %>
+      <%- include(itemComponentLink, {title: '作成日時', content: pageData.anyData.request.CreatedAt}) %>
       <%- include(itemComponentLink, {title: '名前', content: `${pageData.anyData.request.StudentInfo} ${pageData.anyData.request.UserName}`}) %>
-      <a href="/admin/book-request">戻る</a>
+      <a href="/admin/book-request" class="tree-button mx-auto my-4">戻る</a>
     </main>
     <%- include('./../../../components/input-js') %>
   </body>

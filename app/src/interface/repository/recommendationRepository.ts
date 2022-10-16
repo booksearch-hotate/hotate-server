@@ -164,15 +164,14 @@ export default class RecommendationRepository implements IRecommendationReposito
     await this.db.Recommendation.destroy({where: {id: recommendation.Id}});
   }
 
-  public async findByBookId(bookId: BookId): Promise<string | null> {
-    const recommendationId = await this.db.UsingRecommendations.findOne({
+  public async findByBookId(bookId: BookId): Promise<string[]> {
+    const recommendationIds = await this.db.UsingRecommendations.findAll({
       where: {book_id: bookId.Id},
+      limit: 9,
       order: [['id', 'DESC']],
     });
 
-    if (recommendationId === null) return null;
-
-    return recommendationId.recommendation_id;
+    return recommendationIds.map((column) => column.recommendation_id);
   }
 
   public async removeUsingByBookId(bookId: BookId): Promise<void> {

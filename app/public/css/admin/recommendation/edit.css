@@ -20,7 +20,8 @@
 }
 
 .choice-thumbnail-label {
-  transition: .5s;
+  position: relative;
+  transition: all .5s;
 }
 
 .thumbnail-card-item-box {
@@ -53,6 +54,7 @@
 
 .thumbnail-button:checked + .choice-thumbnail-label{
   transform: scale(.9);
+  opacity: .5;
 }
 
 .append-thumbnail-box {

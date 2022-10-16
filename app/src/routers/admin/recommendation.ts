@@ -17,7 +17,6 @@ import conversionpageCounter from '../../utils/conversionPageCounter';
 import getPaginationInfo from '../../utils/getPaginationInfo';
 import BookService from '../../domain/service/bookService';
 
-import {IRecommendationObj} from '../../domain/model/recommendation/IRecommendationObj';
 import conversionpageStatus from '../../utils/conversionPageStatus';
 import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 import AuthorRepository from '../../interface/repository/authorRepository';
@@ -45,21 +44,9 @@ const bookApplicationService = new BookApplicationService(
 recommendationRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   const pageCount = conversionpageCounter(req);
 
-  const fetchMargin = 10;
+  const fetchMargin = 9;
 
-  const fetchDatas = await recommendationApplicationService.fetch(pageCount, fetchMargin);
-
-  const recommendations: IRecommendationObj[] = await Promise.all(fetchDatas.map(async (recommendation) => {
-    const items = await Promise.all(recommendation.RecommendationItems.map(async (item) => {
-      return {
-        book: await bookApplicationService.searchBookById(item.BookId),
-        comment: item.Comment,
-      };
-    }));
-    const item: IRecommendationObj = {recommendation, items};
-
-    return item;
-  }));
+  const recommendations = await recommendationApplicationService.fetch(pageCount, fetchMargin);
 
   const total = await recommendationApplicationService.fetchAllCount();
 

@@ -10,6 +10,7 @@ import RecommendationItem from '../domain/model/recommendation/recommendationIte
 import BookId from '../domain/model/book/bookId';
 import PaginationMargin from '../domain/model/pagination/paginationMargin';
 import {InfrastructureError, InvalidDataTypeError, OverflowDataError} from '../presentation/error';
+import {conversionStringToDate} from '../utils/conversionDate';
 
 export default class RecommendationApplicationService {
   private readonly recommendationRepository: IRecommendationRepository;
@@ -134,8 +135,8 @@ export default class RecommendationApplicationService {
           recommendationData.IsSolid,
           recommendationData.SortIndex,
           recommendationData.ThumbnailName,
-          new Date(recommendationData.CreatedAt),
-          new Date(recommendationData.UpdatedAt),
+          conversionStringToDate(recommendationData.CreatedAt),
+          conversionStringToDate(recommendationData.UpdatedAt),
           recommendationItemModel,
       );
       recommendationModel.omitContent();
@@ -146,19 +147,25 @@ export default class RecommendationApplicationService {
   }
 
   /**
-   * 本のIDからおすすめセクションを取得します。複数のセクションが存在する場合は、直近に登録されたセクションを適用します。
+   * 本のIDからおすすめセクションを取得します。最大で9つのセクションを取得します。
    * @param bookId 本のID
-   * @returns 本が登録されているおすすめ機能
+   * @returns 本が登録されているrecommendationの配列
    */
-  public async findOneByBookId(bookId: string): Promise<RecommendationData | null> {
+  public async findByBookId(bookId: string): Promise<RecommendationData[] | null> {
     const bookIdModel = new BookId(bookId);
-    const existRecommendationId = await this.recommendationRepository.findByBookId(bookIdModel);
+    const existRecommendationIds = await this.recommendationRepository.findByBookId(bookIdModel);
 
-    if (existRecommendationId === null) return null;
+    if (existRecommendationIds.length === 0) return null;
 
-    const fetchModel = await this.recommendationRepository.findById(existRecommendationId);
+    const fetchModels = await Promise.all(existRecommendationIds.map(async (id) => {
+      const fetchData = await this.recommendationRepository.findById(id);
 
-    return fetchModel === null ? null : new RecommendationData(fetchModel);
+      if (fetchData === null) throw new InvalidDataTypeError('Could not successfully retrieve the id.');
+
+      return fetchData;
+    }));
+
+    return fetchModels.map((model) => new RecommendationData(model));
   }
 
   public async removeUsingByBookId(bookId: string): Promise<void> {

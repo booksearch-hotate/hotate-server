@@ -2,7 +2,7 @@ const link = 'ws://localhost:5051/'
 
 const ws = new WebSocket(link)
 
-const headerText = document.getElementById('header-text')
+const headerText = document.getElementById('progress-text')
 
 const linkBox = document.getElementById('link-box')
 
@@ -24,19 +24,18 @@ ws.onmessage = (event) => {
 
   if (progress !== 'error') {
     const progressBar = document.getElementById('progress-bar')
-    const progressBarText = document.getElementById('progress-value')
   
     progressBar.style.width = percent + '%'
-    progressBarText.innerText = percent + '%'
+    progressBar.innerText = percent + '%'
 
     headerText.innerText = `データを取得中... ${data.data.current} / ${data.data.total}`
   }
 
   if (progress === 'complete') {
-    linkBox.style.display = 'block'
+    linkBox.classList.add('button-active');
     headerText.innerText = 'データの取得が完了しました'
   } else if (progress === 'error') {
-    linkBox.style.display = 'block'
+    linkBox.classList.add('button-active');
     headerText.innerText = 'データの取得に失敗しました'
   }
 }

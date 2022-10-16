@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/about.css" />
+  </head>
+  <body>
+    <%- include('./../components/navbar') %>
+
+    <main>
+      <div class="main-about-box" id="main-about-box">
+        <div class="about-title">
+          <p>-本検索サービス-</p>
+          <h2 class="page-title">TREE</h2>
+        </div>
+      </div>
+
+      <div class="about-main-message my-4">
+        <h3>About</h3>
+      </div>
+
+      <article class="about-main">
+        <section class="post-info">
+          <div class="about-sentence">
+            <h4>探す、選ぶ、巡り合う。</h4>
+            <p>TREEを使うことで本との新たな出逢いがより多く、より幅広くなります。</p>
+            <p>また、気になる本と関連した本もおススメしてくれる機能も搭載。</p>
+          </div>
+          <div class="post-img-box">
+            <img src="./img/1920x1080.png" class="post-img" />
+          </div>
+        </section>
+
+        <section class="post-info">
+          <div class="post-img-box">
+            <img src="./img/1920x1080.png" class="post-img" />
+          </div>
+          <div class="about-sentence">
+            <h4>曖昧な記憶から、きっと見つかる</h4>
+            <p>
+              TREEではオープンソースの検索エンジン「Elasticsearch」を活用し、より画期的な検索をあなたにお届け。<br>
+              ElasticsearchはDocker、Github、cybozu、日本経済新聞社、KADOKAWAなど、<br>
+              大量のデータを検索する企業にも採用されています。<br>
+            </p>
+            <p>
+              通常のデータベースを用いた検索とは異なる、あなたの期待通りの検索を実現いたします。
+            </p>
+          </div>
+        </section>
+
+        <section class="post-info">
+          <div class="about-sentence">
+            <h4>検索だけが華じゃない</h4>
+            <p>
+              検索機能以外にも、図書館からのおススメを紹介するおすすめ機能や、<br>
+              検索時にタグを検索できるタグ機能など、様々な機能が貴方を手助けします。
+            </p>
+          </div>
+          <div class="post-img-box">
+            <img src="./img/1920x1080.png" class="post-img" />
+          </div>
+        </section>
+      </article>
+
+      <aside class="dev-comment-box">
+        <div class="dev-comment-item">
+          <div class="dev-sentence">
+            <h4>Webバックエンド担当からのコメント</h4>
+            <p>
+              このTREEを作るうえで様々な難所がありました。<br>
+              例えばElasticsearch。実はまともに実装するのは今回が初めてで、度々エラーを起こしてました（笑）<br>
+              しかし苦労した分、完成度は非常に高いと思いますので、是非ご堪能ください！<br>
+              <span style="font-style: italic">P.S. 個人的にソースコードのレビューをしてくれた兄へ、感謝を。</span>
+            </p>
+          </div>
+          <div class="dev-icon-box">
+            <img src="./img/elca-icon.jpg" class="dev-icon" />
+          </div>
+        </div>
+
+        <div class="dev-comment-item">
+          <div class="dev-sentence">
+            <h4>Webデザイン担当からのコメント</h4>
+            <p>
+              コメントhere.......
+            </p>
+          </div>
+          <div class="dev-icon-box">
+            <img src="./img/elca-icon.jpg" class="dev-icon" />
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <%- include('./../components/input-js') %>
+    <script src="/js/about.js"></script>
+  </body>
+</html>

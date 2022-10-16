@@ -10,7 +10,7 @@ export interface IRecommendationRepository {
   findById(id: string): Promise<Recommendation | null>
   update(recommendation: Recommendation): Promise<void>
   delete(recommendation: Recommendation): Promise<void>
-  findByBookId(bookId: BookId): Promise<string | null>
+  findByBookId(bookId: BookId): Promise<string[]>
   removeUsingByBookId(bookId: BookId): Promise<void>
   removeUsingAll(): Promise<void>
   fetchAllThumbnailName(): string[]

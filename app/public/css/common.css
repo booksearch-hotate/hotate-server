@@ -1,163 +1,20 @@
-/**
-全てのページに適用されるcss
-**/
+@charset "UTF-8";
 
-@import url('https://fonts.googleapis.com/css2?family=Text+Me+One&family=Zen+Maru+Gothic:wght@300&display=swap');
+/* -----------------------------------
+変数
+----------------------------------- */
 
-/* 変数の宣言 */
 :root {
-  --main-theme-color: #f4e4d4;
-  --main-font-color: #312a2a;
-}
-
-body {
-  font-family: 'Text Me One', 'Zen Maru Gothic', sans-serif;
-  background-color: var(--main-theme-color);
-}
-
-main {
-  margin: 16px auto;
-}
-
-.navbar-search-button {
-  width: 24px;
-  height: auto;
-  cursor: pointer;
-  color: var(--main-font-color)!important;
-}
-
-/* 検索関係 */
-.search-button-text {
-  cursor: pointer;
-}
-
-.navbar-logo {
-  height: 24px;
-  width: auto;
-}
-
-.search-box {
-  visibility: hidden;
-  opacity: 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #244e5f5e;
-  backdrop-filter: blur(5px);
-  color: var(--main-theme-color);
-  transition: all 0.3s;
-  z-index: 5;
-}
-
-.search-box > .close-button {
-  text-align: right;
-  cursor: pointer;
-  margin-top: 30px;
-  margin-right: 30px;
-}
-
-.search-box > .close-button > svg {
-  transform: scale(4);
-  transition: transform 0.3s;
-}
-
-.search-box > .close-button > svg:hover {
-  transform: scale(3.6);
-}
-
-.search-title-box {
-  display: flex;
-  justify-content: center;
-}
-
-.search-title {
-  letter-spacing: 1.1rem;
-  font-size: 3.4rem;
-}
-
-.search-title-box > svg {
-  width: 3.4rem;
-  height: 3.4rem;
-}
-
-.search-input-box {
-  width: 60%;
-  margin: 0 auto;
-}
-
-.search-input {
-  background: rgba(255, 255, 255, 0);
-  width: 100%;
-  border: none;
-  border-bottom: 2px solid var(--main-theme-color);
-  outline: none;
-  font-size: 2rem;
-  transition: border-bottom 0.3s;
-  text-align: center;
-}
-
-.search-input:focus {
-  border-bottom: 2px solid #fff;
-}
-
-.search-type-box h2 {
-  text-align: center;
-}
-
-.search-type-item {
-  text-align: center;
-  transition: .2s;
-  cursor: pointer;
-  border: solid 1px rgb(110, 72, 72);
-  border-radius: 5px;
-  padding: 10px;
-}
-
-.search-type-item p {
-  margin: 0;
-  font-size: 1.6rem;
-}
-
-.search-type-item svg {
-  height: 2rem;
-  width: 2rem;
-}
-
-.search-type-item:hover {
-  color: rgb(110, 72, 72);
-  transform: scale(.98);
-}
-
-.search-type-icon-box {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-}
-
-.search-type-icon-box svg {
-  height: 20rem;
-  width: 20rem;
-}
-
-.search-type-icon-item-box {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  opacity: 0;
-  filter: blur(1px);
-  visibility: hidden;
-  transition: all .5s;
-  pointer-events: none;
-}
-
-.search-type-icon-active {
-  visibility: visible;
-  opacity: .9;
+  --font-color: #432;
+  --main-color: #467556;
+  --sub-color: #244E5F;
+  --danger-color: #a03434;
+  --warning-color: #E8BB50;
+  --success-color: #60ba49;
+  --header-font-color: #244E5F;
+  --header-hover-font-color: #0bd;
+  --form-color: #FEF4EA;
+  --bg-color: #C8B8A9;
 }
 
 .is-active {
@@ -165,100 +22,476 @@ main {
   opacity: 1!important;
 }
 
-.search-history-tag-box {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-content: center;
-  gap: 1rem;
-}
+/* -----------------------------------
+共通部分
+----------------------------------- */
 
-.search-history-tag {
-  font-size: 1rem;
-  color: #2f3230;
-  text-decoration: none;
-  background: rgb(226, 247, 236);
-  border-radius: 10px;
-  border: 1px #3a3f3c solid;
-}
-
-.book-tag-box {
-  display: inline-flex;
-  align-items: center;
-  background: rgb(226, 247, 236);
-  border-radius: 10px;
-  border: 1px #3a3f3c solid;
-  text-decoration: none;
-  color: #2f3230;
-}
-
-.book-tag-text {
+body{
+  font-family:"Yu Gothic Medium","游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif!important;
+  color: var(--font-color);
   margin: 0;
-  font-size: 1rem;
 }
 
-.state-info-toast {
-  position: fixed;
+input {
+  border: none;
+  font-family:"Yu Gothic Medium","游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif!important;
+}
+
+input:focus {
+  outline: none;
+}
+
+/* -----------------------------------
+ヘッダー部分
+----------------------------------- */
+
+/* ロゴ */
+.tree-header-logo {
+  height: 4rem;
+  width: auto;
+  display: block;
+}
+
+/* ナビゲーションのリスト全体 */
+.main-nav {
+  display: flex;
+  font-size: 1.4rem;
+  list-style: none;
+  margin: 0;
+  gap: 1rem;
+  align-items: center;
+  padding: 0;
+}
+
+.main-nav a, .header-search-box a {
+  color:#fff!important;
+  text-decoration: none;
+}
+
+.main-nav a:hover, .header-search-box :hover {
+  color: #0bd!important;
+}
+
+.header-search-box {
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  margin-right: 30px;
+  cursor: pointer;
+}
+
+.page-header {
+  display:flex;
+  justify-content:space-between;
+  width: 100vw;
+  padding: 4px;
+}
+
+/* ヘッダー全体のbox */
+.tree-header {
+  background: var(--main-color);
+}
+
+/* -----------------------------------
+検索画面
+----------------------------------- */
+
+
+/**
+ラベルについて
+左へ若干ずらして他のラベルと被らせていますが、どれぐらいずらすかの量はjavascriptで設定しています。
+**/
+
+.search-view-box {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  display: none; /* cssファイル読み込み時にtransitionが勝手に動作する不具合があるため、最初はdisplay: noneにしてあります。通常はflexです */
+  flex-direction: column;
+  align-items: center;
+  transition: visibility .5s, opacity .5s;
+  backdrop-filter: blur(5px);
+  background-color: rgb(255 255 255 / 57%);
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+}
+
+.search-title {
+  font-size: 3.8rem;
+  color: #467556;
+  border-bottom: 3px #467556 solid;
+  margin: 0;
+  margin-top: 2rem;
+  width: 100vw;
+  text-align: center;
+}
+
+/* 検索ボックス全体 */
+.search-box {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-top: 70px;
+  width: 80vw;
+}
+
+/* 上に飛び出している部分（以下「ラベル」）のボックス */
+.search-label-list-box {
+  display: flex;
+  align-content: center;
+  position: relative;
+  left: 35px; /* 全体を右へ移動する量 */
+}
+
+/* ラベル1つあたりのデザイン */
+.search-label-item-box {
+  padding-left: 30px;
+  padding-right: 40px;
+  border-radius: 20px 120px 0px 0px;
+  position: relative;
+  cursor: pointer;
+  bottom: -10px; /* hover時に上に上がる分を考慮 */
+  padding-bottom: 10px; /* 上のbottomに数値を合わせること! */
+  transition: bottom .5s, opacity .5s;
+}
+
+/* ラベルが隠された場合のアニメーション */
+.remove-label {
+  bottom: -100%;
+  opacity: 0;
+}
+
+.search-label-item-box p {
+  margin: 0;
+  color: white;
+  font-size: 1.5rem;
+  pointer-events: none; /* これをしないとうまくjavascriptが動作しないので注意 */
+}
+
+.search-label-item-box:hover {
   bottom: 0;
-  right: 0;
-  margin: .6rem;
 }
 
-/* ヘッダのタイトルに関するスタイル */
-.header-title {
+/* メインとなる部分（以下「コンテンツ」）のボックス */
+.search-content-box {
+  width: 100%;
+  height: 425px;
+  border-radius: 30px;
+  padding: 30px;
+  z-index: 100; /* ラベルよりも高いz-indexにすること */
+  transition: background-color .5s;
+}
+
+/* コンテンツ内のdiv要素を縦並びにするように */
+.search-content-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+}
+
+.message-box p{
+  font-size: 1.4rem;
+  margin: 2rem 0;
+  color: #432;
+}
+
+.search-form-box {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--main-font-color);
-  border-bottom: solid 2px #463927;
-  margin-left: 10px;
-  margin-right: 10px;
-  gap: 5px;
+  gap: 1.2rem; /* inputとbuttonとの間隔 */
 }
 
-.header-title-log-box {
+/* 検索するキーワードを入力するinput */
+.search-input {
+  height: 5rem;
+  width: 90%;
+  border-radius: 90px;
+  border: none;
+  font-size: 2.2rem;
+  padding-left: 3rem; /* 入力時radiusのおかげで文字が欠けるのでそれを考慮 */
+  padding-right: 3rem;
+  font-family:"Yu Gothic Medium","游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif;
+  transition: all .5s;
+}
+
+/* 入力時のデザイン。適当にやったので改良お願いします! */
+.search-input:focus {
+  box-shadow: 0 10px 25px 0 rgba(0, 0, 0, .5);
+  outline: none; /* これを入れないと入力時強制的にborderがかかるようになる */
+}
+
+/* 検索するbutton */
+.search-submit-button {
+  font-size: 3rem;
+  background-color: #A5978B;
+  border: none;
+  color: white;
+  border-radius: 30px;
+  padding: 1rem 1.4rem;
+  cursor: pointer;
+  transition: all .5s;
+}
+
+.search-submit-button:hover {
+  transform: scale(.98);
+}
+
+/* カテゴリ（本、著者名、出版社名）のボタンを配置するbox */
+
+/* 各カテゴリのデザイン */
+.category-button {
+  border: solid 4px #755F4B;
+  color: #755F4B;
+  border-radius: 90px;
+  background-color: white;
+  height: 90px;
   position: relative;
-  height: 2.6rem;
-  width: 2.6rem;
+  overflow: hidden; /* これを入れないとロゴが見切れずbuttonから飛び出すことになるので注意 */
+  transition: all .5s;
+  cursor: pointer;
 }
 
-.header-title h2 {
+.category-button p {
   margin: 0;
-  font-size: 2.6rem;
-}
-
-.header-title-log-box svg {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 50%;
+  left: 45%; /* ロゴを考慮して若干左へずらす */
+  transform: translate(-45%, -50%);
+  font-size: 1.4rem;
 }
 
-.common-header-sub-title {
+.category-button i {
+  position: absolute;
+  bottom: -40px;
+  right: 20px;
+  font-size: 80px;
+}
+
+.category-button:hover {
+  transform: scale(.98)
+}
+
+/* 現在選択されているカテゴリのデザイン */
+.category-button-input:checked + label .category-button {
+  background-color: #C8B8A9;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.close-button i {
+  font-size: 3rem;
+  cursor: pointer;
+  transition: all .5s;
+  border: solid 2px #467556;
+  border-radius: 10px;
+  color: #467556;
+}
+
+.close-button i:hover {
+  border-radius: 50%;
+}
+
+/* フッター
+----------------------------------- */
+footer {
+  background: #244E5F;
   text-align: center;
-  color: #444;
+  padding: 26px 0;
+}
+footer p {
+  color: #fff;
+  font-size: 0.875rem;
+}
+
+/* 線があるタイトルのレイアウト(line-title) */
+.line-title {
+  margin: 10px auto;
+  padding: 10px;
+  font-size: 2.6rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 80%;
+  margin: 0 auto;
+  letter-spacing: 5px;
+}
+
+.line-title::after, .line-title::before {
+  content: "";
+  flex-grow: 1;
+  border-bottom: 2px solid var(--font-color);
+}
+
+/* フォーム */
+.tree-label {
+  font-size: 1.4rem;
+  width: 10rem;
+}
+
+.tree-form-item {
+  display:flex;
+  justify-content: center;
+  margin: 30px auto;
+  align-items: center;
+  gap: 2rem;
+}
+
+.tree-input {
+  background-color: #FEF4EA;
+  border: 1px #244E5F solid;
+  padding: 10px;
   font-size: 1rem;
-  margin: 0;
+  width: 40%;
 }
 
-/* アイテムが見つからなかった時のUI */
-.no-item-box {
+.tree-input-info {
+  font-size: 1rem;
+  color: #432;
   text-align: center;
 }
 
-.no-item-box svg {
+.tree-textarea {
   height: 6rem;
-  width: auto;
 }
 
-svg {
-  height: 100%;
-  width: auto;
+/* bootstrapを導入して使用！！ */
+.tree-select-with-bg {
+  background-color: var(--form-color);
+  border: 1px #244E5F solid;
+  font-size: 1.2rem;
+  border-radius: 0;
 }
 
-/* 確認を求める画面のUI */
-.confirm-box {
+/* ボタンレイアウト */
+/* アニメーション参照元 : https://b-risk.jp/blog/2021/11/hover-reference/#i-17 */
+.tree-button {
+  cursor: pointer;
+  min-width: 12rem;
+  width: fit-content;
+  padding: 0 10px;
+  height: 4.1rem;
+  font-size: 1.2rem;
+  color: var(--sub-color);
+  border: 2px var(--sub-color) solid;
+  border-radius: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  overflow: hidden;
+  position: relative;
+  transition-duration: .4s;
+  transition: color .6s;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.tree-button::after {
+  background: var(--sub-color);
+  border-radius: 50%;
+  content: "";
+  display: block;
+  margin: auto;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding-top: 100%;
+  height: 0;
+  z-index: -1;
+  transform: translateY(-50%) scale(0.1);
+  transition: opacity .2s, transform 0s;
+  transition-delay: 0s, .4s;
+}
+
+.tree-button:disabled {
+  background-color: rgba(139, 139, 139, 0.627);
+  pointer-events: none;
+}
+
+.tree-button:disabled::after {
+  background-color: rgba(139, 139, 139, 0.627);
+}
+ 
+.tree-button:hover {
+  color: #fff;
+}
+
+.tree-button:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+  transition-delay: 0s;
+  transition: opacity .4s, transform .5s ease-in-out;
+}
+
+.tree-button-mini {
+  height: 2.1rem;
+  width: 7rem;
+  font-size: 1rem;
+}
+
+.tree-button-danger {
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+.tree-button-danger::after {
+  background-color: var(--danger-color);
+}
+
+.tree-button-warning {
+  color: var(--warning-color);
+  border-color: var(--warning-color);
+}
+
+.tree-button-warning::after {
+  background-color: var(--warning-color);
+}
+
+.tree-button-success {
+  color: var(--success-color);
+  border-color: var(--success-color);
+}
+
+.tree-button-success::after {
+  background-color: var(--success-color);
+}
+
+/* -----------------------------------
+注意書きカード
+----------------------------------- */
+
+.tree-attention {
+  background: var(--warning-color);
+  padding: 10px;
+  margin: 10px;
+  border: solid 2px #6e5d4b;
+  border-radius: 10px;
+  color: #313010;
+}
+
+.tree-attention-title {
+  text-align: center;
+  border-bottom: solid 2px #6e5d4b;
+  font-size: 2rem;
+}
+
+.tree-attention-list {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+}
+
+.tree-confirm-box {
   visibility: hidden;
   position: fixed;
   top: 0;
@@ -271,7 +504,7 @@ svg {
   z-index: 100;
 }
 
-.confirm-content-box {
+.tree-confirm-content-box {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -279,33 +512,220 @@ svg {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #eeeeee;
+  background-color: #eee;
   padding: 20px;
-  border: solid 1px #666;
+  border: solid 1px var(--font-color);
   border-radius: 10px;
   filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.6));
 }
 
-.confirm-content-box h3 {
+.tree-confirm-content-box h3 {
   font-size: 2rem;
-  border-bottom: solid 1px #555;
+  border-bottom: solid 1px var(--font-color);
   width: 100%;
   text-align: center;
 }
 
-.confirm-button-box {
+.tree-confirm-button-box {
   display: flex;
   justify-content: space-evenly;
   width: 100%;
 }
 
-.auto-fade {
-  animation: cssAnimation .2s ease-in 10s forwards;
-  animation-fill-mode: forwards;
+.state-info-toast {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: .6rem;
+  z-index: 5;
 }
 
-@keyframes cssAnimation {
-  to {
-    opacity: 0;
-  }
+.tree-table {
+  width: 90%;
+  margin: 0 auto;
+}
+
+/* -----------------------------------
+キャンペーンカード関係
+----------------------------------- */
+
+.campaign-scroll {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+
+.campaign-title {
+  text-align: center;
+  font-size: 2.6rem;
+  margin-top: 40px;
+  margin-bottom: 100px;
+  margin-left: 70px;
+  margin-right: 70px;
+  display:flex;
+  align-items: center;  
+  color:#244E5F;
+}
+
+.campaign-title::before,
+.campaign-title::after {
+	content:"";
+	flex-grow: 1;
+	border-bottom: 2px solid #244E5F;
+}
+
+.campaign-title::before{
+  margin-right: 20px;  
+  padding-left: 15px;  
+}
+
+.campaign-title::after{
+  margin-left: 20px; 
+  padding-right: 15px;  
+}
+
+.campaign-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem;
+  justify-content: center;
+}
+
+.campaign-item {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.campaign-thumbnail {
+  max-width: 370px;
+  margin-bottom: 10px;
+}
+
+.campaign-thumbnail img{
+  border-radius: 20px;
+}
+
+.campaign-item-text {
+  padding: 0 10px;
+  max-width: 370px;
+  overflow: hidden;
+}
+
+.campaign-item-text h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.campaign-item-text p {
+  color: #ababab;
+  line-height: 1;
+  font-size: 0.9rem;
+}
+
+/* -----------------------------------
+ページネーション
+----------------------------------- */
+
+.tree-pagination {
+  margin: 30px auto;
+}
+
+.tree-pagination-list {
+  display: flex;
+  justify-content: center;
+  padding: 0 10px;
+  gap: 1.4rem;
+}
+
+.tree-pagination-item {
+  list-style: none;
+  width: 3rem;
+  height: 3rem;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  position: relative;
+  transition-duration: .1s;
+  transition: color .1s;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.tree-pagination-item::after {
+  background: #ddd;
+  border-radius: 50%;
+  content: "";
+  display: block;
+  margin: auto;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding-top: 100%;
+  height: 0;
+  z-index: -1;
+  transform: translateY(-50%) scale(0.1);
+  transition: opacity .1s, transform 0s;
+  transition-delay: 0s, .2s;
+}
+
+.tree-pagination-item:disabled {
+  background-color: rgba(139, 139, 139, 0.627);
+  pointer-events: none;
+}
+
+.tree-pagination-item:disabled::after {
+  background-color: rgba(139, 139, 139, 0.627);
+}
+ 
+.tree-pagination-item:hover {
+  color: #fff;
+}
+
+.tree-pagination-item:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+  transition-delay: 0s;
+  transition: opacity .1s, transform .3s ease-in-out;
+}
+
+.tree-pagination-item * {
+  font-size: 2rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all .5s;
+}
+
+.tree-pagination-item-active * {
+  color: rgb(6 149 44)!important;
+}
+
+.tree-pagination-link {
+  text-decoration: none;
+  color: var(--font-color);
+}
+
+.tree-pagination-link:hover {
+  color: var(--font-color);
+}
+
+/* -----------------------------------
+アイテムがない場合のUIのレイアウト
+----------------------------------- */
+
+.no-item-box i {
+  font-size: 5rem;
 }
