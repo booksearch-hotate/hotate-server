@@ -609,6 +609,7 @@ footer p {
 
 .campaign-item-text {
   padding: 0 10px;
+  max-width: 370px;
   overflow: hidden;
 }
 
