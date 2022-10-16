@@ -609,11 +609,10 @@ footer p {
 
 .campaign-item-text {
   padding: 0 10px;
-  max-width: 370px;
   overflow: hidden;
 }
 
-.campaign-text-title {
+.campaign-item-text h3 {
   margin-bottom: 10px;
   font-size: 1.2rem;
   overflow: hidden;
@@ -621,7 +620,7 @@ footer p {
   white-space: nowrap;
 }
 
-.campaign-text-time {
+.campaign-item-text p {
   color: #ababab;
   line-height: 1;
   font-size: 0.9rem;

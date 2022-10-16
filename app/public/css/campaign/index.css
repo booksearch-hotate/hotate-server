@@ -50,16 +50,3 @@
 .campaign-item-text {
   padding: 0 10px;
 }
-
-.campaign-text-title {
-  margin-bottom: 10px;
-  font-size: 1.2rem;
-  display: -webkit-box;
-  overflow: hidden;
-}
-
-.campaign-text-time {
-  color: #ababab;
-  line-height: 1;
-  font-size: 0.9rem;
-}

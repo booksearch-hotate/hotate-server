@@ -4,18 +4,29 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <h3>タグ編集</h3>
+    <header>
+      <%- include('./../../../components/header-title', {mes: `${pageData.anyData.tag.Name}の編集`}) %>
+    </header>
+
     <form action="/admin/tags/update" method="post">
       <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
       <input type="hidden" name="id" value="<%= pageData.anyData.tag.Id %>">
-      <div class="form-group">
-        <label for="formName" class="form-label">タグ名</label>
-        <input class="form-control" type="text" id="formName" name="name" value="<%= pageData.anyData.tag.Name %>">
+      <div class="tree-form-item">
+        <label for="formName" class="tree-label">タグ名</label>
+        <input class="tree-input" type="text" id="formName" name="name" value="<%= pageData.anyData.tag.Name %>">
+      </div>
+
+      <div class="container my-4">
+        <div class="row">
+          <div class="col">
+            <a href="/admin/tags/" class="tree-button mx-auto tree-button-success">戻る</a>
+          </div>
+          <div class="col">
+            <button type="submit" class="tree-button mx-auto">変更</button>
+          </div>        
+        </div>
       </div>
     </form>
-    <div class="text-center">
-      <a href="/admin/tags/">戻る</a>
-    </div>
     <%- include('./../../../components/input-js') %>
   </body>
 </html>

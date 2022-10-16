@@ -11,9 +11,9 @@
       <div class="campaign-thumbnail">
         <img class="w-100" src="/thumbnail/<%= recommendation.ThumbnailName %>.png">
       </div>
-      <div class="campaign-item-text">
-        <p class="campaign-text-title"><%= recommendation.Title %></p>
-        <div class="campaign-text-time"><%= recommendation.CreatedAt %></div>
+      <div class="campaign-item-text w-100">
+        <h3><%= recommendation.Title %></h3>
+        <p><%= recommendation.CreatedAt %></p>
       </div>
 
       <% if (typeof editMode !== 'undefined' && editMode === true) { %>
