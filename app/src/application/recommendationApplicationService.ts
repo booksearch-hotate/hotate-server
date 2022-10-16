@@ -155,8 +155,6 @@ export default class RecommendationApplicationService {
     const bookIdModel = new BookId(bookId);
     const existRecommendationIds = await this.recommendationRepository.findByBookId(bookIdModel);
 
-    console.log(existRecommendationIds);
-
     if (existRecommendationIds.length === 0) return null;
 
     const fetchModels = await Promise.all(existRecommendationIds.map(async (id) => {
