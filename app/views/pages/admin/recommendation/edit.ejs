@@ -55,7 +55,7 @@
             </thead>
             <tbody id="book-title-list-box">
               <% for (const item of pageData.anyData.items) { %>
-                <tr class="book-item-box" id="book-item-<%= item.book.Id %>" data-bookid="<%= item.book.Id %>" class="align-middle">
+                <tr class="book-item-box align-middle" id="book-item-<%= item.book.Id %>" data-bookid="<%= item.book.Id %>">
                   <td><%= item.book.BookName %></td>
                   <td>
                     <input class="tree-input w-100" type="text" placeholder="コメントを追加" name="bookComments[]" value="<%= item.comment %>">
