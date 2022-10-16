@@ -9,7 +9,7 @@
       <%- include('../../../components/no-item', {title: "タグが登録されていません", mes: "気になる本にどんどんタグをつけていきましょう！", icon: "tags"}) %>
     <% } else { %>
       <div class="tree-table">
-        <table class="table table-striped">
+        <table class="table table-striped text-center">
           <thead>
             <tr>
               <th>タグ名</th>
@@ -21,21 +21,21 @@
           </thead>
           <tbody>
             <% for (const tag of pageData.anyData.tags) { %>
-              <tr>
+              <tr class="align-middle">
                 <td><%= tag.Name %></td>
                 <td><%= tag.BookIds.length %></td>
                 <td><%= tag.CreatedAt %></td>
                 <td>
                   <form action="/admin/tags/edit" method="get">
                     <input type="hidden" name="id" value="<%= tag.Id %>">
-                    <button type="submit" class="btn btn-success">編集</button>
+                    <button type="submit" class="tree-button tree-button-mini mx-auto">編集</button>
                   </form>
                 </td>
                 <td>
                   <form action="/admin/tags/delete" method="post">
                     <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
                     <input type="hidden" name="id" value="<%= tag.Id %>">
-                    <button type="submit" class="btn btn-danger">削除</button>
+                    <button type="submit" class="tree-button tree-button-mini mx-auto tree-button-danger">削除</button>
                   </form>
                 </td>
               </tr>
