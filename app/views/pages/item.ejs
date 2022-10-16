@@ -59,7 +59,7 @@
 
 
       <% } else { %>
-        <h4 class="text-danger">本が見つかりませんでした。</h4>
+        <%- include('../components/no-item', {title: "本が見つかりませんでした", mes: "再度お試しください", icon: "book"}) %>
       <% } %>
     </main>
     <%- include('./../components/state-alert', {pageData}) %>
