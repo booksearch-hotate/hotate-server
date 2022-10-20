@@ -123,6 +123,8 @@ export default class RecommendationApplicationService {
    * おすすめセクションの文章を省略するための処理です
    * @param recommendations 省略したいおすすめセクションのデータ
    * @returns 文章を省略したおすすめセクション
+   *
+   * @deprecated 使用することでrecommendationsの作成日時及び更新日時の月が1月先に進む不具合が確認されています
    */
   public omitContent(recommendations: RecommendationData[]): RecommendationData[] {
     const omitRecommendations = recommendations.map((recommendationData) => {
