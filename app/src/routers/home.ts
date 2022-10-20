@@ -40,7 +40,7 @@ const bookApplicationService = new BookApplicationService(
 
 homeRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
   try {
-    const fetchDatas = recommendationApplicationService.omitContent(await recommendationApplicationService.fetch(0, 5));
+    const fetchDatas = await recommendationApplicationService.fetch(0, 5);
 
     const recommendations: IRecommendationObj[] = await Promise.all(fetchDatas.map(async (recommendation) => {
       const items = await Promise.all(recommendation.RecommendationItems.map(async (item) => {
