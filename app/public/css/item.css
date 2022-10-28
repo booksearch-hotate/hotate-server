@@ -103,10 +103,19 @@ aside {
 .osusume-book {
   display: flex;
   align-items: center;
+  color: var(--font-color);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .5s;
+}
+
+.osusume-book:hover {
+  color: var(--font-color);
+  transform: scale(.96);
 }
 
 .osusume-book img {
-  width: 120px;
+  width: 300px;
   margin-bottom: 20px;
 }
 .osusume-book-title {
