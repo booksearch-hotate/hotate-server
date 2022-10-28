@@ -2,17 +2,28 @@
 <html>
   <head>
     <%- include('./../components/head') %>
-  </head>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/404.css" />
+    </head>
   <body>
-    <header class="text-center">
-      <%- include('./../components/header-title', {mes: '404 NotFound', logo:'eye-slash'}) %>
-    </header>
-  
     <main>
-      <h3 class="text-center">お探しのページは見つかりませんでした</h3>
+      <div class="bg-img-box">
+        <img src="/img/not-found-tree.png">
+        <img src="/img/not-found-tree.png" style="transform: scale(-1, 1);">
+      </div>
+      <div class="not-found-box">
+        <h1 class="not-found-number">404</h1>
+        <h2 class="not-found-text">Not Found</h2>
+        <p class="not-found-message">
+          TREEをご利用いただきありがとうございます。<br>
+          誠に申し訳ありませんが、<br>
+          お探しのページが見つかりませんでした。
+        </p>
+        <a href="/" class="tree-button tree-button-warning mx-auto">
+          ホームへ戻る
+        </a>
+      </div>
     </main>
 
     <%- include('./../components/input-js') %>
-    <script src="/js/about.js"></script>
   </body>
 </html>
