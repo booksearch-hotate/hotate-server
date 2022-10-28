@@ -37,7 +37,7 @@
         </div>
 
         <div class="card-campaign-item-box">
-          <div class="card-campaign-flex">
+          <div class="card-campaign-flex" id="campaign-box">
             <% for (const section of pageData.anyData.recommendations) { %>
               <div class="card-campaign-item">
                 <% if (section.recommendation.IsSolid) { %>
@@ -50,6 +50,9 @@
                 </div>
               </div>
             <% } %>
+          </div>
+          <div class="card-pagination-box mt-3" id="card-pagination-box">
+
           </div>
         </div>
       </div>
@@ -98,5 +101,6 @@
     <%- include('./../components/state-alert', {pageData}) %>
     <%- include('./../components/input-js') %>
     <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
+    <script src="<%= pageData.origin %>/js/campaignScroll.js"></script>
   </body>
 </html>
