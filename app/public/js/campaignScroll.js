@@ -43,7 +43,7 @@ function renderPagination() {
   backCircle.innerHTML = '<i class="bi bi-chevron-right campaign-card-pagination-icon"></i>';
   backCircle.addEventListener('click', () => {forwardCard()});
 
-  paginationBox.append(forwardCircle, ...circleList, backCircle);
+  if (maxMoveCount >= 1) paginationBox.append(forwardCircle, ...circleList, backCircle);
 }
 
 renderPagination();
