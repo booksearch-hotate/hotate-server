@@ -191,16 +191,6 @@
   padding-top: 15px;
 }
 
-button[type="button"] {
-  cursor: pointer;
-  width: 170px;
-  height: 54px;
-  font-size: 1.2rem;
-  color: #E8BB50;
-  border: 2px #E8BB50 solid;
-  border-radius: 90px;
-}
-
 .index-how {
   margin-top: 170px;
   display: flex;
