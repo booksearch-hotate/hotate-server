@@ -41,6 +41,18 @@ input:focus {
   outline: none;
 }
 
+/* フッター
+----------------------------------- */
+footer {
+  background: #755F4B;
+  text-align: center;
+  padding: 26px 0;
+}
+footer p {
+  color: #fff;
+  font-size: 0.875rem;
+}
+
 /* -----------------------------------
 ヘッダー部分
 ----------------------------------- */
@@ -296,18 +308,6 @@ input:focus {
 
 .close-button i:hover {
   border-radius: 50%;
-}
-
-/* フッター
------------------------------------ */
-footer {
-  background: #244E5F;
-  text-align: center;
-  padding: 26px 0;
-}
-footer p {
-  color: #fff;
-  font-size: 0.875rem;
 }
 
 /* 線があるタイトルのレイアウト(line-title) */

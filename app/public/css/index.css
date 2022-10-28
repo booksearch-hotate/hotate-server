@@ -64,7 +64,7 @@
 
 .card-campaign-item-box {
   width: 100vw;
-  overflow: scroll;
+  overflow: hidden;
   margin-top: 80px;
   padding: 0 30px;
 }
@@ -74,6 +74,9 @@
   display: flex;
   gap: 50px;
   overflow: scroll;
+  position: relative;
+  right: 0;
+  transition: right .5s;
 }
 
 .card-campaign-item {
@@ -111,6 +114,16 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.card-pagination-box {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.campaign-card-pagination-icon {
+  font-size: 1.4rem;
+  cursor: pointer;
 }
 
 .bi-chat-dots {
