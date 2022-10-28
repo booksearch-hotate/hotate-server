@@ -2,32 +2,32 @@
 <html>
   <head>
     <%- include('./../components/head') %>
-    <link rel="stylesheet" href="<%= pageData.origin %>/css/index.css" />
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/init-admin.css" />
   </head>
   <body>
     <header class="text-center">
-      <h1>管理者初期設定</h1>
-      <p>管理者を設定します。途中から変更することも可能です。</p>
+      <%- include('./../components/header-title', {mes: '管理者情報の登録'}) %>
+      <p>管理者情報を設定します。初期設定後も変更することが可能です。</p>
     </header>
 
     <main>
       <form method="POST" action="/init-admin" class="px-4">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
-        <div class="mb-3">
-          <label for="input_id" class="form-label">ユーザ名</label>
-          <input type="text" class="form-control" id="input_id" name="id" placeholder="ユーザ名" required>
+        <div class="tree-form-item">
+          <label for="input_id" class="tree-label">ユーザ名</label>
+          <input type="text" class="tree-input" id="input_id" name="id" placeholder="ユーザ名" required>
         </div>
-        <div class="mb-3">
-          <label for="input_pw" class="form-label">パスワード</label>
-          <input type="password" class="form-control" id="input_pw" name="pw" placeholder="パスワード" required>
+        <div class="tree-form-item">
+          <label for="input_pw" class="tree-label">パスワード</label>
+          <input type="password" class="tree-input" id="input_pw" name="pw" placeholder="パスワード" required>
         </div>
         <div class="mb-3 text-center container">
           <div class="row">
             <div class="col-sm-6">
-              <a href="/" class="btn btn-outline-success">戻る</a>
+              <a href="/" class="tree-button tree-button-success mx-auto">戻る</a>
             </div>
             <div class="col-sm-6">
-              <button type="submit" class="btn btn-primary">新規登録</button>
+              <button type="submit" class="tree-button tree-button-warning mx-auto">新規登録</button>
             </div>
           </div>
         </div>
