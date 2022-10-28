@@ -592,10 +592,20 @@ footer p {
 }
 
 .campaign-item {
-  list-style: none;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.campaign-item-link {
+  text-decoration: none;
+  color: var(--font-color);
+  transition: transform .5s;
+}
+
+.campaign-item-link:hover {
+  color: var(--font-color);
+  transform: scale(.96);
 }
 
 .campaign-thumbnail {
