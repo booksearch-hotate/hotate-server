@@ -22,3 +22,8 @@ changeImg();
 
 /* aboutのメイン箇所のimg */
 setInterval(()=> {changeImg()}, 10 * 1000);
+
+window.onload = () => {
+  document.getElementById('load-box').style.opacity = 0;
+  setTimeout(() => {document.getElementById('load-box').remove()}, 1000);
+};
