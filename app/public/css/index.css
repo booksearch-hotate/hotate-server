@@ -89,6 +89,14 @@
   flex-direction: column;
   align-items: center;
   overflow: hidden;
+  text-decoration: none;
+  color: var(--font-color);
+  transition: transform .5s;
+}
+
+.card-campaign-item:hover {
+  color: var(--font-color);
+  transform: scale(.96);
 }
 
 .card-campaign-item-cover {
