@@ -126,6 +126,14 @@
   cursor: pointer;
 }
 
+.card-campaign-no-item-box {
+  text-align: center;
+}
+
+.card-campaign-no-item-box p {
+  font-size: 2rem;
+}
+
 .bi-chat-dots {
   transform: scale(-1, 1);
   margin-right: 15px;
