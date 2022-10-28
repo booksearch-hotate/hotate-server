@@ -97,6 +97,7 @@
   margin-top:10px;
   gap: 10px;
   margin-bottom: 15px;
+  flex-wrap: wrap;
 }
 .tag {
   border: 1px #244E5F solid;
@@ -125,4 +126,10 @@
 .page p {
   margin-left: 50px;
   font-size: 2rem;
+}
+
+@media(max-width: 1000px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
