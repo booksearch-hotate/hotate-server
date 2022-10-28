@@ -20,7 +20,7 @@ export default class RecommendationData {
     this.isSolid = recommendationModel.IsSolid;
     this.sortIndex = recommendationModel.SortIndex;
     this.thumbnailName = recommendationModel.ThumbnailName;
-    this.createdAt = conversionDateToString(recommendationModel.CreatedAt);
+    this.createdAt = conversionDateToString(recommendationModel.CreatedAt, ['hour', 'second', 'minute']);
     this.updatedAt = conversionDateToString(recommendationModel.UpdatedAt);
     this.recommendationItems = recommendationModel.RecommendationItems.map((item) => new RecommendationItemData(item));
   }
