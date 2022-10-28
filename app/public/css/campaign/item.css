@@ -1,0 +1,47 @@
+.campaign-title-box {
+  padding: 1rem;
+  padding-bottom: 10px;
+  border-bottom: solid 2px #755F4B;
+  margin: 0 20px;
+}
+
+.campaign-title-box p {
+  font-size: 1.2rem;
+  color: #828282;
+  margin: 0;
+}
+
+.capmpaign-thumbnail {
+  width: 932px;
+  border-radius: 10px;
+}
+
+.campaign-content {
+  margin: 10px 2rem;
+}
+
+.campaign-content p {
+  white-space: pre-wrap;
+}
+
+.book-list-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.book-item-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--font-color);
+  text-decoration: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .5s;
+}
+
+.book-item-box:hover {
+  color: var(--font-color);
+  transform: scale(.96);
+}

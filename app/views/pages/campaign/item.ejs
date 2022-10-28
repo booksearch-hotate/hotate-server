@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/campaign/item.css" />
+  </head>
+  <body>
+    <%- include('./../../components/navbar') %>
+
+    <% if (pageData.anyData.recommendation !== null) { %>
+      <div class="campaign-title-box">
+        <h1><%= pageData.anyData.recommendation.recommendation.Title %></h1>
+        <p>公開日: <%= pageData.anyData.recommendation.recommendation.CreatedAt %></p>
+      </div>
+
+      <div class="text-center my-4">
+        <img src="/thumbnail/<%= pageData.anyData.recommendation.recommendation.ThumbnailName %>.png" class="capmpaign-thumbnail">
+      </div>
+
+      <div class="campaign-content">
+        <p><%= pageData.anyData.recommendation.recommendation.Content %></p>
+      </div>
+
+      <div class="book-list-box">
+        <% for (const recommendationBook of pageData.anyData.recommendation.items) { %>
+          <a class="book-item-box my-4 px-4" href="/item/<%= recommendationBook.book.Id %>">
+            <img src="<%= recommendationBook.book.ImgLink %>" data-isbn="<%= recommendationBook.book.Isbn %>">
+            <div class="book-item-text-box">
+              <h3><%= recommendationBook.book.BookName %></h3>
+              <% if (recommendationBook.book.AuthorName.length) { %><p><%= recommendationBook.book.AuthorName %> / 著</p><% } %>
+              <p>
+                <%= recommendationBook.comment %>
+              </p>
+            </div>
+          </a>
+        <% } %>
+      </div>
+    <% } else { %>
+      <%- include('../../components/no-item', {title: "キャンペーンが見つかりませんでした。", mes: "もう一度お試しください。", icon: "search"}) %>
+    <% } %>
+
+    <a href="/campaign/" class="tree-button tree-button-warning my-4 mx-auto">
+      キャンペーン画面に戻る
+    </a>
+
+    <%- include('./../../components/input-js') %>
+    <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
+  </body>
+</html>
