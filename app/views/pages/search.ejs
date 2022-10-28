@@ -61,6 +61,9 @@ if (pageData.anyData.isTag) queryLink += '&tag=true';
 
       <%- include('../components/pagination', {paginationData: pageData.anyData.paginationData, url: `/search?search=${pageData.anyData.searchWord}${queryLink}&type=${pageData.anyData.searchCategory}&`}) %>
     </main>
+
+    <%- include('./../components/footer') %>
+
     <%- include('./../components/input-js') %>
     <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
   </body>
