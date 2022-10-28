@@ -56,14 +56,19 @@ main {
 
 .tag p {
   margin: 0;
+  white-space: nowrap;
 }
 
 .tag-flex {
   display: flex;
+  flex-wrap: wrap;
   position: relative;
   margin-top: 30px;
   margin-left: 20px;
-  width: 50%;
+  margin-bottom: 20px;
+  min-width: 50%;
+  width: fit-content;
+  padding-right: 10px;
   background: var(--tag-color);
   border-radius: .4em;
 }
