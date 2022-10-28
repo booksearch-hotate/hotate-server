@@ -2,6 +2,17 @@ main {
   background-color: var(--bg-color);
 }
 
+.load-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 500;
+  background-color: #ddd;
+  transition: opacity .5s;
+}
+
 .main-about-box {
   position: relative;
 }
