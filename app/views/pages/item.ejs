@@ -20,6 +20,7 @@
               <p class="item-writer">出版社：<%= data.PublisherName %></p>
               <div class="arasuzi">あらすじ</div>
               <p><%= data.BookContent %></p>
+              <% if (data.Tags.length > 0) { %>
               <div class="tag-flex">
                 <% data.Tags.forEach(tag => { %>
                   <div class="tag">
@@ -29,6 +30,7 @@
                   </div> 
                 <% }) %>
               </div>
+              <% } %>
               <form action="/tag/insert" method="post">
                 <input type="hidden" name="bookId" value="<%= data.Id %>">
                 <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
