@@ -128,7 +128,7 @@
   font-size: 2rem;
 }
 
-@media(max-width: 1000px) {
+@media(max-width: 768px) {
   .grid {
     grid-template-columns: 1fr 1fr;
   }
