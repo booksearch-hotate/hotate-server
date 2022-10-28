@@ -36,23 +36,24 @@
 }
 
 .thumbnail-delete-box a {
-  background-color: aliceblue;
-  border: solid 1px #432;
+  background-color: #fff;
+  border: solid 1px var(--danger-color);
   border-radius: 5px;
-  font-size: 1.2rem;
-  transition: transform .5s;
-  color: #432;
+  font-size: 1.6rem;
+  transition: font-size .5s;
+  color: var(--danger-color);
+  padding: 5px;
 }
 
 .thumbnail-delete-box a:hover {
-  transform: scale(1.1);
+  font-size: 1.8rem;
 }
 
 .thumbnail-button {
   display: none;
 }
 
-.thumbnail-button:checked + .choice-thumbnail-label{
+.thumbnail-button:checked + .choice-thumbnail-label {
   transform: scale(.9);
   opacity: .5;
 }
