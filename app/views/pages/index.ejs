@@ -36,6 +36,7 @@
           <div class="campaign-title-text">Campaign</div>
         </div>
 
+        <% if (pageData.anyData.recommendations.length > 0) { %>
         <div class="card-campaign-item-box">
           <div class="card-campaign-flex" id="campaign-box">
             <% for (const section of pageData.anyData.recommendations) { %>
@@ -52,9 +53,14 @@
             <% } %>
           </div>
           <div class="card-pagination-box mt-3" id="card-pagination-box">
-
+            <!-- jsによって生成される要素が追加されます -->
           </div>
         </div>
+        <% } else { %>
+        <div class="card-campaign-no-item-box">
+          <p>現在キャンペーンはありません。</p>
+        </div>
+        <% } %>
       </div>
 
       <div class="index-about">
