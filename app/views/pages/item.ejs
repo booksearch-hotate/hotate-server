@@ -16,7 +16,7 @@
           <div class="item-syousai">
             <div><img src="<%= data.ImgLink %>" alt="" data-isbn="<%= data.Isbn %>"></div>
             <div class="item-text">
-              <p class="item-writer">著者: <%= data.AuthorName %></p>
+              <p class="item-writer">著者 : <%= data.AuthorName %></p>
               <p class="item-writer">出版社：<%= data.PublisherName %></p>
               <div class="arasuzi">あらすじ</div>
               <p><%= data.BookContent %></p>
@@ -24,7 +24,7 @@
               <div class="tag-flex">
                 <% data.Tags.forEach(tag => { %>
                   <div class="tag">
-                    <a href="/search?search=<%= tag %>&tag=true">
+                    <a href="/search?search=<%= tag %>&mode=tag">
                       <p><i class="bi bi-hash"></i><%= tag %></p>
                     </a>
                   </div> 
@@ -58,13 +58,13 @@
           <div class="osusume-title"><i class="bi bi-binoculars-fill"></i>この本に似ている本</div>
           <div class="osusume-flex">
             <% for (const book of pageData.anyData.nearCategoryBookDatas) { %>
-              <div class="osusume-book">
+              <a class="osusume-book" href="/item/<%= book.Id %>">
                 <img src="<%= book.ImgLink %>" alt="" data-isbn="<%= book.Isbn %>">
                 <div class="osusume-text">
                   <p class="osusume-book-title"><%= book.BookName %></p>
                   <p class="osusume-writer">著；<%= book.AuthorName %></p>
                 </div>
-              </div>
+              </a>
             <% } %>
           </div>
         </aside>
