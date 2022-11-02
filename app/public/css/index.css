@@ -202,8 +202,9 @@
 .how-image {
   max-width: 40%;
   max-height: 360px;
-  border-radius: 50px;
+  border-radius: 10px;
   object-fit: contain;
+  border: solid 1px #755F4B;
 }
 
 .how-sub-title {
@@ -215,9 +216,9 @@
 
 .how-main-title {
   font-size: 64px;
-  color: #000000;
+  color: #000;
 }
 
 .how-explanation {
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
