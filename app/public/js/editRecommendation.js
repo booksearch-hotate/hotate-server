@@ -31,6 +31,8 @@ async function addBook(recommendationId) {
 
   const alreadyAddBookIds = document.querySelectorAll('[data-bookid]');
 
+  const errorEleBox = document.getElementById('add-box-error');
+
   alreadyAddBookIds.forEach((el) => {
     if (el.dataset.bookid === data.book.id) {
       data.status = 'Failue';
@@ -43,6 +45,11 @@ async function addBook(recommendationId) {
 
     const tar = makeBookItemNode(data.book.bookName, data.book.id);
     parentElement.appendChild(tar);
+
+    errorEleBox.style.display = 'none';
+    document.getElementById('url').value = '';
+  } else if (data.status === 'Failure') {
+    errorEleBox.style.display = 'block';
   }
 }
 

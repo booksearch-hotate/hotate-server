@@ -5,6 +5,8 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
+type dateItem = 'year' | 'month' | 'date' | 'hour' | 'minute' | 'second';
+
 /**
  * Date型を`YYYY年MM月DD日 hh時mm分ss秒`の文字列型に変換します。なお自動的に0埋めも行います。
  *
@@ -12,8 +14,17 @@ dayjs.extend(utc);
  * @param {Date} date 変換前の日付
  * @return {*}  {string} 変換後の文字列
  */
-export function conversionDateToString(date: Date): string {
-  const res = dayjs(date).tz('Asia/Tokyo').format('YYYY年MM月DD日 HH時mm分ss秒');
+export function conversionDateToString(date: Date, ignores: dateItem[] = []): string {
+  let formatStr = '';
+
+  if (ignores.indexOf('year') === -1) formatStr += 'YYYY年';
+  if (ignores.indexOf('month') === -1) formatStr += 'MM月';
+  if (ignores.indexOf('date') === -1) formatStr += 'DD日';
+  if (ignores.indexOf('hour') === -1) formatStr += 'HH時';
+  if (ignores.indexOf('minute') === -1) formatStr += 'mm分';
+  if (ignores.indexOf('second') === -1) formatStr += 'ss秒';
+
+  const res = dayjs(date).tz('Asia/Tokyo').format(formatStr);
   return res;
 }
 

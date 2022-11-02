@@ -54,8 +54,11 @@ const csrfProtection = csurf({cookie: false});
 /* isbnに対応する画像をopenbdから取得 */
 apiRouter.post('/:isbn/imgLink', csrfProtection, async (req: Request, res: Response) => {
   const isbn = req.params.isbn;
-  let imgLink = await bookApplicationService.getImgLink(isbn);
-  if (imgLink === null) imgLink = '';
+
+  const notFoundImgPath = '/img/not-found.png';
+
+  let imgLink = isbn === 'NO_ISBN' ? notFoundImgPath : await bookApplicationService.getImgLink(isbn);
+  if (imgLink === null) imgLink = notFoundImgPath;
   res.json({imgLink});
 });
 
@@ -135,9 +138,13 @@ apiRouter.post('/recommendation/thumbnail/delete', csrfProtection, async (req: R
 
     const file = glob.sync(filePath);
 
-    if (file.length > 1 || file.length === 0) {
+    if (file.length !== 1) {
       throw new InvalidAccessError('Incorrect file name.');
     }
+
+    const thumbnailList = recommendationApplicationService.fetchAllthumbnailName();
+
+    if (thumbnailList.indexOf(fileName) !== -1) throw new InvalidAccessError('Using images cannnot be deleted.');
 
     fs.unlinkSync(file[0]);
 

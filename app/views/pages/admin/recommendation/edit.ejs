@@ -6,7 +6,9 @@
     <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/recommendation/edit.css" />
   </head>
   <body>
-    <h3>セクションの編集</h3>
+    <header>
+      <%- include('./../../../components/header-title', {mes: 'セクションの編集'}) %>
+    </header>
 
     <form method="post" action="/admin/recommendation/udpate" class="mb-3">
       <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
@@ -77,6 +79,15 @@
             </div>
             <div class="col">
               <a class="tree-button tree-button-success mx-auto tree-button-mini" onclick="addBook('<%= recommendation.Id %>')">追加</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col" id="add-box-error" style="display :none;">
+              <p class="text-danger">エラーが発生しました。以下のようなURLを追加した場合、エラーが発生します。URLをお確かめの上、もう一度お確かめください。</p>
+              <ol>
+                <li>URLが正しくない場合</li>
+                <li>既に登録されている本を追加使用した場合</li>
+              </ol>
             </div>
           </div>
         </div>
