@@ -54,8 +54,11 @@ const csrfProtection = csurf({cookie: false});
 /* isbnに対応する画像をopenbdから取得 */
 apiRouter.post('/:isbn/imgLink', csrfProtection, async (req: Request, res: Response) => {
   const isbn = req.params.isbn;
-  let imgLink = await bookApplicationService.getImgLink(isbn);
-  if (imgLink === null) imgLink = '';
+
+  const notFoundImgPath = '/img/not-found.png';
+
+  let imgLink = isbn === 'NO_ISBN' ? notFoundImgPath : await bookApplicationService.getImgLink(isbn);
+  if (imgLink === null) imgLink = notFoundImgPath;
   res.json({imgLink});
 });
 
