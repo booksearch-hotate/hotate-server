@@ -2,10 +2,39 @@ main {
   background-color: var(--bg-color);
 }
 
-.main-about-box {
-  background-color: #888;
-  position: relative;
+.load-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: 100vh;
+  z-index: 500;
+  background-color: #ddd;
+  transition: opacity .5s;
+}
+
+.main-about-box {
+  position: relative;
+}
+
+.bg-img-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.bg-img-box img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 100%;
+  width: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 2s;
 }
 
 .about-title {
@@ -15,6 +44,9 @@ main {
   top: 50%;
   transform: translate(-50%, -50%);
   color: #fff;
+  background: rgba(0, 0, 0, .5);
+  padding: 1.6rem;
+  border-radius: 10px;
 }
 
 .about-title h2 {

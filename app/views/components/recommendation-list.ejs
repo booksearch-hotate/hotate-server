@@ -7,22 +7,23 @@
 <div class="campaign-container">
   <div class="campaign-flex">
     <% for (recommendation of paginationItemList) { %>
-    <li class="campaign-item">
-      <div class="campaign-thumbnail">
-        <img class="w-100" src="/thumbnail/<%= recommendation.ThumbnailName %>.png">
-      </div>
-      <div class="campaign-item-text w-100">
-        <h3><%= recommendation.Title %></h3>
-        <p><%= recommendation.CreatedAt %></p>
-      </div>
-
+    <div class="campaign-item">
+      <a class="campaign-item-link" href="/campaign/item/<%= recommendation.Id %>">
+        <div class="campaign-thumbnail">
+          <img class="w-100" src="/thumbnail/<%= recommendation.ThumbnailName %>.png">
+        </div>
+        <div class="campaign-item-text w-100">
+          <h3><%= recommendation.Title %></h3>
+          <p><%= recommendation.CreatedAt %></p>
+        </div>
+      </a>
       <% if (typeof editMode !== 'undefined' && editMode === true) { %>
         <a
           href="/admin/recommendation/edit?rid=<%= recommendation.Id %>"
           class="tree-button tree-button-success tree-button-mini mx-auto my-4"
         >編集する</a>
       <% } %>
-    </li>
+    </div>
     <% } %>
   </div>
 </div>

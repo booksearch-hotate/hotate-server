@@ -9,6 +9,12 @@
 
     <main>
       <div class="main-about-box" id="main-about-box">
+        <div class="bg-img-box" id="bg-img-box">
+          <img src="/img/about/title/1.png">
+          <img src="/img/about/title/2.png">
+          <img src="/img/about/title/3.png">
+          <img src="/img/about/title/4.png">
+        </div>
         <div class="about-title">
           <p>-本検索サービス-</p>
           <h2 class="page-title">TREE</h2>
@@ -27,16 +33,16 @@
             <p>また、気になる本と関連した本もおススメしてくれる機能も搭載。</p>
           </div>
           <div class="post-img-box">
-            <img src="./img/1920x1080.png" class="post-img" />
+            <img src="./img/about/search-result.png" class="post-img" />
           </div>
         </section>
 
         <section class="post-info">
           <div class="post-img-box">
-            <img src="./img/1920x1080.png" class="post-img" />
+            <img src="/img/about/search-form.png" class="post-img" />
           </div>
           <div class="about-sentence">
-            <h4>曖昧な記憶から、きっと見つかる</h4>
+            <h4>曖昧な記憶からきっと見つかる</h4>
             <p>
               TREEではオープンソースの検索エンジン「Elasticsearch」を活用し、より画期的な検索をあなたにお届け。<br>
               ElasticsearchはDocker、Github、cybozu、日本経済新聞社、KADOKAWAなど、<br>
@@ -57,7 +63,7 @@
             </p>
           </div>
           <div class="post-img-box">
-            <img src="./img/1920x1080.png" class="post-img" />
+            <img src="/img/about/campaign.png" class="post-img" />
           </div>
         </section>
       </article>
@@ -82,17 +88,23 @@
           <div class="dev-sentence">
             <h4>Webデザイン担当からのコメント</h4>
             <p>
-              コメントhere.......
+              今回、HTMLとCSSを初めて触ったので、<br>
+              頭の中で考えたデザイン通りに実装できないところも多々ありましたが、<br>
+              友人の協力もあり、良い物が出来たと思っています！
             </p>
           </div>
           <div class="dev-icon-box">
-            <img src="./img/elca-icon.jpg" class="dev-icon" />
+            <img src="./img/shirara-icon.png" class="dev-icon" />
           </div>
         </div>
       </aside>
     </main>
 
     <%- include('./../components/footer') %>
+
+
+    <div class="load-box" id="load-box">
+    </div>
 
     <%- include('./../components/input-js') %>
     <script src="/js/about.js"></script>

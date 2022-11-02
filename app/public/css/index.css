@@ -89,6 +89,14 @@
   flex-direction: column;
   align-items: center;
   overflow: hidden;
+  text-decoration: none;
+  color: var(--font-color);
+  transition: transform .5s;
+}
+
+.card-campaign-item:hover {
+  color: var(--font-color);
+  transform: scale(.96);
 }
 
 .card-campaign-item-cover {
@@ -122,8 +130,16 @@
 }
 
 .campaign-card-pagination-icon {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   cursor: pointer;
+}
+
+.card-campaign-no-item-box {
+  text-align: center;
+}
+
+.card-campaign-no-item-box p {
+  font-size: 2rem;
 }
 
 .bi-chat-dots {
@@ -175,16 +191,6 @@
   padding-top: 15px;
 }
 
-button[type="button"] {
-  cursor: pointer;
-  width: 170px;
-  height: 54px;
-  font-size: 1.2rem;
-  color: #E8BB50;
-  border: 2px #E8BB50 solid;
-  border-radius: 90px;
-}
-
 .index-how {
   margin-top: 170px;
   display: flex;
@@ -196,8 +202,9 @@ button[type="button"] {
 .how-image {
   max-width: 40%;
   max-height: 360px;
-  border-radius: 50px;
+  border-radius: 10px;
   object-fit: contain;
+  border: solid 1px #755F4B;
 }
 
 .how-sub-title {
@@ -209,9 +216,9 @@ button[type="button"] {
 
 .how-main-title {
   font-size: 64px;
-  color: #000000;
+  color: #000;
 }
 
 .how-explanation {
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
