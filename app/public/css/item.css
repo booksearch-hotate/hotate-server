@@ -112,6 +112,7 @@ aside {
   text-decoration: none;
   cursor: pointer;
   transition: transform .5s;
+  flex-direction: column;
 }
 
 .osusume-book:hover {
@@ -121,6 +122,8 @@ aside {
 
 .osusume-book img {
   width: 300px;
+  height: 350px;
+  object-fit: contain;
   margin-bottom: 20px;
 }
 .osusume-book-title {
