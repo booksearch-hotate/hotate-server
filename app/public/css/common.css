@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Text+Me+One&family=Zen+Maru+Gothic&display=swap');
 
 /* -----------------------------------
 変数
@@ -27,14 +28,14 @@
 ----------------------------------- */
 
 body{
-  font-family:"Yu Gothic Medium","游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif!important;
+  font-family:"Text Me One",'Zen Maru Gothic',"游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif!important;
   color: var(--font-color);
   margin: 0;
 }
 
 input {
   border: none;
-  font-family:"Yu Gothic Medium","游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif!important;
+  font-family:"Text Me One",'Zen Maru Gothic',"游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif!important;
 }
 
 input:focus {
