@@ -226,13 +226,18 @@ footer p {
   font-size: 2.2rem;
   padding-left: 3rem; /* 入力時radiusのおかげで文字が欠けるのでそれを考慮 */
   padding-right: 3rem;
-  font-family:"Yu Gothic Medium","游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif;
+  background-color: white;
+  color: #706155;
   transition: all .5s;
+}
+
+.search-input::placeholder {
+  color: #706155;
 }
 
 /* 入力時のデザイン。適当にやったので改良お願いします! */
 .search-input:focus {
-  box-shadow: 0 10px 25px 0 rgba(0, 0, 0, .5);
+  box-shadow: 0 10px 25px 0 #706155;
   outline: none; /* これを入れないと入力時強制的にborderがかかるようになる */
 }
 
@@ -242,14 +247,15 @@ footer p {
   background-color: #A5978B;
   border: none;
   color: white;
-  border-radius: 30px;
-  padding: 1rem 1.4rem;
+  border-radius: 15px;
+  padding: 1.2rem;
   cursor: pointer;
   transition: all .5s;
 }
 
 .search-submit-button:hover {
-  transform: scale(.98);
+  background-color: white;
+  color: #A5978B;
 }
 
 /* カテゴリ（本、著者名、出版社名）のボタンを配置するbox */
