@@ -10,3 +10,4 @@ test/*
 
 app/uploads/csv/*
 app/public/thumbnail/*
+!app/public/thumbnail/default-thumbnail-*.png
