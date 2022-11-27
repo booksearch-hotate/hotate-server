@@ -36,10 +36,11 @@
           <div class="campaign-title-text">Campaign</div>
         </div>
 
+        <% if (pageData.anyData.recommendations.length > 0) { %>
         <div class="card-campaign-item-box">
-          <div class="card-campaign-flex">
+          <div class="card-campaign-flex" id="campaign-box">
             <% for (const section of pageData.anyData.recommendations) { %>
-              <div class="card-campaign-item">
+              <a class="card-campaign-item" href="/campaign/item/<%= section.recommendation.Id %>">
                 <% if (section.recommendation.IsSolid) { %>
                 <% } %>
                 <% const recommendation = section %>
@@ -48,10 +49,18 @@
                   <p><%= recommendation.recommendation.CreatedAt %></p>
                   <h3><%= recommendation.recommendation.Title %></h3>
                 </div>
-              </div>
+              </a>
             <% } %>
           </div>
+          <div class="card-pagination-box mt-3" id="card-pagination-box">
+            <!-- jsによって生成される要素が追加されます -->
+          </div>
         </div>
+        <% } else { %>
+        <div class="card-campaign-no-item-box">
+          <p>現在キャンペーンはありません。</p>
+        </div>
+        <% } %>
       </div>
 
       <div class="index-about">
@@ -72,20 +81,20 @@
       </div>
 
       <div class="index-how">
-        <img class="how-image" src="/img/tree-logo.png">
+        <img class="how-image" src="/img/about/title/2.png">
         <div class="how-text">
           <div class="how-sub-title">
             <p>
-              <i class="bi bi-lightbulb"></i>
-              How to
+              <i class="bi bi-chat-dots"></i>
+              Request
             </p>
           </div>
-          <div class="how-main-title">使いかた</div>
+          <div class="how-main-title">本のリクエスト</div>
           <div class="how-explanation">
-            <p>TREEの主な機能を紹介します</p>
+            <p>本が見つからない場合はリクエストできます</p>
             <div class="button-detail">
-              <a href="#" class="tree-button about-button my-0 mx-auto">
-                詳しく見る
+              <a href="/request" class="tree-button about-button my-0 mx-auto">
+                リクエストする
               </a>
             </div>
           </div>
@@ -93,8 +102,11 @@
       </div>
     </main>
 
+    <%- include('./../components/footer') %>
+    
     <%- include('./../components/state-alert', {pageData}) %>
     <%- include('./../components/input-js') %>
     <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
+    <script src="<%= pageData.origin %>/js/campaignScroll.js"></script>
   </body>
 </html>

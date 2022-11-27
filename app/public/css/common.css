@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Text+Me+One&family=Zen+Maru+Gothic&display=swap');
 
 /* -----------------------------------
 変数
@@ -27,18 +28,30 @@
 ----------------------------------- */
 
 body{
-  font-family:"Yu Gothic Medium","游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif!important;
+  font-family:"Text Me One",'Zen Maru Gothic',"游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif!important;
   color: var(--font-color);
   margin: 0;
 }
 
 input {
   border: none;
-  font-family:"Yu Gothic Medium","游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif!important;
+  font-family:"Text Me One",'Zen Maru Gothic',"游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif!important;
 }
 
 input:focus {
   outline: none;
+}
+
+/* フッター
+----------------------------------- */
+footer {
+  background: #755F4B;
+  text-align: center;
+  padding: 26px 0;
+}
+footer p {
+  color: #fff;
+  font-size: 0.875rem;
 }
 
 /* -----------------------------------
@@ -104,7 +117,9 @@ input:focus {
 
 .search-view-box {
   opacity: 0;
-  position: absolute;
+  position: fixed;
+  overflow: scroll;
+  padding-bottom: 5rem;
   top: 0;
   display: none; /* cssファイル読み込み時にtransitionが勝手に動作する不具合があるため、最初はdisplay: noneにしてあります。通常はflexです */
   flex-direction: column;
@@ -213,14 +228,21 @@ input:focus {
   font-size: 2.2rem;
   padding-left: 3rem; /* 入力時radiusのおかげで文字が欠けるのでそれを考慮 */
   padding-right: 3rem;
-  font-family:"Yu Gothic Medium","游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif;
+  background-color: #fff;
+  border: solid 2px #fff;
+  box-shadow: none;
+  color: #706155;
   transition: all .5s;
+}
+
+.search-input::placeholder {
+  color: #706155;
 }
 
 /* 入力時のデザイン。適当にやったので改良お願いします! */
 .search-input:focus {
-  box-shadow: 0 10px 25px 0 rgba(0, 0, 0, .5);
-  outline: none; /* これを入れないと入力時強制的にborderがかかるようになる */
+  box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.4);
+  border: solid 2px #706155;
 }
 
 /* 検索するbutton */
@@ -229,14 +251,15 @@ input:focus {
   background-color: #A5978B;
   border: none;
   color: white;
-  border-radius: 30px;
-  padding: 1rem 1.4rem;
+  border-radius: 15px;
+  padding: 1.2rem;
   cursor: pointer;
   transition: all .5s;
 }
 
 .search-submit-button:hover {
-  transform: scale(.98);
+  background-color: white;
+  color: #A5978B;
 }
 
 /* カテゴリ（本、著者名、出版社名）のボタンを配置するbox */
@@ -296,18 +319,6 @@ input:focus {
 
 .close-button i:hover {
   border-radius: 50%;
-}
-
-/* フッター
------------------------------------ */
-footer {
-  background: #244E5F;
-  text-align: center;
-  padding: 26px 0;
-}
-footer p {
-  color: #fff;
-  font-size: 0.875rem;
 }
 
 /* 線があるタイトルのレイアウト(line-title) */
@@ -592,10 +603,20 @@ footer p {
 }
 
 .campaign-item {
-  list-style: none;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.campaign-item-link {
+  text-decoration: none;
+  color: var(--font-color);
+  transition: transform .5s;
+}
+
+.campaign-item-link:hover {
+  color: var(--font-color);
+  transform: scale(.96);
 }
 
 .campaign-thumbnail {

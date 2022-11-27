@@ -56,14 +56,19 @@ main {
 
 .tag p {
   margin: 0;
+  white-space: nowrap;
 }
 
 .tag-flex {
   display: flex;
+  flex-wrap: wrap;
   position: relative;
   margin-top: 30px;
   margin-left: 20px;
-  width: 50%;
+  margin-bottom: 20px;
+  min-width: 50%;
+  width: fit-content;
+  padding-right: 10px;
   background: var(--tag-color);
   border-radius: .4em;
 }
@@ -103,10 +108,22 @@ aside {
 .osusume-book {
   display: flex;
   align-items: center;
+  color: var(--font-color);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .5s;
+  flex-direction: column;
+}
+
+.osusume-book:hover {
+  color: var(--font-color);
+  transform: scale(.96);
 }
 
 .osusume-book img {
-  width: 120px;
+  width: 300px;
+  height: 350px;
+  object-fit: contain;
   margin-bottom: 20px;
 }
 .osusume-book-title {

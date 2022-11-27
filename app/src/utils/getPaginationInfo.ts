@@ -21,7 +21,7 @@ export default function getPaginationInfo(
   const itemMargin = new PaginationMargin(itemCount);
 
   // ページネーションの幅を最低最小値に設定
-  const paginationMargin = Math.max(maxPaginationCount / 2, MIN_PAGIATION_MARGIN);
+  const paginationMargin = Math.max(Math.ceil(maxPaginationCount / 2), MIN_PAGIATION_MARGIN);
 
   const totalPage = Math.ceil(total / itemMargin.Margin);
   const minPage = Math.max(pageCount - paginationMargin + 1, 1);

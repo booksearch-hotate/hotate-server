@@ -16,19 +16,40 @@
           <div class="item-syousai">
             <div><img src="<%= data.ImgLink %>" alt="" data-isbn="<%= data.Isbn %>"></div>
             <div class="item-text">
-              <p class="item-writer">著者: <%= data.AuthorName %></p>
+              <p class="item-writer">著者 : <%= data.AuthorName %></p>
               <p class="item-writer">出版社：<%= data.PublisherName %></p>
               <div class="arasuzi">あらすじ</div>
               <p><%= data.BookContent %></p>
+              <% if (data.Tags.length > 0) { %>
               <div class="tag-flex">
                 <% data.Tags.forEach(tag => { %>
                   <div class="tag">
-                    <a href="/search?search=<%= tag %>&tag=true">
+                    <a href="/search?search=<%= tag %>&mode=tag">
                       <p><i class="bi bi-hash"></i><%= tag %></p>
                     </a>
                   </div> 
                 <% }) %>
               </div>
+              <% } %>
+              <form action="/tag/insert" method="post">
+                <input type="hidden" name="bookId" value="<%= data.Id %>">
+                <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+                <div class="add-tag-form-box container">
+                  <div class="row align-items-center">
+                    <div class="col-md-6">
+                      <input type="text" class="tree-input w-100" name="tagName" placeholder="タグを追加">
+                    </div>
+                    <div class="col-md-6">
+                      <button type="submit" class="tree-button tree-button-success">追加</button>
+                    </div>
+                  </div>
+                  <div class="row" id="tag-result-box">
+                    <div class="col-md-12">
+                      <p id="tag-result" class="m-0"></p>
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -37,13 +58,13 @@
           <div class="osusume-title"><i class="bi bi-binoculars-fill"></i>この本に似ている本</div>
           <div class="osusume-flex">
             <% for (const book of pageData.anyData.nearCategoryBookDatas) { %>
-              <div class="osusume-book">
+              <a class="osusume-book" href="/item/<%= book.Id %>">
                 <img src="<%= book.ImgLink %>" alt="" data-isbn="<%= book.Isbn %>">
                 <div class="osusume-text">
                   <p class="osusume-book-title"><%= book.BookName %></p>
                   <p class="osusume-writer">著；<%= book.AuthorName %></p>
                 </div>
-              </div>
+              </a>
             <% } %>
           </div>
         </aside>

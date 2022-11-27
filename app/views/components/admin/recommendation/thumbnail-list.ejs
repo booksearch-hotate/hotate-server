@@ -17,8 +17,8 @@ nowThumbnail = typeof nowThumbnail === 'undefined' ? '' : nowThumbnail;
             <img src="/thumbnail/<%= thumbnail %>.png" class="choice-thumbnail-img" />
             <% if (defaults.indexOf(thumbnail) === -1) { %>
             <div class="thumbnail-delete-box">
-              <a  href="javascript:void(0);" onclick="deleteThumbnail('<%= thumbnail %>')">
-                削除
+              <a href="javascript:void(0);" onclick="deleteThumbnail('<%= thumbnail %>')">
+                <i class="bi bi-trash"></i>
               </a>
             </div>
             <% } %>
