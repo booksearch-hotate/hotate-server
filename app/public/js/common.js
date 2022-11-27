@@ -245,3 +245,51 @@ setTimeout(() => {
     tar.remove();
   }
 }, 1000 * 10);
+
+/*******
+ * 
+ * ヒントなどを表示するためのスクリプト
+ * 
+*******/
+
+function question() {
+  const questionAreaClassName = 'tree-question-area-box';
+  const makeQuestionArea = (text) => {
+    const div = document.createElement('div');
+    div.classList.add(questionAreaClassName);
+
+    div.innerHTML = `<p>${text}</p>`
+    return div;
+  }
+
+  const questionClassName = 'tree-question';
+
+  const questionElements = document.getElementsByClassName(questionClassName); // エレメントの取得
+  
+  for (let i = 0; i < questionElements.length; i++) {
+    const ele = questionElements[i];
+
+    const text = ele.dataset.treeText; // テキストの取得
+
+    if (text === undefined || text === '') continue; // テキストがない場合はスキップ
+
+    /* フォーカスされたら */
+    ele.addEventListener('mouseenter', (eve) => {
+      const target = eve.target;
+      target.appendChild(makeQuestionArea(text));
+    });
+
+    /* フォーカスが外れたら */
+    ele.addEventListener('mouseleave', (eve) => {
+      const target = eve.target;
+
+      const removeList = target.getElementsByClassName(questionAreaClassName);
+
+      for (let k = 0; k < removeList.length; k++) {
+        removeList[k].remove();
+      }
+    })
+  }
+}
+
+question();

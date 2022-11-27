@@ -760,3 +760,38 @@ footer p {
 .no-item-box i {
   font-size: 5rem;
 }
+
+/* -----------------------------------
+クエスチョン(ヒント)のレイアウト
+----------------------------------- */
+
+.tree-question {
+  position: relative;
+  cursor: help;
+}
+
+.tree-question-area-box {
+  position: absolute;
+  bottom: calc(100% + 12.7px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  background-color: #bae492;
+  border-radius: 10px;
+  padding: 10px 5px;
+}
+
+.tree-question-area-box:after {
+  content: '';
+  position: absolute;
+  left: calc(50% - 3.7px); /* 3.7... = 18 / √2 - 18 / 2 → 45度回転させた時に0度回転させた正方形の範囲からはみ出た長さ */
+  bottom: -12.7px; /* -(18 / √2) */
+  transform: rotate(45deg) translateX(-50%);
+  width: 18px;
+  height: 18px;
+  background-color: #bae492;
+}
+
+.tree-question-area-box p {
+  margin: 0;
+}
