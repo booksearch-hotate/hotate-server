@@ -9,6 +9,17 @@
       <%- include('./../../../components/header-title', {mes: 'セクションの追加'}) %>
     </header>
 
+    <div class="tree-attention">
+      <h3 class="tree-attention-title">
+        注意
+        <i class="bi bi-exclamation-triangle"></i>
+      </h3>
+      
+      <ul class="tree-attention-list">
+        <li>並び順、本の登録は編集画面から設定できます。</li>
+      </ul>
+    </div>
+
     <form method="post" action="/admin/recommendation/insert">
       <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
       <div class="tree-form-item mb-3">
