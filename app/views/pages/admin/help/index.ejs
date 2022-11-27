@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+  </head>
+  <body>
+    <%- include('./../../../components/header-title', {mes: 'ヘルプ', logo: 'question-circle'}) %>
+
+    <main>
+      <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+              markdownについて
+            </button>
+          </h2>
+          <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body markdown-result">
+              キャンペーン機能の内容紹介ではmarkdownをサポートしており、markdown記法を用いたデザインを作成することが可能です。
+
+              <h3>markdownとは</h3>
+
+              <a href="https://ja.wikipedia.org/wiki/Markdown" target="_blank" rel="noopener noreferrer">markdwon</a>とは、決められた文法に従って文章を入力することで簡易的なデザインを作成することが可能になる言語です。
+              GithubやQiitaといった技術系のサイトでよく見られる言語で、シンプルながら見やすいレイアウトを簡単に作成することができます。
+              今回はGithubの記法に基づいて設計しています。
+
+              <h3>書き方</h3>
+              
+              代表的な書き方を紹介します。
+
+              <h4>1. タイトル</h4>
+
+              <p>例</p>
+
+              <code>
+                # h1要素程度のタイトル
+                ## h2要素程度のタイトル
+                ### h3要素程度のタイトル
+              </code>
+              
+              <p>結果</p>
+
+              <h1>h1要素程度のタイトル</h1>
+              <h2>h2要素程度のタイトル</h2>
+              <h3>h3要素程度のタイトル</h3>
+
+              <br><br>
+
+              <h4>2. リンク</h4>
+
+              <p>例</p>
+
+              <code>
+                [Google](https://google.com)
+              </code>
+
+              <p>結果</p>
+
+              <a href="https://google.com">Google</a>
+
+              <br><br>
+
+              <h4>3. 改行</h4>
+
+              <p><code>&lt;br&gt;</code>で改行されます。</p>
+
+              <h4>4. リスト</h4>
+
+              <p>例</p>
+
+              <code>
+                - これは
+                - 点々
+                - が表示されます
+
+                1. これは
+                2. 左に連番が
+                3. 表示されます
+              </code>
+
+              <p>結果</p>
+
+              <ul>
+                <li>これは</li>
+                <li>点々</li>
+                <li>が表示されます</li>
+              </ul>
+              <ol>
+                <li>これは</li>
+                <li>左に連番が</li>
+                <li>表示されます</li>
+              </ol>
+
+              <br><br>
+              詳しくは<a href="https://gist.github.com/mignonstyle/083c9e1651d7734f84c99b8cf49d57fa">Markdown記法 チートシート - Github Gist</a>をご覧ください。
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+              本リクエスト機能について
+            </button>
+          </h2>
+          <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body markdown-result">
+              本リクエスト機能では<span class="text-danger">学科名が登録されてないと使用できません</span>。
+              またその状態でリクエスト機能へアクセスしようとすると以下のログが表示されます。
+              <code>
+                The book request service is not available because the department is not set up.
+              </code>
+              本リクエスト機能を使用する際には学科名を登録するようお願いします。
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+              エラーなどで困ったら
+            </button>
+          </h2>
+          <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+              エラーやその他問題によってTREEが正常に動作しなくなった場合、<a href="https://github.com/booksearch-hotate/hotate-server/blob/main/DOC/resolve-problem.md" target="_blank" rel="noopener noreferrer">問題の解決方法</a>をご覧ください。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a href="/admin/" class="tree-button mx-auto">戻る</a>
+    </main>
+
+    <%- include('./../../../components/input-js') %>
+  </body>
+</html>
