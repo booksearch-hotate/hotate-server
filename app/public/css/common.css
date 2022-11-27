@@ -380,6 +380,16 @@ footer p {
   border-radius: 0;
 }
 
+/* switchがある場合のinputの設定 */
+.tree-input-with-switch {
+  width: 40%; /* tree-inputのwidthと合わせる */
+}
+
+.tree-input-with-switch .tree-input {
+  width: 100%!important;
+  margin-bottom: 5px;
+}
+
 /* ボタンレイアウト */
 /* アニメーション参照元 : https://b-risk.jp/blog/2021/11/hover-reference/#i-17 */
 .tree-button {
