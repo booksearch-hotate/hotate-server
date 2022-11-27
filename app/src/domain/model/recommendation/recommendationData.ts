@@ -1,3 +1,5 @@
+import {marked} from 'marked';
+
 import {conversionDateToString} from '../../../utils/conversionDate';
 import Recommendation from './recommendation';
 import RecommendationItemData from './recommendationItemData';
@@ -11,6 +13,7 @@ export default class RecommendationData {
   private thumbnailName: string;
   private createdAt: string;
   private updatedAt: string;
+  private htmlContent: string; // Contentの内容をhtmlにパースしたhtml(文字列)
   private recommendationItems: RecommendationItemData[];
 
   public constructor(recommendationModel: Recommendation) {
@@ -23,6 +26,8 @@ export default class RecommendationData {
     this.createdAt = conversionDateToString(recommendationModel.CreatedAt, ['hour', 'second', 'minute']);
     this.updatedAt = conversionDateToString(recommendationModel.UpdatedAt);
     this.recommendationItems = recommendationModel.RecommendationItems.map((item) => new RecommendationItemData(item));
+
+    this.htmlContent = marked.parse(recommendationModel.Content);
   }
 
   get Id() {
@@ -55,6 +60,10 @@ export default class RecommendationData {
 
   get UpdatedAt() {
     return this.updatedAt;
+  }
+
+  get HtmlContent() {
+    return this.htmlContent;
   }
 
   get RecommendationItems() {

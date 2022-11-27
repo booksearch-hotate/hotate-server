@@ -1,3 +1,6 @@
+import {JSDOM} from 'jsdom';
+import DOMPurify from 'dompurify';
+
 import {DomainInvalidError} from '../../../presentation/error';
 import RecommendationItem from './recommendationItem';
 
@@ -114,5 +117,13 @@ export default class Recommendation {
 
   public isOverNumberOfBooks() {
     return this.recommendationItems.length > this.MAX_HAVING_BOOK_COUNT;
+  }
+
+  public sanitizeContent() {
+    const window = new JSDOM('').window as unknown as Window;
+    // eslint-disable-next-line new-cap
+    const purify = DOMPurify(window);
+
+    this.content = purify.sanitize(this.content);
   }
 }
