@@ -4,66 +4,70 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
-    <h3>本の編集</h3>
+    <header>
+      <%- include('./../../../components/header-title', {mes: '本の編集', logo: 'book'}) %>
+    </header>
+
     <form action="/admin/book/update" method="post">
       <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
       <input type="hidden" name="id" value="<%= pageData.anyData.book.Id %>">
   
-      <div class="form-group">
-        <label for="formName" class="form-label">本の名称</label>
-        <input class="form-control" type="text" id="formName" name="bookName" value="<%= pageData.anyData.book.BookName %>">
+      <div class="tree-form-item">
+        <label for="formName" class="tree-label">本の名称</label>
+        <input class="tree-input" type="text" id="formName" name="bookName" value="<%= pageData.anyData.book.BookName %>">
       </div>
   
-      <div class="form-group">
-        <label for="formIsbn" class="form-label">ISBN</label>
-        <input class="form-control" type="text" id="formIsbn" name="isbn" value="<%= pageData.anyData.book.Isbn %>">
+      <div class="tree-form-item">
+        <label for="formIsbn" class="tree-label">ISBN</label>
+        <input class="tree-input" type="text" id="formIsbn" name="isbn" value="<%= pageData.anyData.book.Isbn %>">
       </div>
   
-      <div class="form-group">
-        <label for="formSubName" class="form-label">副題</label>
-        <input class="form-control" type="text" id="formSubName" name="bookSubName" value="<%= pageData.anyData.book.BookSubName %>">
+      <div class="tree-form-item">
+        <label for="formSubName" class="tree-label">副題</label>
+        <input class="tree-input" type="text" id="formSubName" name="bookSubName" value="<%= pageData.anyData.book.BookSubName %>">
       </div>
 
-      <div class="form-group">
-        <label for="formAuthorName" class="form-label">著者名</label>
-        <input class="form-control" type="text" id="formAuthorName" name="authorName" value="<%= pageData.anyData.book.AuthorName %>">
+      <div class="tree-form-item">
+        <label for="formAuthorName" class="tree-label">著者名</label>
+        <div class="tree-input-with-switch">
+          <input class="tree-input" type="text" id="formAuthorName" name="authorName" value="<%= pageData.anyData.book.AuthorName %>">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="changeAuthorApply" name="changeAuthorApply" value="true">
+            <label class="form-check-label" for="changeAuthorApply">全ての本に適用する</label>
+          </div>
+        </div>
       </div>
 
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="changeAuthorApply" name="changeAuthorApply" value="true">
-        <label class="form-check-label" for="changeAuthorApply">全ての本に適用する</label>
+      <div class="tree-form-item">
+        <label for="formPublisherName" class="tree-label">出版社名</label>
+        <div class="tree-input-with-switch">
+          <input class="tree-input" type="text" id="formPublisherName" name="publisherName" value="<%= pageData.anyData.book.PublisherName %>">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="changePublisherApply" name="changePublisherApply" value="true">
+            <label class="form-check-label" for="changePublisherApply">全ての本に適用する</label>
+          </div>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="formPublisherName" class="form-label">出版社名</label>
-        <input class="form-control" type="text" id="formPublisherName" name="publisherName" value="<%= pageData.anyData.book.PublisherName %>">
+      <div class="tree-form-item">
+        <label for="formNdc" class="tree-label">日本十進分類法</label>
+        <input class="tree-input" type="text" id="formNdc" name="ndc" value="<%= pageData.anyData.book.Ndc %>">
       </div>
 
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="changePublisherApply" name="changePublisherApply" value="true">
-        <label class="form-check-label" for="changePublisherApply">全ての本に適用する</label>
+      <div class="tree-form-item">
+        <label for="formYear" class="tree-label">出版年</label>
+        <input class="tree-input" type="text" id="formYear" name="year" value="<%= pageData.anyData.book.Year %>">
       </div>
 
-      <div class="form-group">
-        <label for="formNdc" class="form-label">日本十進分類法</label>
-        <input class="form-control" type="text" id="formNdc" name="ndc" value="<%= pageData.anyData.book.Ndc %>">
+      <div class="tree-form-item">
+        <label for="formContent" class="tree-label">内容</label>
+        <input class="tree-input" type="text" id="formContent" name="bookContent" value="<%= pageData.anyData.book.BookContent %>">
       </div>
 
-      <div class="form-group">
-        <label for="formYear" class="form-label">出版年</label>
-        <input class="form-control" type="text" id="formYear" name="year" value="<%= pageData.anyData.book.Year %>">
-      </div>
-
-      <div class="form-group">
-        <label for="formContent" class="form-label">内容</label>
-        <input class="form-control" type="text" id="formContent" name="bookContent" value="<%= pageData.anyData.book.BookContent %>">
-      </div>
-
-      <button type="submit" class="btn btn-primary">更新</button>
+      <button type="submit" class="tree-button my-4 mx-auto">
+        更新
+      </button>
     </form>
-    <div class="text-center">
-      <a href="/admin/book/">戻る</a>
-    </div>
     <%- include('./../../../components/input-js') %>
   </body>
 </html>
