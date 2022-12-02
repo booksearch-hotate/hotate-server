@@ -25,7 +25,7 @@ export default class InMemoryAuthorRepository implements IAuthorRepository {
   }
 
   async findByName(name: string | null): Promise<Author | null> {
-    const res = await this.authorCollection.findOne({name});
+    const res = await this.authorCollection.findOne({name: {$eq: name}});
 
     if (res === null) return null;
 
@@ -78,7 +78,7 @@ export default class InMemoryAuthorRepository implements IAuthorRepository {
 
   /** 疑似的に完全一致検索を使用 */
   async searchUsingLike(name: string): Promise<Author[]> {
-    const fetchData = this.authorCollection.find({name});
+    const fetchData = this.authorCollection.find({name: {$eq: name}});
 
     const authors: Author[] = [];
 
