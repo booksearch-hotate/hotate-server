@@ -22,7 +22,7 @@ export default class InMemoryTagRepository implements ITagRepository {
   }
 
   async findByName(name: string): Promise<Tag | null> {
-    const res = await this.tagCollection.findOne({name});
+    const res = await this.tagCollection.findOne({name: {$eq: name}});
 
     if (res === null) return null;
 
@@ -36,7 +36,7 @@ export default class InMemoryTagRepository implements ITagRepository {
   }
 
   async isExistCombination(tagId: string, bookId: string): Promise<boolean> {
-    const count = await this.usingTagCollection.count({tag_id: tagId, book_id: bookId});
+    const count = await this.usingTagCollection.count({tag_id: {$eq: tagId}, book_id: {$eq: bookId}});
 
     return count !== 0;
   }
@@ -69,7 +69,7 @@ export default class InMemoryTagRepository implements ITagRepository {
   }
 
   async findById(id: string): Promise<Tag | null> {
-    const res = await this.tagCollection.findOne({id});
+    const res = await this.tagCollection.findOne({id: {$eq: id}});
 
     if (res === null) return null;
 

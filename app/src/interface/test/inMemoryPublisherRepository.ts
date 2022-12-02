@@ -25,7 +25,7 @@ export default class InMemoryPublisherRepository implements IPublisherRepository
   }
 
   async findByName(name: string | null): Promise<Publisher | null> {
-    const res = await this.publisherCollection.findOne({name});
+    const res = await this.publisherCollection.findOne({name: {$eq: name}});
 
     if (res === null) return null;
 
@@ -78,7 +78,7 @@ export default class InMemoryPublisherRepository implements IPublisherRepository
 
   /** 疑似的に完全一致検索を使用 */
   async searchUsingLike(name: string): Promise<Publisher[]> {
-    const fetchData = this.publisherCollection.find({name});
+    const fetchData = this.publisherCollection.find({name: {$eq: name}});
 
     const publishers: Publisher[] = [];
 
