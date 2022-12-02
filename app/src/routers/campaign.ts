@@ -1,5 +1,6 @@
 import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
+
 import RecommendationApplicationService from '../application/recommendationApplicationService';
 import RecommendationRepository from '../interface/repository/recommendationRepository';
 import db from '../infrastructure/db';

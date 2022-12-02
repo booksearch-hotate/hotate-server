@@ -27,6 +27,7 @@ import bookRequestRouter from '../routers/admin/bookRequest';
 import recommendationRouter from '../routers/admin/recommendation';
 import aboutRouter from '../routers/about';
 import notFoundRouter from '../routers/404';
+import helpRouter from '../routers/admin/help';
 
 import Logger from '../infrastructure/logger/logger';
 
@@ -146,6 +147,7 @@ app.use('/admin/setting', settingRouter);
 app.use('/admin/school-info', departmentRouter);
 app.use('/admin/book-request', bookRequestRouter);
 app.use('/admin/recommendation/', recommendationRouter);
+app.use('/admin/help', helpRouter);
 app.use('/api', apiRouter);
 
 // 必ず一番最後に入れること

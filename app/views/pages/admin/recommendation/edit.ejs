@@ -20,7 +20,26 @@
 
       <div class="mb-3 tree-form-item">
         <label for="content" class="tree-label">内容</label>
-        <textarea class="tree-input tree-textarea" placeholder="内容を追加" id="content" style="height: 200px;" name="content" required><%= recommendation.Content %></textarea>
+        <div class="tree-input-with-switch">
+          <textarea class="tree-input tree-textarea" placeholder="内容を追加" id="content" style="height: 200px;" name="content" required><%= recommendation.Content %></textarea>
+          <div class="form-text">
+            <i class="bi bi-question-circle"></i>
+            <a href="/admin/help/" target="_blank" rel="noopener noreferrer">markdown</a>記法をサポートしています
+          </div>
+        </div>
+      </div>
+
+      <div class="view-markdown-result-box my-4">
+        <a class="tree-button tree-button-success tree-button-mini mx-auto mb-3" onclick="viewMarkDown('content')" data-bs-toggle="collapse" href="#collapseMarkdown" role="button" aria-expanded="false" aria-controls="collapseMarkdown">
+          表示結果
+        </a>
+        <div class="collapse" id="collapseMarkdown">
+          <div class="card card-body">
+            <div class="markdown-result" id="markdown-result">
+              <!-- markdownからhtmlにparseした要素が生成 -->
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="container">
@@ -117,5 +136,8 @@
     <%- include('./../../../components/input-js') %>
     <script src="<%= pageData.origin %>/js/editRecommendation.js"></script>
     <script src="/js/sendThumbnailFile.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="/js/DOMPurify/dist/purify.min.js"></script>
+    <script src="/js/editMarkdown.js"></script>
   </body>
 </html>
