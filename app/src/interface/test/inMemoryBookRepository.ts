@@ -147,8 +147,8 @@ export default class InMemoryBookRepository implements IBookRepository {
   }
 
   async searchUsingLike(words: string, pageCount: number, margin: PaginationMargin): Promise<{ books: Book[]; count: number; }> {
-    const fetchData = (await this.bookCollection.find({book_name: words}).skip(pageCount * margin.Margin).limit(margin.Margin).toArray()) as bookDocument[];
-    const fetchCount = await this.bookCollection.count({book_name: words});
+    const fetchData = (await this.bookCollection.find({book_name: {$eq: words}}).skip(pageCount * margin.Margin).limit(margin.Margin).toArray()) as bookDocument[];
+    const fetchCount = await this.bookCollection.count({book_name: {$eq: words}});
 
     const books:Book[] = await Promise.all(fetchData.map(async (data) => {
       const fetchAuthorData = await this.authorCollection.findOne({id: data.author_id});
@@ -182,7 +182,7 @@ export default class InMemoryBookRepository implements IBookRepository {
   }
 
   async searchByTag(tagName: string, pageCount: number, margin: PaginationMargin): Promise<{ books: Book[]; count: number; }> {
-    const fetchTag = await this.tagCollection.findOne({name: tagName});
+    const fetchTag = await this.tagCollection.findOne({name: {$eq: tagName}});
 
     if (fetchTag === null) return {books: [], count: 0};
 
