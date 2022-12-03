@@ -55,7 +55,7 @@ TREEでは検索エンジンとして[Elasticsearch](https://www.elastic.co/jp/e
 webサーバの起動時にその階層に存在するJSONファイルを全て読み込み、elasticsearchにリクエストします。
 `common.json`は全indexに共通の設定、各index名のjsonファイルはそのindexの設定を行っています。
 
-#### データの場所
+#### Elasticsearchのデータの場所
 
 TREEでは、dockerのvolumeを用いてelasticsearchのデータを管理しています。
 ボリューム名は`hotate-server_esdata`です。
@@ -75,7 +75,7 @@ TREEではデータベースとして[MySQL](https://www.mysql.com/jp/)を使用
 
 E-R図に関しては[DBのE-R図](./about-db.md)を参照してください。
 
-#### データの場所
+#### MySQLのデータの場所
 
 データの場所は`db/data`となります。
 データを削除する際はこのフォルダを削除してください。
@@ -86,7 +86,7 @@ TREEではwebサーバとして[Node.js](https://nodejs.org/ja/)を用いてい�
 
 #### ビルド
 
-##### 開発環境
+##### 開発環境のビルド
 
 ビルドするときは、`tsc --noEmit`で型チェックを行い、`build.js`を実行することでJavaScriptへトランスコンパイルします。
 この流れをまとめたコマンドが以下のものになります。
@@ -95,7 +95,7 @@ TREEではwebサーバとして[Node.js](https://nodejs.org/ja/)を用いてい�
 npm run dev-build
 ```
 
-##### 本番環境
+##### 本番環境のビルド
 
 `tsc --noEmit`は実行せず、`build.js`のみを実行しJavaScriptへトランスコンパイルします。
 これによって本番環境時には`@types`をダウンロードする必要がなくなり、より軽量にアプリを構築することができます。
@@ -115,7 +115,7 @@ npm run pro-build
 
 #### 実行
 
-##### 開発環境
+##### 開発環境の実行
 
 `dist/server.js`を実行することでwebサーバを起動することができます。
 このとき、引数として`local`を設定することで、動作環境をローカル環境に設定できます。
@@ -124,7 +124,7 @@ npm run pro-build
 npm run dev-run
 ```
 
-##### 本番環境
+##### 本番環境の実行
 
 `local`を設定せずに`dist/server.js`を実行します。
 
