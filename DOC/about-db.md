@@ -9,7 +9,7 @@ publishers ||--|{books: "1:n"
 authors ||--|{books: "1:n"
 tags ||--|{using_tags: ""
 books ||--|{using_tags: ""
-departments ||-|{requests: "1:n"
+departments ||--|{requests: "1:n"
 recommendations ||--|{using_recommendations: ""
 books ||--|{using_recommendations: ""
 
