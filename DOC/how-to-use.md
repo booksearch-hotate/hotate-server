@@ -46,6 +46,4 @@ npm run dev-run
 初回アクセス時にIDとパスワードを設定できます。
 またIDとパスワードは管理者画面から変更可能です。
 
-## 脚注
-
 [^1]: `docker-compose up app`でエラーが発生する場合は`docker compose up app`を試してください
