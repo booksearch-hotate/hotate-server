@@ -26,8 +26,8 @@ TREEの起動(検索エンジン、データベース、webサーバの起動)�
 webサーバをdockerを用いずに起動する際にはnpmを使用してください。
 npmを使用するにはNode.jsのダウンロードが必要です。
 
-[公式サイト（npm）](https://www.npmjs.com/)
-[公式サイト（Node.js）](https://nodejs.org/ja/)
+- [公式サイト（npm）](https://www.npmjs.com/)
+- [公式サイト（Node.js）](https://nodejs.org/ja/)
 
 ### テキストエディタ
 
