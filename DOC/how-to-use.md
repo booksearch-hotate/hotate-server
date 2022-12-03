@@ -11,15 +11,17 @@
 
 ※本来は導入時に行うものですので、既にエンジニアによって導入手続きが終わっている場合は省略してください。
 
-1. このリポジトリを`git clone`する
-2. `cd ./hotate-server`を入力
+1. macの場合はターミナル、windowsの場合はコマンドプロンプトを起動
+2. ダウンロード先のディレクトリまで移動
+3. `git clone https://github.com/booksearch-hotate/hotate-server.git`を実行
+4. `cd hotate-server`でhotate-serverフォルダ内へ移動
 
 ## アプリの起動方法
 
 1. docker Desktopを起動し、docker Engineを起動する
 2. コマンドプロンプト（macの場合はターミナル）を開く
 3. hotate-serverフォルダまで移動
-4. `docker-compose up app`と入力
+4. `docker-compose up app`と入力[^1]
 5. webブラウザで[http://localhost:8080](http://localhost:8080)を開く
 
 ## 個別のサービス起動方法
@@ -30,12 +32,20 @@
 
 `<アプリ名>`の箇所は`docker-compose.yml`を参考にしてください。
 
-## 管理者のIDとパスワードについて
+### webサーバの起動方法
 
-管理者用のIDとパスワードは導入時に決めたものがありますので、それを入力してください。
+webサーバのみを起動する場合は以下のコマンドを入力します。
 
-### IDとパスワードの設定方法
+```bash
+npm run dev-run
+```
 
-#### 初期設定
+## 管理者画面について
 
-初回のみ、ログイン画面へリダイレクトする際自動的に登録画面へ遷移します。そこからID、パスワードを設定してください。
+管理者専用の画面は[http://localhost:8080/admin/](http://localhost:8080/admin/)となります。
+初回アクセス時にIDとパスワードを設定できます。
+またIDとパスワードは管理者画面から変更可能です。
+
+## 脚注
+
+[^1]: `docker-compose up app`でエラーが発生する場合は`docker compose up app`を試してください
