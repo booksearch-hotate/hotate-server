@@ -90,12 +90,12 @@ using_recommendations {
   varchar recommendation_id
   varchar comment
 }
-```
 
 school_grade_info {
   int id
   int year
   int school_class
 }
+```
 
 [SQL](https://github.com/booksearch-hotate/hotate-server/blob/main/db/init/001_createhotate.sql)
