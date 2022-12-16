@@ -17,4 +17,5 @@ export interface IBookRepository {
   findAllCount (): Promise<number>
   deleteBook (book: Book): Promise<void>
   searchByForeignId(foreignModel: Author[] | Publisher[], pageCount: number, margin: PaginationMargin): Promise<{books: Book[], count: number}>
+  getDuplicationBooks(): Promise<string[]>
 }

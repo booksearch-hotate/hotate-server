@@ -381,4 +381,21 @@ export default class BookRepository implements IBookRepository {
     ];
     await Promise.all(list);
   }
+
+  /**
+   * 重複している本の書名を取得
+   */
+  public async getDuplicationBooks(): Promise<string[]> {
+    const books = await this.db.Book.findAll({
+      attributes: ['book_name'],
+      group: ['book_name'],
+      having: sequelize.where(sequelize.fn('count', sequelize.col('book_name')), {
+        [sequelize.Op.gte]: 2,
+      }),
+    });
+
+    return books.map((data) => {
+      return data.book_name;
+    });
+  }
 }
