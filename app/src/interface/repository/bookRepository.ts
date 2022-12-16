@@ -398,4 +398,29 @@ export default class BookRepository implements IBookRepository {
       return data.book_name;
     });
   }
+
+  public async checkEqualDbAndEs(): Promise<string[]> {
+    const MARGIN = 100; // 一度に取得するカラム数
+
+    const bookCount = await this.db.Book.count();
+
+    const notEqualIdList = [];
+
+    for (let i = 0; i < Math.ceil(bookCount / MARGIN); i++) {
+      const books = await this.db.Book.findAll({
+        attributes: ['id'],
+        limit: MARGIN,
+        offset: MARGIN * i,
+      });
+
+      const ids = books.map((data) => data.id);
+      const esIds = await this.esSearchBook.getIdsByDbIds(ids);
+
+      for (let i = 0; i < ids.length; i++) {
+        if (esIds.indexOf(ids[i]) === -1) notEqualIdList.push(ids[i]);
+      }
+    }
+
+    return notEqualIdList;
+  }
 }

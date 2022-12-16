@@ -40,4 +40,15 @@ bookApiRouter.post('/duplication', csrfProtection, async (req: Request, res: Res
   }
 });
 
+bookApiRouter.post('/equaldbtoes', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    const notEqualDbIds = await bookApplicationService.checkEqualDbAndEs();
+
+    return res.json({notEqualDbIds});
+  } catch (e) {
+    logger.error(e as string);
+    return res.sendStatus(500);
+  }
+});
+
 export default bookApiRouter;
