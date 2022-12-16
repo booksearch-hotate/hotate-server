@@ -28,6 +28,7 @@ import recommendationRouter from '../routers/admin/recommendation';
 import aboutRouter from '../routers/about';
 import notFoundRouter from '../routers/404';
 import helpRouter from '../routers/admin/help';
+import healthRouter from '../routers/admin/health';
 import bookApiRouter from '../routers/api/admin/bookApi';
 
 import Logger from '../infrastructure/logger/logger';
@@ -147,8 +148,9 @@ app.use('/admin/tags', tagsRouter);
 app.use('/admin/setting', settingRouter);
 app.use('/admin/school-info', departmentRouter);
 app.use('/admin/book-request', bookRequestRouter);
-app.use('/admin/recommendation/', recommendationRouter);
+app.use('/admin/recommendation', recommendationRouter);
 app.use('/admin/help', helpRouter);
+app.use('/admin/health', healthRouter);
 app.use('/api', apiRouter);
 app.use('/api/admin/health/books', bookApiRouter);
 
