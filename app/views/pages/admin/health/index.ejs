@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/health/index.css" />
+  </head>
+  <body>
+    <%- include('./../../../components/header-title', {mes: '本の登録状態の確認'}) %>
+
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+            重複確認 : <span id="dupStatus">確認中</span>
+          </button>
+        </h2>
+        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+          <div id="dupMes" class="accordion-body">
+            少々お待ちください...
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <a href="/admin/" class="tree-button mx-auto my-4">戻る</a>
+
+    <%- include('./../../../components/state-alert', {pageData}) %>
+    <%- include('./../../../components/input-js') %>
+    <script src="/js/admin/health/check.js"></script>
+  </body>
+</html>
