@@ -330,4 +330,9 @@ export default class InMemoryBookRepository implements IBookRepository {
 
     return {books, count};
   }
+
+  async getDuplicationBooks(): Promise<string[]> {
+    /* TODO: テスト環境での実装 */
+    return [];
+  }
 }
