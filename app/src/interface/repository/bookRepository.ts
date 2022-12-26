@@ -399,6 +399,10 @@ export default class BookRepository implements IBookRepository {
     });
   }
 
+  /**
+   * DBのidがesのidに含まれているかチェックをし、含まれていない場合そのidを返す関数
+   * @returns esのidと等しくないdbのidリスト
+   */
   public async checkEqualDbAndEs(): Promise<string[]> {
     const MARGIN = 500; // 一度に取得するカラム数
 
