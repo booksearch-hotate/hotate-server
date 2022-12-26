@@ -147,4 +147,31 @@ export default class EsSearchBook extends EsCsv {
 
     return ids;
   }
+
+  public async getIds(fetchCount: number, margin: number): Promise<string[]> {
+    const res = await axios.get(`${this.uri}/_search`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        query: {
+          match_all: {},
+        },
+        from: fetchCount * margin,
+        size: margin,
+        sort: {
+          'db_id': {
+            order: 'asc',
+          },
+        },
+      },
+    });
+
+    const hits = res.data.hits.hits;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ids = hits.map((hit: any) => hit._source.db_id);
+
+    return ids;
+  }
 }
