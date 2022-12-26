@@ -551,6 +551,7 @@ footer p {
   display: flex;
   justify-content: space-evenly;
   width: 100%;
+  gap: 1rem;
 }
 
 .state-info-toast {

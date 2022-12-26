@@ -63,7 +63,7 @@
 
                 <div class="text-center">
                   <button
-                    onclick="createConfirmBox('deleteBook<%= book.Id %>', 'キノの旅を削除します。よろしいですか？')"
+                    onclick="createConfirmBox('deleteBook<%= book.Id %>', '<%= book.BookName %>を削除します。よろしいですか？')"
                     class="tree-button tree-button-mini tree-button-danger mx-auto my-0"
                   >
                     削除
