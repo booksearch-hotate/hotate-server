@@ -263,4 +263,8 @@ export default class BookApplicationService {
   public async checkEqualDbAndEs(): Promise<string[]> {
     return await this.bookRepository.checkEqualDbAndEs();
   }
+
+  public async checkEqualEsAndDb(): Promise<string[]> {
+    return await this.bookRepository.checkEqualEsAndDb();
+  }
 }
