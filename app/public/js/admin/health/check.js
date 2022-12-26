@@ -6,7 +6,7 @@ async function checkEqualDbIds () {
 
   function makeDupMes(idList) {
     const div = document.createElement('div');
-    div.innerHTML += '<p>以下のIDが重複しています。</p>'
+    div.innerHTML += '<p>以下のIDがElasticsearchにはありませんでした</p>'
 
     /* リスト形式で重複対象を表示 */
     const list = document.createElement('ul');
@@ -51,7 +51,7 @@ async function checkEqualEsIds () {
 
   function makeDupMes(idList) {
     const div = document.createElement('div');
-    div.innerHTML += '<p>以下のIDが矛盾しています。</p>'
+    div.innerHTML += '<p>以下のIDがMySQLにありませんでした</p>'
 
     /* リスト形式で重複対象を表示 */
     const list = document.createElement('ul');
