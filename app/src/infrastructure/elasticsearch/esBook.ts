@@ -122,21 +122,17 @@ export default class EsSearchBook extends EsCsv {
   }
 
   public async getIdsByDbIds(dbIds: string[]): Promise<string[]> {
-    const queryDocument = dbIds.map((dbId) => {
-      return {match: {'db_id': dbId}};
-    });
-
     const res = await axios.get(`${this.uri}/_search`, {
       headers: {
         'Content-Type': 'application/json',
       },
       data: {
         query: {
-          bool: {
-            should: queryDocument,
-            minimum_should_match: 1,
+          terms: {
+            db_id: dbIds,
           },
         },
+        size: dbIds.length,
       },
     });
 
