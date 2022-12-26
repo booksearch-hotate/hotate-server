@@ -400,7 +400,7 @@ export default class BookRepository implements IBookRepository {
   }
 
   public async checkEqualDbAndEs(): Promise<string[]> {
-    const MARGIN = 100; // 一度に取得するカラム数
+    const MARGIN = 500; // 一度に取得するカラム数
 
     const bookCount = await this.db.Book.count();
 
