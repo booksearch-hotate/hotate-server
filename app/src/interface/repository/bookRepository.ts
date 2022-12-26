@@ -427,4 +427,37 @@ export default class BookRepository implements IBookRepository {
 
     return notEqualIdList;
   }
+
+  public async checkEqualEsAndDb(): Promise<string[]> {
+    const MARGIN = 500;
+    const bookCount = await this.esSearchBook.fetchDocumentCount();
+
+    const notEqualIdList = [];
+
+    for (let i = 0; i < Math.ceil(bookCount / MARGIN); i++) {
+      console.log('i');
+      console.log(i);
+      const ids = await this.esSearchBook.getIds(i, MARGIN);
+
+      console.log('ids');
+      console.log(ids);
+
+      const dbIds = await this.db.Book.findAll({
+        attributes: ['id'],
+        where: {id: {[sequelize.Op.in]: ids}},
+      }).then((fetchData) => fetchData.map((column) => column.id));
+
+      console.log('dbIds');
+      console.log(dbIds);
+
+      for (let i = 0; i < ids.length; i++) {
+        if (dbIds.indexOf(ids[i]) === -1) notEqualIdList.push(ids[i]);
+      }
+    }
+
+    console.log('notEqualIdList');
+    console.log(notEqualIdList);
+
+    return notEqualIdList;
+  }
 }
