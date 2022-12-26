@@ -253,4 +253,18 @@ export default class BookApplicationService {
 
     await this.bookRepository.deleteBook(book);
   }
+
+  public async checkDuplicationBooks(): Promise<string[]> {
+    const bookNames = await this.bookRepository.getDuplicationBooks();
+
+    return bookNames;
+  }
+
+  public async checkEqualDbAndEs(): Promise<string[]> {
+    return await this.bookRepository.checkEqualDbAndEs();
+  }
+
+  public async checkEqualEsAndDb(): Promise<string[]> {
+    return await this.bookRepository.checkEqualEsAndDb();
+  }
 }

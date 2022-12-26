@@ -135,20 +135,24 @@ csvRouter.post('/formHader', csrfProtection, async (req: Request, res: Response)
 
       for (const item in req.body) if (req.body[item] === undefined) req.body[item] = null;
 
-      booksPromise.push(bookApplicationService.createBook(
-          bookName,
-          row[req.body.bookSubName],
-          row[req.body.bookContent],
-          row[req.body.isbn],
-          row[req.body.ndc],
-          row[req.body.year],
-          authorId,
-          authorName,
-          publisherId,
-          publisherName,
-      ).catch((e: any) => {
-        logger.error(`Failed to add book.  bookName: ${bookName}`);
-      }));
+      try {
+        booksPromise.push(bookApplicationService.createBook(
+            bookName,
+            row[req.body.bookSubName],
+            row[req.body.bookContent],
+            row[req.body.isbn],
+            row[req.body.ndc],
+            row[req.body.year],
+            authorId,
+            authorName,
+            publisherId,
+            publisherName,
+        ).catch((e: any) => {
+          logger.error(`Failed to add book.  bookName: ${bookName}`);
+        }));
+      } catch (e) {
+        throw e;
+      }
 
       if (i % 50 == 0) { // 50件ごとにブロードキャスト
         broadcast({

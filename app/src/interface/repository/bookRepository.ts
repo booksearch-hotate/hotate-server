@@ -381,4 +381,73 @@ export default class BookRepository implements IBookRepository {
     ];
     await Promise.all(list);
   }
+
+  /**
+   * 重複している本の書名を取得
+   */
+  public async getDuplicationBooks(): Promise<string[]> {
+    const books = await this.db.Book.findAll({
+      attributes: ['book_name'],
+      group: ['book_name'],
+      having: sequelize.where(sequelize.fn('count', sequelize.col('book_name')), {
+        [sequelize.Op.gte]: 2,
+      }),
+    });
+
+    return books.map((data) => {
+      return data.book_name;
+    });
+  }
+
+  /**
+   * DBのidがesのidに含まれているかチェックをし、含まれていない場合そのidを返す関数
+   * @returns esのidと等しくないdbのidリスト
+   */
+  public async checkEqualDbAndEs(): Promise<string[]> {
+    const MARGIN = 500; // 一度に取得するカラム数
+
+    const bookCount = await this.db.Book.count();
+
+    const notEqualIdList = [];
+
+    for (let i = 0; i < Math.ceil(bookCount / MARGIN); i++) {
+      const books = await this.db.Book.findAll({
+        attributes: ['id'],
+        limit: MARGIN,
+        offset: MARGIN * i,
+      });
+
+      const ids = books.map((data) => data.id);
+
+      const esIds = await this.esSearchBook.getIdsByDbIds(ids);
+
+      for (let i = 0; i < ids.length; i++) {
+        if (esIds.indexOf(ids[i]) === -1) notEqualIdList.push(ids[i]);
+      }
+    }
+
+    return notEqualIdList;
+  }
+
+  public async checkEqualEsAndDb(): Promise<string[]> {
+    const MARGIN = 500;
+    const bookCount = await this.esSearchBook.fetchDocumentCount();
+
+    const notEqualIdList = [];
+
+    for (let i = 0; i < Math.ceil(bookCount / MARGIN); i++) {
+      const ids = await this.esSearchBook.getIds(i, MARGIN);
+
+      const dbIds = await this.db.Book.findAll({
+        attributes: ['id'],
+        where: {id: {[sequelize.Op.in]: ids}},
+      }).then((fetchData) => fetchData.map((column) => column.id));
+
+      for (let i = 0; i < ids.length; i++) {
+        if (dbIds.indexOf(ids[i]) === -1) notEqualIdList.push(ids[i]);
+      }
+    }
+
+    return notEqualIdList;
+  }
 }
