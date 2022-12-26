@@ -28,6 +28,25 @@ export default class ElasticSearch {
   }
 
   /**
+   * 登録されているドキュメントの件数を取得します
+   * @returns ドキュメントの件数
+   */
+  public async fetchDocumentCount(): Promise<number> {
+    const res = await axios.get(`${this.uri}/_count`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        query: {
+          match_all: {},
+        },
+      },
+    });
+
+    return res.data.count as number;
+  }
+
+  /**
    * indexが存在しない場合は新規作成し、存在する場合はindex内のデータを**削除**する処理です。
    *
    * 引数として`false`を渡すことで、indexが存在する場合でもindex内のデータを削除しないようになります。
