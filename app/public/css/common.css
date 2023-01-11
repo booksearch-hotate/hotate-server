@@ -380,6 +380,16 @@ footer p {
   border-radius: 0;
 }
 
+/* switchがある場合のinputの設定 */
+.tree-input-with-switch {
+  width: 40%; /* tree-inputのwidthと合わせる */
+}
+
+.tree-input-with-switch .tree-input {
+  width: 100%!important;
+  margin-bottom: 5px;
+}
+
 /* ボタンレイアウト */
 /* アニメーション参照元 : https://b-risk.jp/blog/2021/11/hover-reference/#i-17 */
 .tree-button {
@@ -541,6 +551,7 @@ footer p {
   display: flex;
   justify-content: space-evenly;
   width: 100%;
+  gap: 1rem;
 }
 
 .state-info-toast {
@@ -749,4 +760,60 @@ footer p {
 
 .no-item-box i {
   font-size: 5rem;
+}
+
+/* -----------------------------------
+クエスチョン(ヒント)のレイアウト
+----------------------------------- */
+
+.tree-question {
+  position: relative;
+  cursor: help;
+}
+
+.tree-question-area-box {
+  position: absolute;
+  bottom: calc(100% + 12.7px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  background-color: #bae492;
+  border-radius: 10px;
+  padding: 10px 5px;
+}
+
+.tree-question-area-box:after {
+  content: '';
+  position: absolute;
+  left: calc(50% - 3.7px); /* 3.7... = 18 / √2 - 18 / 2 → 45度回転させた時に0度回転させた正方形の範囲からはみ出た長さ */
+  bottom: -12.7px; /* -(18 / √2) */
+  transform: rotate(45deg) translateX(-50%);
+  width: 18px;
+  height: 18px;
+  background-color: #bae492;
+}
+
+.tree-question-area-box p {
+  margin: 0;
+}
+
+/* -----------------------------------
+markdownのレイアウト
+----------------------------------- */
+
+.markdown-result h1,
+.markdown-result h2,
+.markdown-result h3,
+.markdown-result h4,
+.markdown-result h5,
+.markdown-result h6 {
+  border-bottom: solid 1px var(--font-color);
+  padding-left: 10px;
+  margin: 10px auto;
+}
+
+.markdown-result code {
+  white-space: pre-line;
+  margin: 10px;
+  color: #299c29;
 }

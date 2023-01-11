@@ -38,6 +38,8 @@ export default class RecommendationApplicationService {
         [],
     );
 
+    recommendation.sanitizeContent();
+
     await this.recommendationRepository.insert(recommendation);
   }
 
@@ -53,6 +55,9 @@ export default class RecommendationApplicationService {
   public async findById(id: string): Promise<RecommendationData> {
     const fetchModel = await this.recommendationRepository.findById(id);
     if (fetchModel === null) throw new InfrastructureError('Could not find recommendation section.');
+
+    fetchModel.sanitizeContent();
+
     return new RecommendationData(fetchModel);
   }
 
@@ -88,6 +93,7 @@ export default class RecommendationApplicationService {
     recommendation.changeIsSolid(isSolid);
     recommendation.replaceItems(items);
     recommendation.changeThumbnailName(thumbnailName);
+    recommendation.sanitizeContent();
 
     await this.recommendationRepository.update(recommendation);
   }

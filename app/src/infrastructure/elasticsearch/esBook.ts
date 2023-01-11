@@ -65,7 +65,7 @@ export default class EsSearchBook extends EsCsv {
     await axios.post(`${this.uri}/_delete_by_query?conflicts=proceed&pretty`, {
       query: {
         term: {
-          'db_id.keyword': book.db_id,
+          'db_id': book.db_id,
         },
       },
     });
@@ -81,7 +81,7 @@ export default class EsSearchBook extends EsCsv {
     await axios.post(`${this.uri}/_delete_by_query?conflicts=proceed&pretty`, {
       query: {
         term: {
-          'db_id.keyword': id,
+          'db_id': id,
         },
       },
     });
@@ -119,5 +119,55 @@ export default class EsSearchBook extends EsCsv {
 
   get Total(): number {
     return this.total;
+  }
+
+  public async getIdsByDbIds(dbIds: string[]): Promise<string[]> {
+    const res = await axios.get(`${this.uri}/_search`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        query: {
+          terms: {
+            db_id: dbIds,
+          },
+        },
+        size: dbIds.length,
+      },
+    });
+
+    const hits = res.data.hits.hits;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ids = hits.map((hit: any) => hit._source.db_id);
+
+    return ids;
+  }
+
+  public async getIds(fetchCount: number, margin: number): Promise<string[]> {
+    const res = await axios.get(`${this.uri}/_search`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        query: {
+          match_all: {},
+        },
+        from: fetchCount * margin,
+        size: margin,
+        sort: {
+          'db_id': {
+            order: 'asc',
+          },
+        },
+      },
+    });
+
+    const hits = res.data.hits.hits;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ids = hits.map((hit: any) => hit._source.db_id);
+
+    return ids;
   }
 }

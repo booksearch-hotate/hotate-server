@@ -17,8 +17,8 @@
         <img src="/thumbnail/<%= pageData.anyData.recommendation.recommendation.ThumbnailName %>.png" class="capmpaign-thumbnail">
       </div>
 
-      <div class="campaign-content">
-        <p><%= pageData.anyData.recommendation.recommendation.Content %></p>
+      <div class="campaign-content markdown-result">
+        <%- pageData.anyData.recommendation.recommendation.htmlContent %>
       </div>
 
       <div class="book-list-box">
