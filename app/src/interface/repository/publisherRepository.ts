@@ -9,7 +9,7 @@ import Publisher from '../../domain/model/publisher/publisher';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 
 import {IEsPublisher} from '../../infrastructure/elasticsearch/documents/IEsPublisher';
-import {MySQLDBError} from '../../presentation/error/infrastructure';
+import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
 
 /* Sequelizeを想定 */
 interface sequelize {

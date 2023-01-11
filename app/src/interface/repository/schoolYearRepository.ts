@@ -3,7 +3,7 @@ import SchoolClass from '../../domain/model/schoolGradeInfo/schoolClass';
 import SchoolGradeInfo from '../../domain/model/schoolGradeInfo/schoolGradeInfo';
 import SchoolYear from '../../domain/model/schoolGradeInfo/schoolYear';
 import SchoolGradeInfoTable from '../../infrastructure/db/tables/schoolGradeInfo';
-import {MySQLDBError} from '../../presentation/error/infrastructure';
+import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
 
 interface sequelize {
   SchoolGradeInfo: typeof SchoolGradeInfoTable,

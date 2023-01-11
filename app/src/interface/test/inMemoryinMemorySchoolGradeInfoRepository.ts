@@ -5,7 +5,7 @@ import SchoolGradeInfo from '../../domain/model/schoolGradeInfo/schoolGradeInfo'
 import SchoolYear from '../../domain/model/schoolGradeInfo/schoolYear';
 import {SchoolGradeInfoCollectionName, schoolGradeInfoDocument} from '../../infrastructure/inMemory/collections/schoolGradeInfo';
 import {NullDataError} from '../../presentation/error';
-import {InMemoryDBError} from '../../presentation/error/infrastructure';
+import {InMemoryDBError} from '../../presentation/error/infrastructure/inMemoryDBError';
 
 export default class InMemorySchoolGradeInfoRepository implements ISchoolGradeInfoRepository {
   db: Db;

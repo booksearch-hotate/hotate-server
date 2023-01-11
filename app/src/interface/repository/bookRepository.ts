@@ -16,7 +16,7 @@ import BookId from '../../domain/model/book/bookId';
 import PaginationMargin from '../../domain/model/pagination/paginationMargin';
 
 import sequelize from 'sequelize';
-import {MySQLDBError} from '../../presentation/error/infrastructure';
+import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
 
 /* Sequelizeを想定 */
 interface sequelize {

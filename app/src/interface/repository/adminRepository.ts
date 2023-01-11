@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import {IAdminApplicationRepository}
   from '../../domain/model/admin/IAdminRepository';
 import Admin from '../../domain/model/admin/admin';
-import {MySQLDBError} from '../../presentation/error/infrastructure';
+import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
 
 /* Sequelizeを想定 */
 interface sequelize {

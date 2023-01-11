@@ -3,7 +3,7 @@ import {IAdminApplicationRepository} from '../domain/model/admin/IAdminRepositor
 import AdminData from '../domain/model/admin/adminData';
 import AdminService from '../domain/service/adminService';
 import {DomainInvalidError, FormInvalidError, InfrastructureError} from '../presentation/error';
-import {MySQLDBError} from '../presentation/error/infrastructure';
+import {MySQLDBError} from '../presentation/error/infrastructure/mySQLDBError';
 
 export default class AdminApplicationService {
   private readonly adminRepository: IAdminApplicationRepository;

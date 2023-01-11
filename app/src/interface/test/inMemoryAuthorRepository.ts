@@ -3,7 +3,7 @@ import Author from '../../domain/model/author/author';
 import {IAuthorRepository} from '../../domain/model/author/IAuthorRepository';
 import {authorCollectionName, authorDocument} from '../../infrastructure/inMemory/collections/author';
 import {bookCollectionName, bookDocument} from '../../infrastructure/inMemory/collections/book';
-import {InMemoryDBError} from '../../presentation/error/infrastructure';
+import {InMemoryDBError} from '../../presentation/error/infrastructure/inMemoryDBError';
 
 export default class InMemoryAuthorRepository implements IAuthorRepository {
   db: Db;

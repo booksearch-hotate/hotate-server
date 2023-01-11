@@ -4,7 +4,7 @@ import {ITagRepository} from '../../domain/model/tag/ITagRepository';
 import Tag from '../../domain/model/tag/tag';
 import {tagCollectionName, tagDocument} from '../../infrastructure/inMemory/collections/tag';
 import {usingTagCollectionName, usingTagDocument} from '../../infrastructure/inMemory/collections/usingTag';
-import {InMemoryDBError} from '../../presentation/error/infrastructure';
+import {InMemoryDBError} from '../../presentation/error/infrastructure/inMemoryDBError';
 
 export default class InMemoryTagRepository implements ITagRepository {
   db: Db;

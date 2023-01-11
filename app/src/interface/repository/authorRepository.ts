@@ -8,7 +8,7 @@ import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 import {IEsAuthor} from '../../infrastructure/elasticsearch/documents/IEsAuthor';
 
 import sequelize from 'sequelize';
-import {MySQLDBError} from '../../presentation/error/infrastructure';
+import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
 
 /* Sequelizeを想定 */
 interface sequelize {
