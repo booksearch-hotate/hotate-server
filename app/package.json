@@ -68,7 +68,7 @@
     "mongodb": "^4.10.0",
     "mongodb-memory-server": "^8.9.2",
     "supertest": "^6.3.0",
-    "ts-jest": "^29.0.2",
+    "ts-jest": "^29.0.4",
     "ts-node": "^10.9.1"
   }
 }
