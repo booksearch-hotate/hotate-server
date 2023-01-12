@@ -16,6 +16,12 @@ import PaginationMargin from '../domain/model/pagination/paginationMargin';
 import {IAuthorRepository} from '../domain/model/author/IAuthorRepository';
 import searchCategory from '../routers/datas/searchCategoryType';
 import {IPublisherRepository} from '../domain/model/publisher/IPublisherRepository';
+import {ElasticsearchError} from '../presentation/error/infrastructure/elasticsearchError';
+import {MySQLDBError} from '../presentation/error/infrastructure/mySQLDBError';
+import Logger from '../infrastructure/logger/logger';
+import {ApplicationServiceError} from '../presentation/error';
+
+const logger = new Logger('bookApplicationService');
 
 export default class BookApplicationService {
   private readonly bookRepository: IBookRepository;
@@ -82,7 +88,18 @@ export default class BookApplicationService {
 
       if (isBulk === false) await this.bookRepository.executeBulkApi();
     } catch (e) {
-      
+      if (e instanceof ElasticsearchError || e instanceof MySQLDBError) {
+        logger.error(e.message);
+        try {
+          await this.bookRepository.deleteBook(book);
+
+          throw new ApplicationServiceError(1001);
+        } catch (e) {
+          throw new ApplicationServiceError(1002);
+        }
+      }
+
+      throw new ApplicationServiceError(1000);
     }
   }
 
