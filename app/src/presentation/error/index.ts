@@ -1,3 +1,5 @@
+import {bookApplicationErrorStatusCode} from './statusCode/statusCode';
+
 /**
  * Formの値が正しく入力されていない場合にthrowされるべきエラークラス
  *
@@ -15,6 +17,22 @@ export class FormInvalidError extends Error {};
  * @extends {Error}
  */
 export class DomainInvalidError extends Error {};
+
+/**
+ * アプリケーションのサービスに異常が発生した時にthrowされるべきエラークラス
+ *
+ * @export
+ * @class ApplicationServiceError
+ * @extends {Error}
+ */
+export class ApplicationServiceError extends Error {
+  statusCode: bookApplicationErrorStatusCode;
+
+  constructor(statusCode: bookApplicationErrorStatusCode) {
+    super();
+    this.statusCode = statusCode;
+  }
+};
 
 /**
  * インフラに関するエラーの際にthrowされるべきエラークラス
