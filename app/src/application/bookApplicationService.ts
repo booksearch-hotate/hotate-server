@@ -67,7 +67,7 @@ export default class BookApplicationService {
       publisherId: string,
       publisherName: string,
       isBulk: boolean = true,
-  ): Promise<void> {
+  ): Promise<string> {
     const author = new Author(authorId, authorName);
     const publisher = new Publisher(publisherId, publisherName);
     const book = new Book(
@@ -101,6 +101,8 @@ export default class BookApplicationService {
 
       throw new ApplicationServiceError(1000);
     }
+
+    return book.Id;
   }
 
   /**
