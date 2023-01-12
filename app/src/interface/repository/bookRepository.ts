@@ -17,6 +17,7 @@ import PaginationMargin from '../../domain/model/pagination/paginationMargin';
 
 import sequelize from 'sequelize';
 import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
+import {ElasticsearchError} from '../../presentation/error/infrastructure/elasticsearchError';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -37,24 +38,32 @@ export default class BookRepository implements IBookRepository {
   }
 
   public async save(book: Book): Promise<void> {
-    await this.db.Book.create({
-      id: book.Id,
-      book_name: book.Name,
-      book_sub_name: book.SubName,
-      book_content: book.Content,
-      isbn: book.Isbn,
-      ndc: book.Ndc,
-      year: book.Year,
-      author_id: book.Author.Id,
-      publisher_id: book.Publisher.Id,
-    });
+    try {
+      await this.db.Book.create({
+        id: book.Id,
+        book_name: book.Name,
+        book_sub_name: book.SubName,
+        book_content: book.Content,
+        isbn: book.Isbn,
+        ndc: book.Ndc,
+        year: book.Year,
+        author_id: book.Author.Id,
+        publisher_id: book.Publisher.Id,
+      });
+    } catch (e) {
+      throw new MySQLDBError(`Failed to add book to mysql. id:${book.Id}`);
+    }
 
-    const doc: IEsBook = {
-      db_id: book.Id,
-      book_name: book.Name,
-      book_content: book.Content,
-    };
-    this.esSearchBook.insertBulk(doc);
+    try {
+      const doc: IEsBook = {
+        db_id: book.Id,
+        book_name: book.Name,
+        book_content: book.Content,
+      };
+      this.esSearchBook.insertBulk(doc);
+    } catch (e) {
+      throw new ElasticsearchError(`Registration to bulk api failed during generation of bulk api to add to elasticsearch. id:${book.Id}`);
+    }
   }
 
   public async deleteAll(): Promise<void> {

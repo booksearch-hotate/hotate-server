@@ -76,9 +76,14 @@ export default class BookApplicationService {
         publisher,
         [],
     );
-    await this.bookRepository.save(book);
 
-    if (isBulk === false) await this.bookRepository.executeBulkApi();
+    try {
+      await this.bookRepository.save(book);
+
+      if (isBulk === false) await this.bookRepository.executeBulkApi();
+    } catch (e) {
+      
+    }
   }
 
   /**
