@@ -90,16 +90,11 @@ export default class BookApplicationService {
     } catch (e) {
       if (e instanceof ElasticsearchError || e instanceof MySQLDBError) {
         logger.error(e.message);
-        try {
-          await this.bookRepository.deleteBook(book);
 
-          throw new ApplicationServiceError(1001);
-        } catch (e) {
-          throw new ApplicationServiceError(1002);
-        }
+        throw new ApplicationServiceError(book.Id);
       }
 
-      throw new ApplicationServiceError(1000);
+      throw new ApplicationServiceError('');
     }
 
     return book.Id;
