@@ -17,7 +17,7 @@ import PaginationMargin from '../../domain/model/pagination/paginationMargin';
 
 import sequelize from 'sequelize';
 import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
-import {ElasticsearchError} from '../../presentation/error/infrastructure/elasticsearchError';
+import {ElasticsearchError, EsBulkApiError} from '../../presentation/error/infrastructure/elasticsearchError';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -253,7 +253,17 @@ export default class BookRepository implements IBookRepository {
   }
 
   public async executeBulkApi(): Promise<void> {
-    await this.esSearchBook.executeBulkApi();
+    try {
+      await this.esSearchBook.executeBulkApi();
+
+      this.esSearchBook.removeBulkApiFile();
+    } catch (e) {
+      if (e instanceof EsBulkApiError) {
+        this.esSearchBook.removeBulkApiFile();
+      }
+
+      throw e;
+    }
   }
 
   private async getTagsByBookId(bookId: string): Promise<Tag[]> {
