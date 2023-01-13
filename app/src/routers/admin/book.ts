@@ -221,15 +221,12 @@ bookRouter.post('/add', csrfProtection, async (req: Request, res: Response) => {
 
       req.session.status = {type: 'Success', mes: `${req.body.isbn.length}冊の本を追加しました`};
     } catch (e) {
-      if (e instanceof ApplicationServiceError) {
-        if (e.message !== '') createdDbIds.push(e.message);
+      if (e instanceof ApplicationServiceError) createdDbIds.push(e.message);
+      await Promise.all(createdDbIds.map(async (dbId) => {
+        await bookApplicationService.deleteBook(dbId);
+      }));
 
-        await Promise.all(createdDbIds.map(async (dbId) => {
-          await bookApplicationService.deleteBook(dbId);
-        }));
-
-        req.session.status = {type: 'Warning', mes: '本の追加中にエラーが発生したのでロールバックしました。'};
-      }
+      req.session.status = {type: 'Warning', mes: '本の追加中にエラーが発生したので操作を取り消しました。もう一度試してください。'};
 
       logger.error(e as string);
     }
