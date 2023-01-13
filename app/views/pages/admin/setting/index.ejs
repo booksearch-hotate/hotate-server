@@ -4,17 +4,26 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
+<<<<<<< HEAD
     <header class="text-center">
       <%- include('./../../../components/header-title', {mes: '管理者情報の編集', logo: 'person'}) %>
+=======
+    <header>
+      <%- include('./../../../components/header-title', {mes: '管理者情報の編集'}) %>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
       <p class="common-header-sub-title">
         管理者のIDとパスワードを設定できます。
       </p>
     </header>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
     <main>
       <form action="/admin/setting/update" method="post">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
 
+<<<<<<< HEAD
         <h3 class="text-center">現在のIDとパスワード</h3>
 
         <div class="tree-form-item">
@@ -38,6 +47,31 @@
         </div>
 
         <button type="submit" class="tree-button tree-button-warning my-4 mx-auto">更新</button>
+=======
+        <h3>現在のIDとパスワード</h3>
+
+        <div class="form-group">
+          <label for="nowId" class="form-label">現在のID</label>
+          <input class="form-control" type="text" id="nowId" name="nowId">
+        </div>
+        <div class="form-group">
+          <label for="nowPw" class="form-label">現在のパスワード</label>
+          <input class="form-control" type="password" id="nowPw" name="nowPw">
+        </div>
+
+        <h3>変更するIDとパスワード</h3>
+
+        <div class="form-group">
+          <label for="id" class="form-label">ID名</label>
+          <input class="form-control" type="text" id="id" name="id">
+        </div>
+        <div class="form-group">
+          <label for="pw" class="form-label">パスワード</label>
+          <input class="form-control" type="password" id="pw" name="pw">
+        </div>
+
+        <button type="submit" class="btn btn-outline-warning">更新</button>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
       </form>
     </main>
     <%- include('./../../../components/state-alert', {pageData}) %>

@@ -4,6 +4,7 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
+<<<<<<< HEAD
     <header>
       <%- include('./../../../components/header-title', {mes: `${pageData.anyData.tag.Name}の編集`}) %>
     </header>
@@ -27,6 +28,20 @@
         </div>
       </div>
     </form>
+=======
+    <h3>タグ編集</h3>
+    <form action="/admin/tags/update" method="post">
+      <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+      <input type="hidden" name="id" value="<%= pageData.anyData.tag.Id %>">
+      <div class="form-group">
+        <label for="formName" class="form-label">タグ名</label>
+        <input class="form-control" type="text" id="formName" name="name" value="<%= pageData.anyData.tag.Name %>">
+      </div>
+    </form>
+    <div class="text-center">
+      <a href="/admin/tags/">戻る</a>
+    </div>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
     <%- include('./../../../components/input-js') %>
   </body>
 </html>

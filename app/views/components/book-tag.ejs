@@ -3,6 +3,7 @@
 
 @params {tag: string}
 %>
+<<<<<<< HEAD
 <div class="tag">
   <a href="/search?search=<%= tag %>&tag=true">
     <p>
@@ -11,3 +12,8 @@
     </p>
   </a>
 </div>
+=======
+<a class="book-tag-box px-2" href="/search?search=<%= tag %>&tag=true">
+  <%- include('./../icons/hash') %><p class="book-tag-text"><%= tag %></p>
+</a>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194

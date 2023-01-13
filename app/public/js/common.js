@@ -35,6 +35,7 @@
    }
 ];
 
+<<<<<<< HEAD
 const CONFIRM_ID_PHRASE = 'tree-confirm-box' // 確認画面で用いるidの固定値
 let CONFIRM_TARGET_INFO = {
   id: '',
@@ -44,10 +45,15 @@ let CONFIRM_TARGET_INFO = {
 const searchContentEle = document.getElementById('searchContentBox'); // コンテンツのエレメント
 const searchMessageEle = document.getElementById('contentMessage'); // メッセージのエレメント
 const searchBox = document.getElementById('search-view-box');
+=======
+const searchContentEle = document.getElementById('searchContentBox'); // コンテンツのエレメント
+const searchMessageEle = document.getElementById('contentMessage'); // メッセージのエレメント
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 
 /**
  * クリックされたときに実行される関数
  *
+<<<<<<< HEAD
  * @param {*} clickId クリックした要素のid
  */
 function itemClickEvent(clickId) {
@@ -55,6 +61,17 @@ function itemClickEvent(clickId) {
     const item = itemContentList[i];
 
     if (item.idPhrase === clickId) {
+=======
+ * @param {*} event クリックイベント
+ */
+function itemClickEvent(event) {
+  const tarEle = event.target; // クリックされた要素を取得
+
+  for (let i = 0; i < itemContentList.length; i++) {
+    const item = itemContentList[i];
+
+    if (item.idPhrase === tarEle.id) {
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
       item.element.style.zIndex = itemContentList.length + 1; // z-indexが一番上になるように設定
       searchContentEle.style.backgroundColor = item.themeColor;
       searchMessageEle.innerText = item.message;
@@ -79,6 +96,37 @@ function itemClickEvent(clickId) {
   }
 }
 
+<<<<<<< HEAD
+=======
+
+/* 初期化 */
+for (let i = 0; i < itemContentList.length; i++) {
+  /* オブジェクトの初期化 */
+  itemContentList[i].element = document.getElementById(itemContentList[i].idPhrase);
+
+  /* スタイルの初期化 */
+  const ele = itemContentList[i].element;
+  ele.style.zIndex = itemContentList.length - i;
+  ele.style.backgroundColor = itemContentList[i].themeColor;
+  const moveLeft = 20; // 左へずらす量
+  ele.style.left = `-${moveLeft * i}px`;
+
+  if (i === 0) {
+    searchContentEle.style.backgroundColor = itemContentList[i].themeColor;
+    searchMessageEle.innerText = itemContentList[i].message;
+    
+  }
+
+  ele.addEventListener('click', itemClickEvent); // イベントリスナーの設定
+}
+
+const CONFIRM_ID_PHRASE = 'confirm-box' // 確認画面で用いるidの固定値
+let CONFIRM_TARGET_INFO = {
+  id: '',
+  formName: ''
+}
+
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 function makePhrase () {
   const phrases = ['少女', '工業高校', '冒険', '歴史']
   const randomNum = Math.floor(Math.random() * 3) + 1
@@ -98,6 +146,11 @@ function makePhrase () {
   return resWords.slice(0, -1)
 }
 
+<<<<<<< HEAD
+=======
+const searchBox = document.getElementById('search-view-box')
+
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 function viewSearchBox () {
   searchBox.classList.add('is-active')
 
@@ -116,6 +169,7 @@ async function changeSearchType(type) {
 
   if (searchTypeList.indexOf(type) === -1) throw new Error('Invalid search type.');
 
+<<<<<<< HEAD
   const tagLabelElement = document.getElementById('tag');
 
   if (type !== 'book') {
@@ -130,6 +184,24 @@ async function changeSearchType(type) {
   } else {
     tagLabelElement.classList.remove('remove-label');
   }
+=======
+  const tagButton = document.getElementById('tagSearchButton');
+
+  if (type !== 'book') {
+    tagButton.style.opacity = 0;
+  } else {
+    tagButton.style.opacity = 1;
+  }
+
+  /* 背景のロゴのアニメーション処理 */
+  searchTypeList.forEach((item) => {
+    document.getElementById(`${item}BgIcon`).classList.remove('search-type-icon-active');
+  });
+
+  await new Promise(resolve => setTimeout(resolve, 500));
+
+  document.getElementById(`${type}BgIcon`).classList.add('search-type-icon-active');
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 }
 
 async function removeConfirmBox (confirmId) {
@@ -160,8 +232,13 @@ async function createConfirmBox(formName, message = '') {
   }
 
   const div = document.createElement('div');
+<<<<<<< HEAD
   div.classList.add('tree-confirm-box');
   div.setAttribute('id', CONFIRM_ID_PHRASE);
+=======
+  div.classList.add('confirm-box');
+  div.setAttribute('id', 'confirm-box');
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 
   const id = Math.random().toString(32).substring(2);
 
@@ -169,6 +246,7 @@ async function createConfirmBox(formName, message = '') {
   CONFIRM_TARGET_INFO.formName = formName;
 
   div.innerHTML = `
+<<<<<<< HEAD
     <div class="tree-confirm-content-box">
       <h3>確認</h3>
       <p>${message}</p>
@@ -183,6 +261,16 @@ async function createConfirmBox(formName, message = '') {
         </button>
       </div>
     </div>
+=======
+  <div class="confirm-content-box">
+    <h3>確認</h3>
+    <p>${message}</p>
+    <div class="confirm-button-box">
+      <button class="btn btn-outline-success" onclick="removeConfirmBox('${id}')">戻る</button>
+      <button class="btn btn-outline-danger" onclick="admitConfirm('${id}')">確認</button>
+    </div>
+  </div>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   `;
 
   const bodyEle = document.getElementsByTagName('body')[0];
@@ -206,6 +294,7 @@ function showDetail(showId, hideId = '') {
   hideEle.remove();
 }
 
+<<<<<<< HEAD
 /* 初期化 */
 for (let i = 0; i < itemContentList.length; i++) {
   /* オブジェクトの初期化 */
@@ -245,3 +334,9 @@ setTimeout(() => {
     tar.remove();
   }
 }, 1000 * 10);
+=======
+
+document.addEventListener('animationend', ele => {
+  if (ele.target.id === 'stateAlert')ele.target.remove();
+})
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194

@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+<<<<<<< HEAD
 /* -----------------------------------
 変数
 ----------------------------------- */
@@ -15,6 +16,17 @@
   --header-hover-font-color: #0bd;
   --form-color: #FEF4EA;
   --bg-color: #C8B8A9;
+=======
+:root {
+  --font-color: #432;
+  --main-color: #F4E4D4;
+  --sub-color: #244E5F;
+  --danger-color: #a03434;
+  --warning-color: #f4f252;
+  --success-color: #60ba49;
+  --header-font-color: #244E5F;
+  --header-hover-font-color: #0bd;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 }
 
 .is-active {
@@ -22,16 +34,22 @@
   opacity: 1!important;
 }
 
+<<<<<<< HEAD
 /* -----------------------------------
 共通部分
 ----------------------------------- */
 
+=======
+/* 共通部分
+--------------------*/
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 body{
   font-family:"Yu Gothic Medium","游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif!important;
   color: var(--font-color);
   margin: 0;
 }
 
+<<<<<<< HEAD
 input {
   border: none;
   font-family:"Yu Gothic Medium","游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif!important;
@@ -46,13 +64,25 @@ input:focus {
 ----------------------------------- */
 
 /* ロゴ */
+=======
+.tree-active {
+  visibility: visible!important;
+  opacity: 1!important;
+}
+
+/* header
+------------------*/
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 .tree-header-logo {
   height: 4rem;
   width: auto;
   display: block;
 }
 
+<<<<<<< HEAD
 /* ナビゲーションのリスト全体 */
+=======
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 .main-nav {
   display: flex;
   font-size: 1.4rem;
@@ -64,10 +94,16 @@ input:focus {
 }
 
 .main-nav a, .header-search-box a {
+<<<<<<< HEAD
   color:#fff!important;
   text-decoration: none;
 }
 
+=======
+  color:#244E5F!important;
+  text-decoration: none;
+}
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 .main-nav a:hover, .header-search-box :hover {
   color: #0bd!important;
 }
@@ -87,6 +123,7 @@ input:focus {
   padding: 4px;
 }
 
+<<<<<<< HEAD
 /* ヘッダー全体のbox */
 .tree-header {
   background: var(--main-color);
@@ -296,6 +333,14 @@ input:focus {
 
 .close-button i:hover {
   border-radius: 50%;
+=======
+.tree-header {
+  background: var(--main-color);
+}
+.wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 }
 
 /* フッター
@@ -332,12 +377,19 @@ footer p {
 /* フォーム */
 .tree-label {
   font-size: 1.4rem;
+<<<<<<< HEAD
+=======
+  margin-right: 20px;
+  margin-bottom: 10px;
+  margin-left: 20px;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   width: 10rem;
 }
 
 .tree-form-item {
   display:flex;
   justify-content: center;
+<<<<<<< HEAD
   margin: 30px auto;
   align-items: center;
   gap: 2rem;
@@ -345,6 +397,14 @@ footer p {
 
 .tree-input {
   background-color: #FEF4EA;
+=======
+  margin: 20px auto;
+  align-items: center;
+}
+
+.tree-input {
+  background: #FEF4EA;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   border: 1px #244E5F solid;
   padding: 10px;
   font-size: 1rem;
@@ -352,12 +412,17 @@ footer p {
 }
 
 .tree-input-info {
+<<<<<<< HEAD
   font-size: 1rem;
+=======
+  font-size: .9rem;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   color: #432;
   text-align: center;
 }
 
 .tree-textarea {
+<<<<<<< HEAD
   height: 6rem;
 }
 
@@ -369,13 +434,23 @@ footer p {
   border-radius: 0;
 }
 
+=======
+  min-width: 480px;
+  height: 6rem;
+}
+
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 /* ボタンレイアウト */
 /* アニメーション参照元 : https://b-risk.jp/blog/2021/11/hover-reference/#i-17 */
 .tree-button {
   cursor: pointer;
+<<<<<<< HEAD
   min-width: 12rem;
   width: fit-content;
   padding: 0 10px;
+=======
+  width: 12rem;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   height: 4.1rem;
   font-size: 1.2rem;
   color: var(--sub-color);
@@ -384,13 +459,20 @@ footer p {
   display: flex;
   justify-content: center;
   align-items: center;
+<<<<<<< HEAD
   text-decoration: none;
+=======
+  margin: 0 auto;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   overflow: hidden;
   position: relative;
   transition-duration: .4s;
   transition: color .6s;
   z-index: 2;
+<<<<<<< HEAD
   background-color: rgba(0, 0, 0, 0);
+=======
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 }
 
 .tree-button::after {
@@ -467,9 +549,15 @@ footer p {
   background-color: var(--success-color);
 }
 
+<<<<<<< HEAD
 /* -----------------------------------
 注意書きカード
 ----------------------------------- */
+=======
+/**
+注意書きカード
+*/
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 
 .tree-attention {
   background: var(--warning-color);
@@ -532,6 +620,7 @@ footer p {
   width: 100%;
 }
 
+<<<<<<< HEAD
 .state-info-toast {
   position: fixed;
   bottom: 0;
@@ -729,3 +818,204 @@ footer p {
 .no-item-box i {
   font-size: 5rem;
 }
+=======
+/**
+ラベルについて
+左へ若干ずらして他のラベルと被らせていますが、どれぐらいずらすかの量はjavascriptで設定しています。
+**/
+
+.search-view-box {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all .5s;
+  backdrop-filter: blur(5px);
+  width: 100vw;
+  height: 100vh;
+}
+
+.search-title {
+  font-size: 3.8rem;
+  color: #467556;
+  border-bottom: 3px #467556 solid;
+  margin: 0;
+  width: 100vw;
+  text-align: center;
+}
+
+/* 検索ボックス全体 */
+.search-box {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-top: 70px;
+}
+
+/* 上に飛び出している部分（以下「ラベル」）のボックス */
+.search-label-list-box {
+  display: flex;
+  align-content: center;
+  position: relative;
+  left: 35px; /* 全体を右へ移動する量 */
+}
+
+/* ラベル1つあたりのデザイン */
+.search-label-item-box {
+  padding-left: 30px;
+  padding-right: 40px;
+  border-radius: 20px 120px 0px 0px;
+  position: relative;
+  cursor: pointer;
+  bottom: -10px; /* hover時に上に上がる分を考慮 */
+  padding-bottom: 10px; /* 上のbottomに数値を合わせること! */
+  transition: bottom .5s;
+}
+
+.search-label-item-box p {
+  margin: 0;
+  color: white;
+  font-size: 2rem;
+  pointer-events: none; /* これをしないとうまくjavascriptが動作しないので注意 */
+}
+
+.search-label-item-box:hover {
+  bottom: 0;
+}
+
+/* メインとなる部分（以下「コンテンツ」）のボックス */
+.search-content-box {
+  width: 1000px;
+  height: 425px;
+  border-radius: 30px;
+  padding: 30px;
+  z-index: 100; /* ラベルよりも高いz-indexにすること */
+  transition: background-color .5s;
+}
+
+/* コンテンツ内のdiv要素を縦並びにするように */
+.search-content-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+}
+
+.message-box p{
+  font-size: 1.4rem;
+  margin: 0;
+  color: #432;
+}
+
+.search-form-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem; /* inputとbuttonとの間隔 */
+}
+
+/* 検索するキーワードを入力するinput */
+.search-input {
+  height: 5rem;
+  width: 90%;
+  border-radius: 90px;
+  border: none;
+  font-size: 2.2rem;
+  padding-left: 3rem; /* 入力時radiusのおかげで文字が欠けるのでそれを考慮 */
+  padding-right: 3rem;
+  font-family:"Yu Gothic Medium","游ゴシック Mdium",YuGothic,"游ゴシック体","ヒラギノ角ゴ Pro W3",sans-serif;
+  transition: all .5s;
+}
+
+/* 入力時のデザイン。適当にやったので改良お願いします! */
+.search-input:focus {
+  box-shadow: 0 10px 25px 0 rgba(0, 0, 0, .5);
+  outline: none; /* これを入れないと入力時強制的にborderがかかるようになる */
+}
+
+/* 検索するbutton */
+.search-submit-button {
+  font-size: 3rem;
+  background-color: #A5978B;
+  border: none;
+  color: white;
+  border-radius: 30px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  cursor: pointer;
+  transition: all .5s;
+}
+
+.search-submit-button:hover {
+  transform: scale(.98);
+}
+
+/* カテゴリ（本、著者名、出版社名）のボタンを配置するbox */
+.category-button-list-box {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+/* 各カテゴリのデザイン */
+.category-button {
+  border: solid 4px #755F4B;
+  color: #755F4B;
+  border-radius: 90px;
+  background-color: white;
+  width: 300px;
+  height: 90px;
+  position: relative;
+  overflow: hidden; /* これを入れないとロゴが見切れずbuttonから飛び出すことになるので注意 */
+  transition: all .5s;
+  cursor: pointer;
+}
+
+.category-button p {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 45%; /* ロゴを考慮して若干左へずらす */
+  transform: translate(-45%, -50%);
+  font-size: 1.4rem;
+}
+
+.category-button i {
+  position: absolute;
+  bottom: -40px;
+  right: 20px;
+  font-size: 80px;
+}
+
+.category-button:hover {
+  transform: scale(.98)
+}
+
+/* 現在選択されているカテゴリのデザイン */
+.category-button-input:checked + label .category-button {
+  background-color: #C8B8A9;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.close-button i {
+  font-size: 3rem;
+  cursor: pointer;
+  transition: all .5s;
+  border: solid 2px #467556;
+  border-radius: 10px;
+  color: #467556;
+}
+
+.close-button i:hover {
+  border-radius: 50%;
+}
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194

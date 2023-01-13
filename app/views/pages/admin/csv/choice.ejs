@@ -6,6 +6,7 @@
   </head>
   <body>
     <header>
+<<<<<<< HEAD
       <%- include('./../../../components/header-title', {mes: 'CSVファイルから本を登録', logo: 'filetype-csv'}) %>
     </header>
 
@@ -41,5 +42,20 @@
 
     <%- include('./../../../components/input-js') %>
     <script src="/js/admin/csv/viewFileName.js"></script>
+=======
+      <%- include('./../../../components/header-title', {mes: 'csvファイルを選択', logo: 'filetype-csv'}) %>
+      <p class="common-header-sub-title">
+        本の情報が登録されているcsvファイルを選択してください。<b>5000件</b>まで登録が可能です。
+      </p>
+    </header>
+    <form action="/admin/csv/sendFile?_csrf=<%= pageData.csrfToken %>" method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="formFile" class="form-label">CSVファイル</label>
+        <input class="form-control" type="file" id="formFile" name="csv" accept=".csv">
+      </div>
+      <button type="submit" class="btn btn-primary">送信</button>
+    </form>
+    <%- include('./../../../components/input-js') %>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   </body>
 </html>

@@ -1,4 +1,12 @@
 .insert-department-box, .grade-info-box {
+<<<<<<< HEAD
   padding: 10px;
   margin: 10px;
+=======
+  background-color: #e5eeff;
+  padding: 10px;
+  margin: 10px;
+  border: solid 2px #644d46;
+  border-radius: 10px;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 }

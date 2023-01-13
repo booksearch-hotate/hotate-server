@@ -164,6 +164,7 @@ export default class RecommendationRepository implements IRecommendationReposito
     await this.db.Recommendation.destroy({where: {id: recommendation.Id}});
   }
 
+<<<<<<< HEAD
   public async findByBookId(bookId: BookId): Promise<string[]> {
     const recommendationIds = await this.db.UsingRecommendations.findAll({
       where: {book_id: bookId.Id},
@@ -172,6 +173,17 @@ export default class RecommendationRepository implements IRecommendationReposito
     });
 
     return recommendationIds.map((column) => column.recommendation_id);
+=======
+  public async findByBookId(bookId: BookId): Promise<string | null> {
+    const recommendationId = await this.db.UsingRecommendations.findOne({
+      where: {book_id: bookId.Id},
+      order: [['id', 'DESC']],
+    });
+
+    if (recommendationId === null) return null;
+
+    return recommendationId.recommendation_id;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   }
 
   public async removeUsingByBookId(bookId: BookId): Promise<void> {

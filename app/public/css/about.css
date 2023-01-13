@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 main {
   background-color: var(--bg-color);
 }
 
 .main-about-box {
+=======
+.about-big-bg {
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   background-color: #888;
   position: relative;
   height: 100vh;
@@ -28,6 +32,7 @@ main {
   margin: 10px 0 0px;
 }
 
+<<<<<<< HEAD
 .about-main-message {
   text-align: center;
 }
@@ -38,6 +43,8 @@ main {
   letter-spacing: .6rem;
 }
 
+=======
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 .about-contents {
   background-color: #FEF4EA;
 }
@@ -65,14 +72,21 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-around;
+<<<<<<< HEAD
   margin: 30px auto;
   padding-left: 10px;
   padding-right: 10px;
+=======
+  margin: 10px auto;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 }
 
 .post-img {
   max-height: 500px;
+<<<<<<< HEAD
   max-width: 46vw;
+=======
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   border-radius: 5px;
 }
 
@@ -93,7 +107,11 @@ main {
 }
 
 .dev-comment-box {
+<<<<<<< HEAD
   background-color: #97C0A5;
+=======
+  background-color: #46788d;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   padding: 30px 10px;
   margin-top: 60px;
 }
@@ -102,7 +120,11 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-around;
+<<<<<<< HEAD
   margin: 30px auto;
+=======
+  margin: 10px auto;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   text-align: center;
   color: #edf2f4;
 }
@@ -121,8 +143,13 @@ main {
 }
 
 .dev-icon {
+<<<<<<< HEAD
   height: 300px;
   width: 300px;
+=======
+  height: 400px;
+  width: 400px;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   object-fit: cover;
   border-radius: 50%;
 }

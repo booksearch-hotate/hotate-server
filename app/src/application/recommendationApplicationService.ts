@@ -10,7 +10,10 @@ import RecommendationItem from '../domain/model/recommendation/recommendationIte
 import BookId from '../domain/model/book/bookId';
 import PaginationMargin from '../domain/model/pagination/paginationMargin';
 import {InfrastructureError, InvalidDataTypeError, OverflowDataError} from '../presentation/error';
+<<<<<<< HEAD
 import {conversionStringToDate} from '../utils/conversionDate';
+=======
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 
 export default class RecommendationApplicationService {
   private readonly recommendationRepository: IRecommendationRepository;
@@ -135,8 +138,13 @@ export default class RecommendationApplicationService {
           recommendationData.IsSolid,
           recommendationData.SortIndex,
           recommendationData.ThumbnailName,
+<<<<<<< HEAD
           conversionStringToDate(recommendationData.CreatedAt),
           conversionStringToDate(recommendationData.UpdatedAt),
+=======
+          new Date(recommendationData.CreatedAt),
+          new Date(recommendationData.UpdatedAt),
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
           recommendationItemModel,
       );
       recommendationModel.omitContent();
@@ -147,6 +155,7 @@ export default class RecommendationApplicationService {
   }
 
   /**
+<<<<<<< HEAD
    * 本のIDからおすすめセクションを取得します。最大で9つのセクションを取得します。
    * @param bookId 本のID
    * @returns 本が登録されているrecommendationの配列
@@ -166,6 +175,21 @@ export default class RecommendationApplicationService {
     }));
 
     return fetchModels.map((model) => new RecommendationData(model));
+=======
+   * 本のIDからおすすめセクションを取得します。複数のセクションが存在する場合は、直近に登録されたセクションを適用します。
+   * @param bookId 本のID
+   * @returns 本が登録されているおすすめ機能
+   */
+  public async findOneByBookId(bookId: string): Promise<RecommendationData | null> {
+    const bookIdModel = new BookId(bookId);
+    const existRecommendationId = await this.recommendationRepository.findByBookId(bookIdModel);
+
+    if (existRecommendationId === null) return null;
+
+    const fetchModel = await this.recommendationRepository.findById(existRecommendationId);
+
+    return fetchModel === null ? null : new RecommendationData(fetchModel);
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   }
 
   public async removeUsingByBookId(bookId: string): Promise<void> {

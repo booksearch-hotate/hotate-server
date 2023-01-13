@@ -2,6 +2,7 @@
 おすすめセクション一覧の表示
 %>
 
+<<<<<<< HEAD
 <% paginationItemList = typeof paginationData === 'undefined' ? [] : paginationData %>
 
 <div class="campaign-container">
@@ -26,3 +27,16 @@
     <% } %>
   </div>
 </div>
+=======
+<% pageData.anyData.recommendations = typeof pageData.anyData.recommendations === 'undefined' ? [] : pageData.anyData.recommendations%>
+<% editMode = typeof editMode === 'undefined' ? false : editMode %>
+
+<div class="recommendation-list-box">
+  <% for (const section of pageData.anyData.recommendations) { %>
+    <% if (section.recommendation.IsSolid) { %>
+      <p class="recommendation-solid-text"><%- include('./../icons/pin-angle') %>固定済み</p>
+    <% } %>
+    <%- include('recommendation-box', {recommendation: section})  %>
+  <% } %>
+</div>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194

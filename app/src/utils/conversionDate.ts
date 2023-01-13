@@ -12,6 +12,7 @@ dayjs.extend(utc);
  * @param {Date} date 変換前の日付
  * @return {*}  {string} 変換後の文字列
  */
+<<<<<<< HEAD
 export function conversionDateToString(date: Date): string {
   const res = dayjs(date).tz('Asia/Tokyo').format('YYYY年MM月DD日 HH時mm分ss秒');
   return res;
@@ -37,3 +38,9 @@ export function conversionStringToDate(dateString: string): Date {
 
   return res;
 }
+=======
+export default function conversionDate(date: Date): string {
+  const res = dayjs(date).tz('Asia/Tokyo').format('YYYY年MM月DD日 HH時mm分ss秒');
+  return res;
+}
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194

@@ -1,17 +1,50 @@
 .book-card-box {
+<<<<<<< HEAD
   background: var(--main-color);
   padding: 10px;
   border: solid 2px #432;
   border-radius: 10px;
   color: white;
+=======
+  background-color: #fff6f0;
+  padding: 10px;
+  border: solid 1px #666;
+  border-radius: 10px;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 }
 
 .book-card-box h3 {
   text-align: center;
   font-size: 2rem;
+<<<<<<< HEAD
   border-bottom: solid 2px var(--font-color);
 }
 
 .book-card-box .tree-input-info {
   color: white;
+=======
+  border-bottom: 1px #666 solid;
+}
+
+.increase-count, .decrease-count {
+  font-size: 2rem;
+  color: var(--main-font-color);
+  text-decoration: none;
+  border-radius: 5px;
+  padding: 4px 30px;
+  transition: transform .5s;
+}
+
+.increase-count:hover, .decrease-count:hover {
+  transform: scale(0.97);
+  color: var(--main-font-color);
+}
+
+.increase-count {
+  border: solid 1px #e03535;
+}
+
+.decrease-count {
+  border: solid 1px #5959fc;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 }

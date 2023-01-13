@@ -20,8 +20,12 @@
 }
 
 .choice-thumbnail-label {
+<<<<<<< HEAD
   position: relative;
   transition: all .5s;
+=======
+  transition: .5s;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 }
 
 .thumbnail-card-item-box {
@@ -54,7 +58,10 @@
 
 .thumbnail-button:checked + .choice-thumbnail-label{
   transform: scale(.9);
+<<<<<<< HEAD
   opacity: .5;
+=======
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 }
 
 .append-thumbnail-box {

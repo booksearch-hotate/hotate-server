@@ -8,7 +8,11 @@
     <% if (pageData.anyData.requests.length === 0) { %>
       <%- include('../../../components/no-item', {title: "リクエスト情報はありません", mes:""}) %>
     <% } else { %>
+<<<<<<< HEAD
     <table class="tree-table table table-striped text-center">
+=======
+    <table class="table table-striped">
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
       <thead>
         <tr>
           <th>書名</th>
@@ -25,13 +29,21 @@
             <td><%= request.CreatedAt %></td>
             <td><%= request.StudentInfo %> <%= request.userName %></td>
             <td>
+<<<<<<< HEAD
               <a href="/admin/book-request/detail?id=<%= request.Id %>" class="tree-button tree-button-mini mx-auto">詳細</a>
+=======
+              <a href="/admin/book-request/detail?id=<%= request.Id %>" class="btn btn-success">詳細</a>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
             </td>
             <td>
               <form action="/admin/book-request/delete" method="post">
                 <input type="hidden" name="deleteId" value="<%= request.Id %>">
                 <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+<<<<<<< HEAD
                 <button type="submit" class="tree-button tree-button-mini mx-auto tree-button-danger">削除</button>
+=======
+                <button type="submit" class="btn btn-danger">削除</button>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
               </form>
             </td>
           </tr>
@@ -39,9 +51,15 @@
       </tbody>
     </table>
     <% } %>
+<<<<<<< HEAD
     
     <a href="/admin/" class="tree-button mx-auto my-4">戻る</a>
 
+=======
+    <div class="text-center">
+      <a href="/admin/">戻る</a>
+    </div>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
     <%- include('./../../../components/state-alert', {pageData}) %>
     <%- include('./../../../components/input-js') %>
   </body>

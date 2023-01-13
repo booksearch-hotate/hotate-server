@@ -7,7 +7,11 @@ import colors from 'colors/safe';
 import path from 'path';
 import fs from 'fs';
 import glob from 'glob';
+<<<<<<< HEAD
 import appRoot from 'app-root-path';
+=======
+import * as appRoot from 'app-root-path';
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 
 /* routers */
 import homeRouter from '../routers/home';
@@ -25,7 +29,10 @@ import settingRouter from '../routers/admin/setting';
 import departmentRouter from '../routers/admin/department';
 import bookRequestRouter from '../routers/admin/bookRequest';
 import recommendationRouter from '../routers/admin/recommendation';
+<<<<<<< HEAD
 import aboutRouter from '../routers/about';
+=======
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 
 import Logger from '../infrastructure/logger/logger';
 
@@ -36,7 +43,10 @@ import ElasticSearch from '../infrastructure/elasticsearch/elasticsearch';
 import esDocuments from '../infrastructure/elasticsearch/documents/documentType';
 import axios from 'axios';
 import SetPageData from '../utils/setPageData';
+<<<<<<< HEAD
 import campaignRouter from '../routers/campaign';
+=======
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 
 const COOKIE_MAX_AGE = 60 * 60 * 1000; // 1時間
 
@@ -134,8 +144,11 @@ app.use('/', bookItemRouter);
 app.use('/', loginRouter);
 app.use('/', searchRouter);
 app.use('/', requestRouter);
+<<<<<<< HEAD
 app.use('/campaign', campaignRouter);
 app.use('/about', aboutRouter);
+=======
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 app.use('/admin', adminRouter);
 app.use('/admin/book', bookRouter);
 app.use('/admin/search-history', searchHistoryRouter);

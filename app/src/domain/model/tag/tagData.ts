@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import {conversionDateToString} from '../../../utils/conversionDate';
+=======
+import conversionDate from '../../../utils/conversionDate';
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 import Tag from './tag';
 
 export default class TagData {
@@ -10,7 +14,11 @@ export default class TagData {
   public constructor(tagModel: Tag) {
     this.id = tagModel.Id;
     this.name = tagModel.Name;
+<<<<<<< HEAD
     this.createdAt = tagModel.CreatedAt !== null ? conversionDateToString(tagModel.CreatedAt) : null;
+=======
+    this.createdAt = tagModel.CreatedAt !== null ? conversionDate(tagModel.CreatedAt) : null;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
     this.bookIds = tagModel.BookIds;
   }
 

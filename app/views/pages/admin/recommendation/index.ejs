@@ -7,19 +7,35 @@
   <body>
     <%- include('./../../../components/header-title', {mes: 'おすすめセクション一覧'}) %>
 
+<<<<<<< HEAD
     <a href="/admin/recommendation/add" class="tree-button mx-auto my-3">
       セクションを追加する
     </a>
+=======
+    <div class="text-center">
+      <a href="/admin/recommendation/add" class="btn btn-primary">セクションを追加する</a>
+    </div>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 
     <% if (pageData.anyData.recommendations.length === 0) { %>
       <%- include('../../../components/no-item', {title: "セクションがありません", mes:"お知らせやおすすめの本を皆さんに紹介しましょう！"}) %>
     <% } else { %>
+<<<<<<< HEAD
       <%- include('./../../../components/recommendation-list', {paginationData: pageData.anyData.recommendations, editMode: true}) %>
+=======
+      <%- include('./../../../components/recommendation-list', {editMode: true}) %>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
     <% } %>
 
     <%- include('./../../../components/pagination', {paginationData: pageData.anyData.paginationData, url: '/admin/recommendation/?'}) %>
 
+<<<<<<< HEAD
     <a href="/admin/" class="tree-button mx-auto my-4">戻る</a>
+=======
+    <div class="text-center">
+      <a href="/admin/">戻る</a>
+    </div>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 
     <%- include('./../../../components/input-js') %>
   </body>

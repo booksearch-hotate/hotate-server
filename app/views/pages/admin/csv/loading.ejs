@@ -2,6 +2,7 @@
 <html>
   <head>
     <%- include('./../../../components/head') %>
+<<<<<<< HEAD
     <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/csv/loading.css" />
   </head>
   <body>
@@ -29,5 +30,22 @@
     </div>
 
     <script src="<%= pageData.origin %>/js/admin/csv/csvDownload.js"></script>
+=======
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/loading.css" />
+  </head>
+  <body>
+    <header class="text-center my-3">
+      <h2 id="header-text">CSVの読み込み中...</h2>
+    </header>
+    <div class="progress my-3" style="height: 18px;">
+      <div class="progress-bar" role="progressbar" style="width: 0%;" id="progress-bar" aria-valuemin="0" aria-valuemax="100">
+        <p id="progress-value" class="m-0">0</p>
+      </div>
+    </div>
+    <div class="complete-box text-center" id="link-box">
+      <a href="/admin/">管理者ホーム画面へ</a>
+    </div>
+    <script src="<%= pageData.origin %>/js/csvDownload.js"></script>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   </body>
 </html>

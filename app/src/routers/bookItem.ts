@@ -25,6 +25,10 @@ import EsPublisher from '../infrastructure/elasticsearch/esPublisher';
 import PublisherRepository from '../interface/repository/publisherRepository';
 import RecommendationRepository from '../interface/repository/recommendationRepository';
 import RecommendationService from '../domain/service/recommendationService';
+<<<<<<< HEAD
+=======
+import {IRecommendationObj} from '../domain/model/recommendation/IRecommendationObj';
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 
 // eslint-disable-next-line new-cap
 const bookItemRouter = Router();
@@ -70,7 +74,27 @@ bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Re
         9,
     ).then((res) => res.books);
 
+<<<<<<< HEAD
     const recommendation = await recommendationApplicationService.findByBookId(bookData.Id);
+=======
+    const recommendationSection = await recommendationApplicationService.findOneByBookId(bookData.Id);
+
+    let recommendation: IRecommendationObj | null = null;
+
+    if (recommendationSection !== null) {
+      const items = await Promise.all(recommendationSection.RecommendationItems.map(async (item) => {
+        return {
+          book: await bookApplicationService.searchBookById(item.BookId),
+          comment: item.Comment,
+        };
+      }));
+
+      recommendation = {
+        recommendation: recommendationSection,
+        items,
+      };
+    }
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 
     res.pageData.headTitle = `${bookData.BookName} `;
     res.pageData.anyData = {bookData, isError: false, isLogin, nearCategoryBookDatas, recommendation};

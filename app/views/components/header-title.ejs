@@ -3,9 +3,18 @@
 
 @params {mes: string, logo: string}
 %>
+<<<<<<< HEAD
 <div class="line-title">
   <%= mes %>
   <% if (typeof logo !== 'undefined' && logo.length !== 0) { %>
     <i class="bi bi-<%= logo %>"></i>
+=======
+<div class="header-title my-3">
+  <h2><%= mes %></h2>
+  <% if (typeof logo !== 'undefined' && logo.length !== 0) { %>
+    <div class="header-title-log-box">
+      <%- include('./../icons/' + logo) %>
+    </div>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   <% } %>
 </div>

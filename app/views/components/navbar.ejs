@@ -1,6 +1,7 @@
 <%#
 ナビゲーションバー
 %>
+<<<<<<< HEAD
 <header class="tree-header" id="tree-header">
   <nav class="page-header">
     <ul class="main-nav">
@@ -19,6 +20,28 @@
         <i class="bi bi-search"></i>
       </a>
     </div>
+=======
+<header class="tree-header">
+  <nav class="page-header">
+    <nav class="page-header">
+      <ul class="main-nav">
+        <li>
+          <a href="/">
+            <img class="tree-header-logo" src="/img/tree-logo-alpha.png">
+          </a>
+        </li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/campaign">Campaign</a></li>
+        <li><a href="/request">Request</a></li>
+      </ul>
+      <div class="header-search-box">
+        <a onclick="viewSearchBox()">
+          <i class="bi bi-search"></i>
+        </a>
+      </div>
+    </nav>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   </nav>
 </header>
 
@@ -44,7 +67,11 @@
       </label>
     </div>
     <div class="search-content-box" id="searchContentBox">
+<<<<<<< HEAD
       <form method="get" action="/search" class="search-content-form" id="searchForm">
+=======
+      <form method="get" action="/search" class="search-content-form">
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
         <input type="radio" name="mode" value="none" id="normalSearch" hidden checked>
         <input type="radio" name="mode" value="strict" id="strictSearch" hidden>
         <input type="radio" name="mode" value="tag" id="tagSearch" hidden>
@@ -53,6 +80,7 @@
         </div>
 
         <div class="search-form-box">
+<<<<<<< HEAD
           <input type="text" class="search-input" placeholder="検索キーワードを入力" id="search-input" name="search">
           <button type="submit" class="search-submit-button">
             <i class="bi bi-search"></i>
@@ -118,6 +146,45 @@
           </div>
         </div>
         <div class="category-button-list-box">
+=======
+            <input type="text" class="search-input" placeholder="検索キーワードを入力" id="search-input" name="search">
+            <button type="submit" class="search-submit-button">
+              <i class="bi bi-search"></i>
+            </button>
+        </div>
+
+        <!-- TODO: タグ検索時には著者・出版社のボタンを削除し、強制的に本にcheckを入れる処理をかく -->
+        <div class="category-button-list-box">
+          <div class="category-button-box">
+            <input id="bookButton" type="radio" name="type" value="book" class="category-button-input" hidden checked>
+            <label for="bookButton">
+              <div class="category-button">
+                <p>本を検索</p>
+                <i class="bi bi-book"></i>
+              </div>
+            </label>
+          </div>
+
+          <div class="category-button-box">
+            <input id="authorButton" type="radio" name="type" value="author" class="category-button-input" hidden>
+            <label for="authorButton">
+              <div class="category-button">
+                <p>著者を検索</p>
+                <i class="bi bi-person"></i>
+              </div>
+            </label>
+          </div>
+
+          <div class="category-button-box">
+            <input id="publisherButton" type="radio" name="type" value="publisher" class="category-button-input" hidden>
+            <label for="publisherButton">
+              <div class="category-button">
+                <p>出版社を検索</p>
+                <i class="bi bi-building"></i>
+              </div>
+            </label>
+          </div>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
         </div>
       </form>
     </div>

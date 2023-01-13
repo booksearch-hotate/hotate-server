@@ -8,11 +8,19 @@ const itemComponentLink = './../components/confirm-request-item';
   </head>
   <body>
     <header class="text-center">
+<<<<<<< HEAD
       <%- include('./../components/header-title', {mes: 'リクエスト内容の確認'}) %>
       <p>リクエスト内容が正しければ「送信」を、誤りがあれば「戻る」を押してください。</p>
     </header>
 
     <main class="px-3">
+=======
+      <h1>リクエスト内容の確認</h1>
+      <p>リクエスト内容が正しければ「送信」を、誤りがあれば「戻る」を押してください。</p>
+    </header>
+
+    <main>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
       <form method="POST" action="/register" class="px-4">
         <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
       
@@ -21,6 +29,7 @@ const itemComponentLink = './../components/confirm-request-item';
         <%- include(itemComponentLink, {title: '出版社名', content: pageData.anyData.request.PublisherName}) %>
         <%- include(itemComponentLink, {title: 'ISBN', content: pageData.anyData.request.Isbn}) %>
         <%- include(itemComponentLink, {title: '内容', content: pageData.anyData.request.Message}) %>
+<<<<<<< HEAD
         <%- include(itemComponentLink, {title: '氏名', content: `${pageData.anyData.request.StudentInfo} ${pageData.anyData.request.UserName}`}) %>
 
         <div class="d-flex justify-content-evenly">
@@ -32,6 +41,12 @@ const itemComponentLink = './../components/confirm-request-item';
             <i class="bi bi-send me-2"></i>
             送信
           </button>
+=======
+
+        <div class="text-center">
+          <a href="/request" class="btn btn-outline-success">戻る</a>
+          <button type="submit" class="btn btn-outline-primary">送信</button>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
         </div>
       </form>
     </main>

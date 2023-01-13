@@ -1,9 +1,15 @@
 <%#
 アイテムがない場合に表示するUI
 %>
+<<<<<<< HEAD
 <div class="text-center no-item-box">
   <% if (typeof icon !== 'undefined') { %>
     <i class="bi bi-<%= icon %>"></i>
+=======
+<div class="text-center">
+  <% if (typeof icon !== 'undefined') { %>
+    <div style="height: 6rem;"><%- include(`./../icons/${icon}`) %></div>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   <% } %>
   <h3 class="text-danger mt-2"><%= title %></h3>
   <p><%= mes %></p>

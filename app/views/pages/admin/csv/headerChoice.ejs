@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="<%= pageData.origin %>/css/admin/csv/header-choice.css" />
   </head>
   <body>
+<<<<<<< HEAD
     <header>
       <%- include('./../../../components/header-title', {mes: 'CSVファイルから本を登録', logo: 'filetype-csv'}) %>
     </header>
@@ -72,6 +73,61 @@
         登録する
         <i class="bi bi-check-lg"></i>
       </button>
+=======
+    <h1>ヘッダーを選択</h1>
+    <p>データを追加するのに必要なヘッダーを選択してください</p>
+    <form action="/admin/csv/formHader" method="post">
+      <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+      <section>
+        <p>ISBN</p>
+        <select class="form-select" name="isbn">
+          <%- include('./../../../components/admin/csv/header-list.ejs', { required: false }) %>
+        </select>
+      </section>
+      <section>
+        <p>本の名称※</p>
+        <select class="form-select" name="bookName">
+          <%- include('./../../../components/admin/csv/header-list.ejs', { required: true }) %>
+        </select>
+      </section>
+      <section>
+        <p>副題</p>
+        <select class="form-select" name="bookSubName">
+          <%- include('./../../../components/admin/csv/header-list.ejs', { required: false }) %>
+        </select>
+      </section>
+      <section>
+        <p>著者名※</p>
+        <select class="form-select" name="authorName">
+          <%- include('./../../../components/admin/csv/header-list.ejs', { required: true }) %>
+        </select>
+      </section>
+      <section>
+        <p>日本十進分類法</p>
+        <select class="form-select" name="ndc">
+          <%- include('./../../../components/admin/csv/header-list.ejs', { required: false }) %>
+        </select>
+      </section>
+      <section>
+        <p>出版社名※</p>
+        <select class="form-select" name="publisherName">
+          <%- include('./../../../components/admin/csv/header-list.ejs', { required: true }) %>
+        </select>
+      </section>
+      <section>
+        <p>出版年</p>
+        <select class="form-select" name="year">
+          <%- include('./../../../components/admin/csv/header-list.ejs',{ required: false }) %>
+        </select>
+      </section>
+      <section>
+        <p>内容</p>
+        <select class="form-select" name="bookContent">
+          <%- include('./../../../components/admin/csv/header-list.ejs',{ required: false }) %>
+        </select>
+      </section>
+      <button type="submit" class="btn btn-primary" onclick="sendForm()">送信</button>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
     </form>
     <%- include('./../../../components/input-js') %>
   </body>

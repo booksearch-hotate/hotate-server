@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import {conversionDateToString} from '../../../utils/conversionDate';
+=======
+import conversionDate from '../../../utils/conversionDate';
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 import SearchHistory from './searchHistory';
 
 export default class SearchHistoryData {
@@ -9,7 +13,11 @@ export default class SearchHistoryData {
   public constructor(tar: SearchHistory) {
     this.words = tar.Words;
     this.id = tar.Id;
+<<<<<<< HEAD
     this.createdAt = conversionDateToString(tar.CreatedAt);
+=======
+    this.createdAt = conversionDate(tar.CreatedAt);
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
   }
 
   get Words(): string {

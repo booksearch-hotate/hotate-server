@@ -4,6 +4,7 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
+<<<<<<< HEAD
     <header>
       <%- include('./../../../components/header-title', {mes: '学科名の変更'}) %>
     </header>
@@ -27,6 +28,21 @@
       </div>
     </form>
      
+=======
+    <h3>学科名の変更</h3>
+    <form action="/admin/school-info/update" method="post">
+      <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+      <input type="hidden" name="id" value="<%= pageData.anyData.department.Id %>">
+      <div class="form-group">
+        <label for="name" class="form-label">学科名の名称</label>
+        <input class="form-control" type="text" id="name" name="name" value="<%= pageData.anyData.department.Name %>">
+      </div>
+      <button class="btn btn-primary">確定</button>
+    </form>
+    <div class="text-center">
+      <a href="/admin/school-info/">戻る</a>
+    </div>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
     <%- include('./../../../components/state-alert', {pageData}) %>
     <%- include('./../../../components/input-js') %>
   </body>

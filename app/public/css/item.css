@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 :root {
   --tag-color: var(--bg-color);
 }
@@ -120,4 +121,117 @@ aside {
 .bi-binoculars-fill {
   font-size: 25px;
   margin-right: 7px;
+=======
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+}
+.height {
+  background-color: #FBF6F0;
+  height: 100%;
+}
+main {
+  background-color: #ffffff;
+  margin-top: 40px;
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-bottom: 40px;
+}
+.item-title {
+  font-size: 2.3rem;
+  padding-top: 10px;
+  padding-left: 30px;
+}
+.item-syousai img {
+width: 300px;
+padding-left: 25px;
+margin-bottom: 40px;
+}
+.item-syousai {
+display: flex;
+}
+.item-text {
+padding-left: 30px;
+padding-right: 20px;
+}
+.item-writer {
+font-size: 23px;
+}
+.arasuzi {
+font-size: 18px;
+padding-top: 10px;
+margin-bottom: 5px;
+}
+.arasuzi-p {
+font-size: 15px;
+max-width: 90%;
+}
+.tagu {
+display: flex;
+margin-left: 10px;
+padding-top: 10px;
+padding-left: 5px;
+padding-bottom: 10px;
+}
+.tagu-flex {
+display: flex;
+position: relative;
+margin-top: 30px;
+margin-left: 20px;
+width: 50%;
+background: #b4d8e4;
+border-radius: .4em;
+}
+.tagu-flex:after {
+content: '';
+position: absolute;
+left: 0;
+top: 50%;
+width: 0;
+height: 0;
+border: 8px solid transparent;
+border-right-color: #b4d8e4;
+border-left: 0;
+margin-top: -9px;
+margin-left: -7px;
+}  
+aside {
+background-color: #ffffff;
+margin-left: 40px;
+  margin-right: 40px;
+  margin-bottom: 40px;
+}
+.osusume-title {
+font-size: 1.5rem;
+padding-top: 20px;
+margin-left: 40px;
+margin-bottom: 15px;
+}
+.osusume-flex {
+display: flex;
+justify-content: space-between;
+
+}
+.osusume-book {
+display: flex;
+padding-left: 30px;
+}
+.osusume-book img {
+width: 120px;
+margin-bottom: 20px;
+}
+.osusume-book-title {
+font-size: 20px;
+}
+.osusume-text {
+padding-left: 20px;
+padding-right: 40px;
+padding-top: 15px;
+}
+.bi-binoculars-fill {
+font-size: 25px;
+margin-right: 7px;
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
 }

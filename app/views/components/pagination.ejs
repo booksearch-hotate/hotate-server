@@ -1,16 +1,26 @@
 <%#
 ページネーション
 %>
+<<<<<<< HEAD
 <nav class="tree-pagination">
   <ul class="tree-pagination-list">
     <% if (paginationData.pageCount >= 1) { %>
       <li class="tree-pagination-item">
         <a class="tree-pagination-link" href="<%= url %>page=<%= paginationData.pageCount %>">
           <i class="bi bi-chevron-left"></i>
+=======
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <% if (paginationData.pageCount >= 1) { %>
+      <li class="page-item">
+        <a class="page-link" href="<%= url %>page=<%= paginationData.pageCount %>" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
         </a>
       </li>
     <% } %>
     <% for (let i = paginationData.pageRange.min; i <= paginationData.pageRange.max; i++) { %>
+<<<<<<< HEAD
       <li class="tree-pagination-item <% if (i - 1 === paginationData.pageCount){ %>tree-pagination-item-active<% } %>">
         <a class="tree-pagination-link" href="<%= url %>page=<%= i %>"><%= i %></a>
       </li>
@@ -19,6 +29,16 @@
       <li class="tree-pagination-item">
         <a class="tree-pagination-link" href="<%= url %>page=<%= paginationData.pageCount + 2 %>">
           <i class="bi bi-chevron-right"></i>
+=======
+      <li class="page-item <% if (i - 1 === paginationData.pageCount){ %>active<% } %>">
+        <a class="page-link" href="<%= url %>page=<%= i %>"><%= i %></a>
+      </li>
+    <% } %>
+    <% if (paginationData.pageCount < paginationData.totalPage - 1) { %>
+      <li class="page-item">
+        <a class="page-link" href="<%= url %>page=<%= paginationData.pageCount + 2 %>" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
         </a>
       </li>
     <% } %>

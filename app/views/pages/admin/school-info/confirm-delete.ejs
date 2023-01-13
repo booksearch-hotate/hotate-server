@@ -4,6 +4,7 @@
     <%- include('./../../../components/head') %>
   </head>
   <body>
+<<<<<<< HEAD
     <%- include('./../../../components/header-title', {mes: `${pageData.anyData.department.Name}の削除`}) %>
 
     <div class="tree-attention">
@@ -15,16 +16,33 @@
       <ul class="tree-attention-list">
         <li><%= pageData.anyData.department.Name %>に所属するユーザのリクエストも一緒に削除されます。</li>
       </ul>
+=======
+    <h3>学科の削除</h3>
+    <div class="text-center">
+      <h4>学科を削除してもよろしいですか？</h4>
+      <h5 class="text-danger">リクエストされている情報も一緒に削除されます。</h5>
+    </div>
+
+    <div class="department-box text-center">
+      <h3>学科名 : <%= pageData.anyData.department.Name %></h3>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
     </div>
 
     <div class="book-request-box">
       <% if (pageData.anyData.bookRequests.length === 0) { %>
         <h4 class="text-center">リクエストはありません。</h4>
       <% } else { %>
+<<<<<<< HEAD
       <table class="tree-table table table-striped text-center">
         <thead>
           <tr>
             <th>リクエスト中の本</th>
+=======
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>リクエストした本</th>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
             <th>リクエスト日時</th>
           </tr>
         </thead>
@@ -40,6 +58,7 @@
       <% } %>
     </div>
 
+<<<<<<< HEAD
     <div class="container my-4">
       <div class="row align-items-center text-center">
         <div class="col">
@@ -51,6 +70,21 @@
             <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
             <button type="submit" class="tree-button tree-button-danger mx-auto">削除</button>
           </form>
+=======
+    <div class="confirm-box">
+      <div class="container">
+        <div class="row align-items-center text-center">
+          <div class="col">
+            <a href="/admin/school-info/" class="btn btn-primary">戻る</a>
+          </div>
+          <div class="col">
+            <form method="post" action="/admin/school-info/delete">
+              <input type="hidden" name="deleteId" value="<%= pageData.anyData.department.Id %>">
+              <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+              <button type="submit" class="btn btn-danger">削除</button>
+            </form>
+          </div>
+>>>>>>> 5a829ed21201bfdcebade0462cd2d5c5fd998194
         </div>
       </div>
     </div>
