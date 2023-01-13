@@ -94,7 +94,7 @@ export default class BookApplicationService {
         throw new ApplicationServiceError(book.Id);
       }
 
-      throw new ApplicationServiceError('');
+      throw e;
     }
 
     return book.Id;
