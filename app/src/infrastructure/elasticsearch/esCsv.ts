@@ -74,7 +74,7 @@ export default class EsCsv extends ElasticSearch {
   /**
    * bulk apiのファイルを削除します。
    */
-  private removeBulkApiFile() {
+  public removeBulkApiFile() {
     fs.unlinkSync(this.bulkApiPath);
   }
 }
