@@ -5,9 +5,20 @@ import Author from '../author/author';
 import Publisher from '../publisher/publisher';
 
 export interface IBookRepository {
+  /**
+   * 本をmysqlへ登録。またelasticsearchへ送信するbulk apiに本を追加する
+   *
+   * @param book 登録する本
+   * @throws {MySQLDBError, ElasticsearchError}
+   */
   save (book: Book): Promise<void>
   deleteAll (): Promise<void>
   search (query: string, pageCount: number, margin: PaginationMargin): Promise<{books: Book[], count: number}>
+  /**
+   * bulk apiを実行
+   *
+   * @throws {EsBulkApiError}
+   */
   executeBulkApi (): Promise<void>
   searchById (id: BookId): Promise<Book>
   searchUsingLike (words: string, pageCount: number, margin: PaginationMargin): Promise<{books: Book[], count: number}>
