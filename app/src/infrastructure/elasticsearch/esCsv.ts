@@ -67,7 +67,8 @@ export default class EsCsv extends ElasticSearch {
       this.removeBulkApiFile();
     } catch (e: any) {
       if (e instanceof Error) logger.error(e.message);
-      else throw e;
+
+      throw new EsBulkApiError('Failed to execute bulk api. Please check the log for details.');
     }
   }
 
