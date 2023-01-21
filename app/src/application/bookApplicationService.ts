@@ -226,16 +226,24 @@ export default class BookApplicationService {
 
     const publisher = new Publisher(publisherId, publisherName);
 
-    book.changeName(bookName);
-    book.changeSubName(subName);
-    book.changeContent(content);
-    book.changeIsbn(isbn);
-    book.changeNdc(ndc);
-    book.changeYear(year);
-    book.changeAuthor(author);
-    book.changePublisher(publisher);
+    const bookAfterChange = book;
 
-    await this.bookRepository.update(book);
+    bookAfterChange.changeName(bookName);
+    bookAfterChange.changeSubName(subName);
+    bookAfterChange.changeContent(content);
+    bookAfterChange.changeIsbn(isbn);
+    bookAfterChange.changeNdc(ndc);
+    bookAfterChange.changeYear(year);
+    bookAfterChange.changeAuthor(author);
+    bookAfterChange.changePublisher(publisher);
+
+    try {
+      await this.bookRepository.update(bookAfterChange);
+    } catch (e) {
+      await this.bookRepository.update(book);
+      if (e instanceof Error) logger.error(e.message);
+      throw new ApplicationServiceError('Erager occurred when updating the book. Please check the log for details.');
+    }
   }
 
   /**
