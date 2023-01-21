@@ -281,6 +281,10 @@ export default class BookApplicationService {
     await this.bookRepository.deleteBook(book);
   }
 
+  /**
+   * 本の書名が重複しているかどうかを確認します
+   * @returns 重複した本のidを配列で戻す
+   */
   public async checkDuplicationBooks(): Promise<string[]> {
     const bookNames = await this.bookRepository.getDuplicationBooks();
 
