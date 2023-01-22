@@ -242,7 +242,7 @@ export default class BookApplicationService {
     } catch (e) {
       await this.bookRepository.update(book);
       if (e instanceof Error) logger.error(e.message);
-      throw new ApplicationServiceError('Erager occurred when updating the book. Please check the log for details.');
+      throw new ApplicationServiceError('Error occurred when updating the book. Please check the log for details.');
     }
   }
 
