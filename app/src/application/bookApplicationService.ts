@@ -16,6 +16,12 @@ import PaginationMargin from '../domain/model/pagination/paginationMargin';
 import {IAuthorRepository} from '../domain/model/author/IAuthorRepository';
 import searchCategory from '../routers/datas/searchCategoryType';
 import {IPublisherRepository} from '../domain/model/publisher/IPublisherRepository';
+import {ElasticsearchError} from '../presentation/error/infrastructure/elasticsearchError';
+import {MySQLDBError} from '../presentation/error/infrastructure/mySQLDBError';
+import Logger from '../infrastructure/logger/logger';
+import {ApplicationServiceError} from '../presentation/error';
+
+const logger = new Logger('bookApplicationService');
 
 export default class BookApplicationService {
   private readonly bookRepository: IBookRepository;
@@ -61,7 +67,7 @@ export default class BookApplicationService {
       publisherId: string,
       publisherName: string,
       isBulk: boolean = true,
-  ): Promise<void> {
+  ): Promise<string> {
     const author = new Author(authorId, authorName);
     const publisher = new Publisher(publisherId, publisherName);
     const book = new Book(
@@ -76,9 +82,22 @@ export default class BookApplicationService {
         publisher,
         [],
     );
-    await this.bookRepository.save(book);
 
-    if (isBulk === false) await this.bookRepository.executeBulkApi();
+    try {
+      await this.bookRepository.save(book);
+
+      if (isBulk === false) await this.bookRepository.executeBulkApi();
+    } catch (e) {
+      if (e instanceof ElasticsearchError || e instanceof MySQLDBError) {
+        logger.error(e.message);
+
+        throw new ApplicationServiceError(book.Id);
+      }
+
+      throw e;
+    }
+
+    return book.Id;
   }
 
   /**
@@ -207,16 +226,24 @@ export default class BookApplicationService {
 
     const publisher = new Publisher(publisherId, publisherName);
 
-    book.changeName(bookName);
-    book.changeSubName(subName);
-    book.changeContent(content);
-    book.changeIsbn(isbn);
-    book.changeNdc(ndc);
-    book.changeYear(year);
-    book.changeAuthor(author);
-    book.changePublisher(publisher);
+    const bookAfterChange = book;
 
-    await this.bookRepository.update(book);
+    bookAfterChange.changeName(bookName);
+    bookAfterChange.changeSubName(subName);
+    bookAfterChange.changeContent(content);
+    bookAfterChange.changeIsbn(isbn);
+    bookAfterChange.changeNdc(ndc);
+    bookAfterChange.changeYear(year);
+    bookAfterChange.changeAuthor(author);
+    bookAfterChange.changePublisher(publisher);
+
+    try {
+      await this.bookRepository.update(bookAfterChange);
+    } catch (e) {
+      await this.bookRepository.update(book);
+      if (e instanceof Error) logger.error(e.message);
+      throw new ApplicationServiceError('Error occurred when updating the book. Please check the log for details.');
+    }
   }
 
   /**
@@ -251,9 +278,20 @@ export default class BookApplicationService {
 
     if (book === null) return;
 
-    await this.bookRepository.deleteBook(book);
+    /* ロールバック処理はbookRepository.deleteBook()内で処理 */
+    try {
+      await this.bookRepository.deleteBook(book);
+    } catch (e) {
+      if (e instanceof Error) logger.error(e.message);
+
+      throw new ApplicationServiceError('An error occurred while deleting the book, please see the log for more information.');
+    }
   }
 
+  /**
+   * 本の書名が重複しているかどうかを確認します
+   * @returns 重複した本のidを配列で戻す
+   */
   public async checkDuplicationBooks(): Promise<string[]> {
     const bookNames = await this.bookRepository.getDuplicationBooks();
 

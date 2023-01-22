@@ -3,7 +3,7 @@ import {IPublisherRepository} from '../../domain/model/publisher/IPublisherRepos
 import Publisher from '../../domain/model/publisher/publisher';
 import {bookCollectionName, bookDocument} from '../../infrastructure/inMemory/collections/book';
 import {publisherCollectionName, publisherDocument} from '../../infrastructure/inMemory/collections/publisher';
-import {InMemoryDBError} from '../../presentation/error/infrastructure';
+import {InMemoryDBError} from '../../presentation/error/infrastructure/inMemoryDBError';
 
 export default class InMemoryPublisherRepository implements IPublisherRepository {
   db: Db;

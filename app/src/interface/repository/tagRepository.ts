@@ -7,7 +7,7 @@ import {ITagRepository} from '../../domain/model/tag/ITagRepository';
 import Tag from '../../domain/model/tag/tag';
 import sequelize from 'sequelize';
 import BookId from '../../domain/model/book/bookId';
-import {MySQLDBError} from '../../presentation/error/infrastructure';
+import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
 
 /* Sequelizeを想定 */
 interface sequelize {

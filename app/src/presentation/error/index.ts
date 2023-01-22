@@ -17,6 +17,15 @@ export class FormInvalidError extends Error {};
 export class DomainInvalidError extends Error {};
 
 /**
+ * アプリケーションのサービスに異常が発生した時にthrowされるべきエラークラス
+ *
+ * @export
+ * @class ApplicationServiceError
+ * @extends {Error}
+ */
+export class ApplicationServiceError extends Error {};
+
+/**
  * インフラに関するエラーの際にthrowされるべきエラークラス
  *
  * @export

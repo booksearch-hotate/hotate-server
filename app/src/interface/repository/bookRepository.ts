@@ -16,7 +16,8 @@ import BookId from '../../domain/model/book/bookId';
 import PaginationMargin from '../../domain/model/pagination/paginationMargin';
 
 import sequelize from 'sequelize';
-import {MySQLDBError} from '../../presentation/error/infrastructure';
+import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
+import {ElasticsearchError, EsBulkApiError} from '../../presentation/error/infrastructure/elasticsearchError';
 
 /* Sequelizeを想定 */
 interface sequelize {
@@ -37,24 +38,32 @@ export default class BookRepository implements IBookRepository {
   }
 
   public async save(book: Book): Promise<void> {
-    await this.db.Book.create({
-      id: book.Id,
-      book_name: book.Name,
-      book_sub_name: book.SubName,
-      book_content: book.Content,
-      isbn: book.Isbn,
-      ndc: book.Ndc,
-      year: book.Year,
-      author_id: book.Author.Id,
-      publisher_id: book.Publisher.Id,
-    });
+    try {
+      await this.db.Book.create({
+        id: book.Id,
+        book_name: book.Name,
+        book_sub_name: book.SubName,
+        book_content: book.Content,
+        isbn: book.Isbn,
+        ndc: book.Ndc,
+        year: book.Year,
+        author_id: book.Author.Id,
+        publisher_id: book.Publisher.Id,
+      });
+    } catch (e) {
+      throw new MySQLDBError(`Failed to add book to mysql. id:${book.Id}`);
+    }
 
-    const doc: IEsBook = {
-      db_id: book.Id,
-      book_name: book.Name,
-      book_content: book.Content,
-    };
-    this.esSearchBook.insertBulk(doc);
+    try {
+      const doc: IEsBook = {
+        db_id: book.Id,
+        book_name: book.Name,
+        book_content: book.Content,
+      };
+      this.esSearchBook.insertBulk(doc);
+    } catch (e) {
+      throw new ElasticsearchError(`Registration to bulk api failed during generation of bulk api to add to elasticsearch. id:${book.Id}`);
+    }
   }
 
   public async deleteAll(): Promise<void> {
@@ -244,7 +253,17 @@ export default class BookRepository implements IBookRepository {
   }
 
   public async executeBulkApi(): Promise<void> {
-    await this.esSearchBook.executeBulkApi();
+    try {
+      await this.esSearchBook.executeBulkApi();
+
+      this.esSearchBook.removeBulkApiFile();
+    } catch (e) {
+      if (e instanceof EsBulkApiError) {
+        this.esSearchBook.removeBulkApiFile();
+      }
+
+      throw e;
+    }
   }
 
   private async getTagsByBookId(bookId: string): Promise<Tag[]> {
@@ -375,11 +394,28 @@ export default class BookRepository implements IBookRepository {
   }
 
   public async deleteBook(book: Book): Promise<void> {
-    const list = [
-      this.db.Book.destroy({where: {id: book.Id}}),
-      this.esSearchBook.delete(book.Id),
-    ];
-    await Promise.all(list);
+    try {
+      await this.db.Book.destroy({where: {id: book.Id}});
+    } catch (e) {
+      throw new MySQLDBError('An error occurred while deleting the book');
+    }
+
+    try {
+      await this.esSearchBook.delete(book.Id);
+    } catch (e) {
+      await this.db.Book.create({
+        id: book.Id,
+        book_name: book.Name,
+        book_sub_name: book.SubName,
+        book_content: book.Content,
+        isbn: book.Isbn,
+        ndc: book.Ndc,
+        year: book.Year,
+        author_id: book.Author.Id,
+        publisher_id: book.Publisher.Id,
+      });
+      throw new ElasticsearchError('An error occurred while deleting the book');
+    }
   }
 
   /**

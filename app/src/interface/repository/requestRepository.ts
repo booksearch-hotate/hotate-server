@@ -4,7 +4,7 @@ import BookRequest from '../../domain/model/bookRequest/bookRequest';
 import RequestTable from '../../infrastructure/db/tables/requests';
 import DepartmentTable from '../../infrastructure/db/tables/departments';
 import Department from '../../domain/model/department/department';
-import {MySQLDBError} from '../../presentation/error/infrastructure';
+import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
 
 interface sequelize {
   Request: typeof RequestTable,

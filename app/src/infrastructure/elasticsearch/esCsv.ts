@@ -9,6 +9,7 @@ import {IEsPublisher} from './documents/IEsPublisher';
 
 import esDocuments from './documents/documentType';
 import Logger from '../logger/logger';
+import {EsBulkApiError} from '../../presentation/error/infrastructure/elasticsearchError';
 
 const logger = new Logger('ElasticsearchBulkApiByCsv');
 
@@ -51,11 +52,11 @@ export default class EsCsv extends ElasticSearch {
    */
   public async executeBulkApi(): Promise<void> {
     try {
-      const file = fs.readFileSync(this.bulkApiPath);
+      const file = fs.readFileSync(this.bulkApiPath); // bulk apiのファイルを取得
 
+      /* ファイルは存在するが中身がないの場合 */
       if (file.toString().length === 0) {
         logger.trace('Skipped execute bulk api because of file\'s content is empty.');
-        this.removeBulkApiFile();
         return;
       }
 
@@ -64,17 +65,17 @@ export default class EsCsv extends ElasticSearch {
           'Content-Type': 'application/json',
         },
       });
-      this.removeBulkApiFile();
     } catch (e: any) {
       if (e instanceof Error) logger.error(e.message);
-      else throw e;
+
+      throw new EsBulkApiError('Failed to execute bulk api. Please check the log for details.');
     }
   }
 
   /**
    * bulk apiのファイルを削除します。
    */
-  private removeBulkApiFile() {
+  public removeBulkApiFile() {
     fs.unlinkSync(this.bulkApiPath);
   }
 }

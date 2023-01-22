@@ -30,7 +30,7 @@ import TagService from '../../domain/service/tagService';
 import RecommendationApplicationService from '../../application/recommendationApplicationService';
 import RecommendationRepository from '../../interface/repository/recommendationRepository';
 import RecommendationService from '../../domain/service/recommendationService';
-import {InvalidDataTypeError, NullDataError} from '../../presentation/error';
+import {ApplicationServiceError, InvalidDataTypeError, NullDataError} from '../../presentation/error';
 
 // eslint-disable-next-line new-cap
 const bookRouter = Router();
@@ -140,7 +140,7 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
 
     await bookApplicationService.update(
         bookId,
-        req.body.title,
+        req.body.bookName,
         req.body.bookSubName,
         req.body.bookContent,
         req.body.isbn,
@@ -192,30 +192,44 @@ bookRouter.post('/add', csrfProtection, async (req: Request, res: Response) => {
 
     if (!isSameLen) throw new InvalidDataTypeError('Datas could not be successfully retrieved.');
 
-    for (let i = 0; i < req.body.isbn.length; i++) {
-      if (req.body.bookName[i] === '') throw new NullDataError('Name of book is empty.');
-      const authorName = req.body.authorName[i];
-      const publisherName = req.body.publisherName[i];
+    const createdDbIds = [];
+    try {
+      for (let i = 0; i < req.body.isbn.length; i++) {
+        if (req.body.bookName[i] === '') throw new NullDataError('Name of book is empty.');
+        const authorName = req.body.authorName[i];
+        const publisherName = req.body.publisherName[i];
 
-      const authorId = await authorApplicationService.createAuthor(authorName, false);
-      const publisherId = await publisherApplicationService.createPublisher(publisherName, false);
+        const authorId = await authorApplicationService.createAuthor(authorName, false);
+        const publisherId = await publisherApplicationService.createPublisher(publisherName, false);
 
-      await bookApplicationService.createBook(
-          req.body.bookName[i],
-          req.body.bookSubName[i],
-          req.body.content[i],
-          req.body.isbn[i],
-          req.body.ndc[i],
-          req.body.year[i],
-          authorId,
-          authorName,
-          publisherId,
-          publisherName,
-          false,
-      );
+        const dbId = await bookApplicationService.createBook(
+            req.body.bookName[i],
+            req.body.bookSubName[i],
+            req.body.content[i],
+            req.body.isbn[i],
+            req.body.ndc[i],
+            req.body.year[i],
+            authorId,
+            authorName,
+            publisherId,
+            publisherName,
+            false,
+        );
+
+        createdDbIds.push(dbId);
+      }
+
+      req.session.status = {type: 'Success', mes: `${req.body.isbn.length}冊の本を追加しました`};
+    } catch (e) {
+      if (e instanceof ApplicationServiceError) createdDbIds.push(e.message);
+      await Promise.all(createdDbIds.map(async (dbId) => {
+        await bookApplicationService.deleteBook(dbId);
+      }));
+
+      req.session.status = {type: 'Warning', mes: '本の追加中にエラーが発生したので操作を取り消しました。もう一度試してください。'};
+
+      logger.error(e as string);
     }
-
-    req.session.status = {type: 'Success', mes: `${req.body.isbn.length}冊の本を追加しました`};
   } catch (e: any) {
     logger.error(e as string);
     req.session.status = {type: 'Failure', error: e, mes: '本の追加中にエラーが発生しました'};

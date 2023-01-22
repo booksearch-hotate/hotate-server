@@ -12,7 +12,7 @@ import {bookCollectionName, bookDocument} from '../../infrastructure/inMemory/co
 import {publisherCollectionName, publisherDocument} from '../../infrastructure/inMemory/collections/publisher';
 import {tagCollectionName, tagDocument} from '../../infrastructure/inMemory/collections/tag';
 import {usingTagCollectionName, usingTagDocument} from '../../infrastructure/inMemory/collections/usingTag';
-import {InMemoryDBError} from '../../presentation/error/infrastructure';
+import {InMemoryDBError} from '../../presentation/error/infrastructure/inMemoryDBError';
 
 export default class InMemoryBookRepository implements IBookRepository {
   db: Db;
