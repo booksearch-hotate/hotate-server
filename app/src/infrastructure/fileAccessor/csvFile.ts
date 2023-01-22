@@ -4,9 +4,6 @@ import csv from 'csvtojson';
 import {DomainInvalidError, InvalidDataTypeError} from '../../presentation/error';
 import jschardet from 'jschardet';
 import iconv from 'iconv';
-import Logger from '../logger/logger';
-
-const logger = new Logger('csvFile');
 
 export default class CsvFile {
   private file!: Express.Multer.File;
@@ -82,8 +79,6 @@ export default class CsvFile {
 
     const iconvFile = new iconv.Iconv(detectResult.encoding, 'UTF-8//TRANSLIT//IGNORE');
     const convertFile = iconvFile.convert(rawFile).toString();
-
-    logger.debug(`fileName: ${this.File.filename}  character code: ${detectResult.encoding}`);
 
     fs.writeFileSync(this.File.path, convertFile); // 変換済のファイルを上書き
   }
