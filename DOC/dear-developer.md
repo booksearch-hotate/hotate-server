@@ -169,6 +169,8 @@ MYSQL_DOCKER_NAME=mysql
 
 なお、テスト用のcsvファイルに関してですが、**testData.csv**と**testData_utf8.csv**が存在しています。testData.csvは文字コードが**ANCI(Shift_JIS)**、testData_utf8.csvは文字コードが**UTF-8**になっています。Shift-JISはWindows標準の文字コード、UTF-8はMac標準の文字コードとなっています。現在HOTATEは**UTF-8のみに対応**しています。
 
+`v1.2.0`より、**UTF-8以外の文字コードのcsvファイルも読み取り可能**になりました。
+
 ## コントリビュートに関して
 
 コントリビュートに関する記載は[こちら](../CONTRIBUTING.md)をご覧ください。
