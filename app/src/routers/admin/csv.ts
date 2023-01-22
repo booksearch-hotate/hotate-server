@@ -90,6 +90,7 @@ csvRouter.post('/sendFile', csrfProtection, upload.single('csv'), async (req, re
 
   try {
     csvFile.File = file;
+    csvFile.convertUtf8();
     logger.info('csv file retrieved.');
   } catch (err) {
     logger.error('Failed to retrieve csv file.');

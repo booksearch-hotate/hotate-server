@@ -2,6 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import csv from 'csvtojson';
 import {DomainInvalidError, InvalidDataTypeError} from '../../presentation/error';
+import jschardet from 'jschardet';
+import iconv from 'iconv';
+import Logger from '../logger/logger';
+
+const logger = new Logger('csvFile');
 
 export default class CsvFile {
   private file!: Express.Multer.File;
@@ -65,6 +70,22 @@ export default class CsvFile {
 
     // eslint-disable-next-line no-magic-numbers
     return Object.keys(csvData[0]);
+  }
+
+  /**
+   * アップロードされたファイルをutf-8に変換
+   */
+  public convertUtf8(): void {
+    const rawFile = fs.readFileSync(this.file.path);
+
+    const detectResult = jschardet.detect(rawFile);
+
+    const iconvFile = new iconv.Iconv(detectResult.encoding, 'UTF-8//TRANSLIT//IGNORE');
+    const convertFile = iconvFile.convert(rawFile).toString();
+
+    logger.debug(`fileName: ${this.File.filename}  character code: ${detectResult.encoding}`);
+
+    fs.writeFileSync(this.File.path, convertFile); // 変換済のファイルを上書き
   }
 
   set File(file: Express.Multer.File | undefined) {
