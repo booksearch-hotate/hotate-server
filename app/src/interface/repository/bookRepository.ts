@@ -394,11 +394,28 @@ export default class BookRepository implements IBookRepository {
   }
 
   public async deleteBook(book: Book): Promise<void> {
-    const list = [
-      this.db.Book.destroy({where: {id: book.Id}}),
-      this.esSearchBook.delete(book.Id),
-    ];
-    await Promise.all(list);
+    try {
+      await this.db.Book.destroy({where: {id: book.Id}});
+    } catch (e) {
+      throw new MySQLDBError('An error occurred while deleting the book');
+    }
+
+    try {
+      await this.esSearchBook.delete(book.Id);
+    } catch (e) {
+      await this.db.Book.create({
+        id: book.Id,
+        book_name: book.Name,
+        book_sub_name: book.SubName,
+        book_content: book.Content,
+        isbn: book.Isbn,
+        ndc: book.Ndc,
+        year: book.Year,
+        author_id: book.Author.Id,
+        publisher_id: book.Publisher.Id,
+      });
+      throw new ElasticsearchError('An error occurred while deleting the book');
+    }
   }
 
   /**

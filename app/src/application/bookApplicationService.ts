@@ -278,7 +278,14 @@ export default class BookApplicationService {
 
     if (book === null) return;
 
-    await this.bookRepository.deleteBook(book);
+    /* ロールバック処理はbookRepository.deleteBook()内で処理 */
+    try {
+      await this.bookRepository.deleteBook(book);
+    } catch (e) {
+      if (e instanceof Error) logger.error(e.message);
+
+      throw new ApplicationServiceError('An error occurred while deleting the book, please see the log for more information.');
+    }
   }
 
   /**
