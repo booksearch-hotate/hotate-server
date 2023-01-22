@@ -140,7 +140,7 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
 
     await bookApplicationService.update(
         bookId,
-        req.body.title,
+        req.body.bookName,
         req.body.bookSubName,
         req.body.bookContent,
         req.body.isbn,
