@@ -9,9 +9,7 @@ const adminRouter = Router();
 const csrfProtection = csurf({cookie: false});
 
 adminRouter.use((req: Request, res: Response, next: NextFunction) => {
-  if (req.isAuthenticated()) {
-    return next();
-  }
+  if (req.isAuthenticated()) return next();
 
   res.redirect('/login');
 });
