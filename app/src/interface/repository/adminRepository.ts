@@ -21,20 +21,12 @@ export default class AdminRepository implements IAdminApplicationRepository {
 
   public async getAdmin(): Promise<Admin> {
     try {
-      const admin = await this.db.Admin.sequelize?.query(
-
-          `SELECT id, CONVERT(AES_DECRYPT(UNHEX(pw), '${process.env.DB_PW_KEY}') USING utf8) AS pw FROM admin LIMIT 1`,
-      );
+      const admin = await this.db.Admin.findAll();
 
       if (!admin) throw new MySQLDBError('admin not found');
+      if (admin.length > 1) throw new MySQLDBError('admin is duplicated');
 
-      /* sequelize.queryは[result, metadata]をレスポンスし
-      resultはフィールド数分ある配列なので[0][0]と指定 */
-      // https://sequelize.org/docs/v6/core-concepts/raw-queries/
-      // eslint-disable-next-line no-magic-numbers
-      const res = admin[0][0] as { id: string, pw: string };
-
-      return new Admin(res.id, res.pw);
+      return new Admin(admin[0].id, admin[0].pw);
     } catch (e: any) {
       if (e instanceof MySQLDBError) throw e;
 
@@ -44,9 +36,7 @@ export default class AdminRepository implements IAdminApplicationRepository {
 
   public async insertAdmin(admin: Admin): Promise<void> {
     try {
-      await this.db.Admin.sequelize?.query(
-          `INSERT INTO admin VALUES ('${admin.Id}', HEX(AES_ENCRYPT('${admin.Pw}', '${process.env.DB_PW_KEY}')))`,
-      );
+      await this.db.Admin.create({id: admin.Id, pw: admin.Pw});
     } catch (e) {
       throw new MySQLDBError('Failed to execute SQL to insert administrator.');
     }
@@ -54,11 +44,15 @@ export default class AdminRepository implements IAdminApplicationRepository {
 
   public async updateAdmin(admin: Admin): Promise<void> {
     try {
-      await this.db.Admin.sequelize?.query(
-          `UPDATE admin SET id = '${admin.Id}', pw = HEX(AES_ENCRYPT('${admin.Pw}', '${process.env.DB_PW_KEY}'))`,
-      );
+      await this.db.Admin.update({pw: admin.Pw}, {where: {id: admin.Id}});
     } catch (e) {
       throw new MySQLDBError('Failed to execute SQL to change administrator\'s information.');
     }
+  }
+
+  public async findById(id: string): Promise<Admin | null> {
+    const res = await this.db.Admin.findOne({where: {id}});
+
+    return res ? new Admin(res.id, res.pw) : null;
   }
 }

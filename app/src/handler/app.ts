@@ -42,6 +42,12 @@ import axios from 'axios';
 import SetPageData from '../utils/setPageData';
 import campaignRouter from '../routers/campaign';
 
+import passportSetting from '../infrastructure/auth/passport';
+import AdminRepository from '../interface/repository/adminRepository';
+import db from '../infrastructure/db';
+
+import flash from 'connect-flash';
+
 const COOKIE_MAX_AGE = 60 * 60 * 1000; // 1時間
 
 const app: Application = express();
@@ -131,6 +137,16 @@ settingInitEs().catch((e: any) => {
     ↓主要な問題とその解決策↓\n
     ${colors.blue('https://github.com/booksearch-hotate/hotate-server/blob/main/DOC/resolve-problem.md')}
     `);
+});
+
+app.use(flash());
+
+/* passportの読み込み */
+passportSetting(app, new AdminRepository(db));
+
+app.use((req, res, next) => {
+  res.locals.flashMessages = req.flash();
+  next();
 });
 
 app.use('/', homeRouter);
