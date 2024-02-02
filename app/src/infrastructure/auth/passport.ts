@@ -47,7 +47,7 @@ export default function passportSetting(app: Application, adminRepository: IAdmi
       logger.debug('認証成功');
       done(null, admin);
     }).catch((err) => {
-      console.log('認証失敗');
+      logger.debug('認証失敗');
       done(err, null);
     });
   });
