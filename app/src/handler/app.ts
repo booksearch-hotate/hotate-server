@@ -130,7 +130,7 @@ settingInitEs().catch((e: any) => {
   logger.fatal(e);
   logger.fatal('Initialization failed.');
 
-  console.log(`
+  logger.fatal(`
     Elasticsearchの初期化に失敗しました。
     これにより${colors.red('検索エンジンが使えない状況')}となります。
     早急に改善してください。\n
@@ -177,8 +177,8 @@ app.use('/', notFoundRouter);
 export function startAppServer(port: number) {
   app.listen(port, () => {
     logger.info(`Server is running on port ${port}`);
-    if (isLocal()) console.log(colors.green('現在ローカル環境で動作しています。'));
-    console.log(`サーバの起動に成功しました！\nリンク : ${colors.blue(`http://localhost:${port}`)}`);
+    if (isLocal()) logger.debug(colors.green('現在ローカル環境で動作しています。'));
+    logger.info(`サーバの起動に成功しました！\nリンク : ${colors.blue(`http://localhost:${port}`)}`);
   });
 }
 
