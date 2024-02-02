@@ -67,7 +67,7 @@
     "@types/passport": "^1.0.16",
     "@types/passport-local": "^1.0.38",
     "@types/sharp": "^0.31.0",
-    "@types/supertest": "^2.0.12",
+    "@types/supertest": "^6.0.2",
     "@types/uuid": "^8.3.4",
     "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
@@ -78,7 +78,7 @@
     "jest-puppeteer": "^6.1.1",
     "mongodb": "^4.13.0",
     "mongodb-memory-server": "^8.10.2",
-    "supertest": "^6.3.0",
+    "supertest": "^6.3.4",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1"
   }
