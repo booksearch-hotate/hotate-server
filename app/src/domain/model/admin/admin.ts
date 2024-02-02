@@ -1,3 +1,4 @@
+import crypt from '../../../infrastructure/auth/crypt';
 import {DomainInvalidError} from '../../../presentation/error';
 
 export default class Admin {
@@ -9,10 +10,10 @@ export default class Admin {
 
   public constructor(id: string | undefined, pw: string | undefined) {
     if (id === undefined || id.length === 0 || id.length > this.MAX_ID_LEN) throw new DomainInvalidError(`The format of the id is different. id: ${id}`);
-    if (pw === undefined || pw.length === 0 || pw.length > this.MAX_PW_LEN) throw new DomainInvalidError(`The format of the password is different. password: ${pw}`);
+    if (pw == undefined || (!this.isBcryptHash(pw) && (pw.length === 0 || pw.length > this.MAX_PW_LEN))) throw new DomainInvalidError(`The format of the password is different. password: ${pw}`);
 
     this.id = id;
-    this.pw = pw;
+    this.pw = this.isBcryptHash(pw) ? pw : crypt.encrypt(pw);
   }
 
   get Id(): string {
@@ -20,5 +21,9 @@ export default class Admin {
   }
   get Pw(): string {
     return this.pw;
+  }
+
+  private isBcryptHash(str: string): boolean {
+    return /^\$2[abyx]\$/.test(str);
   }
 }

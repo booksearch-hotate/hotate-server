@@ -7,6 +7,7 @@ import {IAdminApplicationRepository} from '../../domain/model/admin/IAdminReposi
 
 import Logger from '../logger/logger';
 import Admin from '../../domain/model/admin/admin';
+import crypt from './crypt';
 
 const logger = new Logger('passport');
 
@@ -16,18 +17,15 @@ export default function passportSetting(app: Application, adminRepository: IAdmi
     passwordField: 'pw',
   }, async (id, pw, done) => {
     try {
-      const admin = await adminRepository.getAdmin();
+      const admin = await adminRepository.findById(id);
 
-      if (admin.Id !== id) {
-        return done(null, false, {message: 'IDが正しくありません。'});
-      }
-      if (admin.Pw !== pw) {
-        return done(null, false, {message: 'パスワードが正しくありません。'});
-      }
+      if (!admin) return done(null, false, {message: 'ユーザーが見つかりません。'});
+
+      if (!crypt.compare(pw, admin.Pw)) return done(null, false, {message: 'パスワードが違います。'});
 
       return done(null, admin);
-    } catch (e: any) {
-      return done(e, false, {message: e.message});
+    } catch (err) {
+      return done(err, false, {message: '認証に失敗しました。'});
     }
   }));
 
@@ -44,6 +42,8 @@ export default function passportSetting(app: Application, adminRepository: IAdmi
 
     const admin = new Admin(user.id, user.pw);
     adminRepository.findById(admin.Id).then((admin) => {
+      if (!admin) throw new Error('認証失敗');
+
       logger.debug('認証成功');
       done(null, admin);
     }).catch((err) => {
