@@ -5,8 +5,8 @@ export default class AdminData {
   private pw: string;
 
   public constructor(id: string, pw: string) {
-    if (id === null) throw new DomainInvalidError('id of administrator is null.');
-    if (pw === null) throw new DomainInvalidError('pw of administrator is null.');
+    if (id === null) throw new DomainInvalidError('IDが空です。');
+    if (pw === null) throw new DomainInvalidError('パスワードが空です。');
 
     this.id = id;
     this.pw = pw;
