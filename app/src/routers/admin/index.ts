@@ -8,6 +8,14 @@ const adminRouter = Router();
 
 const csrfProtection = csurf({cookie: false});
 
+adminRouter.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+
+  res.redirect('/login');
+});
+
 /* 管理者用ホーム画面 */
 adminRouter.get('/', csrfProtection, (req: Request, res: Response) => {
   res.pageData.headTitle = '管理画面';
