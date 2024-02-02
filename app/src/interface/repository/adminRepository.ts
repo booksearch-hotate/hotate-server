@@ -61,4 +61,11 @@ export default class AdminRepository implements IAdminApplicationRepository {
       throw new MySQLDBError('Failed to execute SQL to change administrator\'s information.');
     }
   }
+
+  public async findById(id: string): Promise<Admin> {
+    const res = await this.db.Admin.findOne({where: {id}});
+    if (!res) throw new MySQLDBError('admin not found');
+
+    return new Admin(res.id, res.pw);
+  }
 }

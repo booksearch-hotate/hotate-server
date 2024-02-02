@@ -8,3 +8,17 @@
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 <% } %>
+
+<% if(flashMessages) { %>
+  <% if(flashMessages.success) { %>
+    <div id="stateAlert" class="alert alert-success alert-dismissible fade show state-info-toast auto-fade" role="alert">
+      <%= flashMessages.success %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% } else if (flashMessages.error) { %>
+    <div id="stateAlert" class="alert alert-danger alert-dismissible fade show state-info-toast auto-fade" role="alert">
+      <%= flashMessages.error %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% } %>
+<% } %>
