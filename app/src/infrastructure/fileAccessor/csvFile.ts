@@ -80,7 +80,7 @@ export default class CsvFile {
     const iconvFile = new iconv.Iconv(detectResult.encoding, 'UTF-8//TRANSLIT//IGNORE');
     const convertFile = iconvFile.convert(rawFile).toString();
 
-    fs.writeFileSync(this.File.path, convertFile); // 変換済のファイルを上書き
+    fs.writeFileSync(this.file.path, convertFile); // 変換済のファイルを上書き
   }
 
   set File(file: Express.Multer.File | undefined) {
