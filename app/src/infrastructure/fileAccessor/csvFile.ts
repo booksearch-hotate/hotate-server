@@ -26,10 +26,10 @@ export default class CsvFile {
 
     const maxLen = 5000; // csvファイルの最大行数
 
-    if (!data.length) throw new DomainInvalidError('csv file is empty');
+    if (!data.length) throw new DomainInvalidError('csvファイルが空です。');
 
     if (data.length > maxLen) {
-      throw new DomainInvalidError(`csv file is too large. max lengh is ${maxLen} but now is ${data.length}`);
+      throw new DomainInvalidError(`csvファイルの行数が${maxLen}行を超えています。現在の行数: ${data.length}行`);
     }
 
     return data;
@@ -85,7 +85,7 @@ export default class CsvFile {
 
   set File(file: Express.Multer.File | undefined) {
     if (!file || path.extname(file.originalname) !== '.csv') {
-      throw new InvalidDataTypeError('unknown file');
+      throw new InvalidDataTypeError('ファイルの形式が不正です。csvファイルをアップロードしてください。');
     }
     this.file = file;
   }

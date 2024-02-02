@@ -35,7 +35,7 @@ export default class TagApplicationService {
 
     const book = await this.bookRepository.searchById(new BookId(bookId));
 
-    if (book.isOverNumberOfTags()) throw new OverflowDataError('The maximum number of tags that can be added to a tag has been exceeded.');
+    if (book.isOverNumberOfTags()) throw new OverflowDataError('本に登録できるタグの数が上限に達しています。');
 
     /* tagsにタグが存在するか確認し、存在しない場合はtagsに新規追加する処理 */
     const isExist = await this.tagService.isExist(tag); // Tagsに存在してないか確認
@@ -45,7 +45,7 @@ export default class TagApplicationService {
     } else {
       const alreadyTag = await this.tagRepository.findByName(tag.Name); // Tagsに存在しているか確認
 
-      if (alreadyTag === null) throw new InfrastructureError('The tag should already exist, but could not find it.');
+      if (alreadyTag === null) throw new InfrastructureError('タグが見つかりませんでした。');
 
       tag = alreadyTag;
     }
@@ -94,7 +94,7 @@ export default class TagApplicationService {
   public async update(id: string, name: string): Promise<void> {
     const tag = await this.tagRepository.findById(id);
 
-    if (tag === null) throw new InfrastructureError('The tag not found.');
+    if (tag === null) throw new InfrastructureError('タグが見つかりませんでした。');
 
     tag.changeName(name);
 

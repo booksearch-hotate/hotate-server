@@ -57,7 +57,7 @@ export default class DepartmentApplicationService {
 
     if (isExist) return false;
 
-    if (await this.isMax()) throw new OverflowDataError('The number of department names that can be registered is exceeded.');
+    if (await this.isMax()) throw new OverflowDataError('学科の登録数が上限に達しています。');
 
     await this.departmentRepository.insertDepartment(department);
 

@@ -9,8 +9,8 @@ export default class Admin {
   private readonly MAX_PW_LEN = 60;
 
   public constructor(id: string | undefined, pw: string | undefined) {
-    if (id === undefined || id.length === 0 || id.length > this.MAX_ID_LEN) throw new DomainInvalidError(`The format of the id is different. id: ${id}`);
-    if (pw == undefined || (!this.isBcryptHash(pw) && (pw.length === 0 || pw.length > this.MAX_PW_LEN))) throw new DomainInvalidError(`The format of the password is different. password: ${pw}`);
+    if (id === undefined || id.length === 0 || id.length > this.MAX_ID_LEN) throw new DomainInvalidError(`IDの形式が異なります。 現在のID: ${id}`);
+    if (pw == undefined || (!this.isBcryptHash(pw) && (pw.length === 0 || pw.length > this.MAX_PW_LEN))) throw new DomainInvalidError(`パスワードの形式が異なります。 現在のパスワード: ${pw}`);
 
     this.id = id;
     this.pw = this.isBcryptHash(pw) ? pw : crypt.encrypt(pw);

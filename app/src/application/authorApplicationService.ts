@@ -20,7 +20,7 @@ export default class AuthorApplicationService {
     if (await this.authorService.isExist(author)) {
       const found = await this.authorRepository.findByName(author.Name);
 
-      if (found === null) throw new InfrastructureError('The author should already exist, but could not find it.');
+      if (found === null) throw new InfrastructureError('著者が見つかりませんでした。');
 
       id = found.Id;
     } else {

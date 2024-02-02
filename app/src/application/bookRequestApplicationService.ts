@@ -70,7 +70,7 @@ export default class BookRequestApplicationService {
   }
 
   public async makeData(saveData: any): Promise<BookRequestData> {
-    if (typeof saveData !== 'object') throw new InvalidDataTypeError('The saveData is invalid data type.');
+    if (typeof saveData !== 'object') throw new InvalidDataTypeError('saveDataの形式が不正です。');
 
     const keepReqObj = saveData.keepReqObj;
 
@@ -78,7 +78,7 @@ export default class BookRequestApplicationService {
 
     const departmentModel = await this.deparmentRepository.findById(departmentId);
 
-    if (departmentModel === null) throw new InfrastructureError('The name of the department could not be obtained.');
+    if (departmentModel === null) throw new InfrastructureError('学科が見つかりませんでした。');
 
     try {
       const requestModel = new BookRequest(
@@ -95,7 +95,7 @@ export default class BookRequestApplicationService {
       );
       return new BookRequestData(requestModel);
     } catch (e) {
-      if (e instanceof DomainInvalidError) throw new FormInvalidError('The value entered in the request screen is invalid.');
+      if (e instanceof DomainInvalidError) throw new FormInvalidError('リクエストデータの形式が不正です。');
 
       throw e;
     }

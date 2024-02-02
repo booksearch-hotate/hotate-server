@@ -7,8 +7,8 @@ export default class Author {
   private readonly MAX_NAME_LEN = 200;
 
   public constructor(id: string, name: string | null) {
-    if (id === null) throw new DomainInvalidError('id is null.');
-    if (name !== null && name.length > this.MAX_NAME_LEN) throw new DomainInvalidError(`Over length of autor name. Length of author name: ${name.length}`);
+    if (id === null) throw new DomainInvalidError('idが空です。');
+    if (name !== null && name.length > this.MAX_NAME_LEN) throw new DomainInvalidError(`著者名の長さが上限の${this.MAX_NAME_LEN}文字に達しています。 現在の著者名の長さ: ${name.length}`);
 
     this.id = id;
     this.name = name;

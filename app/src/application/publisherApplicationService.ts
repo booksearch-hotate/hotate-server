@@ -17,7 +17,7 @@ export default class PublisherApplicationService {
     let id;
     if (await this.publisherService.isExist(publisher)) {
       const found = await this.publisherRepository.findByName(publisher.Name);
-      if (found === null) throw new InfrastructureError('The publisher should already exist, but could not find it.');
+      if (found === null) throw new InfrastructureError('出版社が見つかりませんでした。');
       id = found.Id;
     } else {
       await this.publisherRepository.save(publisher, isBulk);

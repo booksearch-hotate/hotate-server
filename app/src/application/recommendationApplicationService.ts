@@ -54,7 +54,7 @@ export default class RecommendationApplicationService {
 
   public async findById(id: string): Promise<RecommendationData> {
     const fetchModel = await this.recommendationRepository.findById(id);
-    if (fetchModel === null) throw new InfrastructureError('Could not find recommendation section.');
+    if (fetchModel === null) throw new InfrastructureError('レコメンデーションデータが見つかりませんでした。');
 
     fetchModel.sanitizeContent();
 
@@ -73,11 +73,11 @@ export default class RecommendationApplicationService {
   ): Promise<void> {
     const recommendation = await this.recommendationRepository.findById(id);
 
-    if (recommendation === null) throw new InfrastructureError('Could not find recommendation section.');
+    if (recommendation === null) throw new InfrastructureError('レコメンデーションデータが見つかりませんでした。');
 
-    if (recommendation.isOverNumberOfBooks()) throw new OverflowDataError('The number of books has been exceeded.');
+    if (recommendation.isOverNumberOfBooks()) throw new OverflowDataError('登録できる本の個数が上限に達しています。');
 
-    if (!isSameLenAllArray([bookIds, bookComments])) throw new InvalidDataTypeError('Invalid recommendation data.');
+    if (!isSameLenAllArray([bookIds, bookComments])) throw new InvalidDataTypeError('本の登録数とコメント数が一致しません。');
 
     const items: RecommendationItem[] = [];
 
@@ -101,7 +101,7 @@ export default class RecommendationApplicationService {
   public async delete(id: string): Promise<void> {
     const recommendation = await this.recommendationRepository.findById(id);
 
-    if (recommendation === null) throw new InfrastructureError('Could not find recommendation section.');
+    if (recommendation === null) throw new InfrastructureError('レコメンデーションデータが見つかりませんでした。');
 
     await this.recommendationRepository.delete(recommendation);
   }
@@ -168,7 +168,7 @@ export default class RecommendationApplicationService {
     const fetchModels = await Promise.all(existRecommendationIds.map(async (id) => {
       const fetchData = await this.recommendationRepository.findById(id);
 
-      if (fetchData === null) throw new InvalidDataTypeError('Could not successfully retrieve the id.');
+      if (fetchData === null) throw new InvalidDataTypeError('おすすめセクションが見つかりませんでした。');
 
       return fetchData;
     }));

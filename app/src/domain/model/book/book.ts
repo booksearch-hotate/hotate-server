@@ -34,10 +34,10 @@ export default class Book {
       publisher: Publisher,
       tags: Tag[],
   ) {
-    if (id === null) throw new DomainInvalidError('Id is null.');
-    if (name === null || name.length > this.MAX_NAME_LEN) throw new DomainInvalidError(`The format of the name of book is different. Name of book: ${name}`);
-    if (subName !== null && name.length > this.MAX_SUBNAME_LEN) throw new DomainInvalidError(`The format of the sub name of book is defferent. Sub name of book: ${subName}`);
-    if (content !== null && content.length > this.MAX_CONTENT_LEN) throw new DomainInvalidError(`The format of the sentences of book is defferent. Sentences of book: ${content}`);
+    if (id === null) throw new DomainInvalidError('idが空です。');
+    if (name === null || name.length > this.MAX_NAME_LEN) throw new DomainInvalidError(`本のタイトルの形式が異なります。 現在の本のタイトル: ${name}`);
+    if (subName !== null && name.length > this.MAX_SUBNAME_LEN) throw new DomainInvalidError(`本のサブタイトルの形式が異なります。 現在の本のサブタイトル: ${subName}`);
+    if (content !== null && content.length > this.MAX_CONTENT_LEN) throw new DomainInvalidError(`本の紹介文の形式が異なります。 現在の本の紹介文: ${content}`);
 
     this.id = id;
     this.Name = name;

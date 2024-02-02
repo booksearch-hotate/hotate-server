@@ -242,7 +242,7 @@ export default class BookApplicationService {
     } catch (e) {
       await this.bookRepository.update(book);
       if (e instanceof Error) logger.error(e.message);
-      throw new ApplicationServiceError('Error occurred when updating the book. Please check the log for details.');
+      throw new ApplicationServiceError('書籍の更新中にエラーが発生しました。ログを確認してください。');
     }
   }
 
@@ -284,7 +284,7 @@ export default class BookApplicationService {
     } catch (e) {
       if (e instanceof Error) logger.error(e.message);
 
-      throw new ApplicationServiceError('An error occurred while deleting the book, please see the log for more information.');
+      throw new ApplicationServiceError('書籍の削除中にエラーが発生しました。ログを確認してください。');
     }
   }
 

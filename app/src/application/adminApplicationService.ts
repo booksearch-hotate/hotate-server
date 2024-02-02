@@ -44,7 +44,7 @@ export default class AdminApplicationService {
 
       await this.adminRepository.updateAdmin(admin);
     } catch (e: any) {
-      if (e instanceof DomainInvalidError) throw new FormInvalidError('A value was entered that violates the rule');
+      if (e instanceof DomainInvalidError) throw new FormInvalidError('管理者の形式が不正です。');
       else if (e instanceof MySQLDBError) throw new InfrastructureError(e.message);
       else throw e;
     }
