@@ -1,4 +1,5 @@
 import crypt from '../../../infrastructure/auth/crypt';
+import isEmail from 'validator/lib/isEmail';
 
 export default class User {
   private id: number | null;
@@ -27,8 +28,7 @@ export default class User {
   }
 
   private isValidEmail(email: string): boolean {
-    const regex = /^takako-.+@.+\..+$/;
-    return regex.test(email);
+    return isEmail(email) && email.startsWith('takako-');
   }
 
   get Id(): number | null {
