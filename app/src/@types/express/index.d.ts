@@ -12,6 +12,10 @@ interface IPage {
   anyData?: unknown; // その他のデータ
   status?: IPageStatus;
   serviceName: string;
+  userData: {
+    isLogin: boolean;
+    email: string;
+  };
 }
 
 // eslint-disable-next-line no-unused-vars

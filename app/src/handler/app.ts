@@ -12,7 +12,6 @@ import appRoot from 'app-root-path';
 /* routers */
 import homeRouter from '../routers/home';
 import bookItemRouter from '../routers/bookItem';
-import loginRouter from '../routers/login';
 import searchRouter from '../routers/search';
 import requestRouter from '../routers/request';
 import bookRouter from '../routers/admin/book';
@@ -21,7 +20,6 @@ import searchHistoryRouter from '../routers/admin/searchHistory';
 import csvRouter from '../routers/admin/csv';
 import tagsRouter from '../routers/admin/tags';
 import apiRouter from '../routers/api';
-import settingRouter from '../routers/admin/setting';
 import departmentRouter from '../routers/admin/department';
 import bookRequestRouter from '../routers/admin/bookRequest';
 import recommendationRouter from '../routers/admin/recommendation';
@@ -42,11 +40,12 @@ import axios from 'axios';
 import SetPageData from '../utils/setPageData';
 import campaignRouter from '../routers/campaign';
 
-import passportSetting from '../infrastructure/auth/passport';
-import AdminRepository from '../interface/repository/adminRepository';
 import db from '../infrastructure/db';
 
 import flash from 'connect-flash';
+import userRouter from '../routers/user';
+import userPassportSetting from '../infrastructure/auth/passport';
+import UserRepository from '../interface/repository/userRepository';
 
 const COOKIE_MAX_AGE = 60 * 60 * 1000; // 1時間
 
@@ -84,8 +83,6 @@ app.use(session({ // lgtm [js/clear-text-cookie]
 app.use(limiter);
 
 app.use(csurf({cookie: false}));
-
-app.use(SetPageData);
 
 /* elasticsearchのtemplateを読み込み、適用する処理 */
 const settingTemplate = async () => {
@@ -130,7 +127,7 @@ settingInitEs().catch((e: any) => {
   logger.fatal(e);
   logger.fatal('Initialization failed.');
 
-  console.log(`
+  logger.fatal(`
     Elasticsearchの初期化に失敗しました。
     これにより${colors.red('検索エンジンが使えない状況')}となります。
     早急に改善してください。\n
@@ -142,18 +139,20 @@ settingInitEs().catch((e: any) => {
 app.use(flash());
 
 /* passportの読み込み */
-passportSetting(app, new AdminRepository(db));
+userPassportSetting(app, new UserRepository(db));
 
 app.use((req, res, next) => {
   res.locals.flashMessages = req.flash();
   next();
 });
 
+app.use(SetPageData);
+
 app.use('/', homeRouter);
 app.use('/', bookItemRouter);
-app.use('/', loginRouter);
 app.use('/', searchRouter);
 app.use('/', requestRouter);
+app.use('/user', userRouter);
 app.use('/campaign', campaignRouter);
 app.use('/about', aboutRouter);
 app.use('/admin', adminRouter);
@@ -161,7 +160,6 @@ app.use('/admin/book', bookRouter);
 app.use('/admin/search-history', searchHistoryRouter);
 app.use('/admin/csv', csvRouter);
 app.use('/admin/tags', tagsRouter);
-app.use('/admin/setting', settingRouter);
 app.use('/admin/school-info', departmentRouter);
 app.use('/admin/book-request', bookRequestRouter);
 app.use('/admin/recommendation', recommendationRouter);
@@ -177,8 +175,8 @@ app.use('/', notFoundRouter);
 export function startAppServer(port: number) {
   app.listen(port, () => {
     logger.info(`Server is running on port ${port}`);
-    if (isLocal()) console.log(colors.green('現在ローカル環境で動作しています。'));
-    console.log(`サーバの起動に成功しました！\nリンク : ${colors.blue(`http://localhost:${port}`)}`);
+    if (isLocal()) logger.debug(colors.green('現在ローカル環境で動作しています。'));
+    logger.info(`サーバの起動に成功しました！\nリンク : ${colors.blue(`http://localhost:${port}`)}`);
   });
 }
 

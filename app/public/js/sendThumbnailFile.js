@@ -10,8 +10,8 @@ function makeThumbnailCard (fileName) {
     <label for="${fileName}-input" class="choice-thumbnail-label">
       <img src="/thumbnail/${fileName}.png" class="choice-thumbnail-img" />
       <div class="thumbnail-delete-box">
-        <a  href="javascript:void(0);" onclick="deleteThumbnail('${fileName}')">
-          削除
+        <a href="javascript:void(0);" onclick="deleteThumbnail('${fileName}')">
+          <i class="bi bi-trash"></i>
         </a>
       </div>
     </label>

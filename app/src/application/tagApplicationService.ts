@@ -1,6 +1,6 @@
 import Tag from '../domain/model/tag/tag';
 
-import TagService from '../domain/service/tagService';
+import TagService from '../domain/model/tag/tagService';
 
 import {ITagRepository} from '../domain/model/tag/ITagRepository';
 import {IBookRepository} from '../domain/model/book/IBookRepository';

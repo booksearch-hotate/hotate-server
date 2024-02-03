@@ -1,5 +1,5 @@
-import Author from '../model/author/author';
-import {IAuthorRepository} from '../model/author/IAuthorRepository';
+import Author from './author';
+import {IAuthorRepository} from './IAuthorRepository';
 
 import {v4 as uuidv4} from 'uuid';
 

@@ -3,49 +3,50 @@ import {Strategy as LocalStrategy} from 'passport-local';
 
 import {Application} from 'express';
 
-import {IAdminApplicationRepository} from '../../domain/model/admin/IAdminRepository';
-
 import Logger from '../logger/logger';
-import Admin from '../../domain/model/admin/admin';
 import crypt from './crypt';
+import {IUserRepository} from '../../domain/model/user/IUserRepository';
+import User from '../../domain/model/user/user';
 
 const logger = new Logger('passport');
 
-export default function passportSetting(app: Application, adminRepository: IAdminApplicationRepository): void {
+export default function passportSetting(app: Application, userRepository: IUserRepository): void {
   passport.use(new LocalStrategy({
-    usernameField: 'id',
-    passwordField: 'pw',
-  }, async (id, pw, done) => {
+    usernameField: 'email',
+    passwordField: 'password',
+  }, async (email, password, done) => {
     try {
-      const admin = await adminRepository.findById(id);
+      const user = await userRepository.findByEmail(email);
 
-      if (!admin) return done(null, false, {message: 'ユーザーが見つかりません。'});
+      if (!user) return done(null, false, {message: 'ユーザーが見つかりません。'});
 
-      if (!crypt.compare(pw, admin.Pw)) return done(null, false, {message: 'パスワードが違います。'});
+      if (!crypt.compare(password, user.Password)) return done(null, false, {message: 'パスワードが違います。'});
 
-      return done(null, admin);
+      return done(null, user);
     } catch (err) {
       return done(err, false, {message: '認証に失敗しました。'});
     }
   }));
 
-  passport.serializeUser((admin, done) => {
+  passport.serializeUser((user, done) => {
     logger.debug('serializeUser');
-    done(null, admin);
+    done(null, user);
   });
 
   passport.deserializeUser((loginUser, done) => {
-    const user = loginUser as {
-      id: string,
-      pw: string,
+    const userObj = loginUser as {
+      id: number,
+      email: string,
+      password: string,
+      role: 'user' | 'admin',
     };
 
-    const admin = new Admin(user.id, user.pw);
-    adminRepository.findById(admin.Id).then((admin) => {
-      if (!admin) throw new Error('認証失敗');
+    const user = new User(userObj.id, userObj.email, userObj.password, userObj.role, null);
+    userRepository.findByEmail(user.Email).then((user) => {
+      if (!user) throw new Error('認証失敗');
 
       logger.debug('認証成功');
-      done(null, admin);
+      done(null, user);
     }).catch((err) => {
       logger.debug('認証失敗');
       done(err, null);

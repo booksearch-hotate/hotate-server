@@ -5,7 +5,7 @@ import Logger from '../../infrastructure/logger/logger';
 
 import RecommendationApplicationService from '../../application/recommendationApplicationService';
 import RecommendationRepository from '../../interface/repository/recommendationRepository';
-import RecommendationService from '../../domain/service/recommendationService';
+import RecommendationService from '../../domain/model/recommendation/recommendationService';
 
 import BookApplicationService from '../../application/bookApplicationService';
 import BookRepository from '../../interface/repository/bookRepository';
@@ -15,7 +15,7 @@ import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 
 import conversionpageCounter from '../../utils/conversionPageCounter';
 import getPaginationInfo from '../../utils/getPaginationInfo';
-import BookService from '../../domain/service/bookService';
+import BookService from '../../domain/model/book/bookService';
 
 import conversionpageStatus from '../../utils/conversionPageStatus';
 import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';

@@ -1,6 +1,6 @@
 import Department from '../domain/model/department/department';
 
-import DepartmentService from '../domain/service/departmentService';
+import DepartmentService from '../domain/model/department/departmentService';
 
 import DepartmentData from '../domain/model/department/departmentData';
 

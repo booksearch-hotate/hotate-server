@@ -78,6 +78,7 @@
     "jest-puppeteer": "^6.1.1",
     "mongodb": "^4.17.0",
     "mongodb-memory-server": "^8.10.2",
+    "sequelize-cli": "^6.6.2",
     "supertest": "^6.3.4",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1"
