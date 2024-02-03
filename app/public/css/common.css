@@ -12,6 +12,7 @@
   --danger-color: #a03434;
   --warning-color: #E8BB50;
   --success-color: #60ba49;
+  --info-color: #5cb6fc;
   --header-font-color: #244E5F;
   --header-hover-font-color: #0bd;
   --form-color: #FEF4EA;
@@ -467,6 +468,15 @@ footer p {
   width: fit-content;
   min-height: auto!important;
   height: fit-content;
+}
+
+.tree-button-info {
+  color: var(--info-color);
+  border-color: var(--info-color);
+}
+
+.tree-button-info::after {
+  background-color: var(--info-color);
 }
 
 .tree-button-danger {
