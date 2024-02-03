@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/login.css" />
+  </head>
+  <body>
+    <%- include('./../../components/header-title', {mes: '利用者新規登録', logo:'person-plus'}) %>
+
+    <form method="POST" action="/user/register" class="px-4">
+      <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+      <div class="tree-form-item">
+        <label for="id" class="tree-label">メールアドレス</label>
+        <input class="tree-input" type="email" id="id" name="id" placeholder="メールアドレスを入力してください" required>
+      </div>
+      
+      <div class="tree-form-item">
+        <label for="pw" class="tree-label">パスワード</label>
+        <input class="tree-input" type="password" id="pw" name="pw" placeholder="パスワードを入力してください" required>
+      </div>
+
+      <div class="tree-form-item">
+        <label for="pw_confirmation" class="tree-label">パスワード（確認）</label>
+        <input class="tree-input" type="password" id="pw_confirmation" name="pw_confirmation" placeholder="確認のためもう一度パスワードを入力してください" required>
+      </div>
+
+      <% if(!pageData.anyData.isExistAdmin) { %>
+        <div class="tree-form-item">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="isAdmin" name="isAdmin" value="true">
+            <label class="form-check-label" for="isAdmin">
+              管理者にする
+            </label>
+            <span class="tree-question" data-tree-text="この選択は管理者が未登録の場合のみ表示されます。">
+              <i class="bi bi-question-circle"></i>
+            </span>
+          </div>
+        </div>
+      <% } %>
+
+      <div class="d-flex justify-content-center gap-4">
+        <button type="submit" class="tree-button mx-0">
+          <i class="bi-plus me-2"></i>
+          登録
+        </button>
+
+        <a href="/" class="tree-button tree-button-warning mx-0">
+          <i class="bi-house me-2"></i>
+          ホームへ
+        </a>
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="/user/login">
+          ログインはこちら
+        </a>
+      </div>
+    </form>
+
+    <%- include('./../../components/state-alert', {pageData}) %>
+    <%- include('./../../components/input-js') %>
+  </body>
+</html>

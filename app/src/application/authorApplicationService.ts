@@ -1,6 +1,6 @@
 import {IAuthorRepository} from '../domain/model/author/IAuthorRepository';
 import Author from '../domain/model/author/author';
-import AuthorService from '../domain/service/authorService';
+import AuthorService from '../domain/model/author/authorService';
 
 import AuthorData from '../domain/model/author/authorData';
 import {InfrastructureError} from '../presentation/error';

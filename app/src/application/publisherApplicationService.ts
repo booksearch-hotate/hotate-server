@@ -1,6 +1,6 @@
 import {IPublisherRepository} from '../domain/model/publisher/IPublisherRepository';
 import Publisher from '../domain/model/publisher/publisher';
-import PublisherService from '../domain/service/publisherService';
+import PublisherService from '../domain/model/publisher/publisherService';
 import {InfrastructureError} from '../presentation/error';
 
 export default class PublisherApplicationService {

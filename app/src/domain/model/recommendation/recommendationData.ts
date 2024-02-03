@@ -13,7 +13,7 @@ export default class RecommendationData {
   private thumbnailName: string;
   private createdAt: string;
   private updatedAt: string;
-  private htmlContent: string; // Contentの内容をhtmlにパースしたhtml(文字列)
+  private htmlContent: string | Promise<string>; // Contentの内容をhtmlにパースしたhtml(文字列)
   private recommendationItems: RecommendationItemData[];
 
   public constructor(recommendationModel: Recommendation) {
@@ -27,7 +27,8 @@ export default class RecommendationData {
     this.updatedAt = conversionDateToString(recommendationModel.UpdatedAt);
     this.recommendationItems = recommendationModel.RecommendationItems.map((item) => new RecommendationItemData(item));
 
-    this.htmlContent = marked.parse(recommendationModel.Content);
+    const parsedContent = marked.parse(recommendationModel.Content);
+    this.htmlContent = parsedContent;
   }
 
   get Id() {
@@ -62,7 +63,7 @@ export default class RecommendationData {
     return this.updatedAt;
   }
 
-  get HtmlContent() {
+  public async HtmlContent(): Promise<string> {
     return this.htmlContent;
   }
 

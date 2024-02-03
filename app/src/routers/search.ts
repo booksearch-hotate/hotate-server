@@ -1,8 +1,8 @@
 import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 
-import BookService from '../domain/service/bookService';
-import SearchHistoryService from '../domain/service/searchHistoryService';
+import BookService from '../domain/model/book/bookService';
+import SearchHistoryService from '../domain/model/searchHistory/searchHistoryService';
 
 import BookApplicationService from '../application/bookApplicationService';
 import SearchHistoryApplicationService from '../application/searchHistoryApplicationService';

@@ -47,6 +47,7 @@
     "smartcrop-sharp": "^2.0.6",
     "typescript": "^4.8.3",
     "uuid": "^9.0.0",
+    "validator": "^13.11.0",
     "ws": "^8.9.0"
   },
   "devDependencies": {
@@ -69,6 +70,7 @@
     "@types/sharp": "^0.31.0",
     "@types/supertest": "^6.0.2",
     "@types/uuid": "^8.3.4",
+    "@types/validator": "^13.11.8",
     "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.42.0",
@@ -78,6 +80,7 @@
     "jest-puppeteer": "^6.1.1",
     "mongodb": "^4.17.0",
     "mongodb-memory-server": "^8.10.2",
+    "sequelize-cli": "^6.6.2",
     "supertest": "^6.3.4",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1"

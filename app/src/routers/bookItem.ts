@@ -1,8 +1,8 @@
 import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 
-import BookService from '../domain/service/bookService';
-import TagService from '../domain/service/tagService';
+import BookService from '../domain/model/book/bookService';
+import TagService from '../domain/model/tag/tagService';
 
 import BookApplicationService from '../application/bookApplicationService';
 import TagApplicationService from '../application/tagApplicationService';
@@ -14,7 +14,6 @@ import TagRepository from '../interface/repository/tagRepository';
 import db from '../infrastructure/db';
 import EsSearchBook from '../infrastructure/elasticsearch/esBook';
 import Logger from '../infrastructure/logger/logger';
-import AdminSession from '../presentation/session';
 
 import BookData from '../domain/model/book/bookData';
 
@@ -24,14 +23,12 @@ import AuthorRepository from '../interface/repository/authorRepository';
 import EsPublisher from '../infrastructure/elasticsearch/esPublisher';
 import PublisherRepository from '../interface/repository/publisherRepository';
 import RecommendationRepository from '../interface/repository/recommendationRepository';
-import RecommendationService from '../domain/service/recommendationService';
+import RecommendationService from '../domain/model/recommendation/recommendationService';
 
 // eslint-disable-next-line new-cap
 const bookItemRouter = Router();
 
 const csrfProtection = csurf({cookie: false});
-
-const admin = new AdminSession();
 
 const logger = new Logger('home');
 
@@ -57,7 +54,7 @@ const recommendationApplicationService = new RecommendationApplicationService(
 bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Response) => {
   const id = req.params.bookId; // 本のID
   let bookData: BookData;
-  const isLogin = admin.verifyToken(req.session.token);
+  const isAdmin = req.user !== undefined && (req.user as {role: 'admin' | 'user'}).role === 'admin';
   try {
     bookData = await bookApplicationService.searchBookById(id);
 
@@ -73,7 +70,7 @@ bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Re
     const recommendation = await recommendationApplicationService.findByBookId(bookData.Id);
 
     res.pageData.headTitle = `${bookData.BookName} `;
-    res.pageData.anyData = {bookData, isError: false, isLogin, nearCategoryBookDatas, recommendation};
+    res.pageData.anyData = {bookData, isError: false, isLogin: isAdmin, nearCategoryBookDatas, recommendation};
 
     res.pageData.csrfToken = req.csrfToken();
   } catch {

@@ -1,7 +1,7 @@
 import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 
-import TagService from '../../domain/service/tagService';
+import TagService from '../../domain/model/tag/tagService';
 
 import TagApplicationService from '../../application/tagApplicationService';
 
@@ -15,8 +15,6 @@ import db from '../../infrastructure/db';
 
 // eslint-disable-next-line new-cap
 const tagsRouter = Router();
-
-
 
 const csrfProtection = csurf({cookie: false});
 

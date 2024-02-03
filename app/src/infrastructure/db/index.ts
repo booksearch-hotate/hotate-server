@@ -14,6 +14,7 @@ import RecommendationTable from './tables/recommendations';
 import SchoolGradeInfoTable from './tables/schoolGradeInfo';
 
 import {isLocal} from '../cli/cmdLine';
+import UserTable from './tables/users';
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ const db = {
   UsingRecommendations: UsingRecommendationsTable.initialize(sequelize),
   Recommendation: RecommendationTable.initialize(sequelize),
   SchoolGradeInfo: SchoolGradeInfoTable.initialize(sequelize),
+  User: UserTable.initialize(sequelize),
 };
 
 // テーブル同士の関係を作成

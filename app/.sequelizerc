@@ -1,0 +1,10 @@
+const path = require("path");
+
+const parentPath = "./src/infrastructure/db"
+
+module.exports = {
+  config: `${parentPath}/config.json`,
+  "models-path": `${parentPath}/sequelize-models`,
+  "seeders-path": `${parentPath}/seeders`,
+  "migrations-path": `${parentPath}/migrations`,
+};

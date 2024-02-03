@@ -1,7 +1,7 @@
 import {Request, Response, Router} from 'express';
 
 import RecommendationApplicationService from '../application/recommendationApplicationService';
-import RecommendationService from '../domain/service/recommendationService';
+import RecommendationService from '../domain/model/recommendation/recommendationService';
 import db from '../infrastructure/db';
 import RecommendationRepository from '../interface/repository/recommendationRepository';
 
@@ -10,7 +10,7 @@ import Logger from '../infrastructure/logger/logger';
 import BookApplicationService from '../application/bookApplicationService';
 import BookRepository from '../interface/repository/bookRepository';
 import EsSearchBook from '../infrastructure/elasticsearch/esBook';
-import BookService from '../domain/service/bookService';
+import BookService from '../domain/model/book/bookService';
 import csurf from 'csurf';
 import {IRecommendationObj} from '../domain/model/recommendation/IRecommendationObj';
 import AuthorRepository from '../interface/repository/authorRepository';

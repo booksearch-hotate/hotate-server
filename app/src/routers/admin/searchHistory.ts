@@ -1,7 +1,7 @@
 import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 
-import SearchHistoryService from '../../domain/service/searchHistoryService';
+import SearchHistoryService from '../../domain/model/searchHistory/searchHistoryService';
 
 import SearchHistoryApplicationService from '../../application/searchHistoryApplicationService';
 
@@ -17,8 +17,6 @@ import conversionpageCounter from '../../utils/conversionPageCounter';
 
 // eslint-disable-next-line new-cap
 const searchHistoryRouter = Router();
-
-
 
 const csrfProtection = csurf({cookie: false});
 

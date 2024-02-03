@@ -6,6 +6,10 @@ export default function SetPageData(req: Request, res: Response, next: NextFunct
     path: req.path, // パス名
     csrfToken: '', // csrfトークン
     serviceName: 'TREE', // サービス名
+    userData: {
+      isLogin: !!req.user, // ログインしているかどうか
+      email: (!!req.user && (req.user as {email: string}).email) || '', // ユーザーのメールアドレス
+    },
   };
   next();
 };

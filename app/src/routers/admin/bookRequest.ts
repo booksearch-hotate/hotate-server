@@ -3,7 +3,7 @@ import csurf from 'csurf';
 
 import BookRequestApplicationService from '../../application/bookRequestApplicationService';
 
-import BookRequestService from '../../domain/service/bookRequestService';
+import BookRequestService from '../../domain/model/bookRequest/bookRequestService';
 
 import RequestRepository from '../../interface/repository/requestRepository';
 import DepartmentRepository from '../../interface/repository/departmentRepository';

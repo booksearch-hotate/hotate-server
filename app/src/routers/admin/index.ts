@@ -9,9 +9,12 @@ const adminRouter = Router();
 const csrfProtection = csurf({cookie: false});
 
 adminRouter.use((req: Request, res: Response, next: NextFunction) => {
-  if (req.isAuthenticated()) return next();
+  if (!!req.user) {
+    const userRole = (req.user as {role: 'user' | 'admin'}).role;
+    if (req.isAuthenticated()) return userRole === 'admin' ? next() : res.redirect('back');
+  }
 
-  res.redirect('/login');
+  res.redirect('/user/login');
 });
 
 /* 管理者用ホーム画面 */

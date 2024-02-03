@@ -6,7 +6,7 @@ import Department from '../domain/model/department/department';
 
 import BookRequestData from '../domain/model/bookRequest/bookRequestData';
 
-import BookRequestService from '../domain/service/bookRequestService';
+import BookRequestService from '../domain/model/bookRequest/bookRequestService';
 import {DomainInvalidError, FormInvalidError, InfrastructureError, InvalidDataTypeError} from '../presentation/error';
 
 export default class BookRequestApplicationService {

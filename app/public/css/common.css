@@ -98,6 +98,7 @@ footer p {
   justify-content:space-between;
   width: 100vw;
   padding: 4px;
+  align-items: center;
 }
 
 /* ヘッダー全体のbox */
@@ -459,6 +460,13 @@ footer p {
   height: 2.1rem;
   width: 7rem;
   font-size: 1rem;
+}
+
+.tree-button-fit {
+  min-width: auto!important;
+  width: fit-content;
+  min-height: auto!important;
+  height: fit-content;
 }
 
 .tree-button-danger {
