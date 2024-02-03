@@ -22,7 +22,7 @@ export default function passportSetting(app: Application, userRepository: IUserR
 
       if (!crypt.compare(password, user.Password)) return done(null, false, {message: 'パスワードが違います。'});
 
-      return done(null, user);
+      return done(null, user, {message: 'ログインに成功しました。'});
     } catch (err) {
       return done(err, false, {message: '認証に失敗しました。'});
     }

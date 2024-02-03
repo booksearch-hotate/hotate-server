@@ -36,7 +36,14 @@ userRouter.post('/register', csrfProtection, async (req, res) => {
 
   const isAdmin = req.body.isAdmin === 'true';
 
-  await userApplicationService.createUser(id, pw, pw_confirmation, isAdmin);
+  try {
+    await userApplicationService.createUser(id, pw, pw_confirmation, isAdmin);
+  } catch (e: any) {
+    logger.error(e);
+    req.flash('error', 'エラーが発生しました。入力内容が正しいか確認の上、もう一度登録してください。');
+    res.redirect('/user/register');
+    return;
+  }
 
   res.redirect('/user/login');
 });
