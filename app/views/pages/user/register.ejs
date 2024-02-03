@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="<%= pageData.origin %>/css/login.css" />
   </head>
   <body>
-    <%- include('./../../components/header-title', {mes: '利用者新規登録', logo:'plus'}) %>
+    <%- include('./../../components/header-title', {mes: '利用者新規登録', logo:'person-plus'}) %>
 
     <form method="POST" action="/user/register" class="px-4">
       <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
@@ -38,13 +38,25 @@
         </div>
       <% } %>
 
-      <div class="text-center">
-        <button type="submit" class="tree-button my-0 mx-auto">
+      <div class="d-flex justify-content-center gap-4">
+        <button type="submit" class="tree-button mx-0">
           <i class="bi-plus me-2"></i>
           登録
         </button>
+
+        <a href="/" class="tree-button tree-button-warning mx-0">
+          <i class="bi-house me-2"></i>
+          ホームへ
+        </a>
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="/user/login">
+          ログインはこちら
+        </a>
       </div>
     </form>
+
     <%- include('./../../components/state-alert', {pageData}) %>
     <%- include('./../../components/input-js') %>
   </body>
