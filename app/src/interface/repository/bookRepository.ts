@@ -486,4 +486,69 @@ export default class BookRepository implements IBookRepository {
 
     return notEqualIdList;
   }
+
+  public async addBooksToEs(ids: BookId[]): Promise<void> {
+    const fetchBooks = await this.db.Book.findAll({where: {id: ids.map((id) => id.Id)}});
+    const bookModels = fetchBooks.map(async (book) => {
+      const authorId = book.author_id;
+      const publisherId = book.publisher_id;
+
+      const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
+      const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+      const tags = await this.getTagsByBookId(book.id);
+
+      if (!(author && publisher)) throw new MySQLDBError('author or publisher not found');
+
+      const authorModel = new Author(author.id, author.name);
+      const publisherModel = new Publisher(publisher.id, publisher.name);
+
+      return new Book(
+          book.id,
+          book.book_name,
+          book.book_sub_name,
+          book.book_content,
+          book.isbn,
+          book.ndc,
+          book.year,
+          authorModel,
+          publisherModel,
+          tags,
+      );
+    });
+
+    const books = await Promise.all(bookModels);
+
+    try {
+      this.esSearchBook.createBulkApiFile();
+
+      const docs: IEsBook[] = books.map((book) => {
+        return {
+          db_id: book.Id,
+          book_name: book.Name,
+          book_content: book.Content,
+        };
+      });
+
+      docs.forEach((doc) => {
+        this.esSearchBook.insertBulk(doc);
+      });
+
+      await this.esSearchBook.executeBulkApi();
+
+      console.log('bulk api executed');
+    } catch (e) {
+      throw new ElasticsearchError('An error occurred while adding books to elasticsearch');
+    } finally {
+      this.esSearchBook.removeBulkApiFile();
+    }
+  }
+
+  public async deleteBooksToEs(ids: BookId[]): Promise<void> {
+    try {
+      await this.esSearchBook.removeByDBIds(ids.map((id) => id.Id));
+    } catch (e) {
+      console.error(e);
+      throw new ElasticsearchError('An error occurred while deleting books from elasticsearch');
+    }
+  }
 }

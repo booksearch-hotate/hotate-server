@@ -18,3 +18,7 @@ export function isLocal() {
 export function isLogOutput() {
   return cmdList.includes('output-log');
 }
+
+export function isUseAWSES() {
+  return cmdList.includes('use-aws-es');
+}

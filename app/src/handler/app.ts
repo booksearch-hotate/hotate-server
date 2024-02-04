@@ -31,9 +31,9 @@ import bookApiRouter from '../routers/api/admin/bookApi';
 
 import Logger from '../infrastructure/logger/logger';
 
-import {isLocal} from '../infrastructure/cli/cmdLine';
+import {isLocal, isUseAWSES} from '../infrastructure/cli/cmdLine';
 
-import ElasticSearch from '../infrastructure/elasticsearch/elasticsearch';
+import ElasticSearch, {getEsHost} from '../infrastructure/elasticsearch/elasticsearch';
 
 import esDocuments from '../infrastructure/elasticsearch/documents/documentType';
 import axios from 'axios';
@@ -86,16 +86,14 @@ app.use(csurf({cookie: false}));
 
 /* elasticsearchのtemplateを読み込み、適用する処理 */
 const settingTemplate = async () => {
-  const templatePath = `${appRoot.path}/settings/elasticsearch/templates/*.json`;
+  const templatePath = `${appRoot.path}/settings/elasticsearch/templates/${isUseAWSES() && isLocal() ? 'dev' : 'pro'}/*.json`;
 
   const files = glob.sync(templatePath);
 
   const checkFiles = files.map(async (file) => {
     const fileName = path.basename(file, '.json');
 
-    const port = process.env.ES_PORT;
-
-    const hostName = `http://${isLocal() ? 'localhost': process.env.ES_DOCKER_NAME}:${port}`;
+    const hostName = getEsHost();
 
     const data = JSON.parse(fs.readFileSync(file, 'utf8'));
 

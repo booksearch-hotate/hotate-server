@@ -343,4 +343,10 @@ export default class InMemoryBookRepository implements IBookRepository {
   async checkEqualEsAndDb(): Promise<string[]> {
     return [];
   }
+
+  async addBooksToEs(ids: BookId[]): Promise<void> {
+  }
+
+  async deleteBooksToEs(ids: BookId[]): Promise<void> {
+  }
 }

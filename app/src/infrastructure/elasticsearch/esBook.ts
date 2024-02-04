@@ -170,4 +170,14 @@ export default class EsSearchBook extends EsCsv {
 
     return ids;
   }
+
+  public async removeByDBIds(ids: string[]): Promise<void> {
+    await axios.post(`${this.uri}/_delete_by_query`, {
+      query: {
+        terms: {
+          db_id: ids,
+        },
+      },
+    });
+  }
 }

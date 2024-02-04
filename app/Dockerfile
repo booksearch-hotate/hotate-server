@@ -4,4 +4,4 @@ COPY . .
 
 RUN npm install --production && npm run pro-build
 
-CMD ["node", "dist/server.js", "output-log"]
+CMD ["node", "dist/server.js", "output-log", "use-aws-es"]

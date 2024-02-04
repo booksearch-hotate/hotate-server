@@ -62,4 +62,30 @@ bookApiRouter.post('/equalestodb', csrfProtection, async (req: Request, res: Res
   }
 });
 
+bookApiRouter.post('/add-es', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    const bookIds = await req.body.idList;
+
+    await bookApplicationService.addBooksToEs(bookIds);
+
+    return res.sendStatus(200);
+  } catch (e) {
+    logger.error(e as string);
+    return res.sendStatus(500);
+  }
+});
+
+bookApiRouter.post('/delete-books-to-es', csrfProtection, async (req: Request, res: Response) => {
+  try {
+    const bookIds = await req.body.idList;
+
+    await bookApplicationService.deleteBooksToEs(bookIds);
+
+    return res.sendStatus(200);
+  } catch (e) {
+    logger.error(e as string);
+    return res.sendStatus(500);
+  }
+});
+
 export default bookApiRouter;

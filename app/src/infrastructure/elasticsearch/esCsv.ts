@@ -31,7 +31,7 @@ export default class EsCsv extends ElasticSearch {
   /**
    * bulk apiのファイルを生成します。
    */
-  private createBulkApiFile() {
+  public createBulkApiFile() {
     // bulkApiFileNameのjsonファイルをuploads/json/に作成する
     fs.writeFileSync(this.bulkApiPath, '');
   }
@@ -65,6 +65,8 @@ export default class EsCsv extends ElasticSearch {
           'Content-Type': 'application/json',
         },
       });
+
+      logger.info('Succeeded to execute bulk api.');
     } catch (e: any) {
       if (e instanceof Error) logger.error(e.message);
 

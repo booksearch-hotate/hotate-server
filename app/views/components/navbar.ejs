@@ -17,7 +17,7 @@
 
     <div class="header-user-box">
       <% if (pageData.userData.isLogin) { %>
-        <p style="margin-bottom: 0;"><%= pageData.userData.email %>さん</p>
+        <p style="margin-bottom: 0; color: #fff"><%= pageData.userData.email %>さん</p>
         <div class="d-flex justify-content-center gap-4">
           <form method="post" action="/user/logout">
             <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">

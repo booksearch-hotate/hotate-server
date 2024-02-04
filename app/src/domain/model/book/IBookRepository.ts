@@ -31,4 +31,6 @@ export interface IBookRepository {
   getDuplicationBooks(): Promise<string[]>
   checkEqualDbAndEs(): Promise<string[]>
   checkEqualEsAndDb(): Promise<string[]>
+  addBooksToEs(ids: BookId[]): Promise<void>
+  deleteBooksToEs(ids: BookId[]): Promise<void>
 }

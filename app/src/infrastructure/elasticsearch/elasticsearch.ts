@@ -1,10 +1,22 @@
 import axios from 'axios';
 
-import {isLocal} from '../cli/cmdLine';
+import {isLocal, isUseAWSES} from '../cli/cmdLine';
 import Logger from '../logger/logger';
 import dotenv from 'dotenv';
+import esDocuments from './documents/documentType';
 
 dotenv.config();
+
+/**
+ * AWSにデプロイしたElasticsearchを使用する場合は.envの`ES_AWS_HOST`を使用し、
+ * ローカルでElasticsearchを使用する場合はlocalhostを使用します。
+ * Dockerを使用する場合は`.env`の`ES_DOCKER_NAME`を使用します。
+ * @returns ElasticSearchのホスト名
+ */
+export function getEsHost() {
+  if (isUseAWSES()) return `${process.env.ES_AWS_HOST}:${process.env.ES_AWS_PORT}`;
+  return `http://${isLocal() ? 'localhost' : process.env.ES_DOCKER_NAME}:${process.env.ES_PORT}`;
+}
 
 const logger = new Logger('elasticSearch');
 
@@ -13,11 +25,13 @@ export default class ElasticSearch {
   protected index: string;
   protected uri: string;
 
-  constructor(index: 'books' | 'authors' | 'publishers' | 'search_history') {
-    const port = process.env.ES_PORT;
-    this.host = `${isLocal() ? 'localhost' : process.env.ES_DOCKER_NAME}:${port}`;
+  constructor(index: esDocuments) {
+    this.host = getEsHost();
+
     this.index = index;
-    this.uri = `http://${this.host}/${this.index}`;
+    if (isUseAWSES() && isLocal()) this.index += '_dev'; // ローカル環境でAWS上のESにアクセスする際は別のindexを使用する
+
+    this.uri = `${this.host}/${this.index}`;
   }
 
   /**
