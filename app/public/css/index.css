@@ -81,7 +81,7 @@
 
 .card-campaign-item {
   list-style: none;
-  width: 400px;
+  width: calc(33.33vw - 50px);
   background-color: #ffffff;
   border: 1px #000000 solid;
   border-radius: 30px;

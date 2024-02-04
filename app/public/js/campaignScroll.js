@@ -4,6 +4,13 @@ const paginationBox = document.getElementById('card-pagination-box');
 const cardChildren = cardList.children;
 
 const cardWidth = cardChildren[0].clientWidth;
+
+let cardMargin = 0;
+
+if (cardChildren.length > 1) {
+  cardMargin = cardChildren[1].getBoundingClientRect().left - cardChildren[0].getBoundingClientRect().left;
+}
+
 const viewCardCount = Math.floor(window.innerWidth / cardWidth);
 const maxMoveCount = cardChildren.length - viewCardCount;
 
@@ -14,7 +21,7 @@ function moveCard(index) {
   else if (index < 0) nowIndex = maxMoveCount;
   else nowIndex = index;
 
-  cardList.style.right = `${cardWidth * nowIndex}px`;
+  cardList.style.right = `${cardMargin * nowIndex}px`;
 }
 
 function forwardCard() {

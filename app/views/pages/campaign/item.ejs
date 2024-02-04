@@ -11,6 +11,7 @@
       <div class="campaign-title-box">
         <h1><%= pageData.anyData.recommendation.recommendation.Title %></h1>
         <p>公開日: <%= pageData.anyData.recommendation.recommendation.CreatedAt %></p>
+        <% if (pageData.anyData.recommendation.recommendation.IsSolid) { %><p><bi class="bi-pin"></bi>固定</p><% } %>
       </div>
 
       <div class="text-center my-4">
