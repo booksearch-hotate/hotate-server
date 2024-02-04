@@ -305,4 +305,20 @@ export default class BookApplicationService {
   public async checkEqualEsAndDb(): Promise<string[]> {
     return await this.bookRepository.checkEqualEsAndDb();
   }
+
+  /**
+   * MySQLに登録されている本データをElasticsearchに登録します。
+   * @param bookIds DBに登録されている本ID
+   */
+  public async addBooksToEs(bookIds: string[]): Promise<void> {
+    await this.bookRepository.addBooksToEs(bookIds.map((id) => new BookId(id)));
+  }
+
+  /**
+   * Elasticsearchに登録されている本データを削除します。
+   * @param bookIds Elasticsearchに登録されている本ID
+   */
+  public async deleteBooksToEs(bookIds: string[]): Promise<void> {
+    await this.bookRepository.deleteBooksToEs(bookIds.map((id) => new BookId(id)));
+  }
 }

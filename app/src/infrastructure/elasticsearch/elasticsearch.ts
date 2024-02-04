@@ -27,8 +27,10 @@ export default class ElasticSearch {
 
   constructor(index: esDocuments) {
     this.host = getEsHost();
+
     this.index = index;
     if (isUseAWSES() && isLocal()) this.index += '_dev'; // ローカル環境でAWS上のESにアクセスする際は別のindexを使用する
+
     this.uri = `${this.host}/${this.index}`;
   }
 
