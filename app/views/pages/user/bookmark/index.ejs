@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../../../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/search.css" />
+  </head>
+  <body>
+    <%- include('./../../../components/navbar') %>
+
+    <header class="text-center">
+      <%- include('./../../../components/header-title', {mes: 'bookmark', logo: 'tag'}) %>
+    </header>
+
+    <main>
+      <div class="bookmark-list-box">
+        <div class="wrapper grid my-4">
+          <% for (const book of pageData.anyData.bookmarks) { %>
+            <div class="book-box">
+              <div class="book">
+                <img src="<%= book.ImgLink %>" class="img-fluid rounded-start" data-isbn="<%= book.Isbn %>">
+                <div class="book-text">
+                  <p class="book-title"><%= book.BookName %></p>
+                  <p class="book-writer"><%= book.AuthorName %></p>
+                  <p class="book-content"><%= book.BookContent %></p>
+                  <div class="tag-flex">
+                    <% book.Tags.forEach(tag => { %>
+                      <%- include('../../../components/book-tag', {tag: tag}) %>
+                    <% }) %> 
+                  </div>
+                </div>
+              </div>
+              <a href="/item/<%= book.Id %>" class="tree-button tree-button-mini mx-auto my-2">
+                <i class="bi bi-book me-2"></i>
+                詳細
+              </a>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </main>
+
+    <%- include('./../../../components/footer') %>
+
+    <%- include('./../../../components/input-js') %>
+    <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
+  </body>
+</html>

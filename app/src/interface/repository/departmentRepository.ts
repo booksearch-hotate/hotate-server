@@ -1,26 +1,21 @@
+import {PrismaClient} from '@prisma/client';
 import {IDepartmentRepository} from '../../domain/model/department/IDepartmentRepository';
 
 import Department from '../../domain/model/department/department';
 
-import DepartmentTable from '../../infrastructure/db/tables/departments';
-import RequestTable from '../../infrastructure/db/tables/requests';
-
-interface sequelize {
-  Department: typeof DepartmentTable,
-  Request: typeof RequestTable,
-}
-
 export default class DepartmentRepository implements IDepartmentRepository {
-  private readonly db: sequelize;
+  private readonly db: PrismaClient;
 
-  public constructor(db: sequelize) {
+  public constructor(db: PrismaClient) {
     this.db = db;
   }
 
   public async findAllDepartment(): Promise<Department[]> {
-    const fetchData = await this.db.Department.findAll({
-      order: [['created_at', 'DESC']],
-    });
+    const fetchData = await this.db.departments.findMany(
+        {
+          orderBy: {created_at: 'desc'},
+        },
+    );
 
     const res: Department[] = [];
 
@@ -31,14 +26,17 @@ export default class DepartmentRepository implements IDepartmentRepository {
   }
 
   public async insertDepartment(department: Department): Promise<void> {
-    await this.db.Department.create({
-      id: department.Id,
-      name: department.Name,
+    await this.db.departments.create({
+      data: {
+        id: department.Id,
+        name: department.Name,
+      },
     });
   }
 
   public async findByName(name: string | null): Promise<Department | null> {
-    const fetchData = await this.db.Department.findOne({
+    if (name === null) return null;
+    const fetchData = await this.db.departments.findFirst({
       where: {name},
     });
 
@@ -48,11 +46,11 @@ export default class DepartmentRepository implements IDepartmentRepository {
   }
 
   public async count(): Promise<number> {
-    return await this.db.Department.count();
+    return await this.db.departments.count();
   }
 
   public async deleteDepartment(id: string): Promise<void> {
-    await this.db.Department.destroy({
+    await this.db.departments.delete({
       where: {
         id,
       },
@@ -60,7 +58,7 @@ export default class DepartmentRepository implements IDepartmentRepository {
   }
 
   public async findById(id: string): Promise<Department | null> {
-    const fetchData = await this.db.Department.findOne({
+    const fetchData = await this.db.departments.findFirst({
       where: {id},
     });
 
@@ -70,8 +68,13 @@ export default class DepartmentRepository implements IDepartmentRepository {
   }
 
   public async update(department: Department): Promise<void> {
-    await this.db.Department.update({
-      name: department.Name,
-    }, {where: {id: department.Id}});
+    await this.db.departments.update({
+      where: {
+        id: department.Id,
+      },
+      data: {
+        name: department.Name,
+      },
+    });
   }
 }

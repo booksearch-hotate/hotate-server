@@ -16,7 +16,7 @@ import BookRepository from '../../interface/repository/bookRepository';
 import AuthorRepository from '../../interface/repository/authorRepository';
 import PublisherRepository from '../../interface/repository/publisherRepository';
 
-import db from '../../infrastructure/db';
+import db from '../../infrastructure/prisma/prisma';
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 import CsvFile from '../../infrastructure/fileAccessor/csvFile';
 import Logger from '../../infrastructure/logger/logger';

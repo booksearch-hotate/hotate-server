@@ -11,7 +11,7 @@ import RecommendationApplicationService from '../application/recommendationAppli
 import BookRepository from '../interface/repository/bookRepository';
 import TagRepository from '../interface/repository/tagRepository';
 
-import db from '../infrastructure/db';
+import db from '../infrastructure/prisma/prisma';
 import EsSearchBook from '../infrastructure/elasticsearch/esBook';
 import Logger from '../infrastructure/logger/logger';
 
@@ -24,6 +24,9 @@ import EsPublisher from '../infrastructure/elasticsearch/esPublisher';
 import PublisherRepository from '../interface/repository/publisherRepository';
 import RecommendationRepository from '../interface/repository/recommendationRepository';
 import RecommendationService from '../domain/model/recommendation/recommendationService';
+import BookmarkApplicationService from '../application/bookmarkApplicationService';
+import BookmarkRepository from '../interface/repository/bookmarkRepository';
+import UserRepository from '../interface/repository/userRepository';
 
 // eslint-disable-next-line new-cap
 const bookItemRouter = Router();
@@ -50,6 +53,12 @@ const recommendationApplicationService = new RecommendationApplicationService(
     new RecommendationService(),
 );
 
+const bookmarkApplicationService = new BookmarkApplicationService(
+    new BookmarkRepository(db),
+    new BookRepository(db, new EsSearchBook('books')),
+    new UserRepository(db),
+);
+
 /* 本詳細画面 */
 bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Response) => {
   const id = req.params.bookId; // 本のID
@@ -69,8 +78,17 @@ bookItemRouter.get('/item/:bookId', csrfProtection, async (req: Request, res: Re
 
     const recommendation = await recommendationApplicationService.findByBookId(bookData.Id);
 
+    const isAlreadyBookmarked = req.user !== undefined && (await bookmarkApplicationService.isAlreadyBookmarked((req.user as {id: number}).id, bookData.Id));
+
     res.pageData.headTitle = `${bookData.BookName} `;
-    res.pageData.anyData = {bookData, isError: false, isLogin: isAdmin, nearCategoryBookDatas, recommendation};
+    res.pageData.anyData = {
+      bookData,
+      isError: false,
+      isLogin: isAdmin,
+      nearCategoryBookDatas,
+      recommendation,
+      isAlreadyBookmarked,
+    };
 
     res.pageData.csrfToken = req.csrfToken();
   } catch {

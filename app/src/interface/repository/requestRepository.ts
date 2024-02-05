@@ -1,25 +1,19 @@
 import {IBookRequestRepository} from '../../domain/model/bookRequest/IBookRequestRepository';
 import BookRequest from '../../domain/model/bookRequest/bookRequest';
 
-import RequestTable from '../../infrastructure/db/tables/requests';
-import DepartmentTable from '../../infrastructure/db/tables/departments';
 import Department from '../../domain/model/department/department';
 import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
-
-interface sequelize {
-  Request: typeof RequestTable,
-  Department: typeof DepartmentTable,
-}
+import {PrismaClient} from '@prisma/client';
 
 export default class RequestRepository implements IBookRequestRepository {
-  private db: sequelize;
+  private db: PrismaClient;
 
-  constructor(db: sequelize) {
+  constructor(db: PrismaClient) {
     this.db = db;
   }
 
   public async findByDepartmendId(departmentId: string): Promise<BookRequest[]> {
-    const fetchData = await this.db.Request.findAll({
+    const fetchData = await this.db.requests.findMany({
       where: {
         department_id: departmentId,
       },
@@ -27,7 +21,7 @@ export default class RequestRepository implements IBookRequestRepository {
 
     if (fetchData === null) return [];
 
-    const fetchDepartment = await this.db.Department.findOne({where: {id: departmentId}});
+    const fetchDepartment = await this.db.departments.findFirst({where: {id: departmentId}});
 
     if (fetchDepartment === null) throw new MySQLDBError('Could not find department data.');
 
@@ -47,33 +41,35 @@ export default class RequestRepository implements IBookRequestRepository {
   }
 
   public async register(request: BookRequest): Promise<void> {
-    await this.db.Request.create({
-      id: request.Id,
-      book_name: request.BookName,
-      author_name: request.AuthorName,
-      publisher_name: request.PublisherName,
-      isbn: request.Isbn,
-      message: request.Message,
-      department_id: request.Department.Id,
-      school_year: request.SchoolYear,
-      school_class: request.SchoolClass,
-      user_name: request.UserName,
+    await this.db.requests.create({
+      data: {
+        id: request.Id,
+        book_name: request.BookName,
+        author_name: request.AuthorName,
+        publisher_name: request.PublisherName,
+        isbn: request.Isbn,
+        message: request.Message,
+        department_id: request.Department.Id,
+        school_year: request.SchoolYear,
+        school_class: request.SchoolClass,
+        user_name: request.UserName,
+      },
     });
   }
 
   public async delete(id: string): Promise<void> {
-    await this.db.Request.destroy({where: {id: id}});
+    await this.db.requests.delete({where: {id: id}});
   }
 
   public async findAll(): Promise<BookRequest[] | null> {
-    const fetchData = await this.db.Request.findAll({order: [['created_at', 'DESC']]});
+    const fetchData = await this.db.requests.findMany({orderBy: {created_at: 'desc'}});
     if (fetchData === null) return null;
 
     const res = [];
 
     for (const item of fetchData) {
       try {
-        const fetchDepartmentData = await this.db.Department.findOne({where: {id: item.department_id}});
+        const fetchDepartmentData = await this.db.departments.findFirst({where: {id: item.department_id}});
 
         if (fetchDepartmentData === null) continue;
 
@@ -104,11 +100,11 @@ export default class RequestRepository implements IBookRequestRepository {
   }
 
   public async findById(requestId: string): Promise<BookRequest | null> {
-    const fetchData = await this.db.Request.findOne({where: {id: requestId}});
+    const fetchData = await this.db.requests.findFirst({where: {id: requestId}});
 
     if (fetchData === null) return null;
 
-    const fetchDepartmentData = await this.db.Department.findOne({where: {id: fetchData.department_id}});
+    const fetchDepartmentData = await this.db.departments.findFirst({where: {id: fetchData.department_id}});
 
     if (fetchDepartmentData === null) throw new MySQLDBError(`Request data existed, but departmental data did not.  requestId: ${fetchData.id}`);
 

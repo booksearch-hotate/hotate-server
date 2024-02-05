@@ -9,7 +9,7 @@ import RecommendationApplicationService from '../../application/recommendationAp
 
 import BookRepository from '../../interface/repository/bookRepository';
 
-import db from '../../infrastructure/db';
+import db from '../../infrastructure/prisma/prisma';
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 import RecommendationRepository from '../../interface/repository/recommendationRepository';
 import RecommendationService from '../../domain/model/recommendation/recommendationService';

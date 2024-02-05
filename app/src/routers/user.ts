@@ -3,7 +3,7 @@ import {Router} from 'express';
 import passport from 'passport';
 import UserApplicationService from '../application/userApplicationService';
 import UserRepository from '../interface/repository/userRepository';
-import db from '../infrastructure/db';
+import db from '../infrastructure/prisma/prisma';
 import Logger from '../infrastructure/logger/logger';
 import UserSerive from '../domain/model/user/userService';
 
@@ -72,7 +72,7 @@ userRouter.post('/login', csrfProtection, passport.authenticate('local', {
 
 /* ログアウト */
 
-userRouter.post('/logout', (req, res) => {
+userRouter.post('/logout', csrfProtection, (req, res) => {
   req.logout((err) => {
     if (err) {
       req.flash('error', 'ログアウトに失敗しました。詳細はログを確認してください。');

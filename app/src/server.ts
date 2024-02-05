@@ -1,6 +1,7 @@
 import {startAppServer} from './handler/app';
 import {startWSServer} from './handler/ws';
 import dotenv from 'dotenv';
+import db from './infrastructure/prisma/prisma';
 
 dotenv.config();
 
@@ -12,4 +13,6 @@ try {
   startWSServer(wsPort);
 } catch (e) {
   console.error(e);
+} finally {
+  db.$disconnect();
 }

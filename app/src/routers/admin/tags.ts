@@ -10,7 +10,7 @@ import BookRepository from '../../interface/repository/bookRepository';
 
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 
-import db from '../../infrastructure/db';
+import db from '../../infrastructure/prisma/prisma';
 
 
 // eslint-disable-next-line new-cap

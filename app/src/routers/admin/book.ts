@@ -15,7 +15,7 @@ import AuthorRepository from '../../interface/repository/authorRepository';
 import PublisherRepository from '../../interface/repository/publisherRepository';
 
 
-import db from '../../infrastructure/db';
+import db from '../../infrastructure/prisma/prisma';
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';

@@ -8,7 +8,7 @@ import BookApplicationService from '../../../application/bookApplicationService'
 
 import BookRepository from '../../../interface/repository/bookRepository';
 
-import db from '../../../infrastructure/db';
+import db from '../../../infrastructure/prisma/prisma';
 import EsSearchBook from '../../../infrastructure/elasticsearch/esBook';
 import EsAuthor from '../../../infrastructure/elasticsearch/esAuthor';
 import AuthorRepository from '../../../interface/repository/authorRepository';

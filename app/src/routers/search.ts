@@ -10,7 +10,7 @@ import SearchHistoryApplicationService from '../application/searchHistoryApplica
 import BookRepository from '../interface/repository/bookRepository';
 import SearchHistoryRepository from '../interface/repository/searchHistoryRepository';
 
-import db from '../infrastructure/db';
+import db from '../infrastructure/prisma/prisma';
 import EsSearchBook from '../infrastructure/elasticsearch/esBook';
 import EsSearchHistory from '../infrastructure/elasticsearch/esSearchHistory';
 

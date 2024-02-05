@@ -1,23 +1,20 @@
+import {PrismaClient} from '@prisma/client';
 import {ISchoolGradeInfoRepository} from '../../domain/model/schoolGradeInfo/ISchoolGradeInfoRepository';
 import SchoolClass from '../../domain/model/schoolGradeInfo/schoolClass';
 import SchoolGradeInfo from '../../domain/model/schoolGradeInfo/schoolGradeInfo';
 import SchoolYear from '../../domain/model/schoolGradeInfo/schoolYear';
-import SchoolGradeInfoTable from '../../infrastructure/db/tables/schoolGradeInfo';
 import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
 
-interface sequelize {
-  SchoolGradeInfo: typeof SchoolGradeInfoTable,
-}
 
 export default class SchoolYearRepository implements ISchoolGradeInfoRepository {
-  private readonly db: sequelize;
+  private readonly db: PrismaClient;
 
-  constructor(db: sequelize) {
+  constructor(db: PrismaClient) {
     this.db = db;
   }
 
   public async find(): Promise<SchoolGradeInfo> {
-    const data = await this.db.SchoolGradeInfo.findOne();
+    const data = await this.db.school_grade_info.findFirst();
 
     if (data === null) throw new MySQLDBError('Grade information does not exist.');
 
@@ -30,6 +27,6 @@ export default class SchoolYearRepository implements ISchoolGradeInfoRepository 
   public async update(schoolGradeInfo: SchoolGradeInfo): Promise<void> {
     const year = schoolGradeInfo.Year;
     const schoolClass = schoolGradeInfo.SchoolClass;
-    await this.db.SchoolGradeInfo.update({year, school_class: schoolClass}, {where: {}});
+    await this.db.school_grade_info.updateMany({data: {year, school_class: schoolClass}, where: {}});
   }
 }

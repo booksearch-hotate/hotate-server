@@ -3,7 +3,7 @@ import csurf from 'csurf';
 
 import RecommendationApplicationService from '../application/recommendationApplicationService';
 import RecommendationRepository from '../interface/repository/recommendationRepository';
-import db from '../infrastructure/db';
+import db from '../infrastructure/prisma/prisma';
 import RecommendationService from '../domain/model/recommendation/recommendationService';
 import Logger from '../infrastructure/logger/logger';
 import conversionpageCounter from '../utils/conversionPageCounter';

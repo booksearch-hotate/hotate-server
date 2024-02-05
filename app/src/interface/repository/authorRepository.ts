@@ -1,34 +1,27 @@
-import AuthorTable from '../../infrastructure/db/tables/authors';
-import BookTable from '../../infrastructure/db/tables/books';
-
 import {IAuthorRepository} from '../../domain/model/author/IAuthorRepository';
 import Author from '../../domain/model/author/author';
 import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 
 import {IEsAuthor} from '../../infrastructure/elasticsearch/documents/IEsAuthor';
 
-import sequelize from 'sequelize';
 import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
-
-/* Sequelizeを想定 */
-interface sequelize {
-  Author: typeof AuthorTable,
-  Book: typeof BookTable
-}
+import {PrismaClient} from '@prisma/client';
 
 export default class AuthorRepository implements IAuthorRepository {
-  private readonly db: sequelize;
+  private readonly db: PrismaClient;
   private readonly esAuthor: EsAuthor;
 
-  public constructor(db: sequelize, esAuthor: EsAuthor) {
+  public constructor(db: PrismaClient, esAuthor: EsAuthor) {
     this.db = db;
     this.esAuthor = esAuthor;
   }
 
   public async save(author: Author, isBulk: boolean = false): Promise<void> {
-    await this.db.Author.create({
-      id: author.Id,
-      name: author.Name,
+    await this.db.authors.create({
+      data: {
+        id: author.Id,
+        name: author.Name,
+      },
     });
 
     const doc: IEsAuthor = {
@@ -40,15 +33,17 @@ export default class AuthorRepository implements IAuthorRepository {
   }
 
   public async findByName(name: string | null): Promise<Author | null> {
-    const author = await this.db.Author.findOne({
-      where: {name},
+    const author = await this.db.authors.findFirst({
+      where: {
+        name: name,
+      },
     });
     if (author) return new Author(author.id, author.name);
     return null;
   }
 
   public async deleteAll(): Promise<void> {
-    const deletes = [this.db.Author.destroy({where: {}}), this.esAuthor.initIndex()];
+    const deletes = [this.db.authors.deleteMany({where: {}}), this.esAuthor.initIndex()];
     await Promise.all(deletes);
   }
 
@@ -57,9 +52,10 @@ export default class AuthorRepository implements IAuthorRepository {
   }
 
   public async findById(authorId: string): Promise<Author> {
-    const author = await this.db.Author.findOne({
-      attributes: ['id', 'name'],
-      where: {id: authorId},
+    const author = await this.db.authors.findFirst({
+      where: {
+        id: authorId,
+      },
     });
 
     if (author) return new Author(author.id, author.name);
@@ -68,7 +64,7 @@ export default class AuthorRepository implements IAuthorRepository {
   }
 
   public async deleteNoUsed(authorId: string): Promise<void> {
-    const count = await this.db.Book.count({
+    const count = await this.db.books.count({
       where: {
         author_id: authorId,
       },
@@ -76,7 +72,7 @@ export default class AuthorRepository implements IAuthorRepository {
 
     if (count === 0) {
       const list =[
-        this.db.Author.destroy({
+        this.db.authors.delete({
           where: {
             id: authorId,
           },
@@ -89,9 +85,14 @@ export default class AuthorRepository implements IAuthorRepository {
 
   public async update(author: Author): Promise<void> {
     const updateDB = async (a: Author) => {
-      await this.db.Author.update({
-        name: a.Name,
-      }, {where: {id: a.Id}});
+      await this.db.authors.update({
+        where: {
+          id: a.Id,
+        },
+        data: {
+          name: a.Name,
+        },
+      });
     };
 
     const updateES = async (a: Author) => {
@@ -103,10 +104,10 @@ export default class AuthorRepository implements IAuthorRepository {
 
   public async search(name: string): Promise<Author[]> {
     const ids = await this.esAuthor.search(name);
-    const fetchData = await this.db.Author.findAll({
+    const fetchData = await this.db.authors.findMany({
       where: {
         id: {
-          [sequelize.Op.in]: ids,
+          in: ids,
         },
       },
     });
@@ -118,10 +119,10 @@ export default class AuthorRepository implements IAuthorRepository {
 
   public async searchUsingLike(name: string): Promise<Author[]> {
     const ids = await this.esAuthor.searchUsingLike(name);
-    const fetchData = await this.db.Author.findAll({
+    const fetchData = await this.db.authors.findMany({
       where: {
         id: {
-          [sequelize.Op.in]: ids,
+          in: ids,
         },
       },
     });

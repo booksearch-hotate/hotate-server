@@ -1,9 +1,3 @@
-import BookTable from '../../infrastructure/db/tables/books'; // ここのBookはドメインオブジェクトではない！
-import AuthorTable from '../../infrastructure/db/tables/authors';
-import PublisherTable from '../../infrastructure/db/tables/publishers';
-import UsingTagTable from '../../infrastructure/db/tables/usingTags';
-import TagTable from '../../infrastructure/db/tables/tags';
-
 import {IBookRepository} from '../../domain/model/book/IBookRepository';
 import Book from '../../domain/model/book/book';
 import Author from '../../domain/model/author/author';
@@ -15,42 +9,36 @@ import {IEsBook} from '../../infrastructure/elasticsearch/documents/IEsBook';
 import BookId from '../../domain/model/book/bookId';
 import PaginationMargin from '../../domain/model/pagination/paginationMargin';
 
-import sequelize from 'sequelize';
 import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
 import {ElasticsearchError, EsBulkApiError} from '../../presentation/error/infrastructure/elasticsearchError';
-
-/* Sequelizeを想定 */
-interface sequelize {
-  Book: typeof BookTable
-  Author: typeof AuthorTable
-  Publisher: typeof PublisherTable
-  UsingTag: typeof UsingTagTable
-  Tag: typeof TagTable
-}
+import {PrismaClient} from '@prisma/client';
 
 export default class BookRepository implements IBookRepository {
-  private readonly db: sequelize;
+  private readonly db: PrismaClient;
   private readonly esSearchBook: EsSearchBook;
 
-  public constructor(db: sequelize, EsSearchBook: EsSearchBook) {
+  public constructor(db: PrismaClient, EsSearchBook: EsSearchBook) {
     this.db = db;
     this.esSearchBook = EsSearchBook;
   }
 
   public async save(book: Book): Promise<void> {
     try {
-      await this.db.Book.create({
-        id: book.Id,
-        book_name: book.Name,
-        book_sub_name: book.SubName,
-        book_content: book.Content,
-        isbn: book.Isbn,
-        ndc: book.Ndc,
-        year: book.Year,
-        author_id: book.Author.Id,
-        publisher_id: book.Publisher.Id,
+      await this.db.books.create({
+        data: {
+          id: book.Id,
+          book_name: book.Name,
+          book_sub_name: book.SubName,
+          book_content: book.Content,
+          isbn: book.Isbn,
+          ndc: book.Ndc,
+          year: Number(book.Year), // 強制的に数値に変換
+          author_id: book.Author.Id,
+          publisher_id: book.Publisher.Id,
+        },
       });
     } catch (e) {
+      console.error(e);
       throw new MySQLDBError(`Failed to add book to mysql. id:${book.Id}`);
     }
 
@@ -67,7 +55,7 @@ export default class BookRepository implements IBookRepository {
   }
 
   public async deleteAll(): Promise<void> {
-    const deletes = [this.db.Book.destroy({where: {}}), this.esSearchBook.initIndex()];
+    const deletes = [this.db.books.deleteMany({where: {}}), this.esSearchBook.initIndex()];
     await Promise.all(deletes);
     await this.esSearchBook.initIndex(false);
   }
@@ -80,7 +68,13 @@ export default class BookRepository implements IBookRepository {
     const count = searchResult.total;
 
     // bookIdsからbooksを取得する
-    const books = await this.db.Book.findAll({where: {id: bookIds}});
+    const books = await this.db.books.findMany({
+      where: {
+        id: {
+          in: bookIds,
+        },
+      },
+    });
 
     const bookModels: Book[] = [];
 
@@ -88,8 +82,8 @@ export default class BookRepository implements IBookRepository {
       const authorId = fetchBook.author_id;
       const publisherId = fetchBook.publisher_id;
 
-      const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
-      const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+      const author = await this.db.authors.findFirst({where: {id: authorId}}); // authorを取得
+      const publisher = await this.db.publishers.findFirst({where: {id: publisherId}}); // publisherを取得
       const tags = await this.getTagsByBookId(fetchBook.id);
 
       if (!(author && publisher)) throw new MySQLDBError('author or publisher not found');
@@ -115,14 +109,14 @@ export default class BookRepository implements IBookRepository {
   }
 
   public async searchById(id: BookId): Promise<Book> {
-    const book = await this.db.Book.findOne({where: {id: id.Id}});
+    const book = await this.db.books.findFirst({where: {id: id.Id}});
     if (!book) throw new MySQLDBError('book not found');
 
     const authorId = book.author_id;
     const publisherId = book.publisher_id;
 
-    const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
-    const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+    const author = await this.db.authors.findFirst({where: {id: authorId}}); // authorを取得
+    const publisher = await this.db.publishers.findFirst({where: {id: publisherId}}); // publisherを取得
 
     const tags = await this.getTagsByBookId(book.id);
 
@@ -149,39 +143,55 @@ export default class BookRepository implements IBookRepository {
   public async searchByForeignId(foreignModel: Author[] | Publisher[], pageCount: number, margin: PaginationMargin): Promise<{books: Book[], count: number}> {
     if (foreignModel.length === 0) return {books: [], count: 0};
 
-    let books: BookTable[] = [];
+    let books: any[] | null = [];
 
     let count = 0;
 
     const FETCH_COUNT = margin.Margin;
 
     if (foreignModel[0] instanceof Author) {
-      books = await this.db.Book.findAll({
-        where: {author_id: {[sequelize.Op.in]: foreignModel.map((item) => item.Id)}},
-        limit: FETCH_COUNT,
-        offset: pageCount * FETCH_COUNT,
+      books = await this.db.books.findMany({
+        where: {
+          author_id: {
+            in: foreignModel.map((item) => item.Id),
+          },
+        },
+        take: FETCH_COUNT,
+        skip: pageCount * FETCH_COUNT,
       });
 
-      count = await this.db.Book.count({
-        where: {author_id: {[sequelize.Op.in]: foreignModel.map((item) => item.Id)}},
+      count = await this.db.books.count({
+        where: {
+          author_id: {
+            in: foreignModel.map((item) => item.Id),
+          },
+        },
       });
     } else if (foreignModel[0] instanceof Publisher) {
-      books = await this.db.Book.findAll({
-        where: {publisher_id: {[sequelize.Op.in]: foreignModel.map((item) => item.Id)}},
-        limit: FETCH_COUNT,
-        offset: pageCount * FETCH_COUNT,
+      books = await this.db.books.findMany({
+        where: {
+          publisher_id: {
+            in: foreignModel.map((item) => item.Id),
+          },
+        },
+        take: FETCH_COUNT,
+        skip: pageCount * FETCH_COUNT,
       });
 
-      count = await this.db.Book.count({
-        where: {publisher_id: {[sequelize.Op.in]: foreignModel.map((item) => item.Id)}},
+      count = await this.db.books.count({
+        where: {
+          publisher_id: {
+            in: foreignModel.map((item) => item.Id),
+          },
+        },
       });
     }
 
     if (books === null) return {books: [], count: 0};
 
     const res = books.map(async (column) => {
-      const author = await this.db.Author.findOne({where: {id: column.author_id}}); // authorを取得
-      const publisher = await this.db.Publisher.findOne({where: {id: column.publisher_id}}); // publisherを取得
+      const author = await this.db.authors.findFirst({where: {id: column.author_id}}); // authorを取得
+      const publisher = await this.db.publishers.findFirst({where: {id: column.publisher_id}}); // publisherを取得
 
       if (!(author && publisher)) throw new MySQLDBError('author or publisher not found');
 
@@ -220,14 +230,20 @@ export default class BookRepository implements IBookRepository {
     const count = searchResult.total;
 
     // bookIdsからbooksを取得する
-    const books = await this.db.Book.findAll({where: {id: bookIds}});
+    const books = await this.db.books.findMany({
+      where: {
+        id: {
+          in: bookIds,
+        },
+      },
+    });
 
     const bookModels = books.map(async (book) => {
       const authorId = book.author_id;
       const publisherId = book.publisher_id;
 
-      const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
-      const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+      const author = await this.db.authors.findFirst({where: {id: authorId}}); // authorを取得
+      const publisher = await this.db.publishers.findFirst({where: {id: publisherId}}); // publisherを取得
       const tags = await this.getTagsByBookId(book.id);
 
       if (!(author && publisher)) throw new MySQLDBError('author or publisher not found');
@@ -267,10 +283,11 @@ export default class BookRepository implements IBookRepository {
   }
 
   private async getTagsByBookId(bookId: string): Promise<Tag[]> {
-    const tags = await this.db.UsingTag.findAll({where: {book_id: bookId}});
+    const tags = await this.db.books.findFirst({where: {id: bookId}}).using_tags();
     const tagModels: Tag[] = [];
+    if (!tags) return [];
     for (const tag of tags) {
-      const tagByDb = await this.db.Tag.findOne({where: {id: tag.tag_id}});
+      const tagByDb = await this.db.tags.findFirst({where: {id: tag.tag_id}});
       if (!tagByDb) throw new MySQLDBError('tag not found');
       const tagModel = new Tag(tagByDb.id, tagByDb.name, tagByDb.created_at, []);
       tagModels.push(tagModel);
@@ -281,30 +298,30 @@ export default class BookRepository implements IBookRepository {
   public async searchByTag(tagName: string, pageCount: number, margin: PaginationMargin): Promise<{books: Book[], count: number}> {
     const FETCH_COUNT = margin.Margin;
 
-    const tag = await this.db.Tag.findOne({
+    const tag = await this.db.tags.findFirst({
       where: {name: tagName},
     });
 
     if (!tag) return {books: [], count: 0};
 
-    const tagIds = await this.db.UsingTag.findAll({
+    const tagIds = await this.db.using_tags.findMany({
       where: {tag_id: tag.id},
-      limit: FETCH_COUNT,
-      offset: pageCount * FETCH_COUNT,
+      take: FETCH_COUNT,
+      skip: pageCount * FETCH_COUNT,
     });
 
-    const count = await this.db.UsingTag.count({where: {tag_id: tag.id}});
+    const count = await this.db.using_tags.count({where: {tag_id: tag.id}});
 
     const bookModels = tagIds.map(async (column) => {
-      const book = await this.db.Book.findOne({where: {id: column.book_id}});
+      const book = await this.db.books.findFirst({where: {id: column.book_id}});
 
       if (!book) throw new MySQLDBError('book not found');
 
       const authorId = book.author_id;
       const publisherId = book.publisher_id;
 
-      const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
-      const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+      const author = await this.db.authors.findFirst({where: {id: authorId}}); // authorを取得
+      const publisher = await this.db.publishers.findFirst({where: {id: publisherId}}); // publisherを取得
       const tags = await this.getTagsByBookId(column.book_id);
 
       if (!(author && publisher)) throw new MySQLDBError('author or publisher not found');
@@ -329,16 +346,19 @@ export default class BookRepository implements IBookRepository {
   }
 
   public async update(book: Book): Promise<void> {
-    await this.db.Book.update({
-      book_name: book.Name,
-      book_sub_name: book.SubName,
-      book_content: book.Content,
-      isbn: book.Isbn,
-      ndc: book.Ndc,
-      year: book.Year,
-      author_id: book.Author.Id,
-      publisher_id: book.Publisher.Id,
-    }, {where: {id: book.Id}});
+    await this.db.books.update({
+      where: {id: book.Id},
+      data: {
+        book_name: book.Name,
+        book_sub_name: book.SubName,
+        book_content: book.Content,
+        isbn: book.Isbn,
+        ndc: book.Ndc,
+        year: book.Year,
+        author_id: book.Author.Id,
+        publisher_id: book.Publisher.Id,
+      },
+    });
 
     const doc: IEsBook = {
       db_id: book.Id,
@@ -350,10 +370,11 @@ export default class BookRepository implements IBookRepository {
 
   public async findAll(pageCount: number, margin: PaginationMargin): Promise<Book[]> {
     const FETCH_DATA_NUM = margin.Margin;
-    const books = await this.db.Book.findAll({
-      limit: FETCH_DATA_NUM,
-      offset: pageCount * FETCH_DATA_NUM,
-      order: [['updated_at', 'DESC']],
+
+    const books = await this.db.books.findMany({
+      take: FETCH_DATA_NUM,
+      skip: pageCount * FETCH_DATA_NUM,
+      orderBy: {updatedAt: 'desc'},
     });
 
     const bookModels: Book[] = [];
@@ -362,8 +383,8 @@ export default class BookRepository implements IBookRepository {
       const authorId = book.author_id;
       const publisherId = book.publisher_id;
 
-      const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
-      const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+      const author = await this.db.authors.findFirst({where: {id: authorId}}); // authorを取得
+      const publisher = await this.db.publishers.findFirst({where: {id: publisherId}}); // publisherを取得
 
       const tags = await this.getTagsByBookId(book.id);
 
@@ -390,12 +411,12 @@ export default class BookRepository implements IBookRepository {
   }
 
   public async findAllCount(): Promise<number> {
-    return await this.db.Book.count();
+    return await this.db.books.count();
   }
 
   public async deleteBook(book: Book): Promise<void> {
     try {
-      await this.db.Book.destroy({where: {id: book.Id}});
+      await this.db.books.delete({where: {id: book.Id}});
     } catch (e) {
       throw new MySQLDBError('An error occurred while deleting the book');
     }
@@ -403,16 +424,18 @@ export default class BookRepository implements IBookRepository {
     try {
       await this.esSearchBook.delete(book.Id);
     } catch (e) {
-      await this.db.Book.create({
-        id: book.Id,
-        book_name: book.Name,
-        book_sub_name: book.SubName,
-        book_content: book.Content,
-        isbn: book.Isbn,
-        ndc: book.Ndc,
-        year: book.Year,
-        author_id: book.Author.Id,
-        publisher_id: book.Publisher.Id,
+      await this.db.books.create({
+        data: {
+          id: book.Id,
+          book_name: book.Name,
+          book_sub_name: book.SubName,
+          book_content: book.Content,
+          isbn: book.Isbn,
+          ndc: book.Ndc,
+          year: book.Year,
+          author_id: book.Author.Id,
+          publisher_id: book.Publisher.Id,
+        },
       });
       throw new ElasticsearchError('An error occurred while deleting the book');
     }
@@ -422,12 +445,15 @@ export default class BookRepository implements IBookRepository {
    * 重複している本の書名を取得
    */
   public async getDuplicationBooks(): Promise<string[]> {
-    const books = await this.db.Book.findAll({
-      attributes: ['book_name'],
-      group: ['book_name'],
-      having: sequelize.where(sequelize.fn('count', sequelize.col('book_name')), {
-        [sequelize.Op.gte]: 2,
-      }),
+    const books = await this.db.books.groupBy({
+      by: ['book_name'],
+      having: {
+        book_name: {
+          _count: {
+            gte: 2,
+          },
+        },
+      },
     });
 
     return books.map((data) => {
@@ -442,15 +468,15 @@ export default class BookRepository implements IBookRepository {
   public async checkEqualDbAndEs(): Promise<string[]> {
     const MARGIN = 500; // 一度に取得するカラム数
 
-    const bookCount = await this.db.Book.count();
+    const bookCount = await this.db.books.count();
 
     const notEqualIdList = [];
 
     for (let i = 0; i < Math.ceil(bookCount / MARGIN); i++) {
-      const books = await this.db.Book.findAll({
-        attributes: ['id'],
-        limit: MARGIN,
-        offset: MARGIN * i,
+      const books = await this.db.books.findMany({
+        select: {id: true},
+        take: MARGIN,
+        skip: MARGIN * i,
       });
 
       const ids = books.map((data) => data.id);
@@ -474,9 +500,13 @@ export default class BookRepository implements IBookRepository {
     for (let i = 0; i < Math.ceil(bookCount / MARGIN); i++) {
       const ids = await this.esSearchBook.getIds(i, MARGIN);
 
-      const dbIds = await this.db.Book.findAll({
-        attributes: ['id'],
-        where: {id: {[sequelize.Op.in]: ids}},
+      const dbIds = await this.db.books.findMany({
+        where: {
+          id: {
+            in: ids,
+          },
+        },
+        select: {id: true},
       }).then((fetchData) => fetchData.map((column) => column.id));
 
       for (let i = 0; i < ids.length; i++) {
@@ -488,13 +518,19 @@ export default class BookRepository implements IBookRepository {
   }
 
   public async addBooksToEs(ids: BookId[]): Promise<void> {
-    const fetchBooks = await this.db.Book.findAll({where: {id: ids.map((id) => id.Id)}});
+    const fetchBooks = await this.db.books.findMany({
+      where: {
+        id: {
+          in: ids.map((id) => id.Id),
+        },
+      },
+    });
     const bookModels = fetchBooks.map(async (book) => {
       const authorId = book.author_id;
       const publisherId = book.publisher_id;
 
-      const author = await this.db.Author.findOne({where: {id: authorId}}); // authorを取得
-      const publisher = await this.db.Publisher.findOne({where: {id: publisherId}}); // publisherを取得
+      const author = await this.db.authors.findFirst({where: {id: authorId}}); // authorを取得
+      const publisher = await this.db.publishers.findFirst({where: {id: publisherId}}); // publisherを取得
       const tags = await this.getTagsByBookId(book.id);
 
       if (!(author && publisher)) throw new MySQLDBError('author or publisher not found');

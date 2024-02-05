@@ -40,12 +40,13 @@ import axios from 'axios';
 import SetPageData from '../utils/setPageData';
 import campaignRouter from '../routers/campaign';
 
-import db from '../infrastructure/db';
+import db from '../infrastructure/prisma/prisma';
 
 import flash from 'connect-flash';
 import userRouter from '../routers/user';
 import userPassportSetting from '../infrastructure/auth/passport';
 import UserRepository from '../interface/repository/userRepository';
+import bookMarkRouter from '../routers/user/bookmark';
 
 const COOKIE_MAX_AGE = 60 * 60 * 1000; // 1時間
 
@@ -144,6 +145,22 @@ app.use((req, res, next) => {
   next();
 });
 
+db.school_grade_info.findFirst({}).then((data) => {
+  if (data === null) {
+    db.school_grade_info.create({
+      data: {
+        year: 3,
+        school_class: 5,
+      },
+    }).then(() => {
+      logger.info('学年情報を初期化しました。');
+    });
+  }
+}).catch((e) => {
+  logger.error(e);
+  throw e;
+});
+
 app.use(SetPageData);
 
 app.use('/', homeRouter);
@@ -151,6 +168,7 @@ app.use('/', bookItemRouter);
 app.use('/', searchRouter);
 app.use('/', requestRouter);
 app.use('/user', userRouter);
+app.use('/user/bookmark', bookMarkRouter);
 app.use('/campaign', campaignRouter);
 app.use('/about', aboutRouter);
 app.use('/admin', adminRouter);

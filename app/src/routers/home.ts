@@ -2,7 +2,7 @@ import {Request, Response, Router} from 'express';
 
 import RecommendationApplicationService from '../application/recommendationApplicationService';
 import RecommendationService from '../domain/model/recommendation/recommendationService';
-import db from '../infrastructure/db';
+import db from '../infrastructure/prisma/prisma';
 import RecommendationRepository from '../interface/repository/recommendationRepository';
 
 import Logger from '../infrastructure/logger/logger';

@@ -8,7 +8,7 @@ import DepartmentService from '../../domain/model/department/departmentService';
 
 import DepartmentApplicationService from '../../application/departmentApplicationService';
 
-import db from '../../infrastructure/db';
+import db from '../../infrastructure/prisma/prisma';
 import Logger from '../../infrastructure/logger/logger';
 import conversionpageStatus from '../../utils/conversionPageStatus';
 import SchoolGradeInfoApplicationService from '../../application/schoolGradeInfoApplication';

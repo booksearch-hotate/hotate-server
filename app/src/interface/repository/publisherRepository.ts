@@ -1,8 +1,3 @@
-import sequelize from 'sequelize';
-
-import PublisherTable from '../../infrastructure/db/tables/publishers';
-import BookTable from '../../infrastructure/db/tables/books';
-
 import {IPublisherRepository} from '../../domain/model/publisher/IPublisherRepository';
 import Publisher from '../../domain/model/publisher/publisher';
 
@@ -10,26 +5,23 @@ import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
 
 import {IEsPublisher} from '../../infrastructure/elasticsearch/documents/IEsPublisher';
 import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
-
-/* Sequelizeを想定 */
-interface sequelize {
-  Publisher: typeof PublisherTable,
-  Book: typeof BookTable,
-}
+import {PrismaClient} from '@prisma/client';
 
 export default class PublisherRepository implements IPublisherRepository {
-  private readonly db: sequelize;
+  private readonly db: PrismaClient;
   private readonly esPublisher: EsPublisher;
 
-  public constructor(db: sequelize, esPublisher: EsPublisher) {
+  public constructor(db: PrismaClient, esPublisher: EsPublisher) {
     this.db = db;
     this.esPublisher = esPublisher;
   }
 
   public async save(publisher: Publisher, isBulk: boolean = false): Promise<void> {
-    await this.db.Publisher.create({
-      id: publisher.Id,
-      name: publisher.Name,
+    await this.db.publishers.create({
+      data: {
+        id: publisher.Id,
+        name: publisher.Name,
+      },
     });
 
     const doc: IEsPublisher = {
@@ -41,14 +33,14 @@ export default class PublisherRepository implements IPublisherRepository {
   }
 
   public async findByName(name: string | null): Promise<Publisher | null> {
-    const publisher = await this.db.Publisher.findOne({
+    const publisher = await this.db.publishers.findFirst({
       where: {name},
     });
     if (publisher) return new Publisher(publisher.id, publisher.name);
     return null;
   }
   public async deleteAll(): Promise<void> {
-    const deletes = [this.db.Publisher.destroy({where: {}}), this.esPublisher.initIndex()];
+    const deletes = [this.db.publishers.deleteMany({where: {}}), this.esPublisher.initIndex()];
 
     await Promise.all(deletes);
   }
@@ -57,7 +49,7 @@ export default class PublisherRepository implements IPublisherRepository {
   }
 
   public async deleteNoUsed(publisherId: string): Promise<void> {
-    const count = await this.db.Book.count({
+    const count = await this.db.books.count({
       where: {
         publisher_id: publisherId,
       },
@@ -65,7 +57,7 @@ export default class PublisherRepository implements IPublisherRepository {
 
     if (Number(count) === 0) {
       const list = [
-        this.db.Publisher.destroy({
+        this.db.publishers.deleteMany({
           where: {
             id: publisherId,
           },
@@ -77,19 +69,26 @@ export default class PublisherRepository implements IPublisherRepository {
   }
 
   public async findById(publisherId: string): Promise<Publisher> {
-    const publisher = await this.db.Publisher.findOne({
-      attributes: ['id', 'name'],
-      where: {id: publisherId},
+    const publisher = await this.db.publishers.findFirst({
+      where: {
+        id: publisherId,
+      },
     });
+
     if (publisher) return new Publisher(publisher.id, publisher.name);
     throw new MySQLDBError('Author not found');
   }
 
   public async update(publisher: Publisher): Promise<void> {
     const updateDB = async (p: Publisher) => {
-      await this.db.Publisher.update({
-        name: p.Name,
-      }, {where: {id: p.Id}});
+      await this.db.publishers.update({
+        where: {
+          id: p.Id,
+        },
+        data: {
+          name: p.Name,
+        },
+      });
     };
 
     const updateES = async (p: Publisher) => {
@@ -101,10 +100,11 @@ export default class PublisherRepository implements IPublisherRepository {
 
   public async search(name: string): Promise<Publisher[]> {
     const ids = await this.esPublisher.search(name);
-    const fetchData = await this.db.Publisher.findAll({
+
+    const fetchData = await this.db.publishers.findMany({
       where: {
         id: {
-          [sequelize.Op.in]: ids,
+          in: ids,
         },
       },
     });
@@ -116,10 +116,10 @@ export default class PublisherRepository implements IPublisherRepository {
 
   public async searchUsingLike(name: string): Promise<Publisher[]> {
     const ids = await this.esPublisher.searchUsingLike(name);
-    const fetchData = await this.db.Publisher.findAll({
+    const fetchData = await this.db.publishers.findMany({
       where: {
         id: {
-          [sequelize.Op.in]: ids,
+          in: ids,
         },
       },
     });

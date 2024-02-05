@@ -9,7 +9,7 @@ import RequestRepository from '../../interface/repository/requestRepository';
 import DepartmentRepository from '../../interface/repository/departmentRepository';
 
 import Logger from '../../infrastructure/logger/logger';
-import db from '../../infrastructure/db';
+import db from '../../infrastructure/prisma/prisma';
 
 import conversionpageStatus from '../../utils/conversionPageStatus';
 import {InvalidDataTypeError, NullDataError} from '../../presentation/error';

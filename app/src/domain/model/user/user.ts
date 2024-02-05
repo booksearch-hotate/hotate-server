@@ -14,11 +14,12 @@ export default class User {
       id: number | null,
       email: string,
       password: string,
-      role: 'user' | 'admin' = 'user',
+      role: string = 'user',
       token: string | null = null,
   ) {
     if (password.length === 0 || password.length > this.MAX_PW_LEN) throw new Error('パスワードの長さが異なっています。');
     if (!this.isValidEmail(email)) throw new Error('メールアドレスの形式が異なっています。');
+    if (role !== 'user' && role !== 'admin') throw new Error('ロールの形式が異なっています。');
 
     this.id = id;
     this.token = token;
@@ -31,8 +32,8 @@ export default class User {
     return isEmail(email) && email.startsWith('takako-');
   }
 
-  get Id(): number | null {
-    return this.id;
+  get Id(): number {
+    return this.id ? this.id : -1;
   }
 
   get Token(): string | null {

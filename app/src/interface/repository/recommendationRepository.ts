@@ -1,11 +1,6 @@
-import sequelize from 'sequelize';
 import glob from 'glob';
 import appRoot from 'app-root-path';
 import path from 'path';
-
-import RecommendationTable from '../../infrastructure/db/tables/recommendations';
-import UsingRecommendationsTable from '../../infrastructure/db/tables/usingRecommendations';
-import BookTable from '../../infrastructure/db/tables/books';
 
 import {IRecommendationRepository} from '../../domain/model/recommendation/IRecommendationRepository';
 import Recommendation from '../../domain/model/recommendation/recommendation';
@@ -13,48 +8,59 @@ import RecommendationItem from '../../domain/model/recommendation/recommendation
 import BookId from '../../domain/model/book/bookId';
 import PaginationMargin from '../../domain/model/pagination/paginationMargin';
 import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
-
-/* Sequelizeを想定 */
-interface sequelize {
-  Recommendation: typeof RecommendationTable,
-  UsingRecommendations: typeof UsingRecommendationsTable,
-  Book: typeof BookTable,
-}
+import {PrismaClient} from '@prisma/client';
 
 export default class RecommendationRepository implements IRecommendationRepository {
-  private readonly db: sequelize;
+  private readonly db: PrismaClient;
 
-  public constructor(db: sequelize) {
+  public constructor(db: PrismaClient) {
     this.db = db;
   }
 
   public async findMaxIndex(): Promise<number> {
-    return await this.db.Recommendation.max('sort_index');
+    // return await this.db.recommendations.max('sort_index');
+    const maxIndex = await this.db.recommendations.findFirst({
+      select: {
+        sort_index: true,
+      },
+      orderBy: {
+        sort_index: 'desc',
+      },
+    });
+
+    return maxIndex === null ? 0 : maxIndex.sort_index;
   }
 
   public async insert(recommendationModel: Recommendation): Promise<void> {
-    await this.db.Recommendation.create({
-      id: recommendationModel.Id,
-      title: recommendationModel.Title,
-      content: recommendationModel.Content,
-      is_solid: recommendationModel.IsSolid ? 1 : 0,
-      sort_index: recommendationModel.SortIndex,
-      thumbnail_name: recommendationModel.ThumbnailName,
+    await this.db.recommendations.create({
+      data: {
+        id: recommendationModel.Id,
+        title: recommendationModel.Title,
+        content: recommendationModel.Content,
+        is_solid: recommendationModel.IsSolid ? 1 : 0,
+        sort_index: recommendationModel.SortIndex,
+        thumbnail_name: recommendationModel.ThumbnailName,
+      },
     });
   }
 
   public async fetch(pageCount: number, margin: PaginationMargin): Promise<Recommendation[]> {
     const FETCH_DATA_NUM = margin.Margin;
-    const fetchData = await this.db.Recommendation.findAll({
-      limit: FETCH_DATA_NUM,
-      offset: FETCH_DATA_NUM * pageCount,
-      order: [['is_solid', 'DESC'], ['sort_index', 'DESC']],
+
+    const fetchData = await this.db.recommendations.findMany({
+      take: FETCH_DATA_NUM,
+      skip: FETCH_DATA_NUM * pageCount,
+      orderBy: [
+        {is_solid: 'desc'},
+        {sort_index: 'desc'},
+      ],
+      include: {
+        using_recommendations: true,
+      },
     });
 
     const res = fetchData.map(async (column) => {
-      const fetchData = await this.db.UsingRecommendations.findAll({where: {recommendation_id: column.id}});
-
-      const items = fetchData === null ? [] : fetchData.map((column) => new RecommendationItem(new BookId(column.book_id), column.comment));
+      const items = fetchData === null ? [] : column.using_recommendations.map((column) => new RecommendationItem(new BookId(column.book_id), column.comment));
 
       return new Recommendation(
           column.id,
@@ -73,17 +79,15 @@ export default class RecommendationRepository implements IRecommendationReposito
   }
 
   public async fetchAllCount(): Promise<number> {
-    return await this.db.Recommendation.count();
+    return await this.db.recommendations.count();
   }
 
   public async findById(id: string): Promise<Recommendation | null> {
-    const fetchData = await this.db.Recommendation.findOne({where: {id}});
+    const fetchData = await this.db.recommendations.findFirst({where: {id}, include: {using_recommendations: true}});
 
     if (fetchData === null) return null;
 
-    const fetchBooks = await this.db.UsingRecommendations.findAll({where: {recommendation_id: id}});
-
-    const items = fetchBooks.map((column) => new RecommendationItem(new BookId(column.book_id), column.comment));
+    const items = fetchData.using_recommendations.map((column) => new RecommendationItem(new BookId(column.book_id), column.comment));
 
     return new Recommendation(
         fetchData.id,
@@ -100,20 +104,22 @@ export default class RecommendationRepository implements IRecommendationReposito
 
   public async update(recommendation: Recommendation): Promise<void> {
     const settingBooks = async () => {
-      await this.db.UsingRecommendations.destroy({where: {recommendation_id: recommendation.Id}});
+      await this.db.using_recommendations.deleteMany({where: {recommendation_id: recommendation.Id}});
 
-      await this.db.UsingRecommendations.bulkCreate(recommendation.RecommendationItems.map((item) => {
-        return {
-          recommendation_id: recommendation.Id,
-          book_id: item.BookId.Id,
-          comment: item.Comment,
-        };
-      }));
+      await this.db.using_recommendations.createMany({
+        data: recommendation.RecommendationItems.map((item) => {
+          return {
+            recommendation_id: recommendation.Id,
+            book_id: item.BookId.Id,
+            comment: item.Comment,
+          };
+        }),
+      });
     };
 
     const settingSortIndex = async () => {
       /* ソート順の調整 */
-      const beforeData = await this.db.Recommendation.findOne({where: {id: recommendation.Id}});
+      const beforeData = await this.db.recommendations.findFirst({where: {id: recommendation.Id}});
 
       if (beforeData === null) throw new MySQLDBError('Could not find recommendation section.');
 
@@ -127,12 +133,36 @@ export default class RecommendationRepository implements IRecommendationReposito
       }
 
       if (beforeSortIndex > updateSortIndex) {
-        await this.db.Recommendation.increment('sort_index', {
-          where: {sort_index: {[sequelize.Op.between]: [updateSortIndex, beforeSortIndex - 1]}},
+        // await this.db.recommendations.increment('sort_index', {
+        //   where: {sort_index: {[sequelize.Op.between]: [updateSortIndex, beforeSortIndex - 1]}},
+        // });
+
+        await this.db.recommendations.updateMany({
+          where: {
+            sort_index: {
+              gte: updateSortIndex,
+              lte: beforeSortIndex - 1,
+            },
+          },
+          data: {
+            sort_index: {
+              increment: 1,
+            },
+          },
         });
       } else if (updateSortIndex > beforeSortIndex) {
-        await this.db.Recommendation.decrement('sort_index', {
-          where: {sort_index: {[sequelize.Op.between]: [beforeSortIndex + 1, updateSortIndex]}},
+        await this.db.recommendations.updateMany({
+          where: {
+            sort_index: {
+              gte: beforeSortIndex + 1,
+              lte: updateSortIndex,
+            },
+          },
+          data: {
+            sort_index: {
+              decrement: 1,
+            },
+          },
         });
       }
     };
@@ -140,48 +170,67 @@ export default class RecommendationRepository implements IRecommendationReposito
     const settingIsSolid = async () => {
       if (!recommendation.IsSolid) return;
 
-      await this.db.Recommendation.update({is_solid: 0}, {where: {}});
+      await this.db.recommendations.updateMany({
+        where: {},
+        data: {
+          is_solid: 0,
+        },
+      });
     };
 
     await Promise.all([settingBooks(), settingSortIndex(), settingIsSolid()]);
 
-    await this.db.Recommendation.update({
-      title: recommendation.Title,
-      content: recommendation.Content,
-      sort_index: recommendation.SortIndex,
-      is_solid: recommendation.IsSolid ? 1 : 0,
-      thumbnail_name: recommendation.ThumbnailName,
-    }, {where: {id: recommendation.Id}});
+    await this.db.recommendations.update({
+      where: {
+        id: recommendation.Id,
+      },
+      data: {
+        title: recommendation.Title,
+        content: recommendation.Content,
+        sort_index: recommendation.SortIndex,
+        is_solid: recommendation.IsSolid ? 1 : 0,
+        thumbnail_name: recommendation.ThumbnailName,
+      },
+    });
   }
 
   public async delete(recommendation: Recommendation): Promise<void> {
-    await this.db.UsingRecommendations.destroy({where: {recommendation_id: recommendation.Id}});
-
-    await this.db.Recommendation.decrement('sort_index', {
-      where: {sort_index: {[sequelize.Op.gt]: recommendation.SortIndex}},
+    await this.db.recommendations.updateMany({
+      where: {
+        sort_index: {
+          gt: recommendation.SortIndex,
+        },
+      },
+      data: {
+        sort_index: {
+          decrement: 1,
+        },
+      },
     });
 
-    await this.db.Recommendation.destroy({where: {id: recommendation.Id}});
+    await this.db.recommendations.delete({where: {id: recommendation.Id}});
   }
 
   public async findByBookId(bookId: BookId): Promise<string[]> {
-    const recommendationIds = await this.db.UsingRecommendations.findAll({
+    const recommendationIds = await this.db.using_recommendations.findMany({
       where: {book_id: bookId.Id},
-      limit: 9,
-      order: [['id', 'DESC']],
+      orderBy: {
+        id: 'desc',
+      },
+      take: 9,
     });
 
     return recommendationIds.map((column) => column.recommendation_id);
   }
 
   public async removeUsingByBookId(bookId: BookId): Promise<void> {
-    await this.db.UsingRecommendations.destroy({
+    await this.db.using_recommendations.deleteMany({
       where: {book_id: bookId.Id},
     });
   }
 
   public async removeUsingAll(): Promise<void> {
-    await this.db.UsingRecommendations.destroy({
+    await this.db.using_recommendations.deleteMany({
       where: {},
     });
   }

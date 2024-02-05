@@ -12,7 +12,7 @@ import BookRequestService from '../domain/model/bookRequest/bookRequestService';
 import DepartmentApplicationService from '../application/departmentApplicationService';
 import BookRequestApplicationService from '../application/bookRequestApplicationService';
 
-import db from '../infrastructure/db';
+import db from '../infrastructure/prisma/prisma';
 import Logger from '../infrastructure/logger/logger';
 
 import conversionpageStatus from '../utils/conversionPageStatus';

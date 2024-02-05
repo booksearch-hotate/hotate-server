@@ -10,7 +10,7 @@ import RecommendationService from '../../domain/model/recommendation/recommendat
 import BookApplicationService from '../../application/bookApplicationService';
 import BookRepository from '../../interface/repository/bookRepository';
 
-import db from '../../infrastructure/db';
+import db from '../../infrastructure/prisma/prisma';
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 
 import conversionpageCounter from '../../utils/conversionPageCounter';

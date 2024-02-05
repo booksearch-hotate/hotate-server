@@ -23,16 +23,21 @@ export default class BookRequest {
   public constructor(
       id: string,
       bookName: string,
-      authorName: string,
-      publisherName: string,
-      isbn: string,
-      message: string,
+      authorName: string | null,
+      publisherName: string | null,
+      isbn: string | null,
+      message: string | null,
       department: Department,
       schoolYear: string,
       schoolClass: string,
       userName: string,
       createdAt: Date | null = null,
   ) {
+    if (authorName === null) authorName = '';
+    if (publisherName === null) publisherName = '';
+    if (isbn === null) isbn = '';
+    if (message === null) message = '';
+
     if (bookName.length === 0 || bookName.length > this.MAX_BOOK_NAME_LEN) throw new DomainInvalidError(`The format of the name of book is different. Name of book: ${bookName}`);
     if (authorName.length > this.MAX_AUTHOR_NAME_LEN) throw new DomainInvalidError(`The format of the name of author is different. Name of author: ${authorName}`);
     if (publisherName.length > this.MAX_PUBLISHER_NAME_LEN) throw new DomainInvalidError(`The format of the name of publisher is different. Name of author: ${publisherName}`);
