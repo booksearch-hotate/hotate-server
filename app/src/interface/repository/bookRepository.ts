@@ -1,4 +1,4 @@
-import {IBookRepository} from '../../domain/model/book/IBookRepository';
+import {IBookRepository} from '../../domain/repository/IBookRepository';
 import Book from '../../domain/model/book/book';
 import Author from '../../domain/model/author/author';
 import Publisher from '../../domain/model/publisher/publisher';

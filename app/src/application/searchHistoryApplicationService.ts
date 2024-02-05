@@ -1,5 +1,5 @@
 import SearchHistory from '../domain/model/searchHistory/searchHistory';
-import {ISearchHistoryRepository} from '../domain/model/searchHistory/ISearchHistoryRepository';
+import {ISearchHistoryRepository} from '../domain/repository/ISearchHistoryRepository';
 import SearchHistoryService from '../domain/service/searchHistoryService';
 import SearchHistoryData from '../domain/model/searchHistory/searchHistoryData';
 import PaginationMargin from '../domain/model/pagination/paginationMargin';

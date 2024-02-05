@@ -1,4 +1,4 @@
-import {IAuthorRepository} from '../domain/model/author/IAuthorRepository';
+import {IAuthorRepository} from '../domain/repository/IAuthorRepository';
 import Author from '../domain/model/author/author';
 import AuthorService from '../domain/service/authorService';
 

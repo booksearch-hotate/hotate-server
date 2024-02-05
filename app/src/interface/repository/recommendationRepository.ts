@@ -2,7 +2,7 @@ import glob from 'glob';
 import appRoot from 'app-root-path';
 import path from 'path';
 
-import {IRecommendationRepository} from '../../domain/model/recommendation/IRecommendationRepository';
+import {IRecommendationRepository} from '../../domain/repository/IRecommendationRepository';
 import Recommendation from '../../domain/model/recommendation/recommendation';
 import RecommendationItem from '../../domain/model/recommendation/recommendationItem';
 import BookId from '../../domain/model/book/bookId';

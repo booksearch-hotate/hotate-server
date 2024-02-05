@@ -1,5 +1,5 @@
-import {IBookRequestRepository} from '../domain/model/bookRequest/IBookRequestRepository';
-import {IDepartmentRepository} from '../domain/model/department/IDepartmentRepository';
+import {IBookRequestRepository} from '../domain/repository/IBookRequestRepository';
+import {IDepartmentRepository} from '../domain/repository/IDepartmentRepository';
 
 import BookRequest from '../domain/model/bookRequest/bookRequest';
 import Department from '../domain/model/department/department';

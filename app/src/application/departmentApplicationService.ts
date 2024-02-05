@@ -4,8 +4,8 @@ import DepartmentService from '../domain/service/departmentService';
 
 import DepartmentData from '../domain/model/department/departmentData';
 
-import {IDepartmentRepository} from '../domain/model/department/IDepartmentRepository';
-import {IBookRequestRepository} from '../domain/model/bookRequest/IBookRequestRepository';
+import {IDepartmentRepository} from '../domain/repository/IDepartmentRepository';
+import {IBookRequestRepository} from '../domain/repository/IBookRequestRepository';
 import BookRequestData from '../domain/model/bookRequest/bookRequestData';
 import {OverflowDataError} from '../presentation/error';
 

@@ -1,4 +1,4 @@
-import {IPublisherRepository} from '../domain/model/publisher/IPublisherRepository';
+import {IPublisherRepository} from '../domain/repository/IPublisherRepository';
 import Publisher from '../domain/model/publisher/publisher';
 import PublisherService from '../domain/service/publisherService';
 import {InfrastructureError} from '../presentation/error';

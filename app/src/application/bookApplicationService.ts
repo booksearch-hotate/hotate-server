@@ -1,5 +1,5 @@
 import {IBookRepository}
-  from '../domain/model/book/IBookRepository';
+  from '../domain/repository/IBookRepository';
 
 import Book from '../domain/model/book/book';
 import Author from '../domain/model/author/author';
@@ -13,9 +13,9 @@ import {getImgLink} from '../infrastructure/api/openbd';
 
 import BookId from '../domain/model/book/bookId';
 import PaginationMargin from '../domain/model/pagination/paginationMargin';
-import {IAuthorRepository} from '../domain/model/author/IAuthorRepository';
+import {IAuthorRepository} from '../domain/repository/IAuthorRepository';
 import searchCategory from '../routers/datas/searchCategoryType';
-import {IPublisherRepository} from '../domain/model/publisher/IPublisherRepository';
+import {IPublisherRepository} from '../domain/repository/IPublisherRepository';
 import {ElasticsearchError} from '../presentation/error/infrastructure/elasticsearchError';
 import {MySQLDBError} from '../presentation/error/infrastructure/mySQLDBError';
 import Logger from '../infrastructure/logger/logger';

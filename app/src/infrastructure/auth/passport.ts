@@ -5,7 +5,7 @@ import {Application} from 'express';
 
 import Logger from '../logger/logger';
 import crypt from './crypt';
-import {IUserRepository} from '../../domain/model/user/IUserRepository';
+import {IUserRepository} from '../../domain/repository/IUserRepository';
 import User from '../../domain/model/user/user';
 
 const logger = new Logger('passport');

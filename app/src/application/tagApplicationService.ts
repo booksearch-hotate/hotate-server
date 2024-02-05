@@ -2,8 +2,8 @@ import Tag from '../domain/model/tag/tag';
 
 import TagService from '../domain/service/tagService';
 
-import {ITagRepository} from '../domain/model/tag/ITagRepository';
-import {IBookRepository} from '../domain/model/book/IBookRepository';
+import {ITagRepository} from '../domain/repository/ITagRepository';
+import {IBookRepository} from '../domain/repository/IBookRepository';
 
 import TagData from '../domain/model/tag/tagData';
 

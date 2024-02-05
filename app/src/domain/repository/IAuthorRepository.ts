@@ -1,4 +1,4 @@
-import Author from './author';
+import Author from '../model/author/author';
 
 export interface IAuthorRepository {
   save (author: Author, isBulk: boolean): Promise<void>

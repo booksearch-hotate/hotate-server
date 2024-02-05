@@ -1,5 +1,5 @@
-import Book from '../book/book';
-import User from '../user/user';
+import Book from '../model/book/book';
+import User from '../model/user/user';
 
 export interface IBookmarkRepository {
   save(user: User, book: Book): Promise<void>;

@@ -1,5 +1,5 @@
 import {PrismaClient} from '@prisma/client';
-import {ISchoolGradeInfoRepository} from '../../domain/model/schoolGradeInfo/ISchoolGradeInfoRepository';
+import {ISchoolGradeInfoRepository} from '../../domain/repository/ISchoolGradeInfoRepository';
 import SchoolClass from '../../domain/model/schoolGradeInfo/schoolClass';
 import SchoolGradeInfo from '../../domain/model/schoolGradeInfo/schoolGradeInfo';
 import SchoolYear from '../../domain/model/schoolGradeInfo/schoolYear';

@@ -1,5 +1,5 @@
-import BookId from '../book/bookId';
-import Tag from './tag';
+import BookId from '../model/book/bookId';
+import Tag from '../model/tag/tag';
 
 export interface ITagRepository {
   createTag (tagModel: Tag): Promise<void>

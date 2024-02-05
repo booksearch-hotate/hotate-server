@@ -1,4 +1,4 @@
-import {ITagRepository} from '../../domain/model/tag/ITagRepository';
+import {ITagRepository} from '../../domain/repository/ITagRepository';
 
 import Tag from '../../domain/model/tag/tag';
 import BookId from '../../domain/model/book/bookId';

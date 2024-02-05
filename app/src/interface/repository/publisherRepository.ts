@@ -1,4 +1,4 @@
-import {IPublisherRepository} from '../../domain/model/publisher/IPublisherRepository';
+import {IPublisherRepository} from '../../domain/repository/IPublisherRepository';
 import Publisher from '../../domain/model/publisher/publisher';
 
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';

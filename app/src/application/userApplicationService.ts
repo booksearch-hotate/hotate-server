@@ -1,4 +1,4 @@
-import {IUserRepository} from '../domain/model/user/IUserRepository';
+import {IUserRepository} from '../domain/repository/IUserRepository';
 import User from '../domain/model/user/user';
 import UserSerive from '../domain/service/userService';
 

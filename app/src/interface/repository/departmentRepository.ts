@@ -1,5 +1,5 @@
 import {PrismaClient} from '@prisma/client';
-import {IDepartmentRepository} from '../../domain/model/department/IDepartmentRepository';
+import {IDepartmentRepository} from '../../domain/repository/IDepartmentRepository';
 
 import Department from '../../domain/model/department/department';
 

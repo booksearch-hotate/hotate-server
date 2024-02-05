@@ -1,5 +1,5 @@
-import PaginationMargin from '../pagination/paginationMargin';
-import SearchHistory from './searchHistory';
+import PaginationMargin from '../model/pagination/paginationMargin';
+import SearchHistory from '../model/searchHistory/searchHistory';
 
 export interface ISearchHistoryRepository {
   add (searchHistoryModel: SearchHistory): Promise<void>

@@ -3,7 +3,7 @@ import RecommendationService from '../domain/service/recommendationService';
 
 import RecommendationData from '../domain/model/recommendation/recommendationData';
 
-import {IRecommendationRepository} from '../domain/model/recommendation/IRecommendationRepository';
+import {IRecommendationRepository} from '../domain/repository/IRecommendationRepository';
 
 import isSameLenAllArray from '../utils/isSameLenAllArray';
 import RecommendationItem from '../domain/model/recommendation/recommendationItem';

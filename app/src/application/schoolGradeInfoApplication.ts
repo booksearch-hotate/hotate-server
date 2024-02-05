@@ -1,4 +1,4 @@
-import {ISchoolGradeInfoRepository} from '../domain/model/schoolGradeInfo/ISchoolGradeInfoRepository';
+import {ISchoolGradeInfoRepository} from '../domain/repository/ISchoolGradeInfoRepository';
 import SchoolClass from '../domain/model/schoolGradeInfo/schoolClass';
 import SchoolGradeInfoData from '../domain/model/schoolGradeInfo/schoolGradeInfoData';
 import SchoolGradeInfo from '../domain/model/schoolGradeInfo/schoolGradeInfo';

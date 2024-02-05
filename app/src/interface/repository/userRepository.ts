@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 
-import {IUserRepository} from '../../domain/model/user/IUserRepository';
+import {IUserRepository} from '../../domain/repository/IUserRepository';
 import {MySQLDBError} from '../../presentation/error/infrastructure/mySQLDBError';
 import User from '../../domain/model/user/user';
 import {PrismaClient} from '@prisma/client';

@@ -1,8 +1,8 @@
-import {IBookRepository} from '../domain/model/book/IBookRepository';
+import {IBookRepository} from '../domain/repository/IBookRepository';
 import BookData from '../domain/model/book/bookData';
 import BookId from '../domain/model/book/bookId';
-import {IBookmarkRepository} from '../domain/model/bookmark/IBookmarkRepository';
-import {IUserRepository} from '../domain/model/user/IUserRepository';
+import {IBookmarkRepository} from '../domain/repository/IBookmarkRepository';
+import {IUserRepository} from '../domain/repository/IUserRepository';
 import Logger from '../infrastructure/logger/logger';
 
 const logger = new Logger('bookmarkApplicationService');

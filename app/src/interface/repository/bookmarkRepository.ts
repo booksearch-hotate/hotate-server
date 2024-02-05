@@ -1,6 +1,6 @@
 import {PrismaClient} from '@prisma/client';
 import Book from '../../domain/model/book/book';
-import {IBookmarkRepository} from '../../domain/model/bookmark/IBookmarkRepository';
+import {IBookmarkRepository} from '../../domain/repository/IBookmarkRepository';
 import User from '../../domain/model/user/user';
 import Logger from '../../infrastructure/logger/logger';
 import Publisher from '../../domain/model/publisher/publisher';
