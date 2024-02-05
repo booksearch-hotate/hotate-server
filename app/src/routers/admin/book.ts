@@ -1,9 +1,9 @@
 import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 
-import BookService from '../../domain/model/book/bookService';
-import AuthorService from '../../domain/model/author/authorService';
-import PublisherService from '../../domain/model/publisher/publisherService';
+import BookService from '../../domain/service/bookService';
+import AuthorService from '../../domain/service/authorService';
+import PublisherService from '../../domain/service/publisherService';
 
 import BookApplicationService from '../../application/bookApplicationService';
 import AuthorApplicationService from '../../application/authorApplicationService';
@@ -26,10 +26,10 @@ import conversionpageCounter from '../../utils/conversionPageCounter';
 import isSameLenAllArray from '../../utils/isSameLenAllArray';
 import conversionpageStatus from '../../utils/conversionPageStatus';
 import TagRepository from '../../interface/repository/tagRepository';
-import TagService from '../../domain/model/tag/tagService';
+import TagService from '../../domain/service/tagService';
 import RecommendationApplicationService from '../../application/recommendationApplicationService';
 import RecommendationRepository from '../../interface/repository/recommendationRepository';
-import RecommendationService from '../../domain/model/recommendation/recommendationService';
+import RecommendationService from '../../domain/service/recommendationService';
 import {ApplicationServiceError, InvalidDataTypeError, NullDataError} from '../../presentation/error';
 
 // eslint-disable-next-line new-cap

@@ -3,9 +3,9 @@ import csurf from 'csurf';
 import multer from 'multer';
 import {broadcast} from '../../handler/ws';
 
-import BookService from '../../domain/model/book/bookService';
-import AuthorService from '../../domain/model/author/authorService';
-import PublisherService from '../../domain/model/publisher/publisherService';
+import BookService from '../../domain/service/bookService';
+import AuthorService from '../../domain/service/authorService';
+import PublisherService from '../../domain/service/publisherService';
 
 import BookApplicationService from '../../application/bookApplicationService';
 import AuthorApplicationService from '../../application/authorApplicationService';

@@ -1,7 +1,7 @@
 import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 
-import TagService from '../../domain/model/tag/tagService';
+import TagService from '../../domain/service/tagService';
 
 import TagApplicationService from '../../application/tagApplicationService';
 

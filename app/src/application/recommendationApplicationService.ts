@@ -1,5 +1,5 @@
 import Recommendation from '../domain/model/recommendation/recommendation';
-import RecommendationService from '../domain/model/recommendation/recommendationService';
+import RecommendationService from '../domain/service/recommendationService';
 
 import RecommendationData from '../domain/model/recommendation/recommendationData';
 

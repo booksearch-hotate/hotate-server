@@ -1,8 +1,8 @@
 import {v4 as uuidv4} from 'uuid';
 
-import Department from './department';
+import Department from '../model/department/department';
 
-import {IDepartmentRepository} from './IDepartmentRepository';
+import {IDepartmentRepository} from '../model/department/IDepartmentRepository';
 
 export default class DepartmentService {
   private readonly departmentRepository: IDepartmentRepository;

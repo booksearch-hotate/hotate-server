@@ -2,7 +2,7 @@ import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 import Logger from '../../../infrastructure/logger/logger';
 
-import BookService from '../../../domain/model/book/bookService';
+import BookService from '../../../domain/service/bookService';
 
 import BookApplicationService from '../../../application/bookApplicationService';
 

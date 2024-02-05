@@ -1,6 +1,6 @@
 import {IUserRepository} from '../domain/model/user/IUserRepository';
 import User from '../domain/model/user/user';
-import UserSerive from '../domain/model/user/userService';
+import UserSerive from '../domain/service/userService';
 
 export default class UserApplicationService {
   private readonly userRepository: IUserRepository;

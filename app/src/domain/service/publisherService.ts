@@ -1,6 +1,6 @@
-import Publisher from './publisher';
+import Publisher from '../model/publisher/publisher';
 
-import {IPublisherRepository} from './IPublisherRepository';
+import {IPublisherRepository} from '../model/publisher/IPublisherRepository';
 
 import {v4 as uuidv4} from 'uuid';
 

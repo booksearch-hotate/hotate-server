@@ -4,7 +4,7 @@ import csurf from 'csurf';
 import DepartmentRepository from '../../interface/repository/departmentRepository';
 import RequestRepository from '../../interface/repository/requestRepository';
 
-import DepartmentService from '../../domain/model/department/departmentService';
+import DepartmentService from '../../domain/service/departmentService';
 
 import DepartmentApplicationService from '../../application/departmentApplicationService';
 

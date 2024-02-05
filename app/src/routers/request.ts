@@ -6,8 +6,8 @@ import {FormInvalidError, NullDataError} from '../presentation/error';
 import DepartmentRepository from '../interface/repository/departmentRepository';
 import RequestRepository from '../interface/repository/requestRepository';
 
-import DepartmentService from '../domain/model/department/departmentService';
-import BookRequestService from '../domain/model/bookRequest/bookRequestService';
+import DepartmentService from '../domain/service/departmentService';
+import BookRequestService from '../domain/service/bookRequestService';
 
 import DepartmentApplicationService from '../application/departmentApplicationService';
 import BookRequestApplicationService from '../application/bookRequestApplicationService';

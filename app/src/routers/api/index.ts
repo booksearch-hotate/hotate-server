@@ -2,7 +2,7 @@ import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 import Logger from '../../infrastructure/logger/logger';
 
-import BookService from '../../domain/model/book/bookService';
+import BookService from '../../domain/service/bookService';
 
 import BookApplicationService from '../../application/bookApplicationService';
 import RecommendationApplicationService from '../../application/recommendationApplicationService';
@@ -12,7 +12,7 @@ import BookRepository from '../../interface/repository/bookRepository';
 import db from '../../infrastructure/prisma/prisma';
 import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
 import RecommendationRepository from '../../interface/repository/recommendationRepository';
-import RecommendationService from '../../domain/model/recommendation/recommendationService';
+import RecommendationService from '../../domain/service/recommendationService';
 import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
 import AuthorRepository from '../../interface/repository/authorRepository';
 import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';

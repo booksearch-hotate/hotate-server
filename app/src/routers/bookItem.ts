@@ -1,8 +1,8 @@
 import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 
-import BookService from '../domain/model/book/bookService';
-import TagService from '../domain/model/tag/tagService';
+import BookService from '../domain/service/bookService';
+import TagService from '../domain/service/tagService';
 
 import BookApplicationService from '../application/bookApplicationService';
 import TagApplicationService from '../application/tagApplicationService';
@@ -23,7 +23,7 @@ import AuthorRepository from '../interface/repository/authorRepository';
 import EsPublisher from '../infrastructure/elasticsearch/esPublisher';
 import PublisherRepository from '../interface/repository/publisherRepository';
 import RecommendationRepository from '../interface/repository/recommendationRepository';
-import RecommendationService from '../domain/model/recommendation/recommendationService';
+import RecommendationService from '../domain/service/recommendationService';
 import BookmarkApplicationService from '../application/bookmarkApplicationService';
 import BookmarkRepository from '../interface/repository/bookmarkRepository';
 import UserRepository from '../interface/repository/userRepository';

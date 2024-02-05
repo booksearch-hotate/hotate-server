@@ -5,7 +5,7 @@ import UserApplicationService from '../application/userApplicationService';
 import UserRepository from '../interface/repository/userRepository';
 import db from '../infrastructure/prisma/prisma';
 import Logger from '../infrastructure/logger/logger';
-import UserSerive from '../domain/model/user/userService';
+import UserSerive from '../domain/service/userService';
 
 // eslint-disable-next-line new-cap
 const userRouter = Router();

@@ -4,7 +4,7 @@ import {IBookRepository}
 import Book from '../domain/model/book/book';
 import Author from '../domain/model/author/author';
 import Publisher from '../domain/model/publisher/publisher';
-import BookService from '../domain/model/book/bookService';
+import BookService from '../domain/service/bookService';
 import BookData from '../domain/model/book/bookData';
 
 import searchMode from '../routers/datas/searchModeType';

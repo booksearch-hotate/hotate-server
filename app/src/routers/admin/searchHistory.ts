@@ -1,7 +1,7 @@
 import {Request, Response, Router} from 'express';
 import csurf from 'csurf';
 
-import SearchHistoryService from '../../domain/model/searchHistory/searchHistoryService';
+import SearchHistoryService from '../../domain/service/searchHistoryService';
 
 import SearchHistoryApplicationService from '../../application/searchHistoryApplicationService';
 
