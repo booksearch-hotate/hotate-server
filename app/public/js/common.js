@@ -293,3 +293,37 @@ function question() {
 }
 
 question();
+
+
+/*******
+ * 
+ * フッターの位置を調整するためのスクリプト
+ * 
+*******/
+
+function footerPosition() {
+  const footerDocument = document.getElementById("treeFooter");
+
+  if (footerDocument === null) return;
+
+  // mainタグの一番下の位置を取得
+  const main = document.getElementsByTagName('main')[0];
+  const mainBottom = main.getBoundingClientRect().bottom;
+
+  // windowの高さを取得
+  const windowHeight = window.innerHeight;
+
+  // フッターの高さを取得
+  const footerHeight = footerDocument.getBoundingClientRect().height;
+
+  // フッターの位置を調整
+  if (mainBottom < windowHeight) {
+    footerDocument.style.position = 'absolute';
+    footerDocument.style.bottom = '0';
+    footerDocument.style.width = '100%';
+  } else {
+    footerDocument.style.position = 'relative';
+  }
+}
+
+footerPosition();

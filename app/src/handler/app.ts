@@ -50,6 +50,7 @@ import UserPrismaRepository from "../infrastructure/prisma/repository/UserPrisma
 import recommendationApiRouter from "../routers/api/recommendation/recommendationApi";
 import tagRouter from "../routers/tag";
 import bookApiRouter from "../routers/api/admin/health";
+import privacyRouter from "../routers/privacy";
 
 const COOKIE_MAX_AGE = 60 * 60 * 1000; // 1時間
 
@@ -175,6 +176,7 @@ app.use("/user", userRouter);
 app.use("/user/bookmark", bookMarkRouter);
 app.use("/campaign", campaignRouter);
 app.use("/about", aboutRouter);
+app.use("/privacy", privacyRouter);
 app.use("/admin", adminRouter);
 app.use("/admin/book", bookRouter);
 app.use("/admin/search-history", searchHistoryRouter);
