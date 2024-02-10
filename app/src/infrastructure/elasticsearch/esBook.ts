@@ -113,7 +113,7 @@ export default class EsSearchBook extends EsCsv {
         query: {
           match_all: {},
         },
-        from: fetchCount,
+        from: fetchCount * margin,
         size: margin,
         sort: {
           "db_id": {

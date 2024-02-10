@@ -15,7 +15,7 @@ export default class CheckDBHaveESUseCase implements Usecase<void, Promise<Check
     const idList = [];
 
     for (let i = 0; i < Math.ceil(bookCount / MARGIN); i++) {
-      const esIds = await this.bookES.getIds(i * MARGIN, new PaginationMargin(MARGIN, true));
+      const esIds = await this.bookES.getIds(i, new PaginationMargin(MARGIN, true));
 
       const ids = esIds.map((book) => book.Id);
 
