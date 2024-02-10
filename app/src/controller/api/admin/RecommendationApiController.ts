@@ -39,7 +39,7 @@ export default class RecommendationApiController {
 
       return response.success({isExistBook: isExist, book: bookOutput});
     } catch (e) {
-      return response.error();
+      return response.error(e as Error);
     }
   }
 

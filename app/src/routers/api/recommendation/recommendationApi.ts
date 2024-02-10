@@ -49,6 +49,8 @@ recommendationApiRouter.post("/book/add", csrfProtection, async (req: Request, r
 
     const output = await recommendationApiController.bookAdd(recommendationId, bookId);
 
+    if (output.errObj !== null) throw output.errObj.err;
+
     const book = output.book;
 
     const isExist = output.isExistBook;

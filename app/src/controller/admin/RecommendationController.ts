@@ -120,7 +120,7 @@ export default class RecommendationAdminController {
 
       return response.success();
     } catch (e) {
-      return response.error();
+      return response.error(e as Error);
     }
   }
 

@@ -16,8 +16,4 @@ export default class RecommendationAddBookResponse extends TreeResponse<Recommen
     this.book = o.book.book;
     return this;
   }
-
-  public error() {
-    return this;
-  }
 }

@@ -4,8 +4,4 @@ export default class RecommendationInsertResponse extends TreeResponse<void> {
   public success() {
     return this;
   }
-
-  public error() {
-    return this;
-  }
 }
