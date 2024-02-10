@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./../components/head') %>
+  </head>
+  <body>
+    <%- include('./../components/navbar') %>
+
+    <header>
+      <%- include('./../components/header-title', {mes: 'privacy', logo:'incognito'}) %>
+    </header>
+
+    <main class="mx-4">
+      <article>
+        <h1 class="text-center">プライバシーについて</h1>
+        <section>
+          <h2 class="text-center">メールアドレスの取り扱いについて</h2>
+          <p>
+            TREEではユーザ情報としてメールアドレスを取り扱っています。
+            このメールアドレスは学校指定のメールアドレスのみ許可するようにしてあります。
+            現在のバージョンでは、<u>このメールアドレスを用いてメール配信を実施する予定はございません。</u>
+            また、メールアドレスを含めたユーザ情報は全てクライアントPC上で管理しており、外部に公開しておりません。
+          </p>
+        </section>
+        <section>
+          <h2 class="text-center">検索履歴の取り扱いについて</h2>
+          <p>
+            TREEでは検索結果画面に、検索ワードに関連した検索ワードを表示する機能があります。
+            この機能を実現させるため、皆さんが入力した検索ワードをデータベース上並びに検索エンジン上に保存しています。
+            検索エンジンはネット上からアクセスする形なので、検索履歴の情報もネットに出ている状態です。
+            もちろんセキュリティには最大限配慮していますが、万が一のことがありますので個人情報や他人を攻撃するようなワードは入力しないようにお願いします。
+          </p>
+        </section>
+        <section>
+          <h2 class="text-center">本リクエスト機能について</h2>
+          <p>
+            本のリクエスト内容は管理者（図書館の司書さん）が確認できるようになっています。
+            リクエスト内容は外部ネットワークで保存・管理していませんので、安心してリクエスト機能をお使いください！
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <%- include('./../components/footer') %>
+
+    <%- include('./../components/input-js') %>
+  </body>
+</html>
