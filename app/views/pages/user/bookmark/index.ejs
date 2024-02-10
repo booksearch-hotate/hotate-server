@@ -12,31 +12,35 @@
     </header>
 
     <main>
-      <div class="bookmark-list-box">
-        <div class="wrapper grid my-4">
-          <% for (const book of pageData.anyData.bookmarks) { %>
-            <div class="book-box">
-              <div class="book">
-                <img src="<%= book.ImgLink %>" class="img-fluid rounded-start" data-isbn="<%= book.Isbn %>">
-                <div class="book-text">
-                  <p class="book-title"><%= book.BookName %></p>
-                  <p class="book-writer"><%= book.AuthorName %></p>
-                  <p class="book-content"><%= book.BookContent %></p>
-                  <div class="tag-flex">
-                    <% book.Tags.forEach(tag => { %>
-                      <%- include('../../../components/book-tag', {tag: tag}) %>
-                    <% }) %> 
+      <% if (pageData.anyData.bookmarks.length) { %>
+        <div class="bookmark-list-box">
+          <div class="wrapper grid my-4">
+            <% for (const book of pageData.anyData.bookmarks) { %>
+              <div class="book-box">
+                <div class="book">
+                  <img src="<%= book.ImgLink %>" class="img-fluid rounded-start" data-isbn="<%= book.Isbn %>">
+                  <div class="book-text">
+                    <p class="book-title"><%= book.BookName %></p>
+                    <p class="book-writer"><%= book.AuthorName %></p>
+                    <p class="book-content"><%= book.BookContent %></p>
+                    <div class="tag-flex">
+                      <% book.Tags.forEach(tag => { %>
+                        <%- include('../../../components/book-tag', {tag: tag}) %>
+                      <% }) %> 
+                    </div>
                   </div>
                 </div>
+                <a href="/item/<%= book.Id %>" class="tree-button tree-button-mini mx-auto my-2">
+                  <i class="bi bi-book me-2"></i>
+                  詳細
+                </a>
               </div>
-              <a href="/item/<%= book.Id %>" class="tree-button tree-button-mini mx-auto my-2">
-                <i class="bi bi-book me-2"></i>
-                詳細
-              </a>
-            </div>
-          <% } %>
+            <% } %>
+          </div>
         </div>
-      </div>
+      <% } else { %>
+        <%- include('../../../components/no-item', {title: "ブックマークが見つかりませんでした。", mes: "自分のお気に入りのブックマークをどんどん登録しましょう！", icon: "star"}) %>
+      <% } %>
     </main>
 
     <%- include('./../../../components/footer') %>
