@@ -323,4 +323,51 @@ function footerPosition() {
   }
 }
 
-footerPosition();
+function paginationPosition() {
+  const pagination = document.getElementById('treePagination');
+
+  if (pagination === null) return;
+
+  const footer = document.getElementById('treeFooter');
+
+  if (footer === null) return;
+
+  // mainタグの高さを取得
+  const main = document.getElementsByTagName('main')[0];
+  const mainHeight = main.clientHeight;
+
+  // paginationの高さを取得
+  const paginationHeight = pagination.clientHeight;
+
+  // windowの高さを取得
+  const windowHeight = window.innerHeight;
+
+  // フッターの高さを取得
+  const footerHeight = footer.clientHeight;
+
+  // paginationの位置を調整
+
+  if (mainHeight + paginationHeight + footerHeight < windowHeight) {
+    pagination.style.position = 'absolute';
+    pagination.style.bottom = `${footerHeight}px`;
+    pagination.style.width = '100%';
+  } else {
+    pagination.style.position = 'relative';
+  }
+}
+// isbn経由で画像リンクを取得した後もpositionを調整する
+window.addEventListener('load', () => {
+  const imgLink = document.getElementById('imgLink');
+  if (imgLink !== null) {
+    const img = new Image();
+    img.src = imgLink.src;
+    img.onload = () => {
+      footerPosition();
+      paginationPosition();
+    }
+  } else {
+    footerPosition();
+    paginationPosition();
+  }
+});
+
