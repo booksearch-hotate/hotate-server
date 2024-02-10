@@ -1,64 +1,62 @@
-import {Request, Response, Router} from 'express';
-import csurf from 'csurf';
+import {Request, Response, Router} from "express";
+import csurf from "csurf";
 
-import {FormInvalidError, NullDataError} from '../presentation/error';
+import {FormInvalidError, NullDataError} from "../presentation/error";
 
-import DepartmentRepository from '../interface/repository/departmentRepository';
-import RequestRepository from '../interface/repository/requestRepository';
+import db from "../infrastructure/prisma/prisma";
+import Logger from "../infrastructure/logger/logger";
 
-import DepartmentService from '../domain/service/departmentService';
-import BookRequestService from '../domain/service/bookRequestService';
-
-import DepartmentApplicationService from '../application/departmentApplicationService';
-import BookRequestApplicationService from '../application/bookRequestApplicationService';
-
-import db from '../infrastructure/prisma/prisma';
-import Logger from '../infrastructure/logger/logger';
-
-import conversionpageStatus from '../utils/conversionPageStatus';
-import SchoolGradeInfoApplicationService from '../application/schoolGradeInfoApplication';
-import SchoolYearRepository from '../interface/repository/schoolYearRepository';
+import conversionpageStatus from "../utils/conversionPageStatus";
+import RequestIndexController from "../controller/RequestIndexController";
+import SetRequestUseCase from "../usecase/request/SetRequestUsecase";
+import SchoolGradeInfoPrismaRepository from "../infrastructure/prisma/repository/SchoolGradeInfoPrismaRepository";
+import DepartmentPrismaRepository from "../infrastructure/prisma/repository/DepartmentPrismaRepository";
+import MakeRequestDataUsecase from "../usecase/request/MakeRequestDataUsecase";
+import SaveRequestUsecase from "../usecase/request/SaveRequestUsecase";
+import BookRequestPrismaRepository from "../infrastructure/prisma/repository/BookRequestPrismaRepository";
 
 // eslint-disable-next-line new-cap
 const requestRouter = Router();
 
 const csrfProtection = csurf({cookie: false});
 
-const logger = new Logger('bookRequest');
+const logger = new Logger("bookRequest");
 
-const departmentApplicationService = new DepartmentApplicationService(
-    new DepartmentRepository(db),
-    new RequestRepository(db),
-    new DepartmentService(new DepartmentRepository(db)),
+const requestIndexController = new RequestIndexController(
+    new SetRequestUseCase(
+        new SchoolGradeInfoPrismaRepository(db),
+        new DepartmentPrismaRepository(db),
+    ),
+    new MakeRequestDataUsecase(
+        new DepartmentPrismaRepository(db),
+    ),
+    new SaveRequestUsecase(
+        new BookRequestPrismaRepository(db),
+    ),
 );
 
-const requestApplicationService = new BookRequestApplicationService(
-    new RequestRepository(db),
-    new DepartmentRepository(db),
-    new BookRequestService,
-);
+/*
+本のリクエスト入力を行う画面
+*/
+requestRouter.get("/request", csrfProtection, async (req: Request, res: Response) => {
+  res.pageData.headTitle = "本のリクエスト ";
 
-const schoolGradeInfoApplicationService = new SchoolGradeInfoApplicationService(
-    new SchoolYearRepository(db),
-);
+  const keepReqObj = typeof req.session.keepValue === "object" ? req.session.keepValue.keepReqObj : {};
 
-requestRouter.get('/request', csrfProtection, async (req: Request, res: Response) => {
-  res.pageData.headTitle = '本のリクエスト ';
+  const output = await requestIndexController.setRequest();
 
-  const keepReqObj = typeof req.session.keepValue === 'object' ? req.session.keepValue.keepReqObj : {};
+  if (output.departmentList.length === 0) {
+    logger.error("The book request service is not available because the department is not set up.");
+    req.session.status = {type: "Warning", mes: "現在本リクエスト機能は使用できません。"};
 
-  const departmentList = await departmentApplicationService.findAllDepartment();
-
-  if (departmentList.length === 0) {
-    logger.error('The book request service is not available because the department is not set up.');
-    req.session.status = {type: 'Warning', mes: '現在本リクエスト機能は使用できません。'};
-    return res.redirect('/');
+    req.flash("warning", "現在本リクエスト機能は使用できません。");
+    return res.redirect("/");
   }
 
   res.pageData.anyData = {
-    departmentList,
+    departmentList: output.departmentList,
     saveVal: keepReqObj,
-    schoolGradeInfo: await schoolGradeInfoApplicationService.find(),
+    schoolGradeInfo: output.schoolGradeInfo,
   };
 
   res.pageData.status = conversionpageStatus(req.session.status);
@@ -66,10 +64,13 @@ requestRouter.get('/request', csrfProtection, async (req: Request, res: Response
 
   res.pageData.csrfToken = req.csrfToken();
 
-  return res.render('pages/request', {pageData: res.pageData});
+  return res.render("pages/request", {pageData: res.pageData});
 });
 
-requestRouter.post('/confirm', csrfProtection, async (req: Request, res: Response) => {
+/*
+入力内容をsessionに格納するためにPOSTルーティング。/confirm-requestにリダイレクトする
+ */
+requestRouter.post("/confirm", csrfProtection, async (req: Request, res: Response) => {
   const bookName = req.body.bookName;
   const authorName = req.body.authorName;
   const publisherName = req.body.publisherName;
@@ -94,85 +95,117 @@ requestRouter.post('/confirm', csrfProtection, async (req: Request, res: Respons
   };
 
   req.session.keepValue = {keepReqObj};
-  return res.redirect('/confirm-request');
+  return res.redirect("/confirm-request");
 });
 
-requestRouter.get('/confirm-request', csrfProtection, async (req: Request, res: Response) => {
-  res.pageData.headTitle = 'リクエスト内容の確認 ';
+/*
+入力内容を確認する画面
+*/
+requestRouter.get("/confirm-request", csrfProtection, async (req: Request, res: Response) => {
+  res.pageData.headTitle = "リクエスト内容の確認 ";
 
   res.pageData.csrfToken = req.csrfToken();
 
   try {
-    const reqData = await requestApplicationService.makeData(req.session.keepValue);
+    const data = req.session.keepValue as {
+      keepReqObj: {
+        bookName: string;
+        authorName: string;
+        publisherName: string;
+        isbn: string;
+        message: string;
+        departmentId: string;
+        schoolYear: string;
+        schoolClass: string;
+        userName: string;
+      };
+    };
 
-    res.pageData.anyData = {request: reqData};
+    if (typeof data === "undefined") throw new NullDataError("The request data could not be obtained.");
 
-    return res.render('pages/confirm-request', {pageData: res.pageData});
+    const reqData = await requestIndexController.makeData(
+        data.keepReqObj.bookName,
+        data.keepReqObj.authorName,
+        data.keepReqObj.publisherName,
+        data.keepReqObj.isbn,
+        data.keepReqObj.message,
+        data.keepReqObj.departmentId,
+        Number(data.keepReqObj.schoolYear),
+        Number(data.keepReqObj.schoolClass),
+        data.keepReqObj.userName,
+    );
+
+    if (reqData === null) throw new NullDataError("The request data could not be obtained.");
+
+    res.pageData.anyData = {request: reqData.data};
+
+    return res.render("pages/confirm-request", {pageData: res.pageData});
   } catch (e: any) {
     logger.error(e);
 
     if (e instanceof FormInvalidError) {
-      req.session.status = {type: 'Failure', error: e, mes: 'フォームの入力が間違っています。もう一度お試しください。'};
-      return res.redirect('/request');
+      req.session.status = {type: "Failure", error: e, mes: "フォームの入力が間違っています。もう一度お試しください。"};
+      return res.redirect("/request");
     }
 
-    req.session.status = {type: 'Failure', error: e, mes: 'リクエスト内容の取得に失敗しました。'};
-    return res.redirect('/');
+    req.session.status = {type: "Failure", error: e, mes: "リクエスト内容の取得に失敗しました。"};
+    return res.redirect("/");
   }
 });
 
-requestRouter.post('/register', csrfProtection, async (req: Request, res: Response) => {
+requestRouter.post("/register", csrfProtection, async (req: Request, res: Response) => {
   try {
-    const requestData = await requestApplicationService.makeData(req.session.keepValue);
+    const data = req.session.keepValue as {
+      keepReqObj: {
+        bookName: string;
+        authorName: string;
+        publisherName: string;
+        isbn: string;
+        message: string;
+        departmentId: string;
+        schoolYear: string;
+        schoolClass: string;
+        userName: string;
+      };
+    };
 
-    const id = requestData.Id;
-    const bookName = requestData.BookName;
-    const authorName = requestData.AuthorName;
-    const publisherName = requestData.PublisherName;
-    const isbn = requestData.Isbn;
-    const message = requestData.Message;
+    if (typeof data === "undefined") throw new NullDataError("The request data could not be obtained.");
 
-    const departmentId = requestData.Department.Id;
-    const schoolYear = requestData.SchoolYear;
-    const schoolClass = requestData.SchoolClass;
-    const userName = requestData.UserName;
-
-    const departmentData = await departmentApplicationService.findById(departmentId);
-
-    // 学科情報が取得できなかった場合はエラー
-    if (departmentData === null) throw new NullDataError('The name of the department could not be obtained.');
-
-    await requestApplicationService.register(
-        id,
-        bookName,
-        authorName,
-        publisherName,
-        isbn,
-        message,
-        departmentData.Id,
-        departmentData.Name,
-        schoolYear,
-        schoolClass,
-        userName,
+    const reqData = await requestIndexController.makeData(
+        data.keepReqObj.bookName,
+        data.keepReqObj.authorName,
+        data.keepReqObj.publisherName,
+        data.keepReqObj.isbn,
+        data.keepReqObj.message,
+        data.keepReqObj.departmentId,
+        Number(data.keepReqObj.schoolYear),
+        Number(data.keepReqObj.schoolClass),
+        data.keepReqObj.userName,
     );
-    logger.info(`Request received. Sender Name: ${userName}`);
 
-    res.redirect('/thanks-request');
+    if (reqData.data === null) throw new NullDataError("The request data could not be obtained.");
+
+    await requestIndexController.save(reqData.data);
+
+
+    logger.info(`Request received. Sender Name: ${data.keepReqObj.userName}`);
+
+    res.redirect("/thanks-request");
   } catch (e: any) {
     logger.error(e);
-    req.session.status = {type: 'Failure', error: e, mes: 'リクエストの記録に失敗しました'};
-    res.redirect('/request');
+    req.session.status = {type: "Failure", error: e, mes: "リクエストの記録に失敗しました"};
+    res.redirect("/request");
   }
 });
 
-requestRouter.get('/thanks-request', (req: Request, res: Response) => {
-  if (typeof req.session.keepValue === 'undefined') return res.redirect('/');
+requestRouter.get("/thanks-request", (req: Request, res: Response) => {
+  if (typeof req.session.keepValue === "undefined") return res.redirect("/");
 
   req.session.keepValue = undefined;
 
-  res.pageData.headTitle = 'リクエスト完了 ';
+  res.pageData.headTitle = "リクエスト完了 ";
 
-  return res.render('pages/thanks-request', {pageData: res.pageData});
+  return res.render("pages/thanks-request", {pageData: res.pageData});
 });
 
 export default requestRouter;

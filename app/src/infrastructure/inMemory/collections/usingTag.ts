@@ -1,4 +1,4 @@
-import {ObjectId} from 'mongodb';
+import {ObjectId} from "mongodb";
 
 export type usingTagDocument = {
   _id?: ObjectId;
@@ -6,4 +6,4 @@ export type usingTagDocument = {
   tag_id: string;
 }
 
-export const usingTagCollectionName = 'usingTagss';
+export const usingTagCollectionName = "usingTagss";

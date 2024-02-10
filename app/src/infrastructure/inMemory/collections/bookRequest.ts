@@ -1,4 +1,4 @@
-import {ObjectId} from 'mongodb';
+import {ObjectId} from "mongodb";
 
 export type requestDocument = {
   _id?: ObjectId
@@ -18,4 +18,4 @@ export type requestDocument = {
   createdAt: Date;
 }
 
-export const bookRequestCollectionName = 'requests';
+export const bookRequestCollectionName = "requests";

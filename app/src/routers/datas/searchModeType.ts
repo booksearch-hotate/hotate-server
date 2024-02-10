@@ -1,3 +1,3 @@
-type searchMode = 'strict' | 'tag' | 'none';
+type searchMode = "strict" | "tag" | "none";
 
 export default searchMode;

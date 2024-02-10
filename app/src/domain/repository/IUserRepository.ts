@@ -1,4 +1,4 @@
-import User from '../model/user/user';
+import User from "../model/user/user";
 
 export interface IUserRepository {
   findByToken(token: string): Promise<User | null>;

@@ -1,4 +1,4 @@
-import {ObjectId} from 'mongodb';
+import {ObjectId} from "mongodb";
 
 export type tagDocument = {
   _id?: ObjectId;
@@ -7,4 +7,4 @@ export type tagDocument = {
   createdAt: Date;
 }
 
-export const tagCollectionName = 'tags';
+export const tagCollectionName = "tags";

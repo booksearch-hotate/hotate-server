@@ -1,5 +1,5 @@
-import Book from '../book/book';
-import User from '../user/user';
+import Book from "../book/book";
+import User from "../user/user";
 
 export default class Bookmark {
   private id: number;

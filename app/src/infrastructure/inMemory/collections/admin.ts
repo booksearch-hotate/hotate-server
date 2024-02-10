@@ -1,4 +1,4 @@
-import {ObjectId} from 'mongodb';
+import {ObjectId} from "mongodb";
 
 export type adminDocument = {
   _id?: ObjectId
@@ -6,4 +6,4 @@ export type adminDocument = {
   pw: string;
 }
 
-export const adminCollectionName = 'admin';
+export const adminCollectionName = "admin";

@@ -1,15 +1,15 @@
-import {v4 as uuidv4} from 'uuid';
+import {v4 as uuidv4} from "uuid";
 
-import Department from '../model/department/department';
+import Department from "../model/department/department";
 
-import {IDepartmentRepository} from '../repository/IDepartmentRepository';
+import {IDepartmentDBRepository} from "../repository/db/IDepartmentDBRepository";
 
 export default class DepartmentService {
-  private readonly departmentRepository: IDepartmentRepository;
+  private readonly departmentRepository: IDepartmentDBRepository;
 
   private readonly MAX_DEPARTMENT_COUNT = 20;
 
-  public constructor(departmentRepository: IDepartmentRepository) {
+  public constructor(departmentRepository: IDepartmentDBRepository) {
     this.departmentRepository = departmentRepository;
   }
 
@@ -31,5 +31,10 @@ export default class DepartmentService {
   public async isOverNumberOfDepartment(): Promise<boolean> {
     const departmentNum = await this.departmentRepository.count();
     return departmentNum > this.MAX_DEPARTMENT_COUNT;
+  }
+
+  public async isSameMaxDepartmentCount(): Promise<boolean> {
+    const departmentNum = await this.departmentRepository.count();
+    return departmentNum === this.MAX_DEPARTMENT_COUNT;
   }
 }

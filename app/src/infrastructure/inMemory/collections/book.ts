@@ -1,4 +1,4 @@
-import {ObjectId} from 'mongodb';
+import {ObjectId} from "mongodb";
 
 export type bookDocument = {
   _id?: ObjectId
@@ -13,4 +13,4 @@ export type bookDocument = {
   book_content: string | null;
 }
 
-export const bookCollectionName = 'books';
+export const bookCollectionName = "books";

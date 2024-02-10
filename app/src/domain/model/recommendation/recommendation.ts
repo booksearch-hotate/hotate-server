@@ -1,11 +1,12 @@
-import {JSDOM} from 'jsdom';
-import DOMPurify from 'dompurify';
+import {JSDOM} from "jsdom";
+import DOMPurify from "dompurify";
 
-import {DomainInvalidError} from '../../../presentation/error';
-import RecommendationItem from './recommendationItem';
+import {DomainInvalidError} from "../../../presentation/error";
+import RecommendationItem from "./recommendationItem";
+import RecommendationId from "./recommendationId";
 
 export default class Recommendation {
-  private id: string;
+  private id: RecommendationId;
   private title: string;
   private content: string;
   private isSolid: boolean;
@@ -21,7 +22,7 @@ export default class Recommendation {
   private readonly MAX_TITLE_LEN = 100;
 
   constructor(
-      id: string,
+      id: RecommendationId,
       title: string,
       content: string,
       isSolid: boolean,
@@ -31,13 +32,13 @@ export default class Recommendation {
       updatedAt: Date,
       recommendationItems: RecommendationItem[],
   ) {
-    if (id === null) throw new DomainInvalidError('The id is null.');
+    if (id === null) throw new DomainInvalidError("The id is null.");
     if (title.length === 0 || title.length > this.MAX_TITLE_LEN) throw new DomainInvalidError(`The format of the title of recommendation section is different. Title of recommendation section: ${title}`);
-    if (content.length === 0|| content.length > this.MAX_CONTENT_LEN) throw new DomainInvalidError('The format of the content of recommendation section is different.');
-    if (isSolid === null) throw new DomainInvalidError('The isSolid is null.');
-    if (thumbnailName === null) throw new DomainInvalidError('The name of thumbnail is null');
-    if (sortIndex === null || sortIndex < 0) throw new DomainInvalidError('Incorrect id.');
-    if (recommendationItems.length > this.MAX_HAVING_BOOK_COUNT) throw new DomainInvalidError('The maximum number of units held has been exceeded.');
+    if (content.length === 0|| content.length > this.MAX_CONTENT_LEN) throw new DomainInvalidError("The format of the content of recommendation section is different.");
+    if (isSolid === null) throw new DomainInvalidError("The isSolid is null.");
+    if (thumbnailName === null) throw new DomainInvalidError("The name of thumbnail is null");
+    if (sortIndex === null || sortIndex < 0) throw new DomainInvalidError("Incorrect id.");
+    if (recommendationItems.length > this.MAX_HAVING_BOOK_COUNT) throw new DomainInvalidError("The maximum number of units held has been exceeded.");
 
     this.id = id;
     this.title = title;
@@ -79,25 +80,25 @@ export default class Recommendation {
   }
 
   public changeTitle(title: string) {
-    if (title.length === 0) throw new DomainInvalidError('Empty title.');
+    if (title.length === 0) throw new DomainInvalidError("Empty title.");
 
     this.title = title;
   }
 
   public changeContent(content: string) {
-    if (content.length === 0) throw new DomainInvalidError('Empty content.');
+    if (content.length === 0) throw new DomainInvalidError("Empty content.");
 
     this.content = content;
   }
 
   public changeSortIndex(sortIndex: number) {
-    if (sortIndex < 1) throw new DomainInvalidError('Invalid sort index.');
+    if (sortIndex < 1) throw new DomainInvalidError("Invalid sort index.");
 
     this.sortIndex = sortIndex;
   }
 
   public changeThumbnailName(thumbnailName: string) {
-    if (thumbnailName.length === 0) throw new DomainInvalidError('Invalid name of thumbnail');
+    if (thumbnailName.length === 0) throw new DomainInvalidError("Invalid name of thumbnail");
 
     this.thumbnailName = thumbnailName;
   }
@@ -106,8 +107,13 @@ export default class Recommendation {
     this.isSolid = isSolid;
   }
 
+  public changeItems(bookIds: RecommendationItem[]) {
+    if (bookIds.length > this.MAX_HAVING_BOOK_COUNT) throw new DomainInvalidError("The maximum number of units held has been exceeded.");
+    this.recommendationItems = bookIds;
+  }
+
   public replaceItems(bookIds: RecommendationItem[]) {
-    if (bookIds.length > this.MAX_HAVING_BOOK_COUNT) throw new DomainInvalidError('The maximum number of units held has been exceeded.');
+    if (bookIds.length > this.MAX_HAVING_BOOK_COUNT) throw new DomainInvalidError("The maximum number of units held has been exceeded.");
     this.recommendationItems = bookIds;
   }
 
@@ -120,7 +126,7 @@ export default class Recommendation {
   }
 
   public sanitizeContent() {
-    const window = new JSDOM('').window as unknown as Window;
+    const window = new JSDOM("").window as unknown as Window;
     // eslint-disable-next-line new-cap
     const purify = DOMPurify(window);
 

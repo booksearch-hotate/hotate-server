@@ -1,12 +1,12 @@
-import Author from '../model/author/author';
-import {IAuthorRepository} from '../repository/IAuthorRepository';
+import Author from "../model/author/author";
 
-import {v4 as uuidv4} from 'uuid';
+import {v4 as uuidv4} from "uuid";
+import {IAuthorDBRepository} from "../repository/db/IAuthorDBRepository";
 
 export default class AuthorService {
-  private readonly authorRepository: IAuthorRepository;
+  private readonly authorRepository: IAuthorDBRepository;
 
-  public constructor(authorRepository: IAuthorRepository) {
+  public constructor(authorRepository: IAuthorDBRepository) {
     this.authorRepository = authorRepository;
   }
 
@@ -16,6 +16,7 @@ export default class AuthorService {
    * @returns 存在するか
    */
   public async isExist(author: Author): Promise<boolean> {
+    if (author.Name === null) return false;
     const found = await this.authorRepository.findByName(author.Name);
 
     return found !== null;

@@ -1,4 +1,4 @@
-import {ObjectId} from 'mongodb';
+import {ObjectId} from "mongodb";
 
 export type schoolGradeInfoDocument = {
   _id?: ObjectId
@@ -6,4 +6,4 @@ export type schoolGradeInfoDocument = {
   school_class: number;
 }
 
-export const SchoolGradeInfoCollectionName = 'schoolGradeInfos';
+export const SchoolGradeInfoCollectionName = "schoolGradeInfos";

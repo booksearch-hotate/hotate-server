@@ -1,8 +1,8 @@
-import Book from '../model/book/book';
-import BookId from '../model/book/bookId';
-import PaginationMargin from '../model/pagination/paginationMargin';
-import Author from '../model/author/author';
-import Publisher from '../model/publisher/publisher';
+import Book from "../model/book/book";
+import BookId from "../model/book/bookId";
+import PaginationMargin from "../model/pagination/paginationMargin";
+import Author from "../model/author/author";
+import Publisher from "../model/publisher/publisher";
 
 export interface IBookRepository {
   /**

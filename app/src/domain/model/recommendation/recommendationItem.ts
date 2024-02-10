@@ -1,16 +1,16 @@
-import {DomainInvalidError} from '../../../presentation/error';
-import BookId from '../book/bookId';
+import {DomainInvalidError} from "../../../presentation/error";
+import Book from "../book/book";
 
 export default class RecommendationItem {
-  private bookId: BookId;
+  private book: Book;
   private comment: string | null;
 
   private readonly MAX_COMMENT_LEN = 100;
 
-  constructor(bookId: BookId, comment: string | null) {
-    if (comment !== null && comment.length > this.MAX_COMMENT_LEN) throw new DomainInvalidError('Have exceeded the number of characters you can enter.');
+  constructor(book: Book, comment: string | null) {
+    if (comment !== null && comment.length > this.MAX_COMMENT_LEN) throw new DomainInvalidError("Have exceeded the number of characters you can enter.");
 
-    this.bookId = bookId;
+    this.book = book;
     this.comment = comment;
   }
 
@@ -18,7 +18,7 @@ export default class RecommendationItem {
     return this.comment;
   }
 
-  get BookId() {
-    return this.bookId;
+  get Book() {
+    return this.book;
   }
 }

@@ -1,4 +1,4 @@
-import {ObjectId} from 'mongodb';
+import {ObjectId} from "mongodb";
 
 export type authorDocument = {
   _id?: ObjectId
@@ -6,4 +6,4 @@ export type authorDocument = {
   name: string | null;
 }
 
-export const authorCollectionName = 'authors';
+export const authorCollectionName = "authors";

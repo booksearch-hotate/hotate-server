@@ -1,12 +1,12 @@
-import Tag from '../model/tag/tag';
-import {ITagRepository} from '../repository/ITagRepository';
+import Tag from "../model/tag/tag";
 
-import {v4 as uuidv4} from 'uuid';
+import {v4 as uuidv4} from "uuid";
+import {ITagDBRepository} from "../repository/db/ITagDBRepository";
 
 export default class TagService {
-  private readonly tagRepository: ITagRepository;
+  private readonly tagRepository: ITagDBRepository;
 
-  public constructor(tagRepository: ITagRepository) {
+  public constructor(tagRepository: ITagDBRepository) {
     this.tagRepository = tagRepository;
   }
 
@@ -21,8 +21,6 @@ export default class TagService {
   }
 
   public async getCount(tag: Tag): Promise<number> {
-    const count = await this.tagRepository.getCount(tag.Id);
-
-    return count;
+    return await this.tagRepository.countById(tag.Id);
   }
 }

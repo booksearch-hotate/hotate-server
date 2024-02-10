@@ -1,6 +1,6 @@
-import BookId from '../model/book/bookId';
-import PaginationMargin from '../model/pagination/paginationMargin';
-import Recommendation from '../model/recommendation/recommendation';
+import BookId from "../model/book/bookId";
+import PaginationMargin from "../model/pagination/paginationMargin";
+import Recommendation from "../model/recommendation/recommendation";
 
 export interface IRecommendationRepository {
   insert(recommendationModel: Recommendation): Promise<void>

@@ -1,6 +1,6 @@
-import {MongoClient} from 'mongodb';
-import {MongoMemoryServer} from 'mongodb-memory-server';
-import {InMemoryDBError} from '../../presentation/error/infrastructure/inMemoryDBError';
+import {MongoClient} from "mongodb";
+import {MongoMemoryServer} from "mongodb-memory-server";
+import {InMemoryDBError} from "../../presentation/error/infrastructure/inMemoryDBError";
 
 /**
  * インメモリで動作するDBです。このDBは**開発環境でのみ動作します**。
@@ -31,7 +31,7 @@ export default class InMemoryDb {
 
   db() {
     if (this.con === null || this.mongoServer === null) {
-      throw new InMemoryDBError('Value of connection or mongo is null. Please execute init method.');
+      throw new InMemoryDBError("Value of connection or mongo is null. Please execute init method.");
     }
 
     const db = this.con.db(this.mongoServer.instanceInfo!.dbName);

@@ -120,6 +120,7 @@ async function checkEqualEsIds () {
       equEsStatus.innerHTML = '<i class="bi bi-x"></i>';
 
       equEsMes.innerHTML = makeDupMes(idList).innerHTML;
+      
       EsIdList = idList;
 
       document.getElementById('deleteToEsBtn').addEventListener('click', deleteBooksToEs);

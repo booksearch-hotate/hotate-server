@@ -1,4 +1,4 @@
-import Publisher from '../model/publisher/publisher';
+import Publisher from "../model/publisher/publisher";
 
 export interface IPublisherRepository {
   save (publisher: Publisher, isBulk: boolean): Promise<void>

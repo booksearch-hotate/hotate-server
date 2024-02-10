@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 
-const url = 'http://api.openbd.jp/v1/get?isbn=';
+const url = "http://api.openbd.jp/v1/get?isbn=";
 
 /**
  * ISBNに対応する本の画像データを[openBD](https://openbd.jp/)から取得します。

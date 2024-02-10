@@ -1,14 +1,15 @@
-import {DomainInvalidError} from '../../../presentation/error';
+import {DomainInvalidError} from "../../../presentation/error";
+import SearchHistoryId from "./searchHistoryId";
 
 export default class SearchHistory {
   private words: string;
-  private id: string;
+  private id: SearchHistoryId;
   private createdAt: Date;
 
-  public constructor(id:string, words: string, createdAt: Date) {
-    if (words === undefined) throw new DomainInvalidError('keywords of history of search is unknown.');
-    if (id === undefined) throw new DomainInvalidError('id of history of search is unknown.');
-    if (createdAt === undefined) throw new DomainInvalidError('date of create of history of search is unknown.');
+  public constructor(id:SearchHistoryId, words: string, createdAt: Date) {
+    if (words === undefined) throw new DomainInvalidError("keywords of history of search is unknown.");
+    if (id === undefined) throw new DomainInvalidError("id of history of search is unknown.");
+    if (createdAt === undefined) throw new DomainInvalidError("date of create of history of search is unknown.");
 
     this.words = words;
     this.id = id;
@@ -19,7 +20,7 @@ export default class SearchHistory {
     return this.words;
   }
 
-  get Id(): string {
+  get Id(): SearchHistoryId {
     return this.id;
   }
 

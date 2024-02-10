@@ -1,4 +1,4 @@
-import Book from './book';
+import Book from "./book";
 
 export default class BookData {
   private id: string;
@@ -16,18 +16,18 @@ export default class BookData {
   private tags: string[] = [];
 
   public constructor(book: Book) {
-    this.id = book.Id;
+    this.id = book.Id.Id;
     this.bookName = book.Name;
-    this.authorName = book.Author.Name === null ? '' : book.Author.Name;
-    this.publisherName = book.Publisher.Name === null ? '' : book.Publisher.Name;
-    this.BookContent = book.Content === null ? '' : book.Content;
+    this.authorName = book.Author.Name === null ? "" : book.Author.Name;
+    this.publisherName = book.Publisher.Name === null ? "" : book.Publisher.Name;
+    this.BookContent = book.Content === null ? "" : book.Content;
     this.bookSubName = book.SubName;
     this.imgLink = null;
     this.isbn = book.Isbn;
     this.year = book.Year;
     this.ndc = book.Ndc;
-    this.authorId = book.Author.Id;
-    this.publisherId = book.Publisher.Id;
+    this.authorId = book.Author.Id.Id;
+    this.publisherId = book.Publisher.Id.Id;
 
     book.Tags.forEach((tag) => this.tags.push(tag.Name));
   }

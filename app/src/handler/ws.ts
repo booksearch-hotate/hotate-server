@@ -1,9 +1,9 @@
-import WebSocket from 'ws';
+import WebSocket from "ws";
 
 let wss: WebSocket.Server;
 
 interface broadcastData {
-  progress: 'init' | 'error' | 'complete' | 'progress',
+  progress: "init" | "error" | "complete" | "progress",
   data: {
     current: number,
     total: number,

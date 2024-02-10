@@ -1,17 +1,17 @@
-import ElasticSearch from './elasticsearch';
-import * as appRoot from 'app-root-path';
-import axios from 'axios';
-import fs from 'fs';
+import ElasticSearch from "./elasticsearch";
+import * as appRoot from "app-root-path";
+import axios from "axios";
+import fs from "fs";
 
-import {IEsAuthor} from './documents/IEsAuthor';
-import {IEsBook} from './documents/IEsBook';
-import {IEsPublisher} from './documents/IEsPublisher';
+import {IEsAuthor} from "./documents/IEsAuthor";
+import {IEsBook} from "./documents/IEsBook";
+import {IEsPublisher} from "./documents/IEsPublisher";
 
-import esDocuments from './documents/documentType';
-import Logger from '../logger/logger';
-import {EsBulkApiError} from '../../presentation/error/infrastructure/elasticsearchError';
+import esDocuments from "./documents/documentType";
+import Logger from "../logger/logger";
+import {EsBulkApiError} from "../../presentation/error/infrastructure/elasticsearchError";
 
-const logger = new Logger('ElasticsearchBulkApiByCsv');
+const logger = new Logger("ElasticsearchBulkApiByCsv");
 
 /**
  * csvファイルからbulk apiを作成する関係のクラスです。
@@ -33,7 +33,7 @@ export default class EsCsv extends ElasticSearch {
    */
   public createBulkApiFile() {
     // bulkApiFileNameのjsonファイルをuploads/json/に作成する
-    fs.writeFileSync(this.bulkApiPath, '');
+    fs.writeFileSync(this.bulkApiPath, "");
   }
 
   /**
@@ -56,21 +56,21 @@ export default class EsCsv extends ElasticSearch {
 
       /* ファイルは存在するが中身がないの場合 */
       if (file.toString().length === 0) {
-        logger.trace('Skipped execute bulk api because of file\'s content is empty.');
+        logger.trace("Skipped execute bulk api because of file's content is empty.");
         return;
       }
 
       await axios.post(`${this.uri}/_bulk`, file, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
-      logger.info('Succeeded to execute bulk api.');
+      logger.info("Succeeded to execute bulk api.");
     } catch (e: any) {
       if (e instanceof Error) logger.error(e.message);
 
-      throw new EsBulkApiError('Failed to execute bulk api. Please check the log for details.');
+      throw new EsBulkApiError("Failed to execute bulk api. Please check the log for details.");
     }
   }
 

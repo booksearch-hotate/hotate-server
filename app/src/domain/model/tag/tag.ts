@@ -1,21 +1,21 @@
-import {DomainInvalidError} from '../../../presentation/error';
+import {DomainInvalidError} from "../../../presentation/error";
+import TagId from "./tagId";
 
 export default class Tag {
-  private id: string;
+  private id: TagId;
   private name: string;
   private createdAt: Date | null;
   private bookIds: string[];
 
   public constructor(
-      id: string | undefined,
+      id: TagId,
       name: string | undefined,
       createdAt: Date | null,
       bookIds: string[],
   ) {
-    if (id === undefined) throw new DomainInvalidError('Unknown to id of tag');
-    if (name === undefined) throw new DomainInvalidError('Unknown to passwords of tag');
+    if (name === undefined) throw new DomainInvalidError("Unknown to passwords of tag");
 
-    if (name === '') throw new DomainInvalidError('name of tag is empty');
+    if (name === "") throw new DomainInvalidError("name of tag is empty");
 
     this.id = id;
     this.name = name;
@@ -23,7 +23,7 @@ export default class Tag {
     this.bookIds = bookIds;
   }
 
-  get Id(): string {
+  get Id(): TagId {
     return this.id;
   }
   get Name(): string {
@@ -37,7 +37,7 @@ export default class Tag {
   }
 
   public changeName(name: string | null) {
-    if (name === null) throw new DomainInvalidError('The tag name is null.');
+    if (name === null) throw new DomainInvalidError("The tag name is null.");
 
     this.name = name;
   }

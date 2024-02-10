@@ -1,4 +1,4 @@
-import Department from '../model/department/department';
+import Department from "../model/department/department";
 
 export interface IDepartmentRepository {
   findAllDepartment(): Promise<Department[]>,
