@@ -1,7 +1,15 @@
-FROM node:18
+FROM node:20
 
-COPY . .
+WORKDIR /usr/src/app
 
-RUN npm install --production && npm run pro-build && npm install -g sequelize-cli
+COPY . /usr/src/app
 
-CMD ["node", "dist/server.js", "output-log", "use-aws-es"]
+RUN mkdir log
+
+RUN chown -R node:node /usr/src/app/log /usr/src/app/uploads /usr/src/app/public/thumbnail
+
+RUN npm install --production && npm run pro-build
+
+USER node
+
+CMD ["node", "dist/server.js", "output-log"]
