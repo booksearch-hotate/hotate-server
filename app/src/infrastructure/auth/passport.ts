@@ -44,11 +44,8 @@ export default function passportSetting(app: Application, userRepository: IUserD
     const user = new User(userObj.id, userObj.email, userObj.password, userObj.role, null);
     userRepository.findByEmail(user.Email).then((user) => {
       if (!user) throw new Error("認証失敗");
-
-      logger.debug("認証成功");
       done(null, user);
     }).catch((err) => {
-      logger.debug("認証失敗");
       done(err, null);
     });
   });

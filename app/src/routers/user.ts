@@ -49,10 +49,11 @@ userRouter.post("/register", csrfProtection, async (req, res) => {
   const isAdmin = req.body.isAdmin === "true";
 
   try {
-    await userController.saveUser(id, pw, pw_confirmation, isAdmin);
+    const response = await userController.saveUser(id, pw, pw_confirmation, isAdmin);
+
+    if (response.errObj !== null) throw response.errObj.err;
   } catch (e: any) {
-    logger.error(e);
-    req.flash("error", "エラーが発生しました。入力内容が正しいか確認の上、もう一度登録してください。");
+    req.flash("error", e.message);
     res.redirect("/user/register");
     return;
   }
@@ -124,7 +125,9 @@ userRouter.post("/edit", csrfProtection, async (req, res) => {
   const userId = (req.user as {id: number}).id;
 
   try {
-    await userController.updateUser(userId, email, pw, pw_confirmation, before_pw);
+    const response = await userController.updateUser(userId, email, pw, pw_confirmation, before_pw);
+
+    if (response.errObj !== null) throw response.errObj.err;
   } catch (e: any) {
     req.flash("error", e.message);
     res.redirect("/user/edit");

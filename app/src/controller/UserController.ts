@@ -33,9 +33,9 @@ export default class UserController {
       const input = new UserSaveInputData(email, password, passwordConfirmation, isAdmin);
       await this.saveUserUseCase.execute(input);
 
-      return res;
+      return res.success();
     } catch (e) {
-      return res;
+      return res.error(e as Error);
     }
   }
 
@@ -60,7 +60,7 @@ export default class UserController {
 
       return res.success();
     } catch (e) {
-      return res.error();
+      return res.error(e as Error);
     }
   }
 
