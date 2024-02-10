@@ -306,18 +306,15 @@ function footerPosition() {
 
   if (footerDocument === null) return;
 
-  // mainタグの一番下の位置を取得
+  // mainタグの高さを取得
   const main = document.getElementsByTagName('main')[0];
-  const mainBottom = main.getBoundingClientRect().bottom;
+  const mainHeight = main.clientHeight;
 
   // windowの高さを取得
   const windowHeight = window.innerHeight;
 
-  // フッターの高さを取得
-  const footerHeight = footerDocument.getBoundingClientRect().height;
-
   // フッターの位置を調整
-  if (mainBottom < windowHeight) {
+  if (mainHeight < windowHeight) {
     footerDocument.style.position = 'absolute';
     footerDocument.style.bottom = '0';
     footerDocument.style.width = '100%';
