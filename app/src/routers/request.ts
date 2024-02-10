@@ -46,8 +46,7 @@ requestRouter.get("/request", csrfProtection, async (req: Request, res: Response
   const output = await requestIndexController.setRequest();
 
   if (output.departmentList.length === 0) {
-    logger.error("The book request service is not available because the department is not set up.");
-    req.session.status = {type: "Warning", mes: "現在本リクエスト機能は使用できません。"};
+    logger.warn("学科情報が登録されていないため、リクエスト機能を利用することができません。");
 
     req.flash("warning", "現在本リクエスト機能は使用できません。");
     return res.redirect("/");
