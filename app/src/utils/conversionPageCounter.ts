@@ -1,4 +1,4 @@
-import {Request} from 'express';
+import {Request} from "express";
 
 /**
  * ページネーションで用いるページ数に変換する関数
@@ -6,7 +6,7 @@ import {Request} from 'express';
  * @param pageKey ページ数が格納されているキー
  * @returns 変換したページ数
  */
-export default function conversionpageCounter(req: Request, pageKey: string = 'page') {
+export default function conversionpageCounter(req: Request, pageKey: string = "page") {
   let pageCount = Number(req.query[pageKey] as string);
 
   if (isNaN(pageCount)) pageCount = 0;

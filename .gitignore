@@ -13,3 +13,5 @@ app/public/thumbnail/*
 !app/public/thumbnail/default-thumbnail-*.png
 
 auto_setup_tree.exe
+
+.vscode/*

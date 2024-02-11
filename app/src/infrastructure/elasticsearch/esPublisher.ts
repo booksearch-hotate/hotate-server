@@ -1,9 +1,10 @@
-import EsCsv from './esCsv';
-import axios from 'axios';
+import EsCsv from "./esCsv";
+import axios from "axios";
 
-import {IEsPublisher} from './documents/IEsPublisher';
+import {IEsPublisher} from "./documents/IEsPublisher";
 
-import esDocuments from './documents/documentType';
+import esDocuments from "./documents/documentType";
+import PaginationMargin from "../../domain/model/pagination/paginationMargin";
 
 export default class EsPublisher extends EsCsv {
   constructor(index: esDocuments) {
@@ -14,11 +15,15 @@ export default class EsPublisher extends EsCsv {
    * dbのidに対応した出版社ドキュメントを削除します。
    * @param publisherId 出版社のdbのid
    */
-  public async delete(publisherId: string): Promise<void> {
-    await axios.post(`${this.uri}/_delete_by_query?conflicts=proceed&pretty`, {
+  public async deleteById(publisherId: string): Promise<void> {
+    await this.deleteByIds([publisherId]);
+  }
+
+  public async deleteByIds(ids: string[]): Promise<void> {
+    await axios.post(`${this.uri}/_delete_by_query`, {
       query: {
         term: {
-          'db_id.keyword': publisherId,
+          "db_id": ids,
         },
       },
     });
@@ -40,7 +45,7 @@ export default class EsPublisher extends EsCsv {
     await axios.post(`${this.uri}/_delete_by_query?conflicts=proceed&pretty`, {
       query: {
         term: {
-          'db_id.keyword': publisher.db_id,
+          "db_id.keyword": publisher.db_id,
         },
       },
     });
@@ -48,50 +53,22 @@ export default class EsPublisher extends EsCsv {
     await axios.post(`${this.uri}/_doc`, publisher);
   }
 
-  public async search(name: string): Promise<string[]> {
-    const res = await axios.get(`${this.uri}/_search`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: {
-        query: {
-          match: {
-            name,
-          },
+  public async searchPublisher(
+      name: string,
+      pageCount: number,
+      margin: PaginationMargin,
+      isLike: boolean,
+  ): Promise<{ids: string[], total: number}> {
+    if (isLike) {
+      return await this.likeSearch(pageCount, margin, {
+        "name.keyword": `*${name}*`,
+      });
+    } else {
+      return await this.search(pageCount, margin, [{
+        match: {
+          "name": name,
         },
-      },
-    });
-    const hits = res.data.hits.hits;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const ids = hits.map((hit: any) => hit._source.db_id);
-
-    return ids;
-  }
-
-  public async searchUsingLike(word: string): Promise<string[]> {
-    const res = await axios.get(`${this.uri}/_search`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: {
-        query: {
-          wildcard: {
-            'name.keyword': `*${word}*`,
-          },
-        },
-        sort: {
-          '_score': {
-            order: 'desc',
-          },
-        },
-      },
-    });
-    const hits = res.data.hits.hits;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const ids = hits.map((hit: any) => hit._source.db_id);
-
-    return ids;
+      }]);
+    }
   }
 }

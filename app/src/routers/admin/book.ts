@@ -1,84 +1,121 @@
-import {Request, Response, Router} from 'express';
-import csurf from 'csurf';
+import {Request, Response, Router} from "express";
+import csurf from "csurf";
 
-import BookService from '../../domain/model/book/bookService';
-import AuthorService from '../../domain/model/author/authorService';
-import PublisherService from '../../domain/model/publisher/publisherService';
-
-import BookApplicationService from '../../application/bookApplicationService';
-import AuthorApplicationService from '../../application/authorApplicationService';
-import PublisherApplicationService from '../../application/publisherApplicationService';
-import TagApplicationService from '../../application/tagApplicationService';
-
-import BookRepository from '../../interface/repository/bookRepository';
-import AuthorRepository from '../../interface/repository/authorRepository';
-import PublisherRepository from '../../interface/repository/publisherRepository';
+import AuthorService from "../../domain/service/authorService";
+import PublisherService from "../../domain/service/publisherService";
 
 
-import db from '../../infrastructure/db';
-import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
-import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
-import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
-import Logger from '../../infrastructure/logger/logger';
+import db from "../../infrastructure/prisma/prisma";
+import EsSearchBook from "../../infrastructure/elasticsearch/esBook";
+import EsAuthor from "../../infrastructure/elasticsearch/esAuthor";
+import EsPublisher from "../../infrastructure/elasticsearch/esPublisher";
+import Logger from "../../infrastructure/logger/logger";
 
-import getPaginationInfo from '../../utils/getPaginationInfo';
-import conversionpageCounter from '../../utils/conversionPageCounter';
-import isSameLenAllArray from '../../utils/isSameLenAllArray';
-import conversionpageStatus from '../../utils/conversionPageStatus';
-import TagRepository from '../../interface/repository/tagRepository';
-import TagService from '../../domain/model/tag/tagService';
-import RecommendationApplicationService from '../../application/recommendationApplicationService';
-import RecommendationRepository from '../../interface/repository/recommendationRepository';
-import RecommendationService from '../../domain/model/recommendation/recommendationService';
-import {ApplicationServiceError, InvalidDataTypeError, NullDataError} from '../../presentation/error';
+import getPaginationInfo from "../../utils/getPaginationInfo";
+import conversionpageCounter from "../../utils/conversionPageCounter";
+import isSameLenAllArray from "../../utils/isSameLenAllArray";
+import conversionpageStatus from "../../utils/conversionPageStatus";
+import {InvalidDataTypeError} from "../../presentation/error";
+import BookAdminController from "../../controller/admin/BookController";
+import UpdateBookUsecase from "../../usecase/book/UpdateBookUsecase";
+import BookPrismaRepository from "../../infrastructure/prisma/repository/BookPrismaRepository";
+import BookESRepository from "../../infrastructure/elasticsearch/repository/BookESRepository";
+import AuthorPrismaRepository from "../../infrastructure/prisma/repository/AuthorPrismaRepository";
+import PublisherPrismaRepository from "../../infrastructure/prisma/repository/publisherPrismaRepository";
+import UpdateAuthorUsecase from "../../usecase/author/UpdateAuthorUsecase";
+import AuthorESRepository from "../../infrastructure/elasticsearch/repository/AuthorESRepository";
+import UpdatePublisherUsecase from "../../usecase/publisher/UpdatePublisherUsecase";
+import PublisherESRepository from "../../infrastructure/elasticsearch/repository/PublisherESRepository";
+import SaveBookUseCase from "../../usecase/book/SaveBookUsecase";
+import SaveAuthorUseCase from "../../usecase/author/SaveAuthorUsecase";
+import SavePublisherUseCase from "../../usecase/publisher/SavePublisherUsecase";
+import DeleteBookUseCase from "../../usecase/book/DeleteBookUsecase";
+import DeleteAllBookUseCase from "../../usecase/book/DeleteAllBookUsecase";
+import FetchAllBookUseCase from "../../usecase/book/FetchAllBookUsecase";
+import FetchBookUsecase from "../../usecase/book/FetchBookUsecase";
+import DeleteNotUsedAuthorUseCase from "../../usecase/author/DeleteNotUsedAuthorUsecase";
+import DeleteNotUsedPublisherUseCase from "../../usecase/publisher/DeleteNotUsedPublisherUsecase";
 
 // eslint-disable-next-line new-cap
 const bookRouter = Router();
 
 const csrfProtection = csurf({cookie: false});
 
-const logger = new Logger('admin-book');
+const logger = new Logger("admin-book");
 
-const bookApplicationService = new BookApplicationService(
-    new BookRepository(db, new EsSearchBook('books')),
-    new AuthorRepository(db, new EsAuthor('authors')),
-    new PublisherRepository(db, new EsPublisher('publishers')),
-    new BookService(),
+const bookAdminController = new BookAdminController(
+    new FetchAllBookUseCase(
+        new BookPrismaRepository(db),
+    ),
+    new FetchBookUsecase(
+        new BookPrismaRepository(db),
+    ),
+    new UpdateBookUsecase(
+        new BookPrismaRepository(db),
+        new BookESRepository(new EsSearchBook("books")),
+        new AuthorPrismaRepository(db),
+        new PublisherPrismaRepository(db),
+    ),
+    new UpdateAuthorUsecase(
+        new AuthorPrismaRepository(db),
+        new AuthorESRepository(new EsAuthor("authors")),
+        new AuthorService(new AuthorPrismaRepository(db)),
+    ),
+    new UpdatePublisherUsecase(
+        new PublisherPrismaRepository(db),
+        new PublisherESRepository(new EsPublisher("publishers")),
+        new PublisherService(new PublisherPrismaRepository(db)),
+    ),
+    new DeleteNotUsedAuthorUseCase(
+        new AuthorPrismaRepository(db),
+        new AuthorESRepository(new EsAuthor("authors")),
+    ),
+    new DeleteNotUsedPublisherUseCase(
+        new PublisherPrismaRepository(db),
+        new PublisherESRepository(new EsPublisher("publishers")),
+    ),
+    new SaveBookUseCase(
+        new BookPrismaRepository(db),
+        new BookESRepository(new EsSearchBook("books")),
+        new AuthorPrismaRepository(db),
+        new PublisherPrismaRepository(db),
+    ),
+    new SaveAuthorUseCase(
+        new AuthorPrismaRepository(db),
+        new AuthorESRepository(new EsAuthor("authors")),
+        new AuthorService(new AuthorPrismaRepository(db)),
+    ),
+    new SavePublisherUseCase(
+        new PublisherPrismaRepository(db),
+        new PublisherESRepository(new EsPublisher("publishers")),
+        new PublisherService(new PublisherPrismaRepository(db)),
+    ),
+    new DeleteBookUseCase(
+        new BookPrismaRepository(db),
+        new BookESRepository(new EsSearchBook("books")),
+    ),
+    new DeleteAllBookUseCase(
+        new BookPrismaRepository(db),
+        new BookESRepository(new EsSearchBook("books")),
+    ),
 );
 
-const authorApplicationService = new AuthorApplicationService(
-    new AuthorRepository(db, new EsAuthor('authors')),
-    new AuthorService(new AuthorRepository(db, new EsAuthor('authors'))),
-);
-
-const publisherApplicationService = new PublisherApplicationService(
-    new PublisherRepository(db, new EsPublisher('publishers')),
-    new PublisherService(new PublisherRepository(db, new EsPublisher('publishers'))),
-);
-
-const tagApplicationService = new TagApplicationService(
-    new TagRepository(db),
-    new BookRepository(db, new EsSearchBook('books')),
-    new TagService(new TagRepository(db)),
-);
-
-const recommendationApplicationService = new RecommendationApplicationService(
-    new RecommendationRepository(db),
-    new RecommendationService(),
-);
-
-bookRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
+bookRouter.get("/", csrfProtection, async (req: Request, res: Response) => {
   const pageCount = conversionpageCounter(req);
 
   const FETCH_MARGIN = 10; // 一度に取得する本の個数
 
-  const books = await bookApplicationService.findAll(pageCount, FETCH_MARGIN);
+  const output = await bookAdminController.fetchBooks(pageCount, FETCH_MARGIN);
 
-  const total = await bookApplicationService.findAllCount();
+  const books = output.books;
+
+  const total = output.count;
+
+  if (total === null) throw new Error("Failed to get the total number of books.");
 
   const paginationData = getPaginationInfo(pageCount, total, FETCH_MARGIN, 10);
 
-  res.pageData.headTitle = '本の管理';
+  res.pageData.headTitle = "本の管理";
   res.pageData.anyData = {
     books,
     paginationData,
@@ -90,55 +127,31 @@ bookRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
 
   res.pageData.csrfToken = req.csrfToken();
 
-  res.render('pages/admin/book/', {pageData: res.pageData});
+  res.render("pages/admin/book/", {pageData: res.pageData});
 });
 
 /* 本の編集画面 */
-bookRouter.get('/edit', csrfProtection, async (req: Request, res: Response) => {
+bookRouter.get("/edit", csrfProtection, async (req: Request, res: Response) => {
   const id = req.query.id;
 
-  if (typeof id !== 'string') return res.redirect('/admin/book');
+  if (typeof id !== "string") return res.redirect("/admin/book");
 
-  const book = await bookApplicationService.searchBookById(id);
+  const book = await bookAdminController.editBookHome(id);
 
-  res.pageData.headTitle = '本編集';
+  res.pageData.headTitle = "本編集";
   res.pageData.anyData = {book};
   res.pageData.csrfToken = req.csrfToken();
-  return res.render('pages/admin/book/edit', {pageData: res.pageData});
+  return res.render("pages/admin/book/edit", {pageData: res.pageData});
 });
 
 /* 本の更新処理 */
-bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) => {
+bookRouter.post("/update", csrfProtection, async (req: Request, res: Response) => {
   try {
     const bookId = req.body.id;
 
-    if (typeof bookId !== 'string') throw new InvalidDataTypeError('Invalid request id.');
+    if (typeof bookId !== "string") throw new InvalidDataTypeError("Invalid request id.");
 
-    const book = await bookApplicationService.searchBookById(bookId);
-    /* 変更前のauthorId、publisherIdを取得 */
-    const beforeAuthorId = book.AuthorId;
-    const beforePublisherId = book.PublisherId;
-
-    let afterAuthorId = beforeAuthorId;
-    let afterPublisherId = beforePublisherId;
-
-    const authorName = req.body.authorName;
-    const publisherName = req.body.publisherName;
-
-    // 著者名の変更を全ての本に適用する場合
-    if (req.body.changeAuthorApply === 'true') {
-      await authorApplicationService.update(beforeAuthorId, authorName);
-    } else {
-      afterAuthorId = await authorApplicationService.createAuthor(authorName, false);
-    }
-
-    if (req.body.changePublisherApply === 'true') {
-      await publisherApplicationService.update(beforePublisherId, publisherName);
-    } else {
-      afterPublisherId = await publisherApplicationService.createPublisher(publisherName, false);
-    }
-
-    await bookApplicationService.update(
+    await bookAdminController.updateBook(
         bookId,
         req.body.bookName,
         req.body.bookSubName,
@@ -146,38 +159,29 @@ bookRouter.post('/update', csrfProtection, async (req: Request, res: Response) =
         req.body.isbn,
         req.body.ndc,
         req.body.year,
-        afterAuthorId,
-        authorName,
-        afterPublisherId,
-        publisherName,
+        req.body.authorName,
+        req.body.publisherName,
     );
 
-    /* 使用されていない著者(出版社)を削除 */
-    const deleteNotUsedList = [
-      authorApplicationService.deleteNotUsed(beforeAuthorId),
-      publisherApplicationService.deleteNotUsed(beforePublisherId),
-    ];
-    await Promise.all(deleteNotUsedList);
-
-    req.session.status = {type: 'Success', mes: '本の更新が完了しました'};
+    req.session.status = {type: "Success", mes: "本の更新が完了しました"};
   } catch (e: any) {
     logger.error(e as string);
-    req.session.status = {type: 'Failure', error: e, mes: '本の更新に失敗しました'};
+    req.session.status = {type: "Failure", error: e, mes: "本の更新に失敗しました"};
   } finally {
-    res.redirect('/admin/book');
+    res.redirect("/admin/book");
   }
 });
 
 /* 本の追加画面 */
-bookRouter.get('/add', csrfProtection, (req: Request, res: Response) => {
-  res.pageData.headTitle = '本の追加';
+bookRouter.get("/add", csrfProtection, (req: Request, res: Response) => {
+  res.pageData.headTitle = "本の追加";
 
   res.pageData.csrfToken = req.csrfToken();
-  res.render('pages/admin/book/add', {pageData: res.pageData});
+  res.render("pages/admin/book/add", {pageData: res.pageData});
 });
 
 /* 本の追加処理 */
-bookRouter.post('/add', csrfProtection, async (req: Request, res: Response) => {
+bookRouter.post("/add", csrfProtection, async (req: Request, res: Response) => {
   try {
     const isSameLen = isSameLenAllArray([
       req.body.bookName,
@@ -190,98 +194,71 @@ bookRouter.post('/add', csrfProtection, async (req: Request, res: Response) => {
       req.body.publisherName,
     ]);
 
-    if (!isSameLen) throw new InvalidDataTypeError('Datas could not be successfully retrieved.');
+    if (!isSameLen) throw new InvalidDataTypeError("データの長さが一致しません。");
 
-    const createdDbIds = [];
-    try {
-      for (let i = 0; i < req.body.isbn.length; i++) {
-        if (req.body.bookName[i] === '') throw new NullDataError('Name of book is empty.');
-        const authorName = req.body.authorName[i];
-        const publisherName = req.body.publisherName[i];
+    const data: {
+      bookName: string,
+      subName: string | null,
+      content: string | null,
+      isbn: string | null,
+      ndc: number | null,
+      year: number | null,
+      authorName: string,
+      publisherName: string,
+    }[] = (req.body.bookName as string[]).map((_, i) => {
+      return {
+        bookName: req.body.bookName[i],
+        subName: req.body.bookSubName[i] === "" ? null : req.body.bookSubName[i],
+        content: req.body.content[i] === "" ? null : req.body.content[i],
+        isbn: req.body.isbn[i] === "" ? null : req.body.isbn[i],
+        ndc: req.body.ndc[i] === "" ? null : parseInt(req.body.ndc[i], 10),
+        year: req.body.year[i] === "" ? null : parseInt(req.body.year[i], 10),
+        authorName: req.body.authorName[i],
+        publisherName: req.body.publisherName[i],
+      };
+    });
 
-        const authorId = await authorApplicationService.createAuthor(authorName, false);
-        const publisherId = await publisherApplicationService.createPublisher(publisherName, false);
+    await bookAdminController.saveBook(data);
 
-        const dbId = await bookApplicationService.createBook(
-            req.body.bookName[i],
-            req.body.bookSubName[i],
-            req.body.content[i],
-            req.body.isbn[i],
-            req.body.ndc[i],
-            req.body.year[i],
-            authorId,
-            authorName,
-            publisherId,
-            publisherName,
-            false,
-        );
-
-        createdDbIds.push(dbId);
-      }
-
-      req.session.status = {type: 'Success', mes: `${req.body.isbn.length}冊の本を追加しました`};
-    } catch (e) {
-      if (e instanceof ApplicationServiceError) createdDbIds.push(e.message);
-      await Promise.all(createdDbIds.map(async (dbId) => {
-        await bookApplicationService.deleteBook(dbId);
-      }));
-
-      req.session.status = {type: 'Warning', mes: '本の追加中にエラーが発生したので操作を取り消しました。もう一度試してください。'};
-
-      logger.error(e as string);
-    }
+    req.session.status = {type: "Success", mes: `${req.body.isbn.length}冊の本を追加しました`};
   } catch (e: any) {
-    logger.error(e as string);
-    req.session.status = {type: 'Failure', error: e, mes: '本の追加中にエラーが発生しました'};
+    logger.error(e.message as string);
+    req.session.status = {type: "Failure", error: e, mes: "本の追加中にエラーが発生しました"};
   } finally {
-    res.redirect('/admin/book');
+    res.redirect("/admin/book");
   }
 });
 
 /* 本の削除機能 */
-bookRouter.post('/delete', csrfProtection, async (req: Request, res: Response) => {
+bookRouter.post("/delete", csrfProtection, async (req: Request, res: Response) => {
   try {
     const id = req.body.id;
-    if (typeof id !== 'string') throw new InvalidDataTypeError('Invalid request id');
+    if (typeof id !== "string") throw new InvalidDataTypeError("Invalid request id");
 
-    if ((await tagApplicationService.findByBookId(id)).length > 0) await tagApplicationService.deleteByBookId(id);
+    await bookAdminController.deleteBook(id);
 
-    if (await recommendationApplicationService.findByBookId(id) !== null) {
-      await recommendationApplicationService.removeUsingByBookId(id);
-    }
-
-    const book = await bookApplicationService.searchBookById(id);
-
-    await bookApplicationService.deleteBook(id);
-
-    await Promise.all([authorApplicationService.deleteNotUsed(book.AuthorId), publisherApplicationService.deleteNotUsed(book.PublisherId)]);
-
-    req.session.status = {type: 'Success', mes: '本の削除が完了しました'};
+    req.session.status = {type: "Success", mes: "本の削除が完了しました"};
   } catch (e: any) {
     logger.error(e as string);
-    req.session.status = {type: 'Failure', error: e, mes: '本の削除に失敗しました'};
+    req.session.status = {type: "Failure", error: e, mes: "本の削除に失敗しました"};
   } finally {
-    res.redirect('/admin/book');
+    res.redirect("/admin/book");
   }
 });
 
 /* 本を全て削除 */
-bookRouter.post('/delete-all', csrfProtection, async (req: Request, res: Response) => {
+bookRouter.post("/delete-all", csrfProtection, async (req: Request, res: Response) => {
   try {
-    if (await tagApplicationService.isExistTable()) await tagApplicationService.deleteAll();
-    await recommendationApplicationService.removeUsingAll();
-    await bookApplicationService.deleteBooks();
-    await publisherApplicationService.deletePublishers();
-    await authorApplicationService.deleteAuthors();
+    await bookAdminController.deleteAll();
 
-    req.session.status = {type: 'Success', mes: '本の全削除に成功しました。'};
-    logger.info('Succeeded in deleting all the books.');
+    req.session.status = {type: "Success", mes: "本の全削除に成功しました。"};
+    logger.info("Succeeded in deleting all the books.");
   } catch (e: any) {
-    req.session.status = {type: 'Failure', error: e, mes: '本の全削除に失敗しました。'};
+    req.session.status = {type: "Failure", error: e, mes: "本の全削除に失敗しました。"};
     logger.error(e as string);
-    logger.error('Failed to delete all books.');
+    logger.error("Failed to delete all books.");
   } finally {
-    res.redirect('/admin/book');
+    res.redirect("/admin/book");
   }
 });
 

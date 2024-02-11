@@ -1,6 +1,6 @@
 interface IPageStatus {
   mes: string,
-  buttonType: 'danger' | 'success' | 'warning' | 'info'
+  buttonType: "danger" | "success" | "warning" | "info"
 }
 
 interface IPage {

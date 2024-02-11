@@ -13,14 +13,14 @@ if (pageData.anyData.isTag) queryLink += '&tag=true';
   <body>
     <%- include('./../components/navbar') %>
 
-    <div class="result-title">
-      <div class="result-title-text">
-        「<%= pageData.anyData.searchWord %>」の検索結果
-        <i class="bi bi-search ms-2"></i>
-      </div>
-     </div>
-
     <main>
+      <div class="result-title">
+        <div class="result-title-text">
+          「<%= pageData.anyData.searchWord %>」の検索結果
+          <i class="bi bi-search ms-2"></i>
+        </div>
+       </div>
+
       <% if (pageData.anyData.searchRes.length === 0) { %>
         <%- include('../components/no-item', {title: "検索結果が見つかりませんでした", mes: "異なる単語でお試しください", icon: "search"}) %>
       <% } %>

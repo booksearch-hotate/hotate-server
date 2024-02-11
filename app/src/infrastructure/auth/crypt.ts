@@ -1,4 +1,4 @@
-import bcyrpt from 'bcrypt';
+import bcyrpt from "bcrypt";
 
 export default class crypt {
   static encrypt(password: string): string {

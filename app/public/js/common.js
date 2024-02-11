@@ -293,3 +293,70 @@ function question() {
 }
 
 question();
+
+
+/*******
+ * 
+ * フッターの位置を調整するためのスクリプト
+ * 
+*******/
+
+function footerPosition() {
+  const footerDocument = document.getElementById("treeFooter");
+
+  if (footerDocument === null) return;
+
+  // bodyの高さを取得
+  const bodyHeight = document.body.clientHeight;
+
+  const windowHeight = window.innerHeight;
+
+  // フッターの位置を調整
+  if (bodyHeight < windowHeight) {
+    footerDocument.style.position = 'absolute';
+    footerDocument.style.bottom = '0';
+    footerDocument.style.width = '100%';
+  } else {
+    footerDocument.style.position = 'relative';
+  }
+}
+
+function paginationPosition() {
+  const pagination = document.getElementById('treePagination');
+
+  if (pagination === null) return;
+
+  const footer = document.getElementById('treeFooter');
+
+  if (footer === null) return;
+
+  // bodyの高さを取得
+  const mainHeight = document.body.clientHeight;
+
+  // footerの高さを取得
+  const footerHeight = footer.clientHeight;
+
+  // paginationの位置を調整
+  if (mainHeight - footerHeight < windowHeight) {
+    pagination.style.position = 'absolute';
+    pagination.style.bottom = `${footerHeight}px`;
+    pagination.style.width = '100%';
+  } else {
+    pagination.style.position = 'relative';
+  }
+}
+// isbn経由で画像リンクを取得した後もpositionを調整する
+window.addEventListener('load', () => {
+  const imgLink = document.getElementById('imgLink');
+  if (imgLink !== null) {
+    const img = new Image();
+    img.src = imgLink.src;
+    img.onload = () => {
+      footerPosition();
+      paginationPosition();
+    }
+  } else {
+    footerPosition();
+    paginationPosition();
+  }
+});

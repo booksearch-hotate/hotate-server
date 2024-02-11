@@ -1,11 +1,11 @@
-import Department from './department';
+import Department from "./department";
 
 export default class DepartmentData {
   private id: string;
   private name: string;
 
   public constructor(department: Department) {
-    this.id = department.Id;
+    this.id = department.Id.Id;
     this.name = department.Name;
   }
 

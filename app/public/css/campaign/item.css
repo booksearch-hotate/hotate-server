@@ -12,7 +12,8 @@
 }
 
 .capmpaign-thumbnail {
-  width: 932px;
+  width: 90%;
+  max-width: 932px;
   border-radius: 10px;
 }
 

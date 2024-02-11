@@ -40,14 +40,14 @@
         <div class="card-campaign-item-box">
           <div class="card-campaign-flex" id="campaign-box">
             <% for (const section of pageData.anyData.recommendations) { %>
-              <a class="card-campaign-item" href="/campaign/item/<%= section.recommendation.Id %>">
-                <% if (section.recommendation.IsSolid) { %>
+              <a class="card-campaign-item" href="/campaign/item/<%= section.Id %>">
+                <% if (section.IsSolid) { %>
                 <% } %>
                 <% const recommendation = section %>
-                <img class="card-campaign-item-cover" src="/thumbnail/<%= recommendation.recommendation.ThumbnailName %>.png" >
+                <img class="card-campaign-item-cover" src="/thumbnail/<%= recommendation.ThumbnailName %>.png" >
                 <div class="card-campaign-item-text">
-                  <p><%= recommendation.recommendation.CreatedAt %></p>
-                  <h3><%= recommendation.recommendation.Title %></h3>
+                  <p><%= recommendation.CreatedAt %></p>
+                  <h3><%= recommendation.Title %></h3>
                 </div>
               </a>
             <% } %>

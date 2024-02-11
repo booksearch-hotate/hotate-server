@@ -1,16 +1,17 @@
-import RecommendationItem from './recommendationItem';
+import BookData from "../book/bookData";
+import RecommendationItem from "./recommendationItem";
 
 export default class RecommendationItemData {
-  private bookId: string;
+  private book: BookData;
   private comment: string | null;
 
   constructor(recommendationItemModel: RecommendationItem) {
-    this.bookId = recommendationItemModel.BookId.Id;
+    this.book = new BookData(recommendationItemModel.Book);
     this.comment = recommendationItemModel.Comment;
   }
 
-  get BookId() {
-    return this.bookId;
+  get Book() {
+    return this.book;
   }
 
   get Comment() {

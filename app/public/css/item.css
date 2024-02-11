@@ -113,6 +113,7 @@ aside {
   cursor: pointer;
   transition: transform .5s;
   flex-direction: column;
+  width: min-content;
 }
 
 .osusume-book:hover {

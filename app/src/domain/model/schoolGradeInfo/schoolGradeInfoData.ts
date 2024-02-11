@@ -1,4 +1,4 @@
-import SchoolGradeInfo from './schoolGradeInfo';
+import SchoolGradeInfo from "./schoolGradeInfo";
 
 export default class SchoolGradeInfoData {
   private year: number;

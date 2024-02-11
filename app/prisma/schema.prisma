@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model authors {
+  id    String  @id @db.VarChar(255)
+  name  String? @db.VarChar(255)
+  books books[]
+}
+
+model books {
+  id                    String                  @id @db.VarChar(255)
+  isbn                  String?                 @db.VarChar(30)
+  book_name             String                  @db.VarChar(255)
+  book_sub_name         String?                 @db.VarChar(255)
+  author_id             String                  @db.VarChar(255)
+  ndc                   Int?
+  publisher_id          String                  @db.VarChar(255)
+  year                  Int?
+  book_content          String?                 @db.Text
+  createdAt             DateTime                @default(now()) @map("created_at")
+  updatedAt             DateTime                @updatedAt @map("updated_at")
+  authors               authors                 @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "books_ibfk_1")
+  publishers            publishers              @relation(fields: [publisher_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "books_ibfk_2")
+  using_recommendations using_recommendations[]
+  using_tags            using_tags[]
+  bookmarks             bookmarks[]
+
+  @@index([author_id], map: "author_id")
+  @@index([publisher_id], map: "publisher_id")
+}
+
+model departments {
+  id         String     @id @db.VarChar(255)
+  name       String     @db.VarChar(255)
+  created_at DateTime   @default(now()) @map("created_at")
+  requests   requests[]
+}
+
+model publishers {
+  id    String  @id @db.VarChar(255)
+  name  String? @db.VarChar(255)
+  books books[]
+}
+
+model recommendations {
+  id                    String                  @id @db.VarChar(255)
+  title                 String                  @db.VarChar(255)
+  content               String                  @db.Text
+  is_solid              Int
+  sort_index            Int
+  thumbnail_name        String                  @db.VarChar(200)
+  created_at             DateTime                @default(now()) @map("created_at")
+  updated_at             DateTime                @updatedAt @map("updated_at")
+  using_recommendations using_recommendations[]
+}
+
+model requests {
+  id             String      @id @db.VarChar(255)
+  book_name      String      @db.VarChar(255)
+  author_name    String?     @db.VarChar(255)
+  publisher_name String?     @db.VarChar(255)
+  isbn           String?     @db.VarChar(255)
+  message        String?     @db.Text
+  department_id  String      @db.VarChar(255)
+  school_year    String      @db.VarChar(100)
+  school_class   String      @db.VarChar(100)
+  user_name      String      @db.VarChar(255)
+  created_at     DateTime    @default(now()) @map("created_at")
+  departments    departments @relation(fields: [department_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "requests_ibfk_1")
+
+  @@index([department_id], map: "department_id")
+}
+
+model school_grade_info {
+  id           Int @id @default(autoincrement())
+  year         Int
+  school_class Int
+}
+
+model tags {
+  id         String       @id @db.VarChar(255)
+  name       String       @db.VarChar(255)
+  created_at             DateTime                @default(now()) @map("created_at")
+  updated_at             DateTime                @updatedAt @map("updated_at")
+  using_tags using_tags[]
+}
+
+model using_recommendations {
+  id                Int             @id @default(autoincrement())
+  book_id           String          @db.VarChar(255)
+  recommendation_id String          @db.VarChar(255)
+  comment           String?         @db.VarChar(250)
+  books             books           @relation(fields: [book_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "using_recommendations_ibfk_1")
+  recommendations   recommendations @relation(fields: [recommendation_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "using_recommendations_ibfk_2")
+
+  @@index([book_id], map: "book_id")
+  @@index([recommendation_id], map: "recommendation_id")
+}
+
+model using_tags {
+  id      Int    @id @default(autoincrement())
+  book_id String @db.VarChar(255)
+  tag_id  String @db.VarChar(255)
+  books   books  @relation(fields: [book_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "using_tags_ibfk_1")
+  tags    tags   @relation(fields: [tag_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "using_tags_ibfk_2")
+
+  @@index([book_id], map: "book_id")
+  @@index([tag_id], map: "tag_id")
+}
+
+model users {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique @db.VarChar(255)
+  password   String   @db.VarChar(255)
+  token      String?  @unique @db.VarChar(255)
+  created_at DateTime @default(now()) @map("created_at")
+  updated_at DateTime @updatedAt @map("updated_at")
+  role       String   @db.VarChar(255) @default("user")
+
+  bookmarks bookmarks[]
+}
+
+model bookmarks {
+  id      Int    @id @default(autoincrement())
+  book_id String @db.VarChar(255)
+  user_id Int
+  books   books  @relation(fields: [book_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "bookmarks_ibfk_1")
+  users   users  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "bookmarks_ibfk_2")
+
+  @@index([book_id], map: "book_id")
+  @@index([user_id], map: "user_id")
+
+  @@unique([book_id, user_id], map: "book_id_user_id")
+}

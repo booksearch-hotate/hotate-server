@@ -3,18 +3,22 @@ version: '3'
 services:
   app: # アプリ
     build:
-      context: app
+      context: ./app
     ports:
       - "8080:8080"
       - "5051:5051"
     volumes:
-      - ./app/views:/views/
-      - ./app/public:/public/
-      - ./app/log/:/log/
-      - ./app/settings/:/settings/
-      - ./app/.env/:/.env
+      - ./app/.env/:/usr/src/app/.env
+    environment:
+      - DATABASE_URL=mysql://root:${MYSQL_ROOT_PASSWORD}@mysql_host:3306/hotate
+      - APP_PORT=8080
+      - WS_PORT=5051
+      - ES_PORT=9200
+      - ES_DOCKER_NAME=es
     depends_on:
       mysql:
+        condition: service_healthy
+      es:
         condition: service_healthy
     networks:
       - esnet
@@ -23,12 +27,11 @@ services:
     container_name: mysql_host
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: hotate
       TZ: 'Asia/Tokyo'
     volumes:
-      - ./db/data:/var/lib/mysql
-      - ./db/init:/docker-entrypoint-initdb.d
+      - dbdata:/var/lib/mysql
     ports:
       - 3306:3306
     networks:
@@ -36,9 +39,9 @@ services:
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 10s
-      interval: 30s
+      interval: 10s
       retries: 10
-      start_period: 40s
+      start_period: 20s
 
   es:
     build:
@@ -67,6 +70,8 @@ services:
   
 volumes:
   esdata:
+    driver: local
+  dbdata:
     driver: local
 
 networks:
