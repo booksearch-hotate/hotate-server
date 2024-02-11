@@ -19,7 +19,10 @@ jobs:
     steps:
       - shell: bash
         run: |
-          make "${{ github.workspace }}/app/.env" && 
+          make "${{ github.workspace }}/app/.env"
+      
+      - name: set env
+        run: |
           echo "
             SESSION_SECRET=${{ secrets.SESSION_SECRET }}
           " >> "${{ github.workspace }}/app/.env"
