@@ -16,6 +16,8 @@ import DeleteThumbnailUseCase from "../../../usecase/thumbnail/DeleteThumbnailUs
 import db from "../../../infrastructure/prisma/prisma";
 import Logger from "../../../infrastructure/logger/logger";
 
+import fs from "fs";
+
 // eslint-disable-next-line new-cap
 const recommendationApiRouter = Router();
 
@@ -79,12 +81,16 @@ recommendationApiRouter.post("/thumbnail/add", csrfProtection, upload.single("im
 
     const output = await recommendationApiController.thumbnailAdd(sanitize(req.file.filename));
 
+    if (output.errObj !== null) throw output.errObj.err;
+
     sendObj.status = "success";
     sendObj.fileName = output.fileName;
 
     return res.json(sendObj);
   } catch (e: any) {
     logger.error(e);
+
+    if (req.file) fs.unlinkSync(req.file.path); // エラーが発生した場合はアップロードした画像を削除
 
     res.sendStatus(500);
   }

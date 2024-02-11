@@ -8,8 +8,4 @@ export default class ThumbnailSaveResponse extends TreeResponse<ThumbnailSaveOut
     this.fileName = o.fileName;
     return this;
   }
-
-  public error() {
-    return this;
-  }
 }

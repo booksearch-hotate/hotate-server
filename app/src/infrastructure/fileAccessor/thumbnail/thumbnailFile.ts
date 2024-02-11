@@ -15,13 +15,12 @@ export default class ThumbnailFileAccessor {
     const files = glob.sync(templatePath);
 
     const res: string[] = files.map((file) => path.basename(file, ".png"));
-    if (fileType === "default") {
-      return res.filter((fileName) => new RegExp(this.defaultThumbnailReg, "g").test(fileName));
-    } else if (fileType === "custom") {
-      return res.filter((fileName) => !new RegExp(this.defaultThumbnailReg, "g").test(fileName));
-    }
+    const defaultImgList = res.filter((fileName) => new RegExp(this.defaultThumbnailReg, "g").test(fileName));
+    const customImgList = res.filter((fileName) => !new RegExp(this.defaultThumbnailReg, "g").test(fileName));
+    if (fileType === "default") return defaultImgList;
+    else if (fileType === "custom") return customImgList;
 
-    return res;
+    return defaultImgList.concat(customImgList);
   }
 
   public async save(multerFileName: string): Promise<string> {

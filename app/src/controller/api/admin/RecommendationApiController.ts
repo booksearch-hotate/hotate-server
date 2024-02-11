@@ -49,9 +49,10 @@ export default class RecommendationApiController {
     try {
       const thumbnailNames = this.fetchThumbnailNamesUsecase.execute();
 
-      const MAX_THUMBNAIL_LEN = 10;
+      const MAX_THUMBNAIL_LEN = 20;
 
-      if (thumbnailNames.allTypeNames.length >= MAX_THUMBNAIL_LEN) {
+      if (thumbnailNames.allTypeNames.length - thumbnailNames.defaultNames.length >= MAX_THUMBNAIL_LEN) {
+        this.thumbnailDelete(inputFileName);
         throw new Error(`サムネイルは${MAX_THUMBNAIL_LEN}個までしか登録できません。`);
       }
 
@@ -61,7 +62,7 @@ export default class RecommendationApiController {
 
       return response.success(thumbnailSaveOutput);
     } catch (e) {
-      return response.error();
+      return response.error(e as Error);
     }
   }
 
