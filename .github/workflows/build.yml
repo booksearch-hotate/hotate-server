@@ -19,7 +19,7 @@ jobs:
     steps:
       - shell: bash
         run: |
-          touch "${{ github.workspace }}/app/.env"
+          touch "${{ github.workspace }}/app/.env" && 
           echo "
             SESSION_SECRET=${{ secrets.SESSION_SECRET }}
           " >> "${{ github.workspace }}/app/.env"
