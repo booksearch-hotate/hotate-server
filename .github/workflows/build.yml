@@ -17,7 +17,7 @@ jobs:
         working-directory: app
 
     steps:
-      - name: set env file
+      - shell: bash
         run: |
           touch .env
           echo "FOO=${{ secrets.TREE_SECRET }}" >> .env
