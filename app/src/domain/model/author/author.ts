@@ -1,20 +1,20 @@
-import {DomainInvalidError} from '../../../presentation/error';
+import {DomainInvalidError} from "../../../presentation/error";
+import AuthorId from "./authorId";
 
 export default class Author {
-  private id: string;
+  private id: AuthorId;
   private name: string | null;
 
   private readonly MAX_NAME_LEN = 200;
 
-  public constructor(id: string, name: string | null) {
-    if (id === null) throw new DomainInvalidError('id is null.');
+  public constructor(id: AuthorId, name: string | null) {
     if (name !== null && name.length > this.MAX_NAME_LEN) throw new DomainInvalidError(`Over length of autor name. Length of author name: ${name.length}`);
 
     this.id = id;
     this.name = name;
   }
 
-  get Id(): string {
+  get Id(): AuthorId {
     return this.id;
   }
 

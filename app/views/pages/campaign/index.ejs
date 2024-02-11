@@ -13,15 +13,17 @@ const itemComponentLink = './../components/confirm-request-item';
       <%- include('./../../components/header-title', {mes: 'campaign'}) %>
     </header>
 
-    <% if (pageData.anyData.recommendations.length > 0) { %>
+    <main>
+      <% if (pageData.anyData.recommendations.length > 0) { %>
 
-    <%- include('./../../components/recommendation-list', {paginationData: pageData.anyData.recommendations}) %>
-
-    <%- include('./../../components/pagination', {paginationData: pageData.anyData.paginationData, url: '/campaign/?'}) %>
-    <% } else { %>
-      <%- include('../../components/no-item', {title: "キャンペーンが見つかりませんでした。", mes: "", icon: "search"}) %>
-    <% } %>
-
+        <%- include('./../../components/recommendation-list', {paginationData: pageData.anyData.recommendations}) %>
+    
+        <%- include('./../../components/pagination', {paginationData: pageData.anyData.paginationData, url: '/campaign/?'}) %>
+        <% } else { %>
+          <%- include('../../components/no-item', {title: "キャンペーンが見つかりませんでした。", mes: "", icon: "search"}) %>
+        <% } %>
+    </main>
+    <%- include('./../../components/footer') %>
     <%- include('./../../components/state-alert', {pageData}) %>
     <%- include('./../../components/input-js') %>
   </body>

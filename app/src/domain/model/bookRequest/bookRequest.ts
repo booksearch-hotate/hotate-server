@@ -1,16 +1,19 @@
-import Department from '../department/department';
-import {DomainInvalidError} from '../../../presentation/error';
+import Department from "../department/department";
+import {DomainInvalidError} from "../../../presentation/error";
+import BookRequestId from "./bookRequestId";
+import SchoolYear from "../schoolGradeInfo/schoolYear";
+import SchoolClass from "../schoolGradeInfo/schoolClass";
 
 export default class BookRequest {
-  private id: string;
+  private id: BookRequestId;
   private bookName: string;
   private authorName: string;
   private publisherName: string;
   private isbn: string;
   private message: string;
   private department: Department;
-  private schoolYear: string;
-  private schoolClass: string;
+  private schoolYear: SchoolYear;
+  private schoolClass: SchoolClass;
   private userName: string;
   private createdAt: Date;
 
@@ -21,26 +24,28 @@ export default class BookRequest {
   private readonly MAX_USERNAME_LEN = 50;
 
   public constructor(
-      id: string,
+      id: BookRequestId,
       bookName: string,
-      authorName: string,
-      publisherName: string,
-      isbn: string,
-      message: string,
+      authorName: string | null,
+      publisherName: string | null,
+      isbn: string | null,
+      message: string | null,
       department: Department,
-      schoolYear: string,
-      schoolClass: string,
+      schoolYear: SchoolYear,
+      schoolClass: SchoolClass,
       userName: string,
       createdAt: Date | null = null,
   ) {
+    if (authorName === null) authorName = "";
+    if (publisherName === null) publisherName = "";
+    if (isbn === null) isbn = "";
+    if (message === null) message = "";
+
     if (bookName.length === 0 || bookName.length > this.MAX_BOOK_NAME_LEN) throw new DomainInvalidError(`The format of the name of book is different. Name of book: ${bookName}`);
     if (authorName.length > this.MAX_AUTHOR_NAME_LEN) throw new DomainInvalidError(`The format of the name of author is different. Name of author: ${authorName}`);
     if (publisherName.length > this.MAX_PUBLISHER_NAME_LEN) throw new DomainInvalidError(`The format of the name of publisher is different. Name of author: ${publisherName}`);
     if (message.length > this.MAX_MESSAGE_LEN) throw new DomainInvalidError(`The format of the message is different. Message: ${message}`);
     if (userName.length === 0 || userName.length > this.MAX_USERNAME_LEN) throw new DomainInvalidError(`The format of the name of user is different. Name of user: ${userName}`);
-
-    if (schoolYear.length === 0) throw new DomainInvalidError('The grade does not exist.');
-    if (schoolClass.length === 0) throw new DomainInvalidError('class does not exist.');
 
     this.id = id;
     this.bookName = bookName;
@@ -56,10 +61,10 @@ export default class BookRequest {
   }
 
   public makeStudentInfo(): string {
-    return `${this.SchoolYear}年 ${this.department.Name}科 ${this.SchoolClass}組`;
+    return `${this.SchoolYear.Year}年 ${this.department.Name}科 ${this.SchoolClass.SchoolClass}組`;
   }
 
-  get Id(): string {
+  get Id(): BookRequestId {
     return this.id;
   }
   get BookName(): string {
@@ -80,10 +85,10 @@ export default class BookRequest {
   get Department(): Department {
     return this.department;
   }
-  get SchoolYear(): string {
+  get SchoolYear(): SchoolYear {
     return this.schoolYear;
   }
-  get SchoolClass(): string {
+  get SchoolClass(): SchoolClass {
     return this.schoolClass;
   }
   get UserName(): string {

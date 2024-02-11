@@ -3,14 +3,27 @@ on:
   pull_request:
     paths:
       - 'app/**'
+
+env:
+  MYSQL_ROOT_PASSWORD: githubactions
+
 jobs:
   app-build:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+
+    defaults:
+      run:
+        working-directory: app
+
     steps:
       - name: checkout
         uses: actions/checkout@v2
       - name: build app
         run: docker-compose build app
-      - name: compose up app
+
+      - name: run migrate
+        run: docker-compose run --rm app npx prisma migrate dev
+      
+      - name: run tests
         run: docker-compose up -d app

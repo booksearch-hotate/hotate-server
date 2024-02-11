@@ -4,11 +4,11 @@
  */
 
 export default {
-  preset: 'jest-puppeteer',
+  preset: "jest-puppeteer",
   clearMocks: true,
-  coverageProvider: 'v8',
-  testEnvironment: 'node',
+  coverageProvider: "v8",
+  testEnvironment: "@quramy/jest-prisma/environment",
   transform: {
-    '.(ts|tsx)': 'ts-jest',
+    ".(ts|tsx)": "ts-jest",
   },
 };

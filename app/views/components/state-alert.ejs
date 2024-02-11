@@ -20,5 +20,10 @@
       <%= flashMessages.error %>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+  <% } else if (flashMessages.warning) { %>
+    <div id="stateAlert" class="alert alert-warning alert-dismissible fade show state-info-toast auto-fade" role="alert">
+      <%= flashMessages.warning %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
   <% } %>
 <% } %>

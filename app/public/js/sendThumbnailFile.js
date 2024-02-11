@@ -50,6 +50,6 @@ document.getElementById('thumbnailFile').addEventListener('input', async (value)
   if (res.status === 'success') {
     const element = makeThumbnailCard(res.fileName);
     
-    document.getElementById('existThumbnail').innerHTML = element + document.getElementById('existThumbnail').innerHTML;
+    document.getElementById('existThumbnail').innerHTML = document.getElementById('existThumbnail').innerHTML + element;
   }
 });

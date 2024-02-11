@@ -40,7 +40,7 @@ async function addBook(recommendationId) {
     }
   });
 
-  if (data.status === 'Success' || data.status === 'Exist') {
+  if (data.status === 'Success') {
     const parentElement = document.getElementById('book-title-list-box');
 
     const tar = makeBookItemNode(data.book.bookName, data.book.id);

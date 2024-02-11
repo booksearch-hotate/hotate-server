@@ -1,9 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 
-import {isLocal, isUseAWSES} from '../cli/cmdLine';
-import Logger from '../logger/logger';
-import dotenv from 'dotenv';
-import esDocuments from './documents/documentType';
+import {isLocal, isUseAWSES} from "../cli/cmdLine";
+import Logger from "../logger/logger";
+import dotenv from "dotenv";
+import esDocuments from "./documents/documentType";
+import PaginationMargin from "../../domain/model/pagination/paginationMargin";
 
 dotenv.config();
 
@@ -15,10 +16,10 @@ dotenv.config();
  */
 export function getEsHost() {
   if (isUseAWSES()) return `${process.env.ES_AWS_HOST}:${process.env.ES_AWS_PORT}`;
-  return `http://${isLocal() ? 'localhost' : process.env.ES_DOCKER_NAME}:${process.env.ES_PORT}`;
+  return `http://${isLocal() ? "localhost" : process.env.ES_DOCKER_NAME}:${process.env.ES_PORT}`;
 }
 
-const logger = new Logger('elasticSearch');
+const logger = new Logger("elasticSearch");
 
 export default class ElasticSearch {
   protected host: string;
@@ -29,9 +30,74 @@ export default class ElasticSearch {
     this.host = getEsHost();
 
     this.index = index;
-    if (isUseAWSES() && isLocal()) this.index += '_dev'; // ローカル環境でAWS上のESにアクセスする際は別のindexを使用する
+    if (isUseAWSES() && isLocal()) this.index += "_dev"; // ローカル環境でAWS上のESにアクセスする際は別のindexを使用する
 
     this.uri = `${this.host}/${this.index}`;
+  }
+
+  public async search(
+      pageCount: number,
+      margin: PaginationMargin,
+      queryShould: any[],
+  ): Promise<{ids: string[], total: number}> {
+    const FETCH_COUNT = margin.Margin;
+    const res = await axios.get(`${this.uri}/_search`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        query: {
+          bool: {
+            should: queryShould,
+          },
+        },
+        from: pageCount * FETCH_COUNT,
+        size: FETCH_COUNT,
+        sort: {
+          "_score": {
+            order: "desc",
+          },
+        },
+      },
+    });
+    const hits = res.data.hits.hits;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ids = hits.map((hit: any) => hit._source.db_id);
+
+    return {ids, total: res.data.hits.total.value};
+  }
+
+  public async likeSearch(
+      pageCount: number,
+      margin: PaginationMargin,
+      wildcard: any,
+  ): Promise<{ids: string[], total: number}> {
+    const FETCH_COUNT = margin.Margin;
+
+    const res = await axios.get(`${this.uri}/_search`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        query: {
+          wildcard,
+        },
+        from: pageCount * FETCH_COUNT,
+        size: FETCH_COUNT,
+        sort: {
+          "_score": {
+            order: "desc",
+          },
+        },
+      },
+    });
+    const hits = res.data.hits.hits;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ids = hits.map((hit: any) => hit._source.db_id);
+
+    return {ids, total: res.data.hits.total.value};
   }
 
   /**
@@ -48,7 +114,7 @@ export default class ElasticSearch {
   public async fetchDocumentCount(): Promise<number> {
     const res = await axios.get(`${this.uri}/_count`, {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       data: {
         query: {

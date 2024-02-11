@@ -13,6 +13,9 @@
       <li><a href="/about">About</a></li>
       <li><a href="/campaign">Campaign</a></li>
       <li><a href="/request">Request</a></li>
+      <% if (pageData.userData.isLogin) { %>
+        <li><a href="/user/bookmark">Bookmark</a></li>
+      <% } %>
     </ul>
 
     <div class="header-user-box">

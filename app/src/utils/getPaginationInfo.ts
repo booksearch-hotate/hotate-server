@@ -1,6 +1,6 @@
-import PaginationMargin from '../domain/model/pagination/paginationMargin';
-import {InvalidUtilRoleError} from '../presentation/error/utils';
-import {IPaginationData} from '../routers/datas/IPaginationData';
+import PaginationMargin from "../domain/model/pagination/paginationMargin";
+import {InvalidUtilRoleError} from "../presentation/error/utils";
+import {IPaginationData} from "../routers/datas/IPaginationData";
 
 
 const MIN_PAGINATION_COUNT = 3;
@@ -15,8 +15,8 @@ export default function getPaginationInfo(
 ): IPaginationData {
   /* ガード節 */
   if (maxPaginationCount < MIN_PAGINATION_COUNT || maxPaginationCount > MAX_PAGINATION_COUNT) throw new InvalidUtilRoleError(`The number of paginations to display is inappropriate. The range is from ${MIN_PAGINATION_COUNT} to ${MAX_PAGINATION_COUNT} items.`);
-  if (pageCount < 0) throw new InvalidUtilRoleError('The pageCount is incorrect.');
-  if (total < 0) throw new InvalidUtilRoleError('The totalPage is incorrect.');
+  if (pageCount < 0) throw new InvalidUtilRoleError("The pageCount is incorrect.");
+  if (total < 0) throw new InvalidUtilRoleError("The totalPage is incorrect.");
 
   const itemMargin = new PaginationMargin(itemCount);
 

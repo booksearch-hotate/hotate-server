@@ -1,7 +1,0 @@
-import {v4 as uuid} from 'uuid';
-
-export default class SearchHistoryService {
-  public createUUID(): string {
-    return uuid();
-  }
-}

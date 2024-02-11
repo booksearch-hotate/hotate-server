@@ -1,4 +1,4 @@
-import {DomainInvalidError} from '../../../presentation/error';
+import {DomainInvalidError} from "../../../presentation/error";
 
 export default class SchoolClass {
   private schoolClass: number;

@@ -2,48 +2,58 @@
 <html>
   <head>
     <%- include('./../../components/head') %>
+    <link rel="stylesheet" href="<%= pageData.origin %>/css/item.css" />
     <link rel="stylesheet" href="<%= pageData.origin %>/css/campaign/item.css" />
   </head>
   <body>
     <%- include('./../../components/navbar') %>
 
-    <% if (pageData.anyData.recommendation !== null) { %>
-      <div class="campaign-title-box">
-        <h1><%= pageData.anyData.recommendation.recommendation.Title %></h1>
-        <p>公開日: <%= pageData.anyData.recommendation.recommendation.CreatedAt %></p>
-        <% if (pageData.anyData.recommendation.recommendation.IsSolid) { %><p><bi class="bi-pin"></bi>固定</p><% } %>
-      </div>
+    <main style="background: #fff;">
+      <% if (pageData.anyData.recommendation !== null) { %>
+        <div class="campaign-title-box">
+          <h1><%= pageData.anyData.recommendation.recommendation.Title %></h1>
+          <p>公開日: <%= pageData.anyData.recommendation.recommendation.CreatedAt %></p>
+          <% if (pageData.anyData.recommendation.recommendation.IsSolid) { %><p><bi class="bi-pin"></bi>固定</p><% } %>
+        </div>
+  
+        <div class="text-center my-4">
+          <img src="/thumbnail/<%= pageData.anyData.recommendation.recommendation.ThumbnailName %>.png" class="capmpaign-thumbnail">
+        </div>
+  
+        <div class="campaign-content markdown-result">
+          <%- pageData.anyData.recommendation.recommendation.htmlContent %>
+        </div>
 
-      <div class="text-center my-4">
-        <img src="/thumbnail/<%= pageData.anyData.recommendation.recommendation.ThumbnailName %>.png" class="capmpaign-thumbnail">
-      </div>
-
-      <div class="campaign-content markdown-result">
-        <%- pageData.anyData.recommendation.recommendation.htmlContent %>
-      </div>
-
-      <div class="book-list-box">
-        <% for (const recommendationBook of pageData.anyData.recommendation.items) { %>
-          <a class="book-item-box my-4 px-4" href="/item/<%= recommendationBook.book.Id %>">
-            <img src="<%= recommendationBook.book.ImgLink %>" data-isbn="<%= recommendationBook.book.Isbn %>">
-            <div class="book-item-text-box">
-              <h3><%= recommendationBook.book.BookName %></h3>
-              <% if (recommendationBook.book.AuthorName.length) { %><p><%= recommendationBook.book.AuthorName %> / 著</p><% } %>
-              <p>
-                <%= recommendationBook.comment %>
-              </p>
+        <% if (pageData.anyData.recommendation.items.length) { %>
+          <aside class="my-4">
+            <div class="osusume-title text-center"><i class="bi bi-book me-4"></i>書籍<i class="bi bi-book ms-4"></i></div>
+            <div class="osusume-flex justify-content-center">
+              <% for (const book of pageData.anyData.recommendation.items) { %>
+                <a class="osusume-book" href="/item/<%= book.book.Id %>">
+                  <img src="<%= book.book.ImgLink %>" alt="" data-isbn="<%= book.book.Isbn %>">
+                  <div class="osusume-text">
+                    <p class="osusume-book-title"><%= book.book.BookName %></p>
+                    <p class="osusume-writer">著；<%= book.book.AuthorName %></p>
+                  </div>
+                  <div class="osusume-comment">
+                    <p class="my-0"><%= book.comment %></p>
+                  </div>
+                </a>
+              <% } %>
             </div>
-          </a>
+          </aside>
         <% } %>
-      </div>
-    <% } else { %>
-      <%- include('../../components/no-item', {title: "キャンペーンが見つかりませんでした。", mes: "もう一度お試しください。", icon: "search"}) %>
-    <% } %>
+  
+      <% } else { %>
+        <%- include('../../components/no-item', {title: "キャンペーンが見つかりませんでした。", mes: "もう一度お試しください。", icon: "search"}) %>
+      <% } %>
+    </main>
 
     <a href="/campaign/" class="tree-button tree-button-warning my-4 mx-auto">
       キャンペーン画面に戻る
     </a>
-
+    <%- include('./../../components/footer') %>
+    <%- include('./../../components/state-alert', {pageData}) %>
     <%- include('./../../components/input-js') %>
     <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
   </body>
