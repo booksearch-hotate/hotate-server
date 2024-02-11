@@ -19,7 +19,7 @@ jobs:
     steps:
       - shell: bash
         run: |
-          touch .env
+          touch "${{ github.workspace }}/.env"
           echo "FOO=${{ secrets.TREE_SECRET }}" >> .env
 
       - name: checkout
