@@ -17,15 +17,11 @@ jobs:
         working-directory: app
 
     steps:
-      - shell: bash
-        run: |
-          make "${{ github.workspace }}/app/.env"
-      
       - name: set env
         run: |
           echo "
             SESSION_SECRET=${{ secrets.SESSION_SECRET }}
-          " >> "${{ github.workspace }}/app/.env"
+          " >> .env
 
       - name: checkout
         uses: actions/checkout@v2
