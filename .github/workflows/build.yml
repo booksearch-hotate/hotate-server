@@ -19,16 +19,10 @@ jobs:
     steps:
       - shell: bash
         run: |
-          touch "${{ github.workspace }}/.env"
+          touch "${{ github.workspace }}/app/.env"
           echo "
-            FOO=${{ secrets.TREE_SECRET }}
             SESSION_SECRET=${{ secrets.SESSION_SECRET }}
-            APP_PORT=${{ secrets.APP_PORT }}
-            WS_PORT=${{ secrets.WS_PORT }}
-            ES_PORT=${{ secrets.ES_PORT }}
-            ES_DOCKER_NAME=${{ secrets.ES_DOCKER_NAME }}
-            MYSQL_DOCKER_NAME=${{ secrets.MYSQL_DOCKER_NAME }}
-          " >> "${{ github.workspace }}/.env"
+          " >> "${{ github.workspace }}/app/.env"
 
       - name: checkout
         uses: actions/checkout@v2

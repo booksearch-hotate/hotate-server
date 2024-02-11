@@ -10,6 +10,9 @@ services:
       - ./app/.env/:/usr/src/app/.env
     environment:
       - DATABASE_URL=mysql://root:${MYSQL_ROOT_PASSWORD}@mysql_host:3306/hotate
+      - APP_PORT=8080
+      - WS_PORT=5051
+      - ES_PORT=9200
     depends_on:
       mysql:
         condition: service_healthy
