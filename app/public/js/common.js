@@ -306,15 +306,13 @@ function footerPosition() {
 
   if (footerDocument === null) return;
 
-  // mainタグの高さを取得
-  const main = document.getElementsByTagName('main')[0];
-  const mainHeight = main.clientHeight;
+  // bodyの高さを取得
+  const bodyHeight = document.body.clientHeight;
 
-  // windowの高さを取得
   const windowHeight = window.innerHeight;
 
   // フッターの位置を調整
-  if (mainHeight < windowHeight) {
+  if (bodyHeight < windowHeight) {
     footerDocument.style.position = 'absolute';
     footerDocument.style.bottom = '0';
     footerDocument.style.width = '100%';
@@ -332,22 +330,14 @@ function paginationPosition() {
 
   if (footer === null) return;
 
-  // mainタグの高さを取得
-  const main = document.getElementsByTagName('main')[0];
-  const mainHeight = main.clientHeight;
+  // bodyの高さを取得
+  const mainHeight = document.body.clientHeight;
 
-  // paginationの高さを取得
-  const paginationHeight = pagination.clientHeight;
-
-  // windowの高さを取得
-  const windowHeight = window.innerHeight;
-
-  // フッターの高さを取得
+  // footerの高さを取得
   const footerHeight = footer.clientHeight;
 
   // paginationの位置を調整
-
-  if (mainHeight + paginationHeight + footerHeight < windowHeight) {
+  if (mainHeight - footerHeight < windowHeight) {
     pagination.style.position = 'absolute';
     pagination.style.bottom = `${footerHeight}px`;
     pagination.style.width = '100%';
@@ -370,4 +360,3 @@ window.addEventListener('load', () => {
     paginationPosition();
   }
 });
-
