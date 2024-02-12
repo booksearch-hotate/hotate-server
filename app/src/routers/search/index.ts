@@ -50,72 +50,82 @@ const searchController = new SearchController(
 /* 検索結果 */
 searchRouter.get("/search", csrfProtection, async (req: Request, res: Response) => {
   const searchWord = req.query.search as string;
-  let searchMode: searchMode = "none";
-  let searchCategory: searchCategory = "book";
 
-  const isStrict = req.query.mode === "strict";
-  const isTag = req.query.mode == "tag";
-  const formSearchCategory = req.query.type;
+  try {
+    if (searchWord.length > 100) throw new Error("検索ワードが長すぎます");
+    if (searchWord.length === 0) throw new Error("検索ワードが入力されていません");
 
-  if (isStrict) searchMode = "strict";
-  if (isTag) searchMode = "tag";
-  /* タグ検索とぜったい検索が両方とも選択されている場合、両方とも無効化 */
-  if (isTag && isStrict) searchMode = "none";
+    let searchMode: searchMode = "none";
+    let searchCategory: searchCategory = "book";
 
-  if (typeof formSearchCategory !== "string") searchCategory = "book";
+    const isStrict = req.query.mode === "strict";
+    const isTag = req.query.mode == "tag";
+    const formSearchCategory = req.query.type;
 
-  if (formSearchCategory === "author") searchCategory = "author";
-  else if (formSearchCategory === "publisher") searchCategory = "publisher";
+    if (isStrict) searchMode = "strict";
+    if (isTag) searchMode = "tag";
+    /* タグ検索とぜったい検索が両方とも選択されている場合、両方とも無効化 */
+    if (isTag && isStrict) searchMode = "none";
 
-  if (searchCategory !== "book" && searchMode === "tag") searchMode = "none";
+    if (typeof formSearchCategory !== "string") searchCategory = "book";
 
-  const pageCount = conversionpageCounter(req);
+    if (formSearchCategory === "author") searchCategory = "author";
+    else if (formSearchCategory === "publisher") searchCategory = "publisher";
 
-  let paginationData: IPaginationData = {
-    pageRange: {
-      min: 0,
-      max: 0,
-    },
-    totalPage: 0,
-    pageCount,
-  };
+    if (searchCategory !== "book" && searchMode === "tag") searchMode = "none";
 
-  const FETCH_MARGIN = 9;
+    const pageCount = conversionpageCounter(req);
 
-  let searchRes: BookData[] = [];
-  let searchHis: SearchHistoryData[] = [];
-  if (searchWord !== "") {
-    const res = await searchController.search(
-        searchWord,
-        searchMode,
-        searchCategory,
-        pageCount,
-        FETCH_MARGIN,
-    );
+    let paginationData: IPaginationData = {
+      pageRange: {
+        min: 0,
+        max: 0,
+      },
+      totalPage: 0,
+      pageCount,
+    };
 
-    searchRes = res.searchBooksList;
-    searchHis = res.searchHistoryList;
+    const FETCH_MARGIN = 9;
 
-    if (res.count === null) throw new Error("検索結果が取得できませんでした");
+    let searchRes: BookData[] = [];
+    let searchHis: SearchHistoryData[] = [];
+    if (searchWord !== "") {
+      const res = await searchController.search(
+          searchWord,
+          searchMode,
+          searchCategory,
+          pageCount,
+          FETCH_MARGIN,
+      );
 
-    paginationData = getPaginationInfo(pageCount, res.count, FETCH_MARGIN, 7);
+      searchRes = res.searchBooksList;
+      searchHis = res.searchHistoryList;
+
+      if (res.count === null) throw new Error("検索結果が取得できませんでした");
+
+      paginationData = getPaginationInfo(pageCount, res.count, FETCH_MARGIN, 7);
+    }
+
+    res.pageData.headTitle = "検索結果";
+    res.pageData.anyData = {
+      searchRes,
+      searchHis,
+      searchWord,
+      paginationData,
+      isStrict,
+      isTag,
+      searchCategory,
+    };
+    res.pageData.csrfToken = req.csrfToken();
+
+    if (!isStrict && !isTag) searchController.addSearchHistory(searchWord);
+
+    res.render("pages/search", {pageData: res.pageData});
+  } catch (e: any) {
+    req.flash("error", e.message);
+    const backURL = req.header("Referer") || "/";
+    res.redirect(backURL);
   }
-
-  res.pageData.headTitle = "検索結果 ";
-  res.pageData.anyData = {
-    searchRes,
-    searchHis,
-    searchWord,
-    paginationData,
-    isStrict,
-    isTag,
-    searchCategory,
-  };
-  res.pageData.csrfToken = req.csrfToken();
-
-  if (!isStrict && !isTag) searchController.addSearchHistory(searchWord);
-
-  res.render("pages/search", {pageData: res.pageData});
 });
 
 export default searchRouter;

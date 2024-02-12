@@ -62,6 +62,8 @@ if (pageData.anyData.isTag) queryLink += '&tag=true';
       <% } %>
     </main>
 
+    <%- include('./../components/state-alert', {pageData}) %>
+
     <%- include('./../components/footer') %>
 
     <%- include('./../components/input-js') %>
