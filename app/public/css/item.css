@@ -103,7 +103,7 @@ aside {
 
 .osusume-flex {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 30px;
   overflow: scroll;
 }
