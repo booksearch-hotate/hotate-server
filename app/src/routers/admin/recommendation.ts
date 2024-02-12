@@ -157,7 +157,7 @@ recommendationRouter.post("/udpate", csrfProtection, async (req: Request, res: R
         bookComments,
     );
 
-    req.session.status = {type: "Success", mes: "投稿の変更に成功しました。"};
+    req.flash("success", "投稿の変更に成功しました。");
     logger.info("Posting is updated.");
 
     res.redirect("/admin/recommendation/");
