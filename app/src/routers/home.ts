@@ -2,7 +2,6 @@ import {Request, Response, Router} from "express";
 
 import db from "../infrastructure/prisma/prisma";
 
-import Logger from "../infrastructure/logger/logger";
 import csurf from "csurf";
 import conversionpageStatus from "../utils/conversionPageStatus";
 import HomeController from "../controller/HomeController";
@@ -11,8 +10,6 @@ import RecommendationPrismaRepository from "../infrastructure/prisma/repository/
 
 // eslint-disable-next-line new-cap
 const homeRouter = Router();
-
-const logger = new Logger("home");
 
 const csrfProtection = csurf({cookie: false});
 
@@ -25,14 +22,18 @@ const homeController = new HomeController(
 homeRouter.get("/", csrfProtection, async (req: Request, res: Response) => {
   try {
     const response = await homeController.fetchRecommendation();
+
+    if (response.errObj !== null) throw response.errObj.err;
+
     res.pageData.anyData = {
       recommendations: response.recommendations,
     };
   } catch (e: any) {
-    logger.error(e);
     res.pageData.anyData = {
       recommendations: [],
     };
+
+    req.flash("error", e.message);
   } finally {
     res.pageData.csrfToken = req.csrfToken();
 

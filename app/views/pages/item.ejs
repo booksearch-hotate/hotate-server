@@ -86,7 +86,7 @@
           </div>
         </aside>
 
-        <% if (pageData.anyData.recommendation !== null) { %>
+        <% if (pageData.anyData.recommendation !== null && pageData.anyData.recommendation.length) { %>
         <aside class="my-4">
           <div class="osusume-title"><i class="bi bi-binoculars-fill"></i>この本が紹介されているキャンペーン</div>
           <div class="osusume-flex px-4">
@@ -102,6 +102,9 @@
     </main>
     <%- include('./../components/state-alert', {pageData}) %>
     <%- include('./../components/input-js') %>
+
+    <%- include('./../components/footer') %>
+
     <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
   </body>
 </html>

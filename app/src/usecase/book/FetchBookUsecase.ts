@@ -1,12 +1,11 @@
 import {IBookDBRepository} from "../../domain/repository/db/IBookDBRepository";
-import BookFetchEmptyOutputData from "../../presentation/dto/book/fetchBook/BookFetchEmptyOutputData";
 import BookFetchInputData from "../../presentation/dto/book/fetchBook/BookFetchInputData";
 import BookFetchOutputData from "../../presentation/dto/book/fetchBook/BookFetchOutputData";
 import {Usecase} from "../Usecase";
 
 export default class FetchBookUsecase implements Usecase<
 BookFetchInputData,
-Promise<BookFetchOutputData | BookFetchEmptyOutputData>
+Promise<BookFetchOutputData>
 > {
   private readonly db: IBookDBRepository;
 
@@ -14,9 +13,9 @@ Promise<BookFetchOutputData | BookFetchEmptyOutputData>
     this.db = db;
   }
 
-  public async execute(input: BookFetchInputData): Promise<BookFetchOutputData | BookFetchEmptyOutputData> {
+  public async execute(input: BookFetchInputData): Promise<BookFetchOutputData> {
     const findRes = await this.db.findById(input.bookId);
-    if (findRes === null) return new BookFetchEmptyOutputData();
+    if (findRes === null) throw new Error("本が見つかりませんでした。");
 
     const book = findRes.book;
     const recommendations = findRes.recommendations;

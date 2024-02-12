@@ -24,8 +24,4 @@ export default class RecommendationFindResponse extends TreeResponse<FindRecomme
     });
     return this;
   }
-
-  public error() {
-    return this;
-  }
 }

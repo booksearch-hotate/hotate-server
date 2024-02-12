@@ -1,6 +1,7 @@
 import BookSearchInputData from "../presentation/dto/book/searchBooks/BookSearchInputData";
 import SearchHistoryAddInputData from "../presentation/dto/searchHistory/add/SearchHistoryAddInputData";
 import SearchHistorySearchInputData from "../presentation/dto/searchHistory/search/SearchHistorySearchInputData";
+import SearchHistorySearchOutputData from "../presentation/dto/searchHistory/search/SearchHistorySearchOutputData";
 import {BookSearchWithHistoryResponse} from "../presentation/response/search/BookSearchWithHistoryResponse";
 import searchCategory from "../routers/datas/searchCategoryType";
 import searchMode from "../routers/datas/searchModeType";
@@ -32,11 +33,16 @@ export default class SearchController {
   ): Promise<BookSearchWithHistoryResponse> {
     const res = new BookSearchWithHistoryResponse();
     try {
-      const input = new SearchHistorySearchInputData(query);
-      const output = await this.searchHistoryUseCase.execute(input);
-
       const bookSearchInput = new BookSearchInputData(query, searchMode, searchCategory, pageCount, reqMargin);
       const bookSearchOutput = await this.searchBooksUsecase.execute(bookSearchInput);
+
+      /* 検索結果がない検索ワードに関しては検索履歴に残さない */
+      let output = new SearchHistorySearchOutputData([]);
+
+      if (bookSearchOutput.books.length !== 0) {
+        const input = new SearchHistorySearchInputData(query);
+        output = await this.searchHistoryUseCase.execute(input);
+      }
 
       return res.success({
         searchHistoryList: output,

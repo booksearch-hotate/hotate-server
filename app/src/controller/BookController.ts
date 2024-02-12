@@ -1,4 +1,3 @@
-import BookFetchEmptyOutputData from "../presentation/dto/book/fetchBook/BookFetchEmptyOutputData";
 import BookFetchInputData from "../presentation/dto/book/fetchBook/BookFetchInputData";
 import IsAlreadyBookmarkResponse from "../presentation/dto/book/isAlreadyBookmark/IsAlreadyBookmarkResponse";
 import BookSearchInputData from "../presentation/dto/book/searchBooks/BookSearchInputData";
@@ -24,38 +23,36 @@ export default class BookController {
   }
 
   public async fetchBook(bookId: string): Promise<FetchBookResponse> {
-    const input = new BookFetchInputData(bookId);
-    const output = await this.fetchBookUsecase.execute(input);
-
     const response = new FetchBookResponse();
 
-    if (output instanceof BookFetchEmptyOutputData) {
-      return response.error();
+    try {
+      const input = new BookFetchInputData(bookId);
+      const output = await this.fetchBookUsecase.execute(input);
+
+      const nearCategoryBooks = await this.searchBooksUsecase.execute(
+          new BookSearchInputData(
+              output.book.BookName,
+              "none",
+              "book",
+              0,
+              9,
+          ),
+      );
+
+      return response.success({
+        book: output,
+        nearCategoryBooks: nearCategoryBooks,
+      });
+    } catch (e) {
+      return response.error(e as Error);
     }
-
-    const nearCategoryBooks = await this.searchBooksUsecase.execute(
-        new BookSearchInputData(
-            output.book.BookName,
-            "none",
-            "book",
-            0,
-            9,
-        ),
-    );
-
-    return response.success({
-      book: output,
-      nearCategoryBooks: nearCategoryBooks,
-    });
   }
 
   public async isAlreadyBookmark(bookId: string, userId: number): Promise<IsAlreadyBookmarkResponse> {
     const response = new IsAlreadyBookmarkResponse();
     try {
       const bookInput = new BookFetchInputData(bookId);
-      const bookOutput = await this.fetchBookUsecase.execute(bookInput);
-
-      if (bookOutput instanceof BookFetchEmptyOutputData) throw new Error("本が見つかりませんでした。");
+      await this.fetchBookUsecase.execute(bookInput); // 本が存在するか確認
 
       const bookmarkInput = new BookmarkFindInputData(userId);
       const bookmarkOutput = await this.findBookmarkUsecase.execute(bookmarkInput);
@@ -63,7 +60,7 @@ export default class BookController {
       if (bookmarkOutput.books.some((book) => book.Id === bookId)) return response.success(true);
       return response.success(false);
     } catch (e) {
-      return response.error();
+      return response.error(e as Error);
     }
   }
 }

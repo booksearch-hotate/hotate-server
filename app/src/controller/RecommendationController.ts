@@ -22,7 +22,7 @@ export default class RecommendationController {
       const output = await this.fetchRecommendationUseCase.execute(input);
       return res.success({recommendations: output});
     } catch (e: any) {
-      return res.error();
+      return res.error(e as Error);
     }
   }
 
@@ -34,7 +34,7 @@ export default class RecommendationController {
       const output = await this.findRecommendationUseCase.execute(input);
       return res.success({recommendation: output});
     } catch (e: any) {
-      return res.error();
+      return res.error(e as Error);
     }
   }
 }

@@ -15,8 +15,4 @@ export default class RecommendationFetchResponse extends TreeResponse<FetchRecom
     this.count = output.recommendations.count;
     return this;
   }
-
-  public error() {
-    return this;
-  }
 }

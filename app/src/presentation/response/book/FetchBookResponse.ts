@@ -18,8 +18,4 @@ export default class FetchBookResponse extends TreeResponse<BookFetchControllerO
     }
     return this;
   }
-
-  public error() {
-    return this;
-  }
 }

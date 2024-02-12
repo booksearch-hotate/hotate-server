@@ -6,8 +6,4 @@ export default class IsAlreadyBookmarkResponse extends TreeResponse<boolean> {
     this.isAlready = o;
     return this;
   }
-
-  public error() {
-    return this;
-  }
 }

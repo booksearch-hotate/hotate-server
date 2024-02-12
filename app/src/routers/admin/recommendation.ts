@@ -57,32 +57,41 @@ const recommendationController = new RecommendationAdminController(
 recommendationRouter.get("/", csrfProtection, async (req: Request, res: Response) => {
   const FETCH_MARGIN = 9;
 
-  const pageCount = conversionpageCounter(req);
+  try {
+    const pageCount = conversionpageCounter(req);
 
-  const output = await recommendationController.index(pageCount, FETCH_MARGIN);
+    const output = await recommendationController.index(pageCount, FETCH_MARGIN);
 
-  const recommendations = output.recommendations;
+    const recommendations = output.recommendations;
 
-  const total = output.count;
+    const total = output.count;
 
-  if (total === null) throw new Error("Total count is null.");
+    if (total === null) throw new Error("Total count is null.");
 
-  const paginationData = getPaginationInfo(pageCount, total, FETCH_MARGIN, 10);
+    const paginationData = getPaginationInfo(pageCount, total, FETCH_MARGIN, 10);
 
-  res.pageData.status = conversionpageStatus(req.session.status);
-  req.session.status = undefined;
+    res.pageData.anyData = {
+      recommendations,
+      paginationData,
+    };
+  } catch (e: any) {
+    res.pageData.anyData = {
+      recommendations: [],
+    };
 
-  req.session.keepValue = undefined;
+    req.flash("error", e.message);
+  } finally {
+    res.pageData.status = conversionpageStatus(req.session.status);
+    req.session.status = undefined;
 
-  res.pageData.headTitle = "おすすめセクション一覧";
-  res.pageData.anyData = {
-    recommendations,
-    paginationData,
-  };
+    req.session.keepValue = undefined;
 
-  res.pageData.csrfToken = req.csrfToken();
+    res.pageData.headTitle = "おすすめセクション一覧";
 
-  res.render("pages/admin/recommendation/", {pageData: res.pageData});
+    res.pageData.csrfToken = req.csrfToken();
+
+    res.render("pages/admin/recommendation/", {pageData: res.pageData});
+  }
 });
 
 recommendationRouter.get("/edit", csrfProtection, async (req: Request, res: Response) => {

@@ -64,7 +64,7 @@ export default class RequestIndexController {
 
       return response.success({data: outputData});
     } catch (e) {
-      return response.error();
+      return response.error(e as Error);
     }
   }
 

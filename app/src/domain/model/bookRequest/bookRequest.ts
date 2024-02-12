@@ -41,11 +41,11 @@ export default class BookRequest {
     if (isbn === null) isbn = "";
     if (message === null) message = "";
 
-    if (bookName.length === 0 || bookName.length > this.MAX_BOOK_NAME_LEN) throw new DomainInvalidError(`The format of the name of book is different. Name of book: ${bookName}`);
-    if (authorName.length > this.MAX_AUTHOR_NAME_LEN) throw new DomainInvalidError(`The format of the name of author is different. Name of author: ${authorName}`);
-    if (publisherName.length > this.MAX_PUBLISHER_NAME_LEN) throw new DomainInvalidError(`The format of the name of publisher is different. Name of author: ${publisherName}`);
-    if (message.length > this.MAX_MESSAGE_LEN) throw new DomainInvalidError(`The format of the message is different. Message: ${message}`);
-    if (userName.length === 0 || userName.length > this.MAX_USERNAME_LEN) throw new DomainInvalidError(`The format of the name of user is different. Name of user: ${userName}`);
+    if (bookName.length === 0 || bookName.length > this.MAX_BOOK_NAME_LEN) throw new DomainInvalidError(`書名の文字数は1文字以上${this.MAX_BOOK_NAME_LEN}文字未満にしてください。`);
+    if (authorName.length > this.MAX_AUTHOR_NAME_LEN) throw new DomainInvalidError(`著者の名前は最大${this.MAX_AUTHOR_NAME_LEN}文字までです。`);
+    if (publisherName.length > this.MAX_PUBLISHER_NAME_LEN) throw new DomainInvalidError(`出版社の名前は最大${this.MAX_PUBLISHER_NAME_LEN}文字までです。`);
+    if (message.length > this.MAX_MESSAGE_LEN) throw new DomainInvalidError(`メッセージは最大${this.MAX_MESSAGE_LEN}文字までです。`);
+    if (userName.length === 0 || userName.length > this.MAX_USERNAME_LEN) throw new DomainInvalidError(`ユーザー名の文字数は1文字以上${this.MAX_USERNAME_LEN}文字未満にしてください。`);
 
     this.id = id;
     this.bookName = bookName;

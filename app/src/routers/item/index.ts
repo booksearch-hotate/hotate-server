@@ -62,7 +62,7 @@ bookItemRouter.get("/item/:bookId", csrfProtection, async (req: Request, res: Re
 
     res.pageData.csrfToken = req.csrfToken();
   } catch {
-    logger.warn(`Not found bookId: ${id}`);
+    logger.error(`Not found bookId: ${id}`);
     res.pageData.headTitle = "本が見つかりませんでした。";
     res.pageData.anyData = {isError: true};
   } finally {

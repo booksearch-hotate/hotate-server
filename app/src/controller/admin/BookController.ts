@@ -2,7 +2,6 @@ import AuthorSaveInputData from "../../presentation/dto/author/save/AuthorSaveIn
 import AuthorUpdateInputData from "../../presentation/dto/author/update/AuthorUpdateInputData";
 import BookDeleteInputData from "../../presentation/dto/book/delete/BookDeleteInputData";
 import BookFetchAllInputData from "../../presentation/dto/book/fetchAll/BookFetchAllInputData";
-import BookFetchEmptyOutputData from "../../presentation/dto/book/fetchBook/BookFetchEmptyOutputData";
 import BookFetchInputData from "../../presentation/dto/book/fetchBook/BookFetchInputData";
 import BookSaveInputData from "../../presentation/dto/book/save/BookSaveInputData";
 import BookUpdateInputData from "../../presentation/dto/book/update/BookUpdateInputData";
@@ -101,11 +100,9 @@ export default class BookAdminController {
 
       const output = await this.fetchBookUseCase.execute(input);
 
-      if (output instanceof BookFetchEmptyOutputData) throw new Error("本が見つかりませんでした。");
-
       return response.success({book: output});
     } catch (e) {
-      return response.error();
+      return response.error(e as Error);
     }
   }
 
@@ -125,8 +122,6 @@ export default class BookAdminController {
       const fetchBookInput = new BookFetchInputData(bookId);
 
       const book = await this.fetchBookUseCase.execute(fetchBookInput);
-
-      if (book instanceof BookFetchEmptyOutputData) throw new Error("本が見つかりませんでした。");
 
       const authorInput = new AuthorUpdateInputData(book.book.AuthorId, authorName);
       const publisherInput = new PublisherUpdateInputData(book.book.PublisherId, publisherName);
@@ -159,7 +154,7 @@ export default class BookAdminController {
 
       return response.success();
     } catch (e) {
-      return response.error();
+      return response.error(e as Error);
     }
   }
 

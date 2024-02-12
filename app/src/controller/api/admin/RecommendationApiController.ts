@@ -1,4 +1,3 @@
-import BookFetchEmptyOutputData from "../../../presentation/dto/book/fetchBook/BookFetchEmptyOutputData";
 import BookFetchInputData from "../../../presentation/dto/book/fetchBook/BookFetchInputData";
 import RecommendationFindInputData from "../../../presentation/dto/recommendation/find/RecommendationFindInputData";
 import RecommendationAddBookResponse from "../../../presentation/response/recommendation/api/RecommendationAddBookResponse";
@@ -31,8 +30,8 @@ export default class RecommendationApiController {
       const bookInput = new BookFetchInputData(bookId);
       const bookOutput = await this.findBookUsecase.execute(bookInput);
 
-      if (recommendationOutput === null || bookOutput instanceof BookFetchEmptyOutputData) {
-        throw new Error("Failed to find recommendation or book");
+      if (recommendationOutput === null) {
+        throw new Error("おすすめセクションを取得するのに失敗しました。");
       }
 
       const isExist = recommendationOutput.recommendation.RecommendationItems.some((book) => book.Book.Id === bookOutput.book.Id);

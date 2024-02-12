@@ -8,6 +8,7 @@ import path from "path";
 import fs from "fs";
 import glob from "glob";
 import appRoot from "app-root-path";
+import cookieParser from "cookie-parser";
 
 /* routers */
 import homeRouter from "../routers/home";
@@ -26,7 +27,6 @@ import aboutRouter from "../routers/about";
 import notFoundRouter from "../routers/404";
 import helpRouter from "../routers/admin/help";
 import healthRouter from "../routers/admin/health";
-// import bookApiRouter from "../routers/api/admin/bookApi";
 import bookItemRouter from "../routers/item";
 
 import Logger from "../infrastructure/logger/logger";
@@ -42,7 +42,6 @@ import campaignRouter from "../routers/campaign";
 
 import db from "../infrastructure/prisma/prisma";
 
-import flash from "connect-flash";
 import userRouter from "../routers/user";
 import userPassportSetting from "../infrastructure/auth/passport";
 import bookMarkRouter from "../routers/user/bookmark";
@@ -51,6 +50,7 @@ import recommendationApiRouter from "../routers/api/recommendation/recommendatio
 import tagRouter from "../routers/tag";
 import bookApiRouter from "../routers/api/admin/health";
 import privacyRouter from "../routers/privacy";
+import flash from "express-flash";
 
 const COOKIE_MAX_AGE = 60 * 60 * 1000; // 1時間
 
@@ -74,20 +74,22 @@ const limiter = expressRateLimit({
 app.use(express.urlencoded({extended: true})); // POSTで送られてきたデータを解析する
 app.use(express.json());
 
+app.use(cookieParser(process.env.COOKIE_SECRET as string));
+
 app.use(session({ // lgtm [js/clear-text-cookie]
   secret: process.env.SESSION_SECRET as string, // トークンを署名するためのキー
   resave: false,
   saveUninitialized: true,
-  rolling: true,
   cookie: {
     maxAge: COOKIE_MAX_AGE,
-    httpOnly: true,
   },
 }));
 
 app.use(limiter);
 
 app.use(csurf({cookie: false}));
+
+app.use(flash());
 
 /* elasticsearchのtemplateを読み込み、適用する処理 */
 const settingTemplate = async () => {
@@ -139,15 +141,8 @@ settingInitEs().catch((e: any) => {
     `);
 });
 
-app.use(flash());
-
 /* passportの読み込み */
 userPassportSetting(app, new UserPrismaRepository(db));
-
-app.use((req, res, next) => {
-  res.locals.flashMessages = req.flash();
-  next();
-});
 
 db.school_grade_info.findFirst({}).then((data) => {
   if (data === null) {
