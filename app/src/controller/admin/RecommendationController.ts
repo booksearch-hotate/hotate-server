@@ -38,7 +38,7 @@ export default class RecommendationAdminController {
 
       return response.success({recommendations: output});
     } catch (e) {
-      return response.error();
+      return response.error(e as Error);
     }
   }
 

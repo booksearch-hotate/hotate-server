@@ -1,9 +1,6 @@
-import Logger from "../infrastructure/logger/logger";
 import RecommendationFetchInputData from "../presentation/dto/recommendation/fetch/RecommendationFetchInputData";
 import RecommendationFetchResponse from "../presentation/response/recommendation/RecommendationFetchResponse";
 import FetchRecommendationThumbnailUseCase from "../usecase/recommendation/FetchRecommendationThumbnailUsecase";
-
-const logger = new Logger("homeController");
 
 export default class HomeController {
   private fetchRecommendationUseCase: FetchRecommendationThumbnailUseCase;
@@ -21,8 +18,7 @@ export default class HomeController {
       const output = await this.fetchRecommendationUseCase.execute(input);
       return res.success({recommendations: output});
     } catch (e: any) {
-      logger.error(e.message);
-      return res.error();
+      return res.error(e as Error);
     }
   }
 }

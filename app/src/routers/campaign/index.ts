@@ -33,22 +33,32 @@ campaignRouter.get("/", async (req: Request, res: Response) => {
 
   const fetchMargin = 9;
 
-  const response = await recommendationController.fetchRecommendation(pageCount, fetchMargin);
+  try {
+    const response = await recommendationController.fetchRecommendation(pageCount, fetchMargin);
 
-  const total = response.count;
+    if (response.errObj !== null) throw response.error;
 
-  if (total === null) throw new Error("total is null");
+    const total = response.count;
 
-  const paginationData = getPaginationInfo(pageCount, total, fetchMargin, 10);
+    if (total === null) throw new Error("total is null");
 
-  res.pageData.anyData = {
-    recommendations: response.recommendations,
-    paginationData,
-  };
+    const paginationData = getPaginationInfo(pageCount, total, fetchMargin, 10);
 
-  res.pageData.headTitle = "キャンペーン一覧";
+    res.pageData.anyData = {
+      recommendations: response.recommendations,
+      paginationData,
+    };
+  } catch (e: any) {
+    res.pageData.anyData = {
+      recommendations: [],
+    };
 
-  res.render("pages/campaign/index", {pageData: res.pageData});
+    req.flash("error", e.message);
+  } finally {
+    res.pageData.headTitle = "キャンペーン一覧";
+
+    res.render("pages/campaign/index", {pageData: res.pageData});
+  }
 });
 
 campaignRouter.get("/item/:recommendationId", csrfProtection, async (req: Request, res: Response) => {
