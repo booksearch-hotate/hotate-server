@@ -14,6 +14,8 @@ export async function getImgLink(isbn: string | null): Promise<string | null> {
   try {
     const formatIsbn = isbn.replace(/-/g, "");
 
+    if (formatIsbn.length !== 13 || isNaN(Number(formatIsbn))) return null;
+
     // 画像が見つからない（xml形式のデータが返ってくる）場合はエラーになるのでそれを利用する
     await axios.get(`${url}${formatIsbn}.jpg`);
 
