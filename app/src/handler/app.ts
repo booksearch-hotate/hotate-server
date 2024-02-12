@@ -74,7 +74,7 @@ const limiter = expressRateLimit({
 app.use(express.urlencoded({extended: true})); // POSTで送られてきたデータを解析する
 app.use(express.json());
 
-app.use(cookieParser("keyboard cat"));
+app.use(cookieParser(process.env.COOKIE_SECRET as string));
 
 app.use(session({ // lgtm [js/clear-text-cookie]
   secret: process.env.SESSION_SECRET as string, // トークンを署名するためのキー

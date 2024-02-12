@@ -52,7 +52,8 @@ searchRouter.get("/search", csrfProtection, async (req: Request, res: Response) 
   const searchWord = req.query.search as string;
 
   try {
-    if (searchWord.length > 100) throw new Error("検索ワードが長すぎます");
+    const MAX_SEARCH_WORD_LENGTH = 100;
+    if (typeof searchWord === "string" && searchWord.length > MAX_SEARCH_WORD_LENGTH) throw new Error("検索ワードが長すぎます");
     if (searchWord.length === 0) throw new Error("検索ワードが入力されていません");
 
     let searchMode: searchMode = "none";
