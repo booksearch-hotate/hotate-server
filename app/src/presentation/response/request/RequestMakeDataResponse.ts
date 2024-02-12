@@ -13,8 +13,4 @@ export default class RequestMakeDataResponse extends TreeResponse<RequestMakeDat
     this.data = o.data.request;
     return this;
   }
-
-  public error() {
-    return this;
-  }
 }

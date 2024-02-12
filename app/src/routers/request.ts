@@ -1,8 +1,6 @@
 import {Request, Response, Router} from "express";
 import csurf from "csurf";
 
-import {FormInvalidError, NullDataError} from "../presentation/error";
-
 import db from "../infrastructure/prisma/prisma";
 import Logger from "../infrastructure/logger/logger";
 
@@ -39,7 +37,7 @@ const requestIndexController = new RequestIndexController(
 本のリクエスト入力を行う画面
 */
 requestRouter.get("/request", csrfProtection, async (req: Request, res: Response) => {
-  res.pageData.headTitle = "本のリクエスト ";
+  res.pageData.headTitle = "本のリクエスト";
 
   const keepReqObj = typeof req.session.keepValue === "object" ? req.session.keepValue.keepReqObj : {};
 
@@ -120,7 +118,7 @@ requestRouter.get("/confirm-request", csrfProtection, async (req: Request, res: 
       };
     };
 
-    if (typeof data === "undefined") throw new NullDataError("The request data could not be obtained.");
+    if (typeof data === "undefined") throw new Error("入力データを取得できませんでした。");
 
     const reqData = await requestIndexController.makeData(
         data.keepReqObj.bookName,
@@ -134,21 +132,15 @@ requestRouter.get("/confirm-request", csrfProtection, async (req: Request, res: 
         data.keepReqObj.userName,
     );
 
-    if (reqData === null) throw new NullDataError("The request data could not be obtained.");
+    if (reqData.errObj !== null) throw reqData.errObj;
 
     res.pageData.anyData = {request: reqData.data};
 
     return res.render("pages/confirm-request", {pageData: res.pageData});
   } catch (e: any) {
-    logger.error(e);
+    req.flash("error", e.message);
 
-    if (e instanceof FormInvalidError) {
-      req.session.status = {type: "Failure", error: e, mes: "フォームの入力が間違っています。もう一度お試しください。"};
-      return res.redirect("/request");
-    }
-
-    req.session.status = {type: "Failure", error: e, mes: "リクエスト内容の取得に失敗しました。"};
-    return res.redirect("/");
+    res.redirect("/request");
   }
 });
 
@@ -168,7 +160,7 @@ requestRouter.post("/register", csrfProtection, async (req: Request, res: Respon
       };
     };
 
-    if (typeof data === "undefined") throw new NullDataError("The request data could not be obtained.");
+    if (typeof data === "undefined") throw new Error("入力データを取得できませんでした。");
 
     const reqData = await requestIndexController.makeData(
         data.keepReqObj.bookName,
@@ -182,7 +174,9 @@ requestRouter.post("/register", csrfProtection, async (req: Request, res: Respon
         data.keepReqObj.userName,
     );
 
-    if (reqData.data === null) throw new NullDataError("The request data could not be obtained.");
+    if (reqData.errObj !== null) throw reqData.errObj;
+
+    if (reqData.data === null) throw new Error("リクエストデータを作成することができませんでした。");
 
     await requestIndexController.save(reqData.data);
 
@@ -191,8 +185,8 @@ requestRouter.post("/register", csrfProtection, async (req: Request, res: Respon
 
     res.redirect("/thanks-request");
   } catch (e: any) {
-    logger.error(e);
-    req.session.status = {type: "Failure", error: e, mes: "リクエストの記録に失敗しました"};
+    req.flash("error", e.message);
+
     res.redirect("/request");
   }
 });

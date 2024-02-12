@@ -78,18 +78,18 @@ app.use(cookieParser("keyboard cat"));
 
 app.use(session({ // lgtm [js/clear-text-cookie]
   secret: process.env.SESSION_SECRET as string, // トークンを署名するためのキー
-  resave: true,
+  resave: false,
   saveUninitialized: true,
-  rolling: true,
   cookie: {
     maxAge: COOKIE_MAX_AGE,
-    httpOnly: true,
   },
 }));
 
 app.use(limiter);
 
 app.use(csurf({cookie: false}));
+
+app.use(flash());
 
 /* elasticsearchのtemplateを読み込み、適用する処理 */
 const settingTemplate = async () => {
@@ -141,15 +141,8 @@ settingInitEs().catch((e: any) => {
     `);
 });
 
-app.use(flash());
-
 /* passportの読み込み */
 userPassportSetting(app, new UserPrismaRepository(db));
-
-app.use((req, res, next) => {
-  res.locals.flashMessages = req.flash();
-  next();
-});
 
 db.school_grade_info.findFirst({}).then((data) => {
   if (data === null) {
