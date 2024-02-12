@@ -9,20 +9,20 @@
 </div>
 <% } %>
 
-<% if(flashMessages) { %>
-  <% if(flashMessages.success) { %>
+<% if(messages) { %>
+  <% if(messages.success) { %>
     <div id="stateAlert" class="alert alert-success alert-dismissible fade show state-info-toast auto-fade" role="alert">
-      <%= flashMessages.success %>
+      <%= messages.success %>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-  <% } else if (flashMessages.error) { %>
+  <% } else if (messages.error) { %>
     <div id="stateAlert" class="alert alert-danger alert-dismissible fade show state-info-toast auto-fade" role="alert">
-      <%= flashMessages.error %>
+      <%= messages.error %>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-  <% } else if (flashMessages.warning) { %>
+  <% } else if (messages.warning) { %>
     <div id="stateAlert" class="alert alert-warning alert-dismissible fade show state-info-toast auto-fade" role="alert">
-      <%= flashMessages.warning %>
+      <%= messages.warning %>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   <% } %>
