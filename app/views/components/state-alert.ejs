@@ -10,6 +10,7 @@
 <% } %>
 
 <% if(messages) { %>
+  <%= JSON.stringify(messages) %>
   <% if(messages.success) { %>
     <div id="stateAlert" class="alert alert-success alert-dismissible fade show state-info-toast auto-fade" role="alert">
       <%= messages.success %>

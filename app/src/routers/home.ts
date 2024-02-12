@@ -23,7 +23,7 @@ homeRouter.get("/", csrfProtection, async (req: Request, res: Response) => {
   try {
     const response = await homeController.fetchRecommendation();
 
-    if (response.errObj !== null) throw response.error;
+    if (response.errObj !== null) throw response.errObj.err;
 
     res.pageData.anyData = {
       recommendations: response.recommendations,

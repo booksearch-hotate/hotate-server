@@ -2,7 +2,6 @@ import {Request, Response, Router} from "express";
 import csurf from "csurf";
 
 import db from "../../infrastructure/prisma/prisma";
-import Logger from "../../infrastructure/logger/logger";
 import conversionpageCounter from "../../utils/conversionPageCounter";
 import getPaginationInfo from "../../utils/getPaginationInfo";
 import RecommendationController from "../../controller/RecommendationController";
@@ -15,8 +14,6 @@ import RecommendationFindResponse from "../../presentation/response/recommendati
 const campaignRouter = Router();
 
 const csrfProtection = csurf({cookie: false});
-
-const logger = new Logger("campaign");
 
 const recommendationController = new RecommendationController(
     new FetchRecommendationThumbnailUseCase(
@@ -36,7 +33,7 @@ campaignRouter.get("/", async (req: Request, res: Response) => {
   try {
     const response = await recommendationController.fetchRecommendation(pageCount, fetchMargin);
 
-    if (response.errObj !== null) throw response.error;
+    if (response.errObj !== null) throw response.errObj.err;
 
     const total = response.count;
 
@@ -70,18 +67,21 @@ campaignRouter.get("/item/:recommendationId", csrfProtection, async (req: Reques
 
     if (recommendation.recommendation === null) throw new Error("recommendation is null");
 
+    if (recommendation.errObj !== null) throw recommendation.errObj.err;
+
     res.pageData.headTitle = recommendation.recommendation.Title;
-  } catch (e) {
-    logger.warn(`Not found bookId: ${recommendationId}`);
-    res.pageData.headTitle = "キャンペーンが見つかりませんでした。";
+
+    res.pageData.anyData = {
+      recommendation,
+    };
+
+    res.pageData.csrfToken = req.csrfToken();
+
+    return res.render("pages/campaign/item", {pageData: res.pageData});
+  } catch (e: any) {
+    req.flash("error", e.message);
+    return res.redirect("/campaign");
   }
-  res.pageData.anyData = {
-    recommendation,
-  };
-
-  res.pageData.csrfToken = req.csrfToken();
-
-  res.render("pages/campaign/item", {pageData: res.pageData});
 });
 
 export default campaignRouter;

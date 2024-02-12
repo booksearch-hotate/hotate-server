@@ -14,7 +14,7 @@ RecommendationFindInputData, Promise<RecommendationFindOutputData>
 
   public async execute(input: RecommendationFindInputData): Promise<RecommendationFindOutputData> {
     const recommendation = await this.recommendationDB.findById(input.id);
-    if (recommendation === null) throw new Error("Recommendation not found");
+    if (recommendation === null) throw new Error("おすすめセクションが見つかりませんでした。");
     return new RecommendationFindOutputData(recommendation);
   }
 }
