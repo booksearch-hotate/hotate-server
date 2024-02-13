@@ -16,6 +16,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+      es:
+        condition: service_healthy
     networks:
       - esnet
 
