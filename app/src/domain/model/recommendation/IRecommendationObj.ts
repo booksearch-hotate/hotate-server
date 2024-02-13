@@ -1,5 +1,5 @@
-import BookData from '../book/bookData';
-import RecommendationData from './recommendationData';
+import BookData from "../book/bookData";
+import RecommendationData from "../../../presentation/dto/recommendation/RecommendationData";
 
 export interface IRecommendationObj {
   recommendation: RecommendationData,

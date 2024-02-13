@@ -1,8 +1,8 @@
-import ResStatus from '../presentation/session/status/resStatus';
+import ResStatus from "../presentation/session/status/resStatus";
 
 interface IPageStatus {
   mes: string,
-  buttonType: 'danger' | 'success' | 'warning' | 'info'
+  buttonType: "danger" | "success" | "warning" | "info"
 }
 
 export default function conversionpageStatus(status: ResStatus | undefined): IPageStatus | undefined {
@@ -10,22 +10,22 @@ export default function conversionpageStatus(status: ResStatus | undefined): IPa
     let resObj: IPageStatus = {} as IPageStatus;
 
     switch (status.type) {
-      case 'Success':
+      case "Success":
         resObj = {
           mes: status.mes,
-          buttonType: 'success',
+          buttonType: "success",
         };
         break;
-      case 'Failure':
+      case "Failure":
         resObj = {
           mes: status.mes,
-          buttonType: 'danger',
+          buttonType: "danger",
         };
         break;
-      case 'Warning':
+      case "Warning":
         resObj = {
           mes: status.mes,
-          buttonType: 'warning',
+          buttonType: "warning",
         };
     }
     return resObj;

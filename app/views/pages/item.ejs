@@ -14,7 +14,24 @@
         <div class="item-box">
           <div class="item-title"><%= data.BookName %></div>
           <div class="item-syousai">
-            <div><img src="<%= data.ImgLink %>" alt="" data-isbn="<%= data.Isbn %>"></div>
+            <div>
+              <img src="<%= data.ImgLink %>" alt="" data-isbn="<%= data.Isbn %>">
+              <% if (pageData.anyData.isLogin) { %>
+                <div class="add-bookmark-box d-flex justify-content-center mt-4">
+                  <form action="/user/bookmark/<%= pageData.anyData.isAlreadyBookmarked ? 'remove' : 'insert' %>" method="post">
+                    <input type="hidden" name="bookId" value="<%= data.Id %>">
+                    <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
+                    <button type="submit" class="tree-button tree-button-success tree-button-mini">
+                      <% if (pageData.anyData.isAlreadyBookmarked) { %>
+                        ブックマーク解除<bi class="bi bi-tag-fill ms-1"></bi>
+                      <% } else { %>
+                        ブックマークする<bi class="bi bi-tag ms-1"></bi>
+                      <% } %>
+                    </button>
+                  </form>
+                </div>
+              <% } %>
+            </div>
             <div class="item-text">
               <p class="item-writer">著者 : <%= data.AuthorName %></p>
               <p class="item-writer">出版社：<%= data.PublisherName %></p>
@@ -40,7 +57,7 @@
                       <input type="text" class="tree-input w-100" name="tagName" placeholder="タグを追加">
                     </div>
                     <div class="col-md-6">
-                      <button type="submit" class="tree-button tree-button-success">追加</button>
+                      <button type="submit" class="tree-button tree-button-success tree-button-mini">追加</button>
                     </div>
                   </div>
                   <div class="row" id="tag-result-box">
@@ -69,7 +86,7 @@
           </div>
         </aside>
 
-        <% if (pageData.anyData.recommendation !== null) { %>
+        <% if (pageData.anyData.recommendation !== null && pageData.anyData.recommendation.length) { %>
         <aside class="my-4">
           <div class="osusume-title"><i class="bi bi-binoculars-fill"></i>この本が紹介されているキャンペーン</div>
           <div class="osusume-flex px-4">
@@ -85,6 +102,9 @@
     </main>
     <%- include('./../components/state-alert', {pageData}) %>
     <%- include('./../components/input-js') %>
+
+    <%- include('./../components/footer') %>
+
     <script src="<%= pageData.origin %>/js/getImgLinks.js"></script>
   </body>
 </html>

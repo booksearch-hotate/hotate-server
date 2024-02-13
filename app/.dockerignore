@@ -1,3 +1,8 @@
 node_modules
-views
-public
+.env
+log
+dist
+
+# デフォルトのサムネイルはignoreに含めない
+public/thumbnail
+!public/thumbnail/default*

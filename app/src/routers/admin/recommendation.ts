@@ -1,107 +1,114 @@
-import {Request, Response, Router} from 'express';
-import csurf from 'csurf';
+import {Request, Response, Router} from "express";
+import csurf from "csurf";
 
-import Logger from '../../infrastructure/logger/logger';
+import Logger from "../../infrastructure/logger/logger";
 
-import RecommendationApplicationService from '../../application/recommendationApplicationService';
-import RecommendationRepository from '../../interface/repository/recommendationRepository';
-import RecommendationService from '../../domain/model/recommendation/recommendationService';
+import conversionpageCounter from "../../utils/conversionPageCounter";
+import getPaginationInfo from "../../utils/getPaginationInfo";
 
-import BookApplicationService from '../../application/bookApplicationService';
-import BookRepository from '../../interface/repository/bookRepository';
-
-import db from '../../infrastructure/db';
-import EsSearchBook from '../../infrastructure/elasticsearch/esBook';
-
-import conversionpageCounter from '../../utils/conversionPageCounter';
-import getPaginationInfo from '../../utils/getPaginationInfo';
-import BookService from '../../domain/model/book/bookService';
-
-import conversionpageStatus from '../../utils/conversionPageStatus';
-import EsAuthor from '../../infrastructure/elasticsearch/esAuthor';
-import AuthorRepository from '../../interface/repository/authorRepository';
-import EsPublisher from '../../infrastructure/elasticsearch/esPublisher';
-import PublisherRepository from '../../interface/repository/publisherRepository';
-import {InvalidDataTypeError} from '../../presentation/error';
-import {defaultThumbnailReg} from '../datas/defaultThumbnailReg';
+import conversionpageStatus from "../../utils/conversionPageStatus";
+import {InvalidDataTypeError} from "../../presentation/error";
+import RecommendationAdminController from "../../controller/admin/RecommendationController";
+import FetchRecommendationThumbnailUseCase from "../../usecase/recommendation/FetchRecommendationThumbnailUsecase";
+import RecommendationPrismaRepository from "../../infrastructure/prisma/repository/RecommendationPrismaRepository";
+import FindRecommendationUseCase from "../../usecase/recommendation/FindRecommendationUsecase";
+import FetchMaxIndexRecommendationUseCase from "../../usecase/recommendation/FetchMaxIndexRecommendationUsecase";
+import db from "../../infrastructure/prisma/prisma";
+import FetchThumbnailNamesUseCase from "../../usecase/thumbnail/FetchThumbnailNamesUsecase";
+import UpdateRecommendationUseCase from "../../usecase/recommendation/UpdateRecommendationUsecase";
+import InsertRecommendationUseCase from "../../usecase/recommendation/InsertRecommendationUsecase";
+import ThumbnailFileRepository from "../../infrastructure/fileAccessor/thumbnail/repository/ThumbnailFileRepositoy";
+import ThumbnailFileAccessor from "../../infrastructure/fileAccessor/thumbnail/thumbnailFile";
+import BookPrismaRepository from "../../infrastructure/prisma/repository/BookPrismaRepository";
+import DeleteRecommendationUsecase from "../../usecase/recommendation/DeleteRecommendationUsecase";
 
 // eslint-disable-next-line new-cap
 const recommendationRouter = Router();
 
 const csrfProtection = csurf({cookie: false});
 
-const logger = new Logger('recommendation');
+const logger = new Logger("recommendation");
 
-const recommendationApplicationService = new RecommendationApplicationService(new RecommendationRepository(db), new RecommendationService());
-
-const bookApplicationService = new BookApplicationService(
-    new BookRepository(db, new EsSearchBook('books')),
-    new AuthorRepository(db, new EsAuthor('authors')),
-    new PublisherRepository(db, new EsPublisher('publishers')),
-    new BookService(),
+const recommendationController = new RecommendationAdminController(
+    new FetchRecommendationThumbnailUseCase(
+        new RecommendationPrismaRepository(db),
+    ),
+    new FindRecommendationUseCase(
+        new RecommendationPrismaRepository(db),
+    ),
+    new FetchMaxIndexRecommendationUseCase(
+        new RecommendationPrismaRepository(db),
+    ),
+    new FetchThumbnailNamesUseCase(
+        new ThumbnailFileRepository(new ThumbnailFileAccessor()),
+    ),
+    new UpdateRecommendationUseCase(
+        new RecommendationPrismaRepository(db),
+        new BookPrismaRepository(db),
+    ),
+    new InsertRecommendationUseCase(
+        new RecommendationPrismaRepository(db),
+    ),
+    new DeleteRecommendationUsecase(
+        new RecommendationPrismaRepository(db),
+    ),
 );
 
-recommendationRouter.get('/', csrfProtection, async (req: Request, res: Response) => {
-  const pageCount = conversionpageCounter(req);
+recommendationRouter.get("/", csrfProtection, async (req: Request, res: Response) => {
+  const FETCH_MARGIN = 9;
 
-  const fetchMargin = 9;
+  try {
+    const pageCount = conversionpageCounter(req);
 
-  const recommendations = await recommendationApplicationService.fetch(pageCount, fetchMargin);
+    const output = await recommendationController.index(pageCount, FETCH_MARGIN);
 
-  const total = await recommendationApplicationService.fetchAllCount();
+    const recommendations = output.recommendations;
 
-  const paginationData = getPaginationInfo(pageCount, total, fetchMargin, 10);
+    const total = output.count;
 
-  res.pageData.status = conversionpageStatus(req.session.status);
-  req.session.status = undefined;
+    if (total === null) throw new Error("Total count is null.");
 
-  req.session.keepValue = undefined;
+    const paginationData = getPaginationInfo(pageCount, total, FETCH_MARGIN, 10);
 
-  res.pageData.headTitle = 'おすすめセクション一覧';
-  res.pageData.anyData = {
-    recommendations,
-    paginationData,
-  };
+    res.pageData.anyData = {
+      recommendations,
+      paginationData,
+    };
+  } catch (e: any) {
+    res.pageData.anyData = {
+      recommendations: [],
+    };
 
-  res.pageData.csrfToken = req.csrfToken();
+    req.flash("error", e.message);
+  } finally {
+    res.pageData.status = conversionpageStatus(req.session.status);
+    req.session.status = undefined;
 
-  res.render('pages/admin/recommendation/', {pageData: res.pageData});
+    req.session.keepValue = undefined;
+
+    res.pageData.headTitle = "おすすめセクション一覧";
+
+    res.pageData.csrfToken = req.csrfToken();
+
+    res.render("pages/admin/recommendation/", {pageData: res.pageData});
+  }
 });
 
-recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Response) => {
+recommendationRouter.get("/edit", csrfProtection, async (req: Request, res: Response) => {
   try {
     const id = req.query.rid;
 
-    if (typeof id !== 'string') throw new InvalidDataTypeError('Invalid value for id');
+    if (typeof id !== "string") throw new InvalidDataTypeError("Invalid value for id");
 
-    const recommendation = await recommendationApplicationService.findById(id);
+    const output = await recommendationController.detail(id);
 
-    /* おすすめセクションに登録されている本の情報を取得 */
-    const items = await Promise.all(recommendation.RecommendationItems.map(async (item) => {
-      return {
-        book: await bookApplicationService.searchBookById(item.BookId),
-        comment: item.Comment,
-      };
-    }));
-
-    const maxSortIndex = await recommendationApplicationService.findMaxIndex();
-
-    const thumbnailList = recommendationApplicationService.fetchAllthumbnailName();
-
-    const defaultThumbnailList: string[] = [];
-    thumbnailList.forEach((thumbnail) => {
-      if (new RegExp(defaultThumbnailReg, 'g').test(thumbnail)) {
-        defaultThumbnailList.push(thumbnail);
-      }
-    });
-
-    res.pageData.headTitle = 'セクションの編集';
+    res.pageData.headTitle = "セクションの編集";
     res.pageData.anyData = {
-      recommendation,
-      maxSortIndex,
-      items,
-      thumbnailList,
-      defaultThumbnailList,
+      recommendation: output.recommendation,
+      maxSortIndex: output.maxIndex,
+      items: output.recommendation?.RecommendationItems,
+      thumbnailList: output.thumbnailNames,
+      defaultThumbnailList: output.defaultThumbnailNames,
     };
 
     res.pageData.csrfToken = req.csrfToken();
@@ -109,14 +116,14 @@ recommendationRouter.get('/edit', csrfProtection, async (req: Request, res: Resp
     res.pageData.status = conversionpageStatus(req.session.status);
     req.session.status = undefined;
 
-    res.render('pages/admin/recommendation/edit', {pageData: res.pageData});
+    res.render("pages/admin/recommendation/edit", {pageData: res.pageData});
   } catch (e: any) {
     logger.error(e);
-    res.redirect('/admin/recommendation/');
+    res.redirect("/admin/recommendation/");
   }
 });
 
-recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: Response) => {
+recommendationRouter.post("/udpate", csrfProtection, async (req: Request, res: Response) => {
   try {
     const recommendationId = req.body.id;
 
@@ -129,56 +136,46 @@ recommendationRouter.post('/udpate', csrfProtection, async (req: Request, res: R
 
     let isSolid: boolean;
     switch (req.body.isSolid) {
-      case 'solid':
+      case "solid":
         isSolid = true;
         break;
       case undefined:
         isSolid = false;
         break;
       default:
-        throw new InvalidDataTypeError('Invalid optional value; isSolid.');
+        throw new InvalidDataTypeError("Invalid optional value; isSolid.");
     }
 
-    const allCount = await recommendationApplicationService.fetchAllCount();
-
-    const sortIndex = allCount - (formSortIndex - 1);
-
-    await recommendationApplicationService.update(
+    await recommendationController.update(
         recommendationId,
         title,
         content,
-        sortIndex,
         thumbnailName,
         isSolid,
+        formSortIndex,
         bookIds,
         bookComments,
     );
 
-    req.session.status = {type: 'Success', mes: '投稿の変更に成功しました。'};
-    logger.info('Posting is updated.');
+    req.flash("success", "投稿の変更に成功しました。");
+    logger.info("Posting is updated.");
 
-    res.redirect('/admin/recommendation/');
+    res.redirect("/admin/recommendation/");
   } catch (e: any) {
     logger.error(e);
-    req.session.status = {type: 'Failure', error: e, mes: '投稿の変更に失敗しました。'};
+    req.session.status = {type: "Failure", error: e, mes: "投稿の変更に失敗しました。"};
 
-    res.redirect('/admin/recommendation/edit');
+    res.redirect("/admin/recommendation/edit");
   }
 });
 
-recommendationRouter.get('/add', csrfProtection, (req: Request, res: Response) => {
-  res.pageData.headTitle = 'セクションの追加';
-  const thumbnailList = recommendationApplicationService.fetchAllthumbnailName();
+recommendationRouter.get("/add", csrfProtection, (req: Request, res: Response) => {
+  res.pageData.headTitle = "セクションの追加";
+  const output = recommendationController.add();
 
-  const defaultThumbnailList: string[] = [];
-  thumbnailList.forEach((thumbnail) => {
-    if (new RegExp(defaultThumbnailReg, 'g').test(thumbnail)) {
-      defaultThumbnailList.push(thumbnail);
-    }
-  });
   res.pageData.anyData = {
-    thumbnailList,
-    defaultThumbnailList,
+    thumbnailList: output.thumbnailNameList,
+    defaultThumbnailList: output.defaultTypeList,
   };
 
   res.pageData.csrfToken = req.csrfToken();
@@ -186,42 +183,45 @@ recommendationRouter.get('/add', csrfProtection, (req: Request, res: Response) =
   res.pageData.status = conversionpageStatus(req.session.status);
   req.session.status = undefined;
 
-  res.render('pages/admin/recommendation/add', {pageData: res.pageData});
+  res.render("pages/admin/recommendation/add", {pageData: res.pageData});
 });
 
-recommendationRouter.post('/insert', csrfProtection, async (req: Request, res: Response) => {
+recommendationRouter.post("/insert", csrfProtection, async (req: Request, res: Response) => {
   try {
     const title = req.body.title;
     const content = req.body.content;
     const thumbnailName = req.body.thumbnailName;
 
-    await recommendationApplicationService.insert(title, content, thumbnailName);
+    const output = await recommendationController.insert(title, content, thumbnailName);
+
+    if (output.errObj !== null) throw output.errObj.err;
+
     logger.info(`Add new recommendation section. title: ${title}`);
-    req.session.status = {type: 'Success', mes: '投稿の追加が完了しました。'};
+    req.session.status = {type: "Success", mes: "投稿の追加が完了しました。"};
 
-    res.redirect('/admin/recommendation/');
+    res.redirect("/admin/recommendation/");
   } catch (e: any) {
-    logger.error(e);
-    req.session.status = {type: 'Failure', error: e, mes: '投稿の追加に失敗しました。'};
+    req.flash("error", e.message);
 
-    res.redirect('/admin/recommendation/add');
+    res.redirect("/admin/recommendation/add");
   }
 });
 
-recommendationRouter.post('/delete', csrfProtection, async (req: Request, res: Response) => {
+recommendationRouter.post("/delete", csrfProtection, async (req: Request, res: Response) => {
   try {
     const id = req.body.id;
 
-    if (typeof id !== 'string') throw new InvalidDataTypeError('Invalid recommendation section id.');
+    if (typeof id !== "string") throw new InvalidDataTypeError("Invalid recommendation section id.");
 
-    await recommendationApplicationService.delete(id);
-    logger.info('Posting is deleted.');
-    req.session.status = {type: 'Success', mes: '投稿の削除に成功しました。'};
+    await recommendationController.delete(id);
+
+    logger.info("Posting is deleted.");
+    req.session.status = {type: "Success", mes: "投稿の削除に成功しました。"};
   } catch (e: any) {
     logger.error(e);
-    req.session.status = {type: 'Failure', error: e, mes: '投稿の削除に失敗しました。'};
+    req.session.status = {type: "Failure", error: e, mes: "投稿の削除に失敗しました。"};
   } finally {
-    res.redirect('/admin/recommendation/');
+    res.redirect("/admin/recommendation/");
   }
 });
 

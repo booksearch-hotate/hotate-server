@@ -3,8 +3,11 @@
 }
 
 main {
-  background-color: var(--bg-color);
   padding: 40px;
+}
+
+body {
+  background-color: var(--bg-color);
 }
 
 .item-box {
@@ -100,7 +103,7 @@ aside {
 
 .osusume-flex {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 30px;
   overflow: scroll;
 }
@@ -113,6 +116,7 @@ aside {
   cursor: pointer;
   transition: transform .5s;
   flex-direction: column;
+  width: min-content;
 }
 
 .osusume-book:hover {

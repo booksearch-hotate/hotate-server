@@ -9,7 +9,7 @@
       <%- include('./../../../components/header-title', {mes: 'CSVファイルから本を登録', logo: 'filetype-csv'}) %>
     </header>
 
-    <form action="/admin/csv/formHader" method="post" class="header-choice-form">
+    <form action="/admin/csv/formHeader" method="post" class="header-choice-form">
       <input type="hidden" name="_csrf" value="<%= pageData.csrfToken %>">
 
       <section class="tree-form-item">

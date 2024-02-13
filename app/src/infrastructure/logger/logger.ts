@@ -1,16 +1,16 @@
-import log4js from 'log4js';
-import {isLocal, isLogOutput} from '../cli/cmdLine';
+import log4js from "log4js";
+import {isLocal, isLogOutput} from "../cli/cmdLine";
 
 export default class Logger {
   private logger: log4js.Logger; // コンソールへの出力
 
   constructor(name: string) {
-    const defaultCategories = isLogOutput() ? {appenders: ['system', 'wrapErr'], level: isLocal() ? 'all' : 'info'} : {appenders: ['system'], level: 'debug'};
+    const defaultCategories = isLogOutput() ? {appenders: ["system", "wrapErr"], level: isLocal() ? "all" : "info"} : {appenders: ["system"], level: "debug"};
     log4js.configure({
       appenders: {
-        system: {type: 'stdout'}, // 標準出力
-        out: {type: 'file', filename: `log/system-${new Date().getFullYear()}-${new Date().getMonth() + 1}.log`}, // ログファイルへの出力
-        wrapErr: {type: 'logLevelFilter', appender: 'out', level: 'info'},
+        system: {type: "stdout"}, // 標準出力
+        out: {type: "file", filename: `log/system-${new Date().getFullYear()}-${new Date().getMonth() + 1}.log`}, // ログファイルへの出力
+        wrapErr: {type: "logLevelFilter", appender: "out", level: "info"},
       },
       categories: {
         default: defaultCategories,

@@ -6,8 +6,8 @@ const cmdList = process.argv.slice(2);
  * @returns localが含まれているか
  */
 export function isLocal() {
-  for (const cmd of process.argv) if (cmd.slice(-4) === 'jest') return true;
-  return cmdList.includes('local');
+  for (const cmd of process.argv) if (cmd.slice(-4) === "jest") return true;
+  return cmdList.includes("local");
 }
 
 /**
@@ -16,9 +16,9 @@ export function isLocal() {
  * @returns output-logが含まれているか
  */
 export function isLogOutput() {
-  return cmdList.includes('output-log');
+  return cmdList.includes("output-log");
 }
 
 export function isUseAWSES() {
-  return cmdList.includes('use-aws-es');
+  return cmdList.includes("use-aws-es");
 }

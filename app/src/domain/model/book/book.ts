@@ -1,10 +1,11 @@
-import {DomainInvalidError} from '../../../presentation/error';
-import Author from '../author/author';
-import Publisher from '../publisher/publisher';
-import Tag from '../tag/tag';
+import {DomainInvalidError} from "../../../presentation/error";
+import Author from "../author/author";
+import Publisher from "../publisher/publisher";
+import Tag from "../tag/tag";
+import BookId from "./bookId";
 
 export default class Book {
-  private id: string;
+  private id: BookId;
   private name!: string;
   private subName!: string | null;
   private content!: string | null;
@@ -23,7 +24,7 @@ export default class Book {
   private readonly MAX_ISBN_LEN = 10;
 
   constructor(
-      id: string,
+      id: BookId,
       name: string,
       subName: string | null,
       content: string | null,
@@ -34,10 +35,10 @@ export default class Book {
       publisher: Publisher,
       tags: Tag[],
   ) {
-    if (id === null) throw new DomainInvalidError('Id is null.');
-    if (name === null || name.length > this.MAX_NAME_LEN) throw new DomainInvalidError(`The format of the name of book is different. Name of book: ${name}`);
-    if (subName !== null && name.length > this.MAX_SUBNAME_LEN) throw new DomainInvalidError(`The format of the sub name of book is defferent. Sub name of book: ${subName}`);
-    if (content !== null && content.length > this.MAX_CONTENT_LEN) throw new DomainInvalidError(`The format of the sentences of book is defferent. Sentences of book: ${content}`);
+    if (id === null) throw new DomainInvalidError("idがnullです。");
+    if (name === null || name.length > this.MAX_NAME_LEN) throw new DomainInvalidError(`本のタイトルの文字数は1文字以上${this.MAX_NAME_LEN}文字未満にしてください。`);
+    if (subName !== null && name.length > this.MAX_SUBNAME_LEN) throw new DomainInvalidError(`本のサブタイトルの文字数は1文字以上${this.MAX_SUBNAME_LEN}文字未満にしてください。`);
+    if (content !== null && content.length > this.MAX_CONTENT_LEN) throw new DomainInvalidError(`本の内容の文字数は1文字以上${this.MAX_CONTENT_LEN}文字未満にしてください。`);
 
     this.id = id;
     this.Name = name;
@@ -52,7 +53,7 @@ export default class Book {
     this.tags = tags;
   }
 
-  get Id(): string {
+  get Id(): BookId {
     return this.id;
   }
 
@@ -61,7 +62,7 @@ export default class Book {
   }
   set Name(name: string) {
     if (name === null) {
-      this.name = '';
+      this.name = "";
     } else {
       this.name = name;
     }
@@ -88,7 +89,7 @@ export default class Book {
   }
 
   set Isbn(isbn: string | null) {
-    if (isbn === '' || isbn === null || isbn.length < this.MAX_ISBN_LEN) {
+    if (isbn === "" || isbn === null || isbn.length < this.MAX_ISBN_LEN) {
       this.isbn = null;
       return;
     }
@@ -132,7 +133,7 @@ export default class Book {
   }
 
   public changeName(name: string | null) {
-    if (name === null) throw new DomainInvalidError('The book title is null.');
+    if (name === null) throw new DomainInvalidError("The book title is null.");
 
     this.Name = name;
   }
