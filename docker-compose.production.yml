@@ -38,8 +38,34 @@ services:
       interval: 10s
       retries: 10
       start_period: 20s
+  es:
+    build:
+      context: elasticsearch
+    container_name: es
+    environment:
+      discovery.type: single-node
+      cluster.name: docker-cluster
+      bootstrap.memory_lock: 'true'
+      ES_JAVA_OPTS: '-Xms512m -Xmx512m'
+      http.cors.allow-origin: '*'
+      http.cors.enabled: 'true'
+      xpack.security.enabled: 'false'
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - esnet
+    healthcheck:
+      test: curl -s http://es:9200/dev/null || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
 
 volumes:
+  esdata:
+    driver: local
   dbdata:
     driver: local
 
