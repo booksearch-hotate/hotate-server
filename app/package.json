@@ -56,7 +56,7 @@
   },
   "devDependencies": {
     "@quramy/jest-prisma": "^1.7.3",
-    "@types/app-root-path": "^1.2.4",
+    "@types/app-root-path": "^1.2.8",
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.6",
     "@types/csurf": "^1.11.2",
